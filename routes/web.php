@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Admin\DoctorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,5 +30,7 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
+
+Route::get('/get_doctor_list', [DoctorController::class, 'getDoctorList'])->name('get-doctor-list');
 
 
