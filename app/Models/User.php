@@ -39,6 +39,24 @@ class User extends Authenticatable
         self::ROLE_ADMIN_ROOT => 'Admin root',
     ];
 
+
+    // status
+    public const STATUS_ACTIVE = 1;
+    public const STATUS_DEACTIVATED = 0;
+
+    public static $status = [
+        self::STATUS_ACTIVE => 'Đang hoạt động',
+        self::STATUS_DEACTIVATED => 'Đã vô hiệu',
+    ];
+
+    // gender
+    public const MALE = 1;
+    public const FEMALE = 0;
+
+    public static $gender = [
+        self::MALE => 'Nam',
+        self::FEMALE => 'Nu',
+    ];
     /**
      * The attributes that are mass assignable.
      *
@@ -48,8 +66,11 @@ class User extends Authenticatable
         'name',
         'email',
         'phone',
+        'gender',
         'address',
         'role',
+        'dob',
+        'status',
         'password',
     ];
 
