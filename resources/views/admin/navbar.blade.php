@@ -1,5 +1,5 @@
-{{--
-<nav class="main-header navbar navbar-expand navbar-white navbar-light">
+
+<nav class="main-header navbar navbar-expand navbar-black navbar-dark">
   <!-- Left navbar links -->
   <ul class="navbar-nav">
     <li class="nav-item">
@@ -135,11 +135,11 @@
     <x-app-layout>
     </x-app-layout>
   </ul>
-</nav> --}}
+</nav>
 
 
 
-<nav class="navbar navbar-expand navbar-primary navbar-light">
+{{-- <nav class="navbar navbar-expand navbar-primary navbar-light">
   <!-- Left navbar links -->
   <ul class="navbar-nav">
     <li class="nav-item">
@@ -277,4 +277,4 @@
   </ul>
   <x-app-layout>
   </x-app-layout>
-</nav>
+</nav> --}}

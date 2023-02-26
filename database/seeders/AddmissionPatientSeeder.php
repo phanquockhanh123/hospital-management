@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\BloodDonation;
 use Illuminate\Database\Seeder;
+use App\Models\AddmissionPatient;
 
-class BloodDonationSeeder extends Seeder
+class AddmissionPatientSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +14,6 @@ class BloodDonationSeeder extends Seeder
      */
     public function run()
     {
-        BloodDonation::factory()->count(30)->create();
+        AddmissionPatient::factory()->count(50)->create();
     }
 }

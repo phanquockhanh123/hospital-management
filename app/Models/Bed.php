@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
 class Bed extends BaseModel
 {
 
@@ -16,6 +13,17 @@ class Bed extends BaseModel
         self::STATUS_EMPTY => 'Trống',
         self::STATUS_FULL => 'Đầy',
     ];
+
+    //bed type
+    public const BED_TYPE_VIP= 3;
+    public const STATUS_PREMIUM = 2;
+    public const STATUS_NORMAL = 1;
+
+    public static $bedTypes = [
+        self::BED_TYPE_VIP => 'Vip',
+        self::STATUS_PREMIUM => 'Cao cấp',
+        self::STATUS_NORMAL => 'Thường',
+    ];
     /**
      * The attributes that are mass assignable.
      *
@@ -24,9 +32,11 @@ class Bed extends BaseModel
     protected $fillable = [
         'bed_code',
         'name',
-        'bed_type_id',
+        'department_id',
+        'bed_type',
         'charge',
-        'status'
+        'status',
+        'note'
     ];
 
     protected $dates = [
@@ -36,10 +46,29 @@ class Bed extends BaseModel
     ];
 
     /**
-     * Get the bedType
+     * Get the doctorDepartments
      */
-    public function bedType()
+    public function doctorDepartments()
     {
-        return $this->belongsTo(BedType::class);
+        return $this->belongsTo(DoctorDepartment::class);
+    }
+
+    /*
+     * Function generate next code
+     *
+     * @return string
+     */
+    public static function generateNextCode()
+    {
+        $maxIdentifierCode = self::withTrashed()->max('bed_code');
+        if (empty($maxIdentifierCode)) {
+            // Table bed no record
+            return sprintf('%s00001', config('const.prefix_code.bed'));
+        }
+        return sprintf(
+            "%s%'.05s",
+            config('const.prefix_code.bed'),
+            substr($maxIdentifierCode, strlen(config('const.prefix_code.bed'))) + 1
+        );
     }
 }

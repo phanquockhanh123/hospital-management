@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\BedType;
+use App\Models\DoctorDepartment;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class BedFactory extends Factory
@@ -14,13 +15,15 @@ class BedFactory extends Factory
      */
     public function definition()
     {
-        $bedTypeIds = BedType::pluck('id');
+        $departmentIds = DoctorDepartment::pluck('id');
         return [
             'bed_code' => 'BED' . $this->faker->unique()->numberBetween(100000, 999999),
             'name' => $this->faker->name(),
-            'bed_type_id' => $bedTypeIds->random(),
+            'department_id' => $departmentIds->random(),
+            'bed_type' => $this->faker->randomElement(array_keys(\App\Models\Bed::$bedTypes)),
             'charge' => $this->faker->numberBetween(500, 20000),
             'status' => $this->faker->randomElement(array_keys(\App\Models\Bed::$status)),
+            'notes' => $this->faker->realText(100)
         ];
     }
 }

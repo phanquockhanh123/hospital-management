@@ -30,14 +30,14 @@
                     </div>
                     <div class="col-md-9">
                         <div class="card-header">
-                            <h3 class="card-title">Tạo mới loại giường</h3>
+                            <h3 class="card-title">Tạo mới phòng ban</h3>
                         </div>
                         <div class="card-body">
-                            <form action="{{ route('bed_types.store') }}" method="POST">
+                            <form action="{{ route('doctor_departments.store') }}" method="POST">
                                 @csrf
 
                                 <div class="form-group">
-                                    <label for="name">Tên loại giường:</label>
+                                    <label for="name">Tên phòng ban:</label>
                                     <input type="text" name="name" id="name"
                                         class="form-control @error('name') is-invalid @enderror"
                                         value="{{ old('name') }}">
@@ -56,7 +56,7 @@
                                 </div>
 
                                 <div class="d-flex justify-content-between mt-4">
-                                    <a href="{{ route('bed_types.index') }}" class="btn btn-secondary">
+                                    <a href="{{ route('doctor_departments.index') }}" class="btn btn-secondary">
                                         <i class="fas fa-arrow-left"></i> Quay lại
                                     </a>
 

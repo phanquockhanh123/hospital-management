@@ -29,10 +29,10 @@
         <div class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <form action="{{ route('bed_types.index') }}" method="GET">
+              <form action="{{ route('doctors.index') }}" method="GET">
                 <div class="input-group mb-2">
                   <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Search Bed Types" name="search">
+                    <input type="text" class="form-control" placeholder="Search Doctors" name="search">
                     <div class="input-group-append">
                       <button class="btn btn-outline-secondary" type="submit">Search</button>
                     </div>
@@ -41,7 +41,7 @@
               </form>
             </div>
             <div class="col-sm-3" style="float: right;">
-              <a href="{{ route('bed_types.create') }}" class="btn btn-success">
+              <a href="{{ route('doctors.create') }}" class="btn btn-success">
                 <i class="fas fa-plus"></i> Tạo mới
               </a>
             </div>
@@ -58,60 +58,72 @@
 
                 <!-- /.card-header -->
                 <div class="card-body">
-                  @if ($bedTypes->isEmpty())
+                  @if ($doctors->isEmpty())
                   <div class="alert alert-danger" role="alert">
-                    No bed types found.
+                    No doctors found.
                   </div>
                   @else
                   <table id="example2" class="table table-bordered table-hover">
                     <thead>
                       <tr>
-                        <th>ID</th>
-                        <th>NAME</th>
-                        <th>DESCRIPTION</th>
+                        <th>DOCTOR</th>
+                        <th>DEPARTMENT</th>
+                        <th>SPECIALIST</th>
+                        <th>START WORK</th>
+                        <th>STATUS</th>
                         <th></th>
                       </tr>
                     </thead>
                     <tbody>
-                      @foreach ($bedTypes as $bedType)
+                      @foreach ($doctors as $doctor)
                       <tr>
-                        <td><a href="{{ route('bed_types.show', $bedType) }}">{{ $bedType->id }}</a></td>
-                        <td>{{ $bedType->name }}</td>
-                        <td>{{ $bedType->description }}</td>
+                        <td>
+                          <a href="{{ route('doctors.show', $doctor) }}"><img src="{{ asset('public/assets/img/doctors/' . $doctor->profile) }}" alt="{{ $doctor->name }}"></a>
+                        </td>
+                        <td>{{ $doctor->doctorDepartment->name }}</td>
+                        <td>{{ $doctor->specialist }}</td>
+                        <td>{{ $doctor->start_work_date->format(config('const.format.date')) }}</td>
+                        <td>
+                          @if($doctor->status == 1)
+                          <span class="text-primary">Đang làm việc</span>
+                          @elseif ($doctor->status == 0)
+                          <span class="text-danger">Đã nghĩ việc</span>
+                          @endif
+                        </td>
                         <td>
                           <div class="btn-group">
-                            <a href="{{ route('bed_types.edit', $bedType->id) }}" class="btn btn-primary">
+                            <a href="{{ route('doctors.edit', $doctor->id) }}" class="btn btn-primary">
                               <i class="fas fa-edit"></i> Sửa
                             </a>
                             <button type="button" class="btn btn-danger" data-toggle="modal"
-                              data-target="#deleteModal{{ $bedType->id }}" style="color: red;">
+                              data-target="#deleteModal{{ $doctor->id }}" style="color: red;">
                               <i class="fas fa-trash-alt"></i> Xóa
                             </button>
                           </div>
                         </td>
 
                         <!-- Modal -->
-                        <div class="modal fade" id="deleteModal{{ $bedType->id }}" tabindex="-1" role="dialog"
-                          aria-labelledby="deleteModalLabel{{ $bedType->id }}" aria-hidden="true">
+                        <div class="modal fade" id="deleteModal{{ $doctor->id }}" tabindex="-1" role="dialog"
+                          aria-labelledby="deleteModalLabel{{ $doctor->id }}" aria-hidden="true">
                           <div class="modal-dialog" role="document">
                             <div class="modal-content">
                               <div class="modal-header">
-                                <h5 class="modal-title" id="deleteModalLabel{{ $bedType->id }}">Xóa loại giường</h5>
+                                <h5 class="modal-title" id="deleteModalLabel{{ $doctor->id }}">Xóa bác sĩ</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                   <span aria-hidden="true">&times;</span>
                                 </button>
                               </div>
                               <div class="modal-body">
-                                Bạn có chắc chắn muốn xóa loại giường "{{ $bedType->name }}" không? Hành động này không
+                                Bạn có chắc chắn muốn xóa bác sĩ "{{ $doctor->name }}" không? Hành động này không
                                 thể hoàn tác!
                               </div>
                               <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                                <form action="{{ route('bed_types.destroy', $bedType->id) }}" method="POST">
+                                <form action="{{ route('doctors.destroy', $doctor->id) }}" method="POST">
                                   @csrf
                                   @method('DELETE')
                                   <button type="submit" class="btn btn-danger"
-                                    onclick="return confirm('Bạn có chắc chắn muốn xóa loại giường này không?')">Xóa</button>
+                                    onclick="return confirm('Bạn có chắc chắn muốn xóa bác sĩ này không?')">Xóa</button>
                                 </form>
                               </div>
                             </div>
@@ -119,11 +131,9 @@
                         </div>
                       </tr>
                       @endforeach
-
-
                     </tbody>
                   </table>
-                  {{ $bedTypes->links() }}
+                  {{ $doctors->links() }}
                   @endif
                 </div>
                 <!-- /.card-body -->

@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
 class DoctorDepartment extends BaseModel
 {
 
@@ -32,6 +29,11 @@ class DoctorDepartment extends BaseModel
         return $this->hasMany(Doctor::class);
     }
 
-
-   
+    /**
+     * Get the beds
+     */
+    public function beds()
+    {
+        return $this->hasMany(Bed::class);
+    }
 }

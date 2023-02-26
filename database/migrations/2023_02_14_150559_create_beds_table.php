@@ -17,16 +17,18 @@ class CreateBedsTable extends Migration
             $table->id();
             $table->string('bed_code')->unique();
             $table->string('name');
-            $table->unsignedBigInteger('bed_type_id');
+            $table->string('bed_type');
+            $table->unsignedBigInteger('department_id');
             $table->float('charge');
-            $table->float('status');
+            $table->string('notes')->nullable();
+            $table->float('status')->default(0);
             $table->timestamps();
             $table->softDeletes();
 
             // declare foreign key
-            $table->foreign('bed_type_id', 'FK_beds_1')
+            $table->foreign('department_id', 'FK_beds_1')
                 ->references('id')
-                ->on('bed_types')
+                ->on('doctor_departments')
                 ->onDelete('cascade');
         });
     }

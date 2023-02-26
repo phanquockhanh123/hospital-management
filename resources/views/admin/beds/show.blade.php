@@ -30,41 +30,54 @@
                 <div class="col-md-9">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">{{ $bedType->name }}</h3>
+                            <h3 class="card-title">{{ $bed->name }}</h3>
                         </div>
                         <div class="card-body">
                             <table class="table">
                                 <tbody>
                                     <tr>
-                                        <th>Mã loại giường:</th>
-                                        <td>{{ $bedType->id }}</td>
+                                        <th>Mã giường bệnh:</th>
+                                        <td>{{ $bed->code }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Tên loại giường:</th>
-                                        <td>{{ $bedType->name }}</td>
+                                        <th>Tên giường bệnh:</th>
+                                        <td>{{ $bed->name }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Mô tả:</th>
-                                        <td>{{ $bedType->description }}</td>
+                                        <th>Giá giường bệnh:</th>
+                                        <td>{{ $bed->charge }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Loại giường bệnh:</th>
+                                        <td>{{ $bed->bed_type }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>Phòng ban:</th>
+                                        <td>{{ $bed->department_id }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Trạng thái:</th>
+                                        <td>{{ $bed->status }}</td>
                                     </tr>
                                 </tbody>
                             </table>
 
                             <div class="d-flex justify-content-between mt-4">
-                                <a href="{{ route('bed_types.index') }}" class="btn btn-secondary">
+                                <a href="{{ route('beds.index') }}" class="btn btn-secondary">
                                     <i class="fas fa-arrow-left"></i> Quay lại
                                 </a>
 
                                 <div>
-                                    <a href="{{ route('bed_types.edit', $bedType->id) }}" class="btn btn-primary">
+                                    <a href="{{ route('beds.edit', $bed->id) }}" class="btn btn-primary">
                                         <i class="fas fa-edit"></i> Sửa
                                     </a>
-                                    <form action="{{ route('bed_types.destroy', $bedType->id) }}" method="POST"
+                                    <form action="{{ route('beds.destroy', $bed->id) }}" method="POST"
                                         class="d-inline-block">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger"
-                                            onclick="return confirm('Bạn có chắc chắn muốn xoá loại giường này?')">
+                                            onclick="return confirm('Bạn có chắc chắn muốn xoá giường bệnh này?')">
                                             <i class="fas fa-trash"></i> Xoá
                                         </button>
                                     </form>

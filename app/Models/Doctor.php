@@ -2,10 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\BloodGroup;
 use App\Models\DoctorDepartment;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Doctor extends BaseModel
 {
@@ -40,6 +37,19 @@ class Doctor extends BaseModel
         self::STATUS_ACTIVE => 'Đang làm việc',
         self::STATUS_DEACTIVE => 'Đã nghỉ việc',
     ];
+
+    //blood groups
+    public const BLOOD_GROUP_O = 0;
+    public const BLOOD_GROUP_A = 1;
+    public const BLOOD_GROUP_B = 2;
+    public const BLOOD_GROUP_AB = 3;
+
+    public static $bloodGroups = [
+        self::BLOOD_GROUP_O => 'Group O',
+        self::BLOOD_GROUP_A => 'Group A',
+        self::BLOOD_GROUP_B => 'Group B',
+        self::BLOOD_GROUP_AB => 'Group AB',
+    ];
     /**
      * The attributes that are mass assignable.
      *
@@ -48,7 +58,7 @@ class Doctor extends BaseModel
     protected $fillable = [
         'name',
         'doctor_department_id',
-        'blood_group_id',
+        'blood_group',
         'email',
         'designation',
         'phone',
@@ -58,9 +68,16 @@ class Doctor extends BaseModel
         'status',
         'profile',
         'address',
+        'identity_number',
+        'identity_card_date',
+        'identity_card_place',
+        'start_work_date',
+        'specialist'
     ];
 
     protected $dates = [
+        'start_work_date',
+        'identity_card_date',
         'date_of_birth',
         'created_at',
         'updated_at',
@@ -75,12 +92,4 @@ class Doctor extends BaseModel
         return $this->belongsTo(DoctorDepartment::class);
     }
 
-
-    /**
-     * Get the bloodGroup
-     */
-    public function bloodGroup()
-    {
-        return $this->belongsTo(BloodGroup::class);
-    }
 }

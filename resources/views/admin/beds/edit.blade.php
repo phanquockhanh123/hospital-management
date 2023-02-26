@@ -30,34 +30,65 @@
                     </div>
                     <div class="col-md-9">
                         <div class="card-header">
-                            <h3 class="card-title">Chỉnh sửa loại giường</h3>
+                            <h3 class="card-title">Chỉnh sửa giường bệnh</h3>
                         </div>
                         <div class="card-body">
-                            <form action="{{ route('bed_types.update', $bedType->id) }}" method="POST">
+                            <form action="{{ route('beds.update', $bed->id) }}" method="POST">
                                 @csrf
                                 @method('PUT')
 
                                 <div class="form-group">
-                                    <label for="name">Tên loại giường:</label>
+                                    <label for="name">Tên giường bệnh:</label>
                                     <input type="text" name="name" id="name"
                                         class="form-control @error('name') is-invalid @enderror"
-                                        value="{{ old('name', $bedType->name) }}">
+                                        value="{{ old('name', $bed->name) }}">
                                     @error('name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="description">Mô tả:</label>
-                                    <textarea name="description" id="description"
-                                        class="form-control @error('description') is-invalid @enderror">{{ old('description', $bedType->description) }}</textarea>
-                                    @error('description')
+                                    <label for="bed_type">Loại giường bệnh:</label>
+                                    <input type="text" name="bed_type" id="bed_type"
+                                        class="form-control @error('bed_type') is-invalid @enderror"
+                                        value="{{ old('bed_type', $bed->bed_type) }}">
+                                    @error('bed_type')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="department_id">Loại phòng ban:</label>
+                                    <select name="department_id" class="form-control input-sm m-bot15" >
+                                        @foreach ($doctorDepartment as $key => $department)
+                                        <option value="{{  $department->id }}">{{ $department->name }}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                    @error('department_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="charge">Giá:</label>
+                                    <input type="text" name="charge" id="charge"
+                                        class="form-control @error('charge') is-invalid @enderror"
+                                        value="{{ old('charge', $bed->charge) }}">
+                                    @error('charge')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="notes">Mô tả:</label>
+                                    <textarea class="form-control" id="notes" name="notes" rows="5">{{ $bed->notes }}</textarea>
+                                    @error('notes')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
                                 <div class="d-flex justify-content-between mt-4">
-                                    <a href="{{ route('bed_types.index') }}" class="btn btn-secondary">
+                                    <a href="{{ route('beds.index') }}" class="btn btn-secondary">
                                         <i class="fas fa-arrow-left"></i> Quay lại
                                     </a>
 
