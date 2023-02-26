@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreatePatientsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,23 +13,24 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('patients', function (Blueprint $table) {
             $table->id();
+            $table->string('patient_code')->unique();
             $table->string('name');
-            $table->string('phone')->nullable();
+            $table->string('blood_group');
+            $table->string('phone');
             $table->string('address')->nullable();
-            $table->integer('role')->default(0);
+            $table->string('profile')->nullable();
             $table->integer('gender')->default(0);
             $table->string('email')->unique();
-            $table->date('dob')->nullable();
-            $table->tinyInteger('status')->default(1);
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->foreignId('current_team_id')->nullable();
-            $table->string('profile_photo_path', 2048)->nullable();
+            $table->date('date_of_birth')->nullable();
+            $table->string('identity_number')->unique();
+            $table->date('identity_card_date')->nullable();
+            $table->string('identity_card_place')->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            
         });
     }
 
@@ -40,6 +41,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('patients');
     }
-};
+}

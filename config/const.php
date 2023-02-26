@@ -21,7 +21,10 @@ return [
     'regex_telephone' => '/^([0-9]*)$/',
     'regex_identity_number' => '/^(\d{9}|\d{12})$/',
     'perPage' => 10,
-    'prefix_candidate_code' => 'VI',
+    'prefix_code' => [
+        'patient' => 'PA',
+        'bed' => 'BED',
+    ],
     'format' => [
         'datetime' => 'Y-m-d H:i:s',
         'date' => 'd-m-Y',

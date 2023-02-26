@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Patient;
+use App\Models\Doctor;
 use Illuminate\Database\Seeder;
 
-class PatientSeeder extends Seeder
+class DoctorSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +14,6 @@ class PatientSeeder extends Seeder
      */
     public function run()
     {
-        Patient::factory()->count(50)->create();
+        Doctor::factory()->count(50)->create();
     }
 }
