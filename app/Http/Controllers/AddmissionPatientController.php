@@ -22,13 +22,13 @@ class AddmissionPatientController extends Controller
         $patientSearch = Patient::where('name',  'LIKE', '%' . $search . '%')->get();
         if ($patientSearch && $search) {
             foreach($patientSearch as $patient) {
-                $addmission_patients = AddmissionPatient::where('patient_id', $patient->id)
+                $addmissionPatients = AddmissionPatient::where('patient_id', $patient->id)
                 ->orderByDesc('created_at')->paginate(config('const.perPage'));
             }
         } else {
-            $addmission_patients = AddmissionPatient::orderByDesc('created_at')->paginate(config('const.perPage'));
+            $addmissionPatients = AddmissionPatient::orderByDesc('created_at')->paginate(config('const.perPage'));
         }
-        return view('admin.addmission_patients.index', compact('addmission_patients'));
+        return view('admin.addmission_patients.index', compact('addmissionPatients'));
     }
 
     /**

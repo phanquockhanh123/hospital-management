@@ -33,7 +33,7 @@
                             <h3 class="card-title">Tạo mới bác sĩ</h3>
                         </div>
                         <div class="card-body">
-                            <form action="{{ route('doctors.store') }}" method="POST">
+                            <form action="{{ route('doctors.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
 
                                 <div class="form-group">
@@ -42,6 +42,16 @@
                                         class="form-control @error('name') is-invalid @enderror"
                                         value="{{ old('name') }}">
                                     @error('name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="profile">Avatar:</label>
+                                    <input type="file" name="profile" id="profile"
+                                        class="form-control @error('profile') is-invalid @enderror"
+                                        value="{{ old('profile') }}">
+                                    @error('profile')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -76,8 +86,8 @@
                                     <label for="doctor_department_id">Phòng ban:</label>
                                     <select name="doctor_department_id" class="form-control input-sm m-bot15">
                                         <option value="">----Chọn phòng ban----</option>
-                                        @foreach ($beds as $bed)
-                                        <option value="{{ $bed->id }}">{{ $bed->name }}</option>
+                                        @foreach ($doctorDepartments as $doctorDepartment)
+                                        <option value="{{ $doctorDepartment->id }}">{{ $doctorDepartment->name }}</option>
                                         @endforeach
                                     </select>
                                     @error('doctor_department_id')
@@ -204,7 +214,7 @@
                                         <i class="fas fa-arrow-left"></i> Quay lại
                                     </a>
 
-                                    <button type="submit" class="btn btn-primary">
+                                    <button type="submit" class="btn btn-primary" style="color: blue">
                                         <i class="fas fa-save"></i> Tạo mới
                                     </button>
                                 </div>

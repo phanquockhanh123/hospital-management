@@ -43,11 +43,13 @@
                                     <select name="doctor_id" class="form-control input-sm m-bot15">
                                         <option value="">----Chọn bác sĩ phụ trách----</option>
                                         @foreach ($doctors as $doctor)
-                                        <option value="{{ $doctor->id }}">{{ $doctor->name }}</option>
+                                            <option value="{{ $doctor->id }}"
+                                                {{ $addmission_patient->doctor_id == $doctor->id ? 'selected' : '' }}>
+                                                {{ $doctor->name }}</option>
                                         @endforeach
                                     </select>
                                     @error('doctor_id')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -55,13 +57,15 @@
                                     <label for="patient_id">Bệnh nhân:</label>
                                     <select name="patient_id" class="form-control input-sm m-bot15">
                                         <option value="">----Chọn bệnh nhân----</option>
-                                        @foreach ($patients as $patient)      
-                                            <option value="{{ $patient->id }}">{{ $patient->name }}</option>
+                                        @foreach ($patients as $patient)
+                                            <option value="{{ $patient->id }}"
+                                                {{ $addmission_patient->patient_id == $patient->id ? 'selected' : '' }}>
+                                                {{ $patient->name }}</option>
                                         @endforeach
-                                        
+
                                     </select>
                                     @error('patient_id')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -70,11 +74,13 @@
                                     <select name="bed_id" class="form-control input-sm m-bot15">
                                         <option value="">----Chọn giường bệnh----</option>
                                         @foreach ($beds as $bed)
-                                            <option value="{{ $bed->id }}">{{ $bed->name }}</option>
+                                            <option value="{{ $bed->id }}"
+                                                {{ $addmission_patient->bed_id == $bed->id ? 'selected' : '' }}>
+                                                {{ $bed->name }}</option>
                                         @endforeach
                                     </select>
                                     @error('bed_id')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -82,9 +88,9 @@
                                     <label for="addmission_date">Ngày nhập viện:</label>
                                     <input type="date" name="addmission_date" id="addmission_date"
                                         class="form-control @error('addmission_date') is-invalid @enderror"
-                                        value="{{ old('addmission_date', $addmission_patient->addmission_date) }}">
+                                        value="{{ old('addmission_date', $addmission_patient->addmission_date->format(config('const.format.date_form'))) }}">
                                     @error('addmission_date')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -95,7 +101,7 @@
                                         class="form-control @error('reason') is-invalid @enderror"
                                         value="{{ old('reason', $addmission_patient->reason) }}">
                                     @error('reason')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -105,7 +111,7 @@
                                         class="form-control @error('health_condition') is-invalid @enderror"
                                         value="{{ old('health_condition', $addmission_patient->health_condition) }}">
                                     @error('health_condition')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -115,7 +121,7 @@
                                         class="form-control @error('guardian_name') is-invalid @enderror"
                                         value="{{ old('guardian_name', $addmission_patient->guardian_name) }}">
                                     @error('guardian_name')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -125,7 +131,7 @@
                                         class="form-control @error('guardian_relation') is-invalid @enderror"
                                         value="{{ old('guardian_relation', $addmission_patient->guardian_relation) }}">
                                     @error('guardian_relation')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -133,9 +139,9 @@
                                     <label for="gurdian_contact">Số điện thoại liên hệ:</label>
                                     <input type="text" name="gurdian_contact" id="gurdian_contact"
                                         class="form-control @error('gurdian_contact') is-invalid @enderror"
-                                        value="{{ old('gurdian_contact', $addmission_patient->gurdian_contact) }}">
+                                        value="{{ old('gurdian_contact', $addmission_patient->guardian_contact) }}">
                                     @error('gurdian_contact')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -145,16 +151,15 @@
                                         class="form-control @error('guardian_address') is-invalid @enderror"
                                         value="{{ old('guardian_address', $addmission_patient->guardian_address) }}">
                                     @error('guardian_address')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
                                 <div class="form-group">
                                     <label for="description">Mô tả:</label>
-                                    <textarea class="form-control" id="description" name="description"
-                                        rows="5">{{ $addmission_patient->description }}</textarea>
+                                    <textarea class="form-control" id="description" name="description" rows="5">{{ $addmission_patient->description }}</textarea>
                                     @error('description')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -163,7 +168,7 @@
                                         <i class="fas fa-arrow-left"></i> Quay lại
                                     </a>
 
-                                    <button type="submit" class="btn btn-primary">
+                                    <button type="submit" class="btn btn-primary" style="color:blue">
                                         <i class="fas fa-save"></i> Chỉnh sửa
                                     </button>
                                 </div>

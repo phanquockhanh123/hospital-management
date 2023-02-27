@@ -36,7 +36,7 @@ class Bed extends BaseModel
         'bed_type',
         'charge',
         'status',
-        'note'
+        'notes'
     ];
 
     protected $dates = [
@@ -46,9 +46,9 @@ class Bed extends BaseModel
     ];
 
     /**
-     * Get the doctorDepartments
+     * Get the doctorDepartment
      */
-    public function doctorDepartments()
+    public function doctorDepartment()
     {
         return $this->belongsTo(DoctorDepartment::class);
     }

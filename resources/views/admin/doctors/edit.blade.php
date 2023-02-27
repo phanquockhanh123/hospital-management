@@ -33,7 +33,7 @@
                             <h3 class="card-title">Chỉnh sửa bác sĩ</h3>
                         </div>
                         <div class="card-body">
-                            <form action="{{ route('doctors.update', $doctor->id) }}" method="POST">
+                        <form action="{{ route('doctors.update', $doctor->id) }}" method="POST" enctype="multipart/form-data> 
                                 @csrf
                                 @method('PUT')
 
@@ -41,48 +41,51 @@
                                     <label for="name">Tên bác sĩ:</label>
                                     <input type="text" name="name" id="name"
                                         class="form-control @error('name') is-invalid @enderror"
-                                        value="{{ old('name') }}">
+                                        value="{{ old('name', $doctor->name) }}">
                                     @error('name')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
                                 <div class="form-group">
                                     <label for="gender">Giới tính :</label>
                                     <select name="gender" class="form-control input-sm m-bot15">
-                                        <option value="">----Chọn giới tính----</option>
-                                        <option value="0">Nữ</option>
-                                        <option value="1">Nam</option>
+                                        <option value="0" {{ $doctor->gender == 0 ? 'selected' : '' }}>Nữ</option>
+                                        <option value="1" {{ $doctor->gender == 1 ? 'selected' : '' }}>Nam</option>
                                     </select>
                                     @error('gender')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
                                 <div class="form-group">
                                     <label for="blood_group">Nhóm máu :</label>
                                     <select name="blood_group" class="form-control input-sm m-bot15">
-                                        <option value="">----Chọn nhóm máu----</option>
-                                        <option value="0">Nhóm máu O</option>
-                                        <option value="1">Nhóm máu A</option>
-                                        <option value="2">Nhóm máu B</option>
-                                        <option value="3">Nhóm máu AB</option>
+                                        <option value="0" {{ $doctor->blood_group == 0 ? 'selected' : '' }}>Nhóm máu O
+                                        </option>
+                                        <option value="1" {{ $doctor->blood_group == 1 ? 'selected' : '' }}>Nhóm máu A
+                                        </option>
+                                        <option value="2" {{ $doctor->blood_group == 2 ? 'selected' : '' }}>Nhóm máu B
+                                        </option>
+                                        <option value="3" {{ $doctor->blood_group == 3 ? 'selected' : '' }}>Nhóm máu
+                                            AB</option>
                                     </select>
                                     @error('blood_group')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
                                 <div class="form-group">
                                     <label for="doctor_department_id">Phòng ban:</label>
                                     <select name="doctor_department_id" class="form-control input-sm m-bot15">
-                                        <option value="">----Chọn phòng ban----</option>
-                                        @foreach ($beds as $bed)
-                                        <option value="{{ $bed->id }}">{{ $bed->name }}</option>
+                                        @foreach ($doctorDepartments as $doctorDepartment)
+                                            <option value="{{ $doctorDepartment->id }}"
+                                                {{ $doctor->doctor_department_id == $doctorDepartment->id ? 'selected' : '' }}>
+                                                {{ $doctorDepartment->name }}</option>
                                         @endforeach
                                     </select>
                                     @error('doctor_department_id')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -92,7 +95,7 @@
                                         class="form-control @error('phone') is-invalid @enderror"
                                         value="{{ old('phone', $doctor->phone) }}">
                                     @error('phone')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -102,7 +105,7 @@
                                         class="form-control @error('address') is-invalid @enderror"
                                         value="{{ old('address', $doctor->address) }}">
                                     @error('address')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -113,18 +116,17 @@
                                         class="form-control @error('email') is-invalid @enderror"
                                         value="{{ old('email', $doctor->email) }}">
                                     @error('email')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-
 
                                 <div class="form-group">
                                     <label for="date_of_birth">Ngày sinh:</label>
                                     <input type="date" name="date_of_birth" id="date_of_birth"
                                         class="form-control @error('date_of_birth') is-invalid @enderror"
-                                        value="{{ old('date_of_birth', $doctor->date_of_birth) }}">
+                                        value="{{ old('date_of_birth', $doctor->date_of_birth->format(config('const.format.date_form'))) }}">
                                     @error('date_of_birth')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -135,7 +137,7 @@
                                         class="form-control @error('designation') is-invalid @enderror"
                                         value="{{ old('designation', $doctor->designation) }}">
                                     @error('designation')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -143,14 +145,13 @@
                                 <div class="form-group">
                                     <label for="academic_level">Trình độ chuyên môn:</label>
                                     <select name="academic_level" class="form-control input-sm m-bot15">
-                                        <option value="">----Chọn trình độ chyên môn----</option>
-                                        <option value="0">Cao đẳng</option>
-                                        <option value="1">Đại học</option>
-                                        <option value="2">Thạc sỹ</option>
-                                        <option value="3">Giáo sư</option>
+                                        <option value="0" {{ $doctor->academic_level == 0 ? 'selected' : '' }}>Cao đẳng</option>
+                                        <option value="1" {{ $doctor->academic_level == 1 ? 'selected' : '' }}>Đại học</option>
+                                        <option value="2" {{ $doctor->academic_level == 2 ? 'selected' : '' }}>Thạc sỹ</option>
+                                        <option value="3" {{ $doctor->academic_level == 3 ? 'selected' : '' }}>Giáo sư</option>
                                     </select>
                                     @error('academic_level')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -161,7 +162,7 @@
                                         class="form-control @error('identity_number') is-invalid @enderror"
                                         value="{{ old('identity_number', $doctor->identity_number) }}">
                                     @error('identity_number')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -170,9 +171,9 @@
                                     <label for="identity_card_date">Ngày cấp:</label>
                                     <input type="date" name="identity_card_date" id="identity_card_date"
                                         class="form-control @error('identity_card_date') is-invalid @enderror"
-                                        value="{{ old('identity_card_date', $doctor->identity_card_date) }}">
+                                        value="{{ old('identity_card_date', $doctor->identity_card_date->format(config('const.format.date_form'))) }}">
                                     @error('identity_card_date')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -183,7 +184,7 @@
                                         class="form-control @error('identity_card_place') is-invalid @enderror"
                                         value="{{ old('identity_card_place', $doctor->identity_card_place) }}">
                                     @error('identity_card_place')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -191,9 +192,9 @@
                                     <label for="start_work_date">Ngày đi làm:</label>
                                     <input type="date" name="start_work_date" id="start_work_date"
                                         class="form-control @error('start_work_date') is-invalid @enderror"
-                                        value="{{ old('start_work_date', $doctor->start_work_date) }}">
+                                        value="{{ old('start_work_date', $doctor->start_work_date->format(config('const.format.date_form'))) }}">
                                     @error('start_work_date')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -203,7 +204,7 @@
                                         class="form-control @error('specialist') is-invalid @enderror"
                                         value="{{ old('specialist', $doctor->specialist) }}">
                                     @error('specialist')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -212,7 +213,7 @@
                                         <i class="fas fa-arrow-left"></i> Quay lại
                                     </a>
 
-                                    <button type="submit" class="btn btn-primary">
+                                    <button type="submit" class="btn btn-primary" style="color:blue;">
                                         <i class="fas fa-save"></i> Lưu lại
                                     </button>
                                 </div>

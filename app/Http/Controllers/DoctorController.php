@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Bed;
 use App\Models\Doctor;
+use App\Models\DoctorDepartment;
 use Illuminate\Http\Request;
 
 class DoctorController extends Controller
@@ -34,8 +35,8 @@ class DoctorController extends Controller
      */
     public function create(Request $request)
     {
-        $beds = Bed::all();
-        return view('admin.doctors.create', compact('beds'));
+        $doctorDepartments = DoctorDepartment::all();
+        return view('admin.doctors.create', compact('doctorDepartments'));
     }
 
     /**
@@ -53,10 +54,10 @@ class DoctorController extends Controller
             'email' => 'required',
             'designation' => 'required',
             'phone' => 'required',
+            'profile' => 'required',
             'academic_level' => 'required',
             'date_of_birth' => 'required',
             'gender' => 'required',
-            'status' => 'required',
             'profile' => 'required',
             'address' => 'required',
             'identity_number' => 'required',
@@ -72,10 +73,10 @@ class DoctorController extends Controller
             $filename = time() . '_' . $profile->getClientOriginalName();
             $path = $profile->storeAs('public/assets/img/doctors/', $filename);
             $validatedData['profile'] = $path;
+            $validatedData['filename'] = $filename;
         }
 
         $validatedData['status'] = Doctor::STATUS_ACTIVE;
-
         Doctor::create($validatedData);
 
         return redirect()->route('doctors.index')
@@ -101,7 +102,8 @@ class DoctorController extends Controller
      */
     public function edit(Doctor $doctor)
     {
-        return view('admin.doctors.edit', compact('doctor'));
+        $doctorDepartments = DoctorDepartment::all();
+        return view('admin.doctors.edit', compact('doctor', 'doctorDepartments'));
     }
 
     /**
@@ -123,8 +125,6 @@ class DoctorController extends Controller
             'academic_level' => 'required',
             'date_of_birth' => 'required',
             'gender' => 'required',
-            'status' => 'required',
-            'profile' => 'required',
             'address' => 'required',
             'identity_number' => 'required',
             'identity_card_date' => 'required',
@@ -132,6 +132,8 @@ class DoctorController extends Controller
             'start_work_date' => 'required',
             'specialist' => 'required',
         ]);
+
+        $validatedData['status'] = Doctor::STATUS_ACTIVE;
 
         $doctor->update($validatedData);
 

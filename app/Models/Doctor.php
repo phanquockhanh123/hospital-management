@@ -67,6 +67,7 @@ class Doctor extends BaseModel
         'gender',
         'status',
         'profile',
+        'filename',
         'address',
         'identity_number',
         'identity_card_date',

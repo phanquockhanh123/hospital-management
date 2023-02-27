@@ -42,32 +42,36 @@
                                         class="form-control @error('name') is-invalid @enderror"
                                         value="{{ old('name') }}">
                                     @error('name')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
 
                                 <div class="form-group">
                                     <label for="bed_type">Loại giường bệnh:</label>
-                                    <input type="text" name="bed_type" id="bed_type"
-                                        class="form-control @error('bed_type') is-invalid @enderror"
-                                        value="{{ old('bed_type') }}">
+                                    <select name="bed_type" class="form-control input-sm m-bot15">
+                                        <option value="">----Chọn loại giường bệnh----</option>
+                                        <option value="1">Thường</option>
+                                        <option value="2">Cao cấp</option>
+                                        <option value="3">Vip</option>
+                                    </select>
                                     @error('bed_type')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
                                 <div class="form-group">
                                     <label for="department_id">Loại phòng ban:</label>
                                     <select name="department_id" class="form-control input-sm m-bot15">
+                                        <option value="">----Chọn loại phòng ban----</option>
                                         @foreach ($doctorDepartment as $key => $department)
-                                        <option value="{{ $department->id }}">{{ $department->name }}
-                                        </option>
+                                            <option value="{{ $department->id }}" >{{ $department->name }}
+                                            </option>
                                         @endforeach
 
                                     </select>
                                     @error('department_id')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -77,7 +81,7 @@
                                         class="form-control @error('charge') is-invalid @enderror"
                                         value="{{ old('charge') }}">
                                     @error('charge')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -85,7 +89,7 @@
                                     <label for="notes">Mô tả:</label>
                                     <textarea class="form-control" id="notes" name="notes" rows="5"></textarea>
                                     @error('notes')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -94,7 +98,7 @@
                                         <i class="fas fa-arrow-left"></i> Quay lại
                                     </a>
 
-                                    <button type="submit" class="btn btn-primary">
+                                    <button type="submit" class="btn btn-primary" style="color: blue;">
                                         <i class="fas fa-save"></i> Tạo mới
                                     </button>
                                 </div>

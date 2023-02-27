@@ -21,7 +21,7 @@ class CreateBedsTable extends Migration
             $table->unsignedBigInteger('department_id');
             $table->float('charge');
             $table->string('notes')->nullable();
-            $table->float('status')->default(0);
+            $table->tinyInteger('status')->default(0);
             $table->timestamps();
             $table->softDeletes();
 

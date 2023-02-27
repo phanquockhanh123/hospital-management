@@ -37,7 +37,7 @@
                                 <tbody>
                                     <tr>
                                         <th>Mã giường bệnh:</th>
-                                        <td>{{ $bed->code }}</td>
+                                        <td>{{ $bed->bed_code }}</td>
                                     </tr>
                                     <tr>
                                         <th>Tên giường bệnh:</th>
@@ -49,7 +49,15 @@
                                     </tr>
                                     <tr>
                                         <th>Loại giường bệnh:</th>
-                                        <td>{{ $bed->bed_type }}</td>
+                                        <td>
+                                            @if ($bed->bed_type == 3)
+                                                <span class="text-primary">Vip</span>
+                                            @elseif ($bed->bed_type == 2)
+                                                <span class="text-primary">Cao cấp</span>
+                                            @elseif ($bed->bed_type == 1)
+                                                <span class="text-primary">Thường</span>
+                                            @endif
+                                        </td>
                                     </tr>
 
                                     <tr>
@@ -58,7 +66,13 @@
                                     </tr>
                                     <tr>
                                         <th>Trạng thái:</th>
-                                        <td>{{ $bed->status }}</td>
+                                        <td>
+                                            @if ($bed->status == 0)
+                                                <span class="text-primary">Trống</span>
+                                            @elseif ($bed->status == 1)
+                                                <span class="text-danger">Đã sử dụng</span>
+                                            @endif
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

@@ -56,6 +56,14 @@
             <div class="col-md-12">
               <div class="card">
 
+                <h2>
+                  @if (session('success'))
+                      <div class="alert alert-success">
+                          {{ session('success') }}
+                      </div>
+                  @endif
+              </h2>
+              
                 <!-- /.card-header -->
                 <div class="card-body">
                   @if ($patients->isEmpty())
@@ -123,11 +131,11 @@
                                 thể hoàn tác!
                               </div>
                               <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="color: black;">Hủy</button>
                                 <form action="{{ route('patients.destroy', $patient->id) }}" method="POST">
                                   @csrf
                                   @method('DELETE')
-                                  <button type="submit" class="btn btn-danger"
+                                  <button type="submit" class="btn btn-danger" style="color: red;"
                                     onclick="return confirm('Bạn có chắc chắn muốn xóa bệnh nhân này không?')">Xóa</button>
                                 </form>
                               </div>

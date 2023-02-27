@@ -15,7 +15,7 @@ class BedController extends Controller
      */
     public function index(Request $request)
     {
-        
+
         $search = $request->input('search');
 
         if ($search) {
@@ -24,8 +24,7 @@ class BedController extends Controller
         } else {
             $beds = Bed::orderByDesc('created_at')->paginate(config('const.perPage'));
         }
-        $doctorDepartment = DoctorDepartment::orderByDesc('id')->get();
-        return view('admin.beds.index', compact('beds', 'doctorDepartment'));
+        return view('admin.beds.index', compact('beds'));
     }
 
     /**
@@ -53,10 +52,10 @@ class BedController extends Controller
             'notes' => 'nullable',
             'department_id' => 'required',
             'charge' => 'nullable',
-            
         ]);
         $validatedData['bed_code'] = Bed::generateNextCode();
         Bed::create($validatedData);
+
 
         return redirect()->route('beds.index')
             ->with('success', 'Giường bệnh đã được tạo thành công.');
@@ -82,7 +81,7 @@ class BedController extends Controller
     public function edit(Bed $bed)
     {
         $doctorDepartment = DoctorDepartment::orderByDesc('id')->get();
-        return view('admin.beds.edit', compact('bed','doctorDepartment'));
+        return view('admin.beds.edit', compact('bed', 'doctorDepartment'));
     }
 
     /**
@@ -100,7 +99,6 @@ class BedController extends Controller
             'notes' => 'nullable',
             'department_id' => 'required',
             'charge' => 'nullable',
-            
         ]);
         $bed->update($validatedData);
 

@@ -61,7 +61,7 @@
                                     <label for="date_of_birth">Ngày sinh:</label>
                                     <input type="date" name="date_of_birth" id="date_of_birth"
                                         class="form-control @error('date_of_birth') is-invalid @enderror"
-                                        value="{{ old('date_of_birth', $patient->date_of_birth) }}">
+                                        value="{{ old('date_of_birth', $patient->date_of_birth->format(config('const.format.date_form'))) }}">
                                     @error('date_of_birth')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -70,9 +70,8 @@
                                 <div class="form-group">
                                     <label for="gender">Giới tính:</label>
                                     <select name="gender" class="form-control input-sm m-bot15">
-                                        <option value="">----Chọn giới tính----</option>
-                                        <option value="0">Nữ</option>
-                                        <option value="1">Nam</option>
+                                        <option value="0" {{ $patient->gender == 0 ? 'selected' : '' }}>Nữ</option>
+                                        <option value="1" {{ $patient->gender == 1 ? 'selected' : '' }}>Nam</option>
                                     </select>
                                     @error('gender')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -82,11 +81,14 @@
                                 <div class="form-group">
                                     <label for="blood_group">Nhóm máu:</label>
                                     <select name="blood_group" class="form-control input-sm m-bot15">
-                                        <option value="">----Chọn nhóm máu----</option>
-                                        <option value="0">Nhóm O</option>
-                                        <option value="1">Nhóm A</option>
-                                        <option value="2">Nhóm B</option>
-                                        <option value="3">Nhóm AB</option>
+                                        <option value="0" {{ $patient->blood_group == 0 ? 'selected' : '' }}>Nhóm máu O
+                                        </option>
+                                        <option value="1" {{ $patient->blood_group == 1 ? 'selected' : '' }}>Nhóm máu A
+                                        </option>
+                                        <option value="2" {{ $patient->blood_group == 2 ? 'selected' : '' }}>Nhóm máu B
+                                        </option>
+                                        <option value="3" {{ $patient->blood_group == 3 ? 'selected' : '' }}>Nhóm máu
+                                            AB</option>
                                     </select>
                                     @error('blood_group')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -138,7 +140,7 @@
                                     <label for="identity_card_date">Ngày cấp:</label>
                                     <input type="date" name="identity_card_date" id="identity_card_date"
                                         class="form-control @error('identity_card_date') is-invalid @enderror"
-                                        value="{{ old('identity_card_date',$patient->identity_card_date) }}">
+                                        value="{{ old('identity_card_date',$patient->identity_card_date->format(config('const.format.date_form'))) }}">
                                     @error('identity_card_date')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -159,7 +161,7 @@
                                         <i class="fas fa-arrow-left"></i> Quay lại
                                     </a>
 
-                                    <button type="submit" class="btn btn-primary">
+                                    <button type="submit" class="btn btn-primary" style="color:blue;">
                                         <i class="fas fa-save"></i> Chỉnh sửa
                                     </button>
                                 </div>

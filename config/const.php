@@ -28,6 +28,7 @@ return [
     'format' => [
         'datetime' => 'Y-m-d H:i:s',
         'date' => 'd-m-Y',
+        'date_form' => 'Y-m-d',
         'date_with_slash' => 'd/m/Y',
         'date_folder_s3' => 'Ymd'
     ],
