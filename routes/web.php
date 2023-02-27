@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AddmissionPatientController;
+use App\Http\Controllers\AppointmentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BedController;
 use App\Http\Controllers\HomeController;
@@ -23,6 +24,10 @@ use App\Models\AddmissionPatient;
 Route::get('/', [HomeController::class, 'index']);
 
 Route::get('/home', [HomeController::class, 'redirect']);
+
+Route::get('/chat', function () {
+    return view('user.chat');
+});
 
 Route::middleware([
     'auth:sanctum',
@@ -81,6 +86,15 @@ Route::get('/addmission_patients/{addmission_patient}', [AddmissionPatientContro
 Route::get('/addmission_patients/{addmission_patient}/edit', [AddmissionPatientController::class, 'edit'])->name('addmission_patients.edit');
 Route::put('/addmission_patients/{addmission_patient}', [AddmissionPatientController::class, 'update'])->name('addmission_patients.update');
 Route::delete('/addmission_patients/{addmission_patient}', [AddmissionPatientController::class, 'destroy'])->name('addmission_patients.destroy');
+
+//-----------------------------------Appointments ----------------------------------------------------------------
+Route::get('/appointments', [AppointmentController::class, 'index'])->name('appointments.index');
+Route::get('/appointments/create', [AppointmentController::class, 'create'])->name('appointments.create');
+Route::post('/appointments', [AppointmentController::class, 'store'])->name('appointments.store');
+Route::get('/appointments/{appointment}', [AppointmentController::class, 'show'])->name('appointments.show');
+Route::get('/appointments/{appointment}/edit', [AppointmentController::class, 'edit'])->name('appointments.edit');
+Route::put('/appointments/{appointment}', [AppointmentController::class, 'update'])->name('appointments.update');
+Route::delete('/appointments/{appointment}', [AppointmentController::class, 'destroy'])->name('appointments.destroy');
 
 
 

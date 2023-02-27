@@ -66,6 +66,14 @@
             </ul>
           </li>
           <li class="nav-item">
+            <a href="{{ route('appointments.index') }}" class="nav-link">
+              <i class="nav-icon far fa-image"></i>
+              <p>
+                Appointments
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="{{ route('beds.index') }}" class="nav-link">
               <i class="nav-icon far fa-image"></i>
               <p>
