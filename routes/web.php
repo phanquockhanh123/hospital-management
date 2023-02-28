@@ -1,14 +1,17 @@
 <?php
 
+use App\Events\MessageCreated;
 use App\Http\Controllers\AddmissionPatientController;
 use App\Http\Controllers\AppointmentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BedController;
+use App\Http\Controllers\ChatsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\DoctorDepartmentController;
 use App\Http\Controllers\PatientController;
 use App\Models\AddmissionPatient;
+use Symfony\Component\Mime\MessageConverter;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,12 +24,14 @@ use App\Models\AddmissionPatient;
 |
 */
 
-Route::get('/', [HomeController::class, 'index']);
+// Route::get('/', [HomeController::class, 'index']);
 
 Route::get('/home', [HomeController::class, 'redirect']);
 
-Route::get('/chat', function () {
-    return view('user.chat');
+Route::get('/', function () {
+    MessageCreated::dispatch('abc 123');
+
+    return view('welcome');
 });
 
 Route::middleware([

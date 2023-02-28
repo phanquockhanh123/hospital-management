@@ -1,4 +1,4 @@
-<head>
+{{-- <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -537,4 +537,47 @@
     </script>
 </body>
 
-</html>
+</html> --}}
+
+<!DOCTYPE html>
+<head>
+  <title>Pusher Test</title>
+</head>
+<body>
+  <h1>Pusher Test</h1>
+  <p>
+    Publish an event to channel <code>my-channel</code>
+    with event name <code>my-event</code>; it will appear below:
+  </p>
+  <div id="app">
+    <ul>
+      <li v-for="message in messages">
+        {{message}}
+      </li>
+    </ul>
+  </div>
+
+  <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('fd83036cdf43f57f1cec', {
+      cluster: 'ap1'
+    });
+
+    var channel = pusher.subscribe('my-channel');
+    channel.bind('my-event', function(data) {
+      app.messages.push(JSON.stringify(data));
+    });
+
+    // Vue application
+    const app = new Vue({
+      el: '#app',
+      data: {
+        messages: [],
+      },
+    });
+  </script>
+</body>
