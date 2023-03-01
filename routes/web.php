@@ -24,14 +24,18 @@ use Symfony\Component\Mime\MessageConverter;
 |
 */
 
-// Route::get('/', [HomeController::class, 'index']);
+//  Route::get('/', [HomeController::class, 'index']);
 
 Route::get('/home', [HomeController::class, 'redirect']);
 
 Route::get('/', function () {
-    MessageCreated::dispatch('abc 123');
 
     return view('welcome');
+});
+
+Route::get('/message/created', function () {
+    MessageCreated::dispatch('abc 123');
+
 });
 
 Route::middleware([

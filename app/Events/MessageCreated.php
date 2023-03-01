@@ -41,7 +41,7 @@ class MessageCreated implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('message');
+        return new Channel('messages');
 
     }
 }
