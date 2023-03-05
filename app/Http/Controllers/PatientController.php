@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Doctor;
 use App\Models\Patient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -70,6 +69,16 @@ class PatientController extends Controller
             'identity_card_date' => 'required',
             'identity_card_place' => 'required',
         ]);
+
+        // Lưu tệp
+        if ($request->hasFile('profile')) {
+            $profile = $request->file('profile');
+
+            $filename = time() . '_' . $profile->getClientOriginalName();
+            $path = $profile->move('imgPatient', $filename);
+            $validatedData['profile'] = $path;
+            $validatedData['filename'] = $filename;
+        }
         $validatedData['patient_code'] = Patient::generateNextCode();
         $validatedData['profile'] = $path;
         Patient::create($validatedData);
@@ -122,23 +131,22 @@ class PatientController extends Controller
             'identity_card_date' => 'required',
             'identity_card_place' => 'required',
         ]);
-        // Kiểm tra xem request có chứa file không
         if ($request->hasFile('profile')) {
-            // Nếu có file mới được chọn, xóa file cũ nếu có
-            if ($patient->profile != null) {
+            // Delete the old profile file, if there is one
+            if ($patient->profile) {
                 Storage::delete($patient->profile);
             }
 
-            // Lưu file mới vào thư mục public/assets/img/patients/ và lấy đường dẫn để lưu vào CSDL
-            $path = $request->file('profile')->store('assets\img\patients');
+            $profile = $request->file('profile');
 
-            // Lấy tên file để lưu vào CSDL
-            $fileName = $request->file('profile')->getClientOriginalName();
+            $filename = time() . '_' . $profile->getClientOriginalName();
 
-            // Cập nhật đường dẫn file hình ảnh mới vào CSDL
-            $patient->profile = $path;
+            // Store the new profile file
+            $profilePath = $request->file('profile')->store('public/imgPatient');
+            $validatedData['profile'] = $profilePath;
+            $validatedData['filename'] = $filename;
         }
-        
+
         $patient->update($validatedData);
 
         return redirect()->route('patients.index')

@@ -30,7 +30,7 @@
                 <div class="col-md-9">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">{{ $patient->name }}</h3>
+                            <h3 class="card-title"> <span class="text-primary">BỆNH NHÂN :  {{ $patient->name }}</span></h3>
                         </div>
                         <div class="card-body">
                             <table class="table">
@@ -42,6 +42,15 @@
                                     <tr>
                                         <th>Tên bệnh nhân:</th>
                                         <td>{{ $patient->name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Avatar:</th>
+                                        <td><img src="{{ asset('./imgPatient/'. $patient->filename) }}" 
+                                                    style="vertical-align: middle;
+                                                        width: 200px;
+                                                        height: 300px;">
+
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th>Giới tính:</th>
@@ -112,7 +121,7 @@
                                         class="d-inline-block">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger"
+                                        <button type="submit" class="btn btn-danger" style="color: red"
                                             onclick="return confirm('Bạn có chắc chắn muốn xoá bệnh nhân này?')">
                                             <i class="fas fa-trash"></i> Xoá
                                         </button>

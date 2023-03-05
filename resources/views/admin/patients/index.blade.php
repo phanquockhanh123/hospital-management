@@ -56,6 +56,14 @@
             <div class="col-md-12">
               <div class="card">
 
+                <h2>
+                  @if (session('success'))
+                  <div class="alert alert-success">
+                    {{ session('success') }}
+                  </div>
+                  @endif
+                </h2>
+
                 <!-- /.card-header -->
                 <div class="card-body">
                   @if ($patients->isEmpty())
@@ -77,7 +85,11 @@
                       @foreach ($patients as $patient)
                       <tr>
                         <td>
-                          <a href="{{ route('patients.show', $patient) }}"><img src="{{ asset('public/assets/img/patients/' . $patient->profile) }}" alt="{{ $patient->name }}" class="img-thumbnail"></a>
+                          <a href="{{ route('patients.show', $patient) }}"><img src="./imgPatient/{{ $patient->filename}}"
+                              style="border-radius: 50%;vertical-align: middle;
+                                          width: 50px;
+                                          height: 50px;
+                                          border-radius: 50%;" alt="" title="">{{ $patient->name }}</a>
                         </td>
                         <td>{{ $patient->phone }}</td>
                         <td>{{ $patient->address }}</td>
@@ -123,11 +135,12 @@
                                 thể hoàn tác!
                               </div>
                               <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                  style="color: black;">Hủy</button>
                                 <form action="{{ route('patients.destroy', $patient->id) }}" method="POST">
                                   @csrf
                                   @method('DELETE')
-                                  <button type="submit" class="btn btn-danger"
+                                  <button type="submit" class="btn btn-danger" style="color: red;"
                                     onclick="return confirm('Bạn có chắc chắn muốn xóa bệnh nhân này không?')">Xóa</button>
                                 </form>
                               </div>

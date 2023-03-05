@@ -36,7 +36,7 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          <li class="nav-item menu-open">
+          {{-- <li class="nav-item menu-open">
             <a href="#" class="nav-link active">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
@@ -64,6 +64,28 @@
                 </a>
               </li>
             </ul>
+          </li> --}}
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-chart-pie"></i>
+              <p>
+                Appointments
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('appointments.index') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Appointments</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('appointments.calendar') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Calender</p>
+                </a>
+            </ul>
           </li>
           <li class="nav-item">
             <a href="{{ route('beds.index') }}" class="nav-link">
@@ -73,6 +95,29 @@
               </p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-chart-pie"></i>
+              <p>
+                Live
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Live Consultations</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Live Meetings</p>
+                </a>
+            </ul>
+          </li>
+
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>
@@ -132,7 +177,14 @@
               </li>
             </ul>
           </li>
-          
+          <li class="nav-item">
+            <a href="{{ route('ipds.index') }}" class="nav-link">
+              <i class="nav-icon far fa-image"></i>
+              <p>
+                IPD/OPD Patients
+              </p>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

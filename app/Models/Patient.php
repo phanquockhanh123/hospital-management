@@ -43,6 +43,7 @@ class Patient extends BaseModel
         'date_of_birth',
         'gender',
         'profile',
+        'filename',
         'address',
         'identity_number',
         'identity_card_date',

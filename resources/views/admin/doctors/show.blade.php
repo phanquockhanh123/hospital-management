@@ -30,40 +30,132 @@
                 <div class="col-md-9">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">{{ $doctorDepartment->name }}</h3>
+                            <h3 class="card-title">{{ $doctor->name }}</h3>
                         </div>
                         <div class="card-body">
                             <table class="table">
                                 <tbody>
                                     <tr>
-                                        <th>Mã phòng ban:</th>
-                                        <td>{{ $doctorDepartment->id }}</td>
+                                        <th>Avatar:</th>
+                                        <td><img src="{{ asset('./imgDoctor/'. $doctor->filename) }}" 
+                                                    style="vertical-align: middle;
+                                                        width: 200px;
+                                                        height: 300px;">
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Giới tính:</th>
+                                        <td>
+                                            @if($doctor->gender == 0)
+                                            <span class="text-primary">Nam</span>
+                                            @endif
+                                            @if($doctor->gender == 1)
+                                            <span class="text-primary">Nữ</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Địa chỉ:</th>
+                                        <td>{{ $doctor->address }}</td>
                                     </tr>
                                     <tr>
                                         <th>Tên phòng ban:</th>
-                                        <td>{{ $doctorDepartment->name }}</td>
+                                        <td>{{ $doctor->doctorDepartment->name }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Mô tả:</th>
-                                        <td>{{ $doctorDepartment->description }}</td>
+                                        <th>Nhóm máu:</th>
+                                        <td>
+                                            @if($doctor->blood_group == 0)
+                                            <span class="text-primary">Group O</span>
+                                            @endif
+                                            @if($doctor->blood_group == 1)
+                                            <span class="text-primary">Group A</span>
+                                            @endif
+                                            @if($doctor->blood_group == 2)
+                                            <span class="text-primary">Group B</span>
+                                            @endif
+                                            @if($doctor->blood_group == 3)
+                                            <span class="text-primary">Group AB</span>
+                                            @endif
+                                        </td>
                                     </tr>
+                                    <tr>
+                                        <th>Số điện thoại:</th>
+                                        <td>{{ $doctor->phone }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>Địa chỉ:</th>
+                                        <td>{{ $doctor->address }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Email:</th>
+                                        <td>{{ $doctor->email }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Ngày sinh:</th>
+                                        <td>{{ $doctor->date_of_birth->format(config('const.format.date')) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Số CMT/CCCD:</th>
+                                        <td>{{ $doctor->identity_number }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Ngày cấp:</th>
+                                        <td>{{ $doctor->identity_card_date }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Nơi cấp:</th>
+                                        <td>{{ $doctor->identity_card_place }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Giới thiệu bản thân:</th>
+                                        <td>{{ $doctor->designation }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Trình độ  học vấn:</th>
+                                        <td>
+                                            @if($doctor->academic_level == 0)
+                                            <span class="text-primary">Cao đẳng</span>
+                                            @endif
+                                            @if($doctor->academic_level == 1)
+                                            <span class="text-primary">Đại học</span>
+                                            @endif
+                                            @if($doctor->academic_level == 2)
+                                            <span class="text-primary">Thạc sỹ</span>
+                                            @endif
+                                            @if($doctor->academic_level == 3)
+                                            <span class="text-primary">Giáo sư</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Ngày bắt đầu vào làm việc:</th>
+                                        <td>{{ $doctor->start_work_date }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Chuyên ngành:</th>
+                                        <td>{{ $doctor->specialist }}</td>
+                                    </tr>
+                                    
                                 </tbody>
                             </table>
 
                             <div class="d-flex justify-content-between mt-4">
-                                <a href="{{ route('doctor_departments.index') }}" class="btn btn-secondary">
+                                <a href="{{ route('doctors.index') }}" class="btn btn-secondary">
                                     <i class="fas fa-arrow-left"></i> Quay lại
                                 </a>
 
                                 <div>
-                                    <a href="{{ route('doctor_departments.edit', $doctorDepartment->id) }}" class="btn btn-primary">
+                                    <a href="{{ route('doctors.edit', $doctor->id) }}" class="btn btn-primary">
                                         <i class="fas fa-edit"></i> Sửa
                                     </a>
-                                    <form action="{{ route('doctor_departments.destroy', $doctorDepartment->id) }}" method="POST"
+                                    <form action="{{ route('doctors.destroy', $doctor->id) }}" method="POST"
                                         class="d-inline-block">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger"
+                                        <button type="submit" class="btn btn-danger" style="color:red;"
                                             onclick="return confirm('Bạn có chắc chắn muốn xoá phòng ban này?')">
                                             <i class="fas fa-trash"></i> Xoá
                                         </button>
