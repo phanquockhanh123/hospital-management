@@ -128,4 +128,40 @@ class AppointmentController extends Controller
         return redirect()->route('appointments.index')
             ->with('success', 'Lịch hẹn đã được xoá thành công.');
     }
+
+    public function calendar()
+    {
+        return view('admin.appointments.calendar');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  Appointment $appointment
+     * @return \Illuminate\Http\Response
+     */
+    public function acceptedAppointment(Appointment $appointment)
+    {
+        $appointment->update([
+            'status' => 2
+        ]);
+        return redirect()->route('appointments.index')
+            ->with('success', 'Chấp nhận cuộc hẹn thành công !');
+    }
+
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  Appointment $appointment
+     * @return \Illuminate\Http\Response
+     */
+    public function deniedAppointment(Appointment $appointment)
+    {
+        $appointment->update([
+            'status' => 0
+        ]);
+        return redirect()->route('appointments.index')
+            ->with('success', 'Từ chối cuộc hẹn thành công !');
+    }
 }

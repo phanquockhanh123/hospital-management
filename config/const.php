@@ -24,6 +24,7 @@ return [
     'prefix_code' => [
         'patient' => 'PA',
         'bed' => 'BED',
+        'ipd_opd_patient' => 'IPD',
     ],
     'format' => [
         'datetime' => 'Y-m-d H:i:s',

@@ -58,12 +58,12 @@
 
                 <h2>
                   @if (session('success'))
-                      <div class="alert alert-success">
-                          {{ session('success') }}
-                      </div>
+                  <div class="alert alert-success">
+                    {{ session('success') }}
+                  </div>
                   @endif
-              </h2>
-              
+                </h2>
+
                 <!-- /.card-header -->
                 <div class="card-body">
                   @if ($patients->isEmpty())
@@ -85,7 +85,11 @@
                       @foreach ($patients as $patient)
                       <tr>
                         <td>
-                          <a href="{{ route('patients.show', $patient) }}"><img src="{{ asset('public/assets/img/patients/' . $patient->profile) }}" alt="{{ $patient->name }}" class="img-thumbnail"></a>
+                          <a href="{{ route('patients.show', $patient) }}"><img src="./imgPatient/{{ $patient->filename}}"
+                              style="border-radius: 50%;vertical-align: middle;
+                                          width: 50px;
+                                          height: 50px;
+                                          border-radius: 50%;" alt="" title="">{{ $patient->name }}</a>
                         </td>
                         <td>{{ $patient->phone }}</td>
                         <td>{{ $patient->address }}</td>
@@ -131,7 +135,8 @@
                                 thể hoàn tác!
                               </div>
                               <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="color: black;">Hủy</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                  style="color: black;">Hủy</button>
                                 <form action="{{ route('patients.destroy', $patient->id) }}" method="POST">
                                   @csrf
                                   @method('DELETE')

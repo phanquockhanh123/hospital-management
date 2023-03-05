@@ -16,7 +16,6 @@ class BedController extends Controller
     public function index(Request $request)
     {
 
-        
         $search = $request->input('search');
 
         if ($search) {
@@ -70,6 +69,7 @@ class BedController extends Controller
      */
     public function show(Bed $bed)
     {
+
         return view('admin.beds.show', compact('bed'));
     }
 

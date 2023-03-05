@@ -49,6 +49,10 @@
 
                                 <div class="form-group">
                                     <label for="profile">Ảnh đại diện:</label>
+                                    <img src="{{ asset('./imgPatient/'. $patient->filename) }}" style="vertical-align: middle;
+                                                        width: 200px;
+                                                        height: 300px;
+                                                        margin-bottom:20px;">
                                     <input type="file" name="profile" id="profile"
                                         class="form-control @error('profile') is-invalid @enderror"
                                         value="{{ old('profile', $patient->profile) }}">

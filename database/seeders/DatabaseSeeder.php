@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\Patient::truncate();
         \App\Models\AddmissionPatient::truncate();
         \App\Models\Appointment::truncate();
-
+        \App\Models\Ipd::truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         // call seeder class
@@ -36,6 +36,7 @@ class DatabaseSeeder extends Seeder
             PatientSeeder::class,
             AddmissionPatientSeeder::class,
             AppointmentSeeder::class,
+            IpdSeeder::class,
         ]);
     }
 }

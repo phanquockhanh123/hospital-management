@@ -9,6 +9,7 @@ use App\Http\Controllers\ChatsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\DoctorDepartmentController;
+use App\Http\Controllers\IpdController;
 use App\Http\Controllers\PatientController;
 use App\Models\AddmissionPatient;
 use Symfony\Component\Mime\MessageConverter;
@@ -23,20 +24,9 @@ use Symfony\Component\Mime\MessageConverter;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-//  Route::get('/', [HomeController::class, 'index']);
+ Route::get('/', [HomeController::class, 'index']);
 
 Route::get('/home', [HomeController::class, 'redirect']);
-
-Route::get('/', function () {
-
-    return view('welcome');
-});
-
-Route::get('/message/created', function () {
-    MessageCreated::dispatch('abc 123');
-
-});
 
 Route::middleware([
     'auth:sanctum',
@@ -104,6 +94,19 @@ Route::get('/appointments/{appointment}', [AppointmentController::class, 'show']
 Route::get('/appointments/{appointment}/edit', [AppointmentController::class, 'edit'])->name('appointments.edit');
 Route::put('/appointments/{appointment}', [AppointmentController::class, 'update'])->name('appointments.update');
 Route::delete('/appointments/{appointment}', [AppointmentController::class, 'destroy'])->name('appointments.destroy');
+Route::get('/appointments_calendar', [AppointmentController::class, 'calendar'])->name('appointments.calendar');
+
+Route::get('/accepted_appointment/{appointment}', [AppointmentController::class, 'acceptedAppointment'])->name('appointments.accepted');
+Route::get('/denied_appointment/{appointment}', [AppointmentController::class, 'deniedAppointment'])->name('appointments.denied');
+
+//-----------------------------------IPD/OPD Patients ----------------------------------------------------------------
+Route::get('/ipds', [IpdController::class, 'index'])->name('ipds.index');
+Route::get('/ipds/create', [IpdController::class, 'create'])->name('ipds.create');
+Route::post('/ipds', [IpdController::class, 'store'])->name('ipds.store');
+Route::get('/ipds/{ipd}', [IpdController::class, 'show'])->name('ipds.show');
+Route::get('/ipds/{ipd}/edit', [IpdController::class, 'edit'])->name('ipds.edit');
+Route::put('/ipds/{ipd}', [IpdController::class, 'update'])->name('ipds.update');
+Route::delete('/ipds/{ipd}', [IpdController::class, 'destroy'])->name('ipds.destroy');
 
 
 

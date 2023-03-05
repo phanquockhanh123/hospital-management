@@ -30,11 +30,11 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <form action="{{ route('appointments.index') }}" method="GET">
+                            <form action="{{ route('ipds.index') }}" method="GET">
                                 <div class="input-group mb-2">
                                     <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder="Search Appointments"
-                                            name="search">
+                                        <input type="text" class="form-control"
+                                            placeholder="Search IPD/OPD patients" name="search">
                                         <div class="input-group-append">
                                             <button class="btn btn-outline-secondary" type="submit">Search</button>
                                         </div>
@@ -43,7 +43,7 @@
                             </form>
                         </div>
                         <div class="col-sm-3" style="float: right;">
-                            <a href="{{ route('appointments.create') }}" class="btn btn-success">
+                            <a href="{{ route('ipds.create') }}" class="btn btn-success">
                                 <i class="fas fa-plus"></i> Tạo mới
                             </a>
                         </div>
@@ -57,64 +57,63 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card">
+
                                 <h2>
-                                    @if(session('success'))
+                                    @if (session('success'))
                                         <div class="alert alert-success">
                                             {{ session('success') }}
                                         </div>
-                                    @endif</h2>
+                                    @endif
+                                </h2>
+
                                 <!-- /.card-header -->
                                 <div class="card-body">
-                                    @if ($appointments->isEmpty())
+                                    @if ($ipds->isEmpty())
                                         <div class="alert alert-danger" role="alert">
-                                            No appointments found.
+                                            No IPD/OPD patients found.
                                         </div>
                                     @else
                                         <table id="example2" class="table table-bordered table-hover">
                                             <thead>
                                                 <tr>
-                                                    <th>APPOINTMENT ID</th>
+                                                    <th>IPD/OPD NO</th>
                                                     <th>PATIENT</th>
                                                     <th>DOCTOR</th>
-                                                    <th>DOCTOR DEPARTMENT</th>
-                                                    <th>APPOINTMENT DATE</th>
-                                                    <th>ACTION</th>
+                                                    <th>BED</th>
+                                                    <th>ADDMISSION DATE</th>
+                                                    <th>STATUS</th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($appointments as $appointment)
+                                                @foreach ($ipds as $ipd)
                                                     <tr>
-                                                        <td><a
-                                                                href="{{ route('appointments.show', $appointment->id) }}">{{ $appointment->id }}</a>
-                                                        </td>
-                                                        <td>{{ $appointment->patient->name }}</td>
-                                                        <td>{{ $appointment->doctor->name }}</td>
-                                                        <td>{{ $appointment->doctorDepartment->name }}</td>
-                                                        <td>{{ $appointment->appointment_date }}</td>
                                                         <td>
-                                                            @if($appointment->status == 2) 
-                                                                <i class="fa-solid fa-calendar-check" style="color:green;"></i>
-                                                                
-                                                            @elseif ($appointment->status == 1)
-                                                                <a href="{{ route('appointments.denied', $appointment->id) }}"><i class="fa-solid fa-calendar-xmark"  style="color:red;"></i></a>
-                                                                <a href="{{ route('appointments.accepted', $appointment->id) }}"><i class="fa-solid fa-calendar-check"  style="color:blue;"></i></a>
-                                                                
-                                                            @else
-                                                                <i class="fa-solid fa-calendar-xmark" style="color:red;"></i>
-                                                                
+                                                            <a
+                                                                href="{{ route('ipds.show', $ipd->id) }}">{{ $ipd->ipd_code }}</a>
+                                                        </td>
+                                                        <td>{{ $ipd->patient->name }}</td>
+                                                        <td>{{ $ipd->doctor->name }}</td>
+                                                        <td>{{ $ipd->bed->bed_code }}</td>
+                                                        <td>{{ $ipd->addmission_date->format(config('const.format.date')) }}
+                                                        </td>
+                                                        <td>
+                                                            @if ($ipd->patient_status == 0)
+                                                                <span class="text-danger">Bệnh nhân nhập viện</span>
                                                             @endif
-                                                            
+                                                            @if ($ipd->patient_status == 1)
+                                                                <span class="text-primary">Bệnh nhân xuất viện</span>
+                                                            @endif
                                                         </td>
                                                         <td>
                                                             <div class="btn-group">
-                                                                <a href="{{ route('appointments.edit', $appointment->id) }}"
+                                                                <a href="{{ route('ipds.edit', $ipd->id) }}"
                                                                     class="btn btn-primary">
                                                                     <i class="fas fa-edit"></i> Sửa
                                                                 </a>
                                                                 <button type="button" class="btn btn-danger"
                                                                     data-toggle="modal"
-                                                                    data-target="#deleteModal{{ $appointment->id }}"
+                                                                    data-target="#deleteModal{{ $ipd->id }}"
                                                                     style="color: red;">
                                                                     <i class="fas fa-trash-alt"></i> Xóa
                                                                 </button>
@@ -122,38 +121,41 @@
                                                         </td>
 
                                                         <!-- Modal -->
-                                                        <div class="modal fade" id="deleteModal{{ $appointment->id }}"
+                                                        <div class="modal fade"
+                                                            id="deleteModal{{ $ipd->id }}"
                                                             tabindex="-1" role="dialog"
-                                                            aria-labelledby="deleteModalLabel{{ $appointment->id }}"
+                                                            aria-labelledby="deleteModalLabel{{ $ipd->id }}"
                                                             aria-hidden="true">
                                                             <div class="modal-dialog" role="document">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
                                                                         <h5 class="modal-title"
-                                                                            id="deleteModalLabel{{ $appointment->id }}">
-                                                                            Xóa loại giường</h5>
+                                                                            id="deleteModalLabel{{ $ipd->id }}">
+                                                                            Xóa bệnh nhân nhập/xuất</h5>
                                                                         <button type="button" class="close"
                                                                             data-dismiss="modal" aria-label="Close">
                                                                             <span aria-hidden="true">&times;</span>
                                                                         </button>
                                                                     </div>
                                                                     <div class="modal-body">
-                                                                        Bạn có chắc chắn muốn xóa lịch hẹn
-                                                                        "{{ $appointment->id }}" không? Hành động này
-                                                                        không
+                                                                        Bạn có chắc chắn muốn xóa bệnh nhân nhập/xuất
+                                                                        "{{ $ipd->id }}" không? Hành
+                                                                        động này không
                                                                         thể hoàn tác!
                                                                     </div>
                                                                     <div class="modal-footer">
                                                                         <button type="button" class="btn btn-secondary"
-                                                                            data-dismiss="modal" style="color:black;">Hủy</button>
+                                                                            data-dismiss="modal"
+                                                                            style="color: black;">Hủy</button>
                                                                         <form
-                                                                            action="{{ route('appointments.destroy', $appointment->id) }}"
+                                                                            action="{{ route('ipds.destroy', $ipd->id) }}"
                                                                             method="POST">
                                                                             @csrf
                                                                             @method('DELETE')
-                                                                            <button type="submit" style="color:red;"
+                                                                            <button type="submit"
                                                                                 class="btn btn-danger"
-                                                                                onclick="return confirm('Bạn có chắc chắn muốn xóa lịch hẹn này không?')">Xóa</button>
+                                                                                style="color: red;"
+                                                                                onclick="return confirm('Bạn có chắc chắn muốn xóa bệnh nhân nhập/xuất này không?')">Xóa</button>
                                                                         </form>
                                                                     </div>
                                                                 </div>
@@ -161,11 +163,9 @@
                                                         </div>
                                                     </tr>
                                                 @endforeach
-
-
                                             </tbody>
                                         </table>
-                                        {{ $appointments->links() }}
+                                        {{ $ipds->links() }}
                                     @endif
                                 </div>
                                 <!-- /.card-body -->
@@ -201,4 +201,3 @@
 </body>
 
 </html>
-

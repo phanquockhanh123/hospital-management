@@ -79,7 +79,6 @@
                                                     <th>DEPARTMENT</th>
                                                     <th>CHARGE</th>
                                                     <th>STATUS</th>
-                                                    <th>DESCRIPTION</th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
@@ -108,7 +107,6 @@
                                                                 <span class="text-danger">Đã sử dụng</span>
                                                             @endif
                                                         </td>
-                                                        <td>{{ $bed->notes }}</td>
                                                         <td>
                                                             <div class="btn-group">
                                                                 <a href="{{ route('beds.edit', $bed->id) }}"

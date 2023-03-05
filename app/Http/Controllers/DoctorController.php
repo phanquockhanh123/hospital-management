@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Bed;
 use App\Models\Doctor;
-use App\Models\DoctorDepartment;
 use Illuminate\Http\Request;
+use App\Models\DoctorDepartment;
+use Illuminate\Support\Facades\Storage;
 
 class DoctorController extends Controller
 {
@@ -67,15 +68,15 @@ class DoctorController extends Controller
             'specialist' => 'required',
         ]);
 
-         // Lưu tệp
+        // Lưu tệp
         if ($request->hasFile('profile')) {
             $profile = $request->file('profile');
+
             $filename = time() . '_' . $profile->getClientOriginalName();
-            $path = $profile->storeAs('public/assets/img/doctors/', $filename);
+            $path = $profile->move('imgDoctor', $filename);
             $validatedData['profile'] = $path;
             $validatedData['filename'] = $filename;
         }
-
         $validatedData['status'] = Doctor::STATUS_ACTIVE;
         Doctor::create($validatedData);
 
@@ -91,6 +92,7 @@ class DoctorController extends Controller
      */
     public function show(Doctor $doctor)
     {
+
         return view('admin.doctors.show', compact('doctor'));
     }
 
@@ -132,6 +134,22 @@ class DoctorController extends Controller
             'start_work_date' => 'required',
             'specialist' => 'required',
         ]);
+
+        // Handle the avatar file upload
+        if ($request->hasFile('profile')) {
+            // Delete the old profile file, if there is one
+            if ($doctor->profile) {
+                Storage::delete($doctor->profile);
+            }
+
+            $profile = $request->file('profile');
+
+            $filename = time() . '_' . $profile->getClientOriginalName();
+            // Store the new profile file
+            $profilePath = $request->file('profile')->store('public/imgDoctor');
+            $validatedData['profile'] = $profilePath;
+            $validatedData['filename'] = $filename;
+        }
 
         $validatedData['status'] = Doctor::STATUS_ACTIVE;
 
