@@ -65,6 +65,7 @@
               </li>
             </ul>
           </li> --}}
+
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>
@@ -182,6 +183,14 @@
               <i class="nav-icon far fa-image"></i>
               <p>
                 IPD/OPD Patients
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('users.index') }}" class="nav-link">
+              <i class="nav-icon far fa-image"></i>
+              <p>
+                Users
               </p>
             </a>
           </li>

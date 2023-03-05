@@ -3,8 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use App\Models\User;
 use Illuminate\Http\Request;
-use App\Models\Admin;
 use Illuminate\Http\Response;
 
 class AuthRole
@@ -20,7 +20,7 @@ class AuthRole
     {
         $userRole = \Auth::user()->role;
 
-        if (in_array($permission, array_keys(Admin::$roles)) && $userRole >= $permission) {
+        if (in_array($permission, array_keys(User::$roles)) && $userRole >= $permission) {
             return $next($request);
         }
 

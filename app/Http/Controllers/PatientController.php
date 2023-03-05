@@ -48,7 +48,7 @@ class PatientController extends Controller
         // Kiểm tra xem request có chứa file không
         if ($request->hasFile('profile')) {
             // Lưu file vào thư mục uploads và lấy đường dẫn để lưu vào CSDL
-            $path = $request->file('profile')->store('public\assets\img\patients');
+            $path = $request->file('profile')->store('public\imgPatient');
 
             // Lấy tên file để hiển thị
             $fileName = $request->file('profile')->getClientOriginalName();

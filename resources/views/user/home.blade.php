@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,6 +21,7 @@
 
   <link rel="stylesheet" href="../assets/css/theme.css">
 </head>
+
 <body>
 
   <!-- Back to top button -->
@@ -57,11 +59,13 @@
             <div class="input-group-prepend">
               <span class="input-group-text" id="icon-addon1"><span class="mai-search"></span></span>
             </div>
-            <input type="text" class="form-control" placeholder="Enter keyword.." aria-label="Username" aria-describedby="icon-addon1">
+            <input type="text" class="form-control" placeholder="Enter keyword.." aria-label="Username"
+              aria-describedby="icon-addon1">
           </div>
         </form>
 
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupport" aria-controls="navbarSupport" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupport"
+          aria-controls="navbarSupport" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -82,26 +86,25 @@
             <li class="nav-item">
               <a class="nav-link" href="contact.html">Contact</a>
             </li>
+              @if(Route::has('login'))
 
-            @if(Route::has('login'))
+              @auth
+              <x-app-layout>
+              </x-app-layout>
 
-            @auth
-            <x-app-layout>
-            </x-app-layout>
+              @else
+              <li class="nav-item">
+                <a class="btn btn-primary ml-lg-3" href="{{route('login')}}">Login</a>
+              </li>
 
-            @else
-            <li class="nav-item">
-              <a class="btn btn-primary ml-lg-3" href="{{route('login')}}">Login</a>
-            </li>
-
-            <li class="nav-item">
+              <li class="nav-item">
                 <a class="btn btn-primary ml-lg-3" href="{{route('register')}}">Register</a>
-            </li>
+              </li>
+             
+              @endauth 
 
-            @endauth
+              @endif
 
-            @endif
-            
           </ul>
         </div> <!-- .navbar-collapse -->
       </div> <!-- .container -->
@@ -156,7 +159,10 @@
         <div class="row align-items-center">
           <div class="col-lg-6 py-3 wow fadeInUp">
             <h1>Welcome to Your Health <br> Center</h1>
-            <p class="text-grey mb-4">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Accusantium aperiam earum ipsa eius, inventore nemo labore eaque porro consequatur ex aspernatur. Explicabo, excepturi accusantium! Placeat voluptates esse ut optio facilis!</p>
+            <p class="text-grey mb-4">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+              tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et
+              justo duo dolores et ea rebum. Accusantium aperiam earum ipsa eius, inventore nemo labore eaque porro
+              consequatur ex aspernatur. Explicabo, excepturi accusantium! Placeat voluptates esse ut optio facilis!</p>
             <a href="about.html" class="btn btn-primary">Learn More</a>
           </div>
           <div class="col-lg-6 wow fadeInRight" data-wow-delay="400ms">
@@ -170,7 +176,7 @@
   </div> <!-- .bg-light -->
 
   @include('user.doctor')
-  
+
   @include('user.lastest')
 
   @include('user.appointment')
@@ -240,19 +246,21 @@
 
       <hr>
 
-      <p id="copyright">Copyright &copy; 2020 <a href="https://macodeid.com/" target="_blank">MACode ID</a>. All right reserved</p>
+      <p id="copyright">Copyright &copy; 2020 <a href="https://macodeid.com/" target="_blank">MACode ID</a>. All right
+        reserved</p>
     </div>
   </footer>
 
-<script src="../assets/js/jquery-3.5.1.min.js"></script>
+  <script src="../assets/js/jquery-3.5.1.min.js"></script>
 
-<script src="../assets/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/bootstrap.bundle.min.js"></script>
 
-<script src="../assets/vendor/owl-carousel/js/owl.carousel.min.js"></script>
+  <script src="../assets/vendor/owl-carousel/js/owl.carousel.min.js"></script>
 
-<script src="../assets/vendor/wow/wow.min.js"></script>
+  <script src="../assets/vendor/wow/wow.min.js"></script>
 
-<script src="../assets/js/theme.js"></script>
-  
+  <script src="../assets/js/theme.js"></script>
+
 </body>
+
 </html>

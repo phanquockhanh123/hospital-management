@@ -68,7 +68,7 @@ class DoctorController extends Controller
             'specialist' => 'required',
         ]);
 
-        // Lưu tệp
+        // Lưu ảnh
         if ($request->hasFile('profile')) {
             $profile = $request->file('profile');
 
@@ -146,7 +146,7 @@ class DoctorController extends Controller
 
             $filename = time() . '_' . $profile->getClientOriginalName();
             // Store the new profile file
-            $profilePath = $request->file('profile')->store('public/imgDoctor');
+            $profilePath = $request->file('profile')->storeAs('public/imgDoctor', $filename);
             $validatedData['profile'] = $profilePath;
             $validatedData['filename'] = $filename;
         }
