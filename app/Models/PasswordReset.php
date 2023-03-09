@@ -6,7 +6,6 @@ use App\Models\BaseModel;
 
 class PasswordReset extends BaseModel
 {
-
     /**
      * The attributes that are mass assignable.
      *

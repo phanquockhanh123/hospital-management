@@ -4,9 +4,8 @@ namespace App\Models;
 
 class Bed extends BaseModel
 {
-
     //status
-    public const STATUS_EMPTY= 0;
+    public const STATUS_EMPTY = 0;
     public const STATUS_FULL = 1;
 
     public static $status = [
@@ -15,7 +14,7 @@ class Bed extends BaseModel
     ];
 
     //bed type
-    public const BED_TYPE_VIP= 3;
+    public const BED_TYPE_VIP = 3;
     public const STATUS_PREMIUM = 2;
     public const STATUS_NORMAL = 1;
 

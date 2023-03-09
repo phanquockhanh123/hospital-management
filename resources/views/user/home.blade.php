@@ -179,24 +179,7 @@
 
   @include('user.lastest')
 
-  @include('user.appointment')
-
-  <div class="page-section banner-home bg-image" style="background-image: url(../assets/img/banner-pattern.svg);">
-    <div class="container py-5 py-lg-0">
-      <div class="row align-items-center">
-        <div class="col-lg-4 wow zoomIn">
-          <div class="img-banner d-none d-lg-block">
-            <img src="../assets/img/mobile_app.png" alt="">
-          </div>
-        </div>
-        <div class="col-lg-8 wow fadeInRight">
-          <h1 class="font-weight-normal mb-3">Get easy access of all features using One Health Application</h1>
-          <a href="#"><img src="../assets/img/google_play.svg" alt=""></a>
-          <a href="#" class="ml-2"><img src="../assets/img/app_store.svg" alt=""></a>
-        </div>
-      </div>
-    </div>
-  </div> <!-- .banner-home -->
+  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.6094175111193!2d105.79351121457799!3d21.00828818600949!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ad09966c771d%3A0xb7452a901ca9f4c0!2zUGjDsm5nIEtow6FtIMSQYSBLaG9hIFRodSBDw7pjIChUQ0kp!5e0!3m2!1svi!2s!4v1678201284539!5m2!1svi!2s" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 
   <footer class="page-footer">
     <div class="container">

@@ -14,6 +14,7 @@ use Symfony\Component\Mime\MessageConverter;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\DoctorDepartmentController;
 use App\Http\Controllers\AddmissionPatientController;
+use App\Http\Controllers\MedicalDeviceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,9 +26,13 @@ use App\Http\Controllers\AddmissionPatientController;
 | contains the "web" middleware group. Now create something great!
 |
 */
- Route::get('/', [HomeController::class, 'index']);
+
+Route::get('/', [HomeController::class, 'index']);
 
 Route::get('/home', [HomeController::class, 'redirect']);
+Route::get('/chat', function () {
+    return view('user.chat');
+});
 
 Route::middleware([
     'auth:sanctum',
@@ -120,9 +125,11 @@ Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.e
 Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
 Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
-
-
-
-
-
-
+//-----------------------------------User ----------------------------------------------------------------
+Route::get('/medical_devices', [MedicalDeviceController::class, 'index'])->name('medical_devices.index');
+Route::get('/medical_devices/create', [MedicalDeviceController::class, 'create'])->name('medical_devices.create');
+Route::post('/medical_devices', [MedicalDeviceController::class, 'store'])->name('medical_devices.store');
+Route::get('/medical_devices/{medical_device}', [MedicalDeviceController::class, 'show'])->name('medical_devices.show');
+Route::get('/medical_devices/{medical_device}/edit', [MedicalDeviceController::class, 'edit'])->name('medical_devices.edit');
+Route::put('/medical_devices/{medical_device}', [MedicalDeviceController::class, 'update'])->name('medical_devices.update');
+Route::delete('/medical_devices/{medical_device}', [MedicalDeviceController::class, 'destroy'])->name('medical_devices.destroy');

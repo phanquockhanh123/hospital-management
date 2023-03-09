@@ -33,7 +33,7 @@
                             <h3 class="card-title">Chỉnh sửa bác sĩ</h3>
                         </div>
                         <div class="card-body">
-                            <form action="{{ route('doctors.update', $doctor->id) }}" method="POST">
+                            <form action="{{ route('doctors.update', $doctor->id) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
 

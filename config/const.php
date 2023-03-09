@@ -25,6 +25,7 @@ return [
         'patient' => 'PA',
         'bed' => 'BED',
         'ipd_opd_patient' => 'IPD',
+        'medical_device' => 'DEV'
     ],
     'format' => [
         'datetime' => 'Y-m-d H:i:s',

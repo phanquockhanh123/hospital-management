@@ -6,6 +6,7 @@ use App\Models\Bed;
 use App\Models\Doctor;
 use Illuminate\Http\Request;
 use App\Models\DoctorDepartment;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class DoctorController extends Controller
@@ -73,10 +74,13 @@ class DoctorController extends Controller
             $profile = $request->file('profile');
 
             $filename = time() . '_' . $profile->getClientOriginalName();
+
             $path = $profile->move('imgDoctor', $filename);
+
             $validatedData['profile'] = $path;
             $validatedData['filename'] = $filename;
         }
+
         $validatedData['status'] = Doctor::STATUS_ACTIVE;
         Doctor::create($validatedData);
 
@@ -136,17 +140,19 @@ class DoctorController extends Controller
         ]);
 
         // Handle the avatar file upload
-        if ($request->hasFile('profile')) {
+        if ($request->profile) {
+            $imagePath = "./imgDoctor/" . $doctor->filename;
             // Delete the old profile file, if there is one
             if ($doctor->profile) {
                 Storage::delete($doctor->profile);
+                File::delete($imagePath);
             }
 
             $profile = $request->file('profile');
 
             $filename = time() . '_' . $profile->getClientOriginalName();
             // Store the new profile file
-            $profilePath = $request->file('profile')->storeAs('public/imgDoctor', $filename);
+            $profilePath = $request->file('profile')->move('imgDoctor', $filename);
             $validatedData['profile'] = $profilePath;
             $validatedData['filename'] = $filename;
         }

@@ -18,12 +18,12 @@ class AddmissionPatientController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-
         $patientSearch = Patient::where('name',  'LIKE', '%' . $search . '%')->get();
+
         if ($patientSearch && $search) {
-            foreach($patientSearch as $patient) {
+            foreach ($patientSearch as $patient) {
                 $addmissionPatients = AddmissionPatient::where('patient_id', $patient->id)
-                ->orderByDesc('created_at')->paginate(config('const.perPage'));
+                    ->orderByDesc('created_at')->paginate(config('const.perPage'));
             }
         } else {
             $addmissionPatients = AddmissionPatient::orderByDesc('created_at')->paginate(config('const.perPage'));

@@ -85,7 +85,7 @@
                       @foreach ($users as $user)
                       <tr>
                         <td>
-                          <a href="{{ route('users.show', $user) }}"><img src="./imgUser/{{ $user->filename}}"
+                          <a href="{{ route('users.show', $user) }}"><img src="{{ asset('imgUser/'. $user->filename) }}"
                               style="border-radius: 50%;vertical-align: middle;
                                           width: 50px;
                                           height: 50px;

@@ -12,7 +12,10 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="admin2/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+          <img src="{{ asset('imgUser/'. Auth::user()->filename) }}" style="border-radius: 50%;vertical-align: middle;
+                                          width: 40px;
+                                          height: 40px;
+                                          border-radius: 50%;" alt="{{ Auth::user()->name }}" title="">
         </div>
         <div class="info">
           <a href="#" class="d-block">{{ Auth::user()->name }}</a>
@@ -191,6 +194,22 @@
               <i class="nav-icon far fa-image"></i>
               <p>
                 Users
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('ipds.index') }}" class="nav-link">
+              <i class="nav-icon far fa-image"></i>
+              <p>
+                IPD/OPD Patients
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('medical_devices.index') }}" class="nav-link">
+              <i class="nav-icon far fa-image"></i>
+              <p>
+                Inventories
               </p>
             </a>
           </li>

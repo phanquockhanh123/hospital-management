@@ -6,7 +6,6 @@ use App\Models\DoctorDepartment;
 
 class Doctor extends BaseModel
 {
-
     // academic level
     public const ACADEMIC_LEVEL_COLLEGES = 0;
     public const ACADEMIC_LEVEL_UNIVERSITY = 1;
@@ -92,5 +91,4 @@ class Doctor extends BaseModel
     {
         return $this->belongsTo(DoctorDepartment::class);
     }
-
 }

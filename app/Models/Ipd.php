@@ -30,7 +30,7 @@ class Ipd extends BaseModel
     ];
 
     //patient status
-    public const PATIENT_IN= 0;
+    public const PATIENT_IN = 0;
     public const PATIENT_OUT = 1;
 
     public static $patientStatus = [
@@ -38,7 +38,7 @@ class Ipd extends BaseModel
         self::PATIENT_OUT => 'Bệnh nhân xuất viện',
     ];
 
-     /**
+    /**
      * The attributes that are mass assignable.
      *
      * @var string[]
@@ -85,7 +85,7 @@ class Ipd extends BaseModel
         );
     }
 
-     /**
+    /**
      * Get the patient
      */
     public function patient()
@@ -108,5 +108,4 @@ class Ipd extends BaseModel
     {
         return $this->belongsTo(Bed::class);
     }
-
 }

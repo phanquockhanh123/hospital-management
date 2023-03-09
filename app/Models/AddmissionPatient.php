@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class AddmissionPatient extends BaseModel
 {
-
     //status
     public const STATUS_HOSPITALIZED = 1;
     public const STATUS_PENDING = 0;
@@ -67,5 +66,4 @@ class AddmissionPatient extends BaseModel
     {
         return $this->belongsTo(Bed::class);
     }
-
 }

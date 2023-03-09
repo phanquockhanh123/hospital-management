@@ -6,12 +6,13 @@ use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
-        /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -21,10 +22,10 @@ class UserController extends Controller
         $search = $request->input('search');
 
         if ($search) {
-            $users = User::where('name', 'LIKE', '%' . $search . '%')->where('id','!=',Auth::user()->id)
+            $users = User::where('name', 'LIKE', '%' . $search . '%')->where('id', '!=', Auth::user()->id)
                 ->orderByDesc('created_at')->paginate(config('const.perPage'));
         } else {
-            $users = User::orderByDesc('created_at')->where('id','!=',Auth::user()->id)->paginate(config('const.perPage'));
+            $users = User::orderByDesc('created_at')->where('id', '!=', Auth::user()->id)->paginate(config('const.perPage'));
         }
 
         return view('admin.users.index', compact('users'));
@@ -118,10 +119,12 @@ class UserController extends Controller
             'role' => 'required',
             'dob' => 'required'
         ]);
-        if ($request->hasFile('profile')) {
+        if ($request->profile) {
+            $imagePath = "./imgUser/" . $user->filename;
             // Delete the old profile file, if there is one
             if ($user->profile) {
                 Storage::delete($user->profile);
+                File::delete($imagePath);
             }
 
             $profile = $request->file('profile');
@@ -129,7 +132,9 @@ class UserController extends Controller
             $filename = time() . '_' . $profile->getClientOriginalName();
 
             // Store the new profile file
-            $profilePath = $request->file('profile')->storeAs('public/imgUser',$filename);
+            $profilePath = $request->file('profile')->move('imgUser', $filename);
+
+            // 
             $validatedData['profile'] = $profilePath;
             $validatedData['filename'] = $filename;
         }

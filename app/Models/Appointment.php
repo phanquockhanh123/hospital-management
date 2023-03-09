@@ -8,7 +8,6 @@ use PhpParser\Comment\Doc;
 
 class Appointment extends BaseModel
 {
-
     //status
     public const STATUS_DENIED = 0;
     public const STATUS_PENDING = 1;

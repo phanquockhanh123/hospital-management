@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use Database\Seeders\MedicalDeviceSeeder;
+
 class DoctorDepartment extends BaseModel
 {
-
     /**
      * The attributes that are mass assignable.
      *
@@ -35,5 +36,13 @@ class DoctorDepartment extends BaseModel
     public function beds()
     {
         return $this->hasMany(Bed::class);
+    }
+
+    /**
+     * Get the medical_devices
+     */
+    public function medicalDevices()
+    {
+        return $this->hasMany(MedicalDevice::class);
     }
 }
