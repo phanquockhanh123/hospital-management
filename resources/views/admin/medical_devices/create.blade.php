@@ -30,56 +30,39 @@
                     </div>
                     <div class="col-md-9">
                         <div class="card-header">
-                            <h3 class="card-title">Tạo mới giường bệnh</h3>
+                            <h3 class="card-title">Tạo mới thiết bị y tế</h3>
                         </div>
-                        @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    @dd($error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        @endif
                         <div class="card-body">
-                            <form action="{{ route('beds.store') }}" method="POST">
+                            <form action="{{ route('medical_devices.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
 
                                 <div class="form-group">
-                                    <label for="name">Tên giường bệnh:</label>
+                                    <label for="name">Tên thiết bị y tế:</label>
                                     <input type="text" name="name" id="name"
                                         class="form-control @error('name') is-invalid @enderror"
                                         value="{{ old('name') }}">
                                     @error('name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
-                                    
                                 </div>
 
-
                                 <div class="form-group">
-                                    <label for="bed_type">Loại giường bệnh:</label>
-                                    <select name="bed_type" class="form-control input-sm m-bot15">
-                                        <option value="">----Chọn loại giường bệnh----</option>
-                                        <option value="1">Thường</option>
-                                        <option value="2">Cao cấp</option>
-                                        <option value="3">Vip</option>
-                                    </select>
-                                    @error('bed_type')
+                                    <label for="profile">Ảnh mô tả:</label>
+                                    <input type="file" name="profile" id="profile"
+                                        class="form-control @error('profile') is-invalid @enderror"
+                                        value="{{ old('profile') }}">
+                                    @error('profile')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="department_id">Loại phòng ban:</label>
+                                    <label for="department_id">Phòng ban:</label>
                                     <select name="department_id" class="form-control input-sm m-bot15">
-                                        <option value="">----Chọn loại phòng ban----</option>
-                                        @foreach ($doctorDepartment as $key => $department)
-                                        <option value="{{ $department->id }}">{{ $department->name }}
-                                        </option>
+                                        <option value="">----Chọn phòng ban----</option>
+                                        @foreach ($doctorDepartments as $doctorDepartment)
+                                        <option value="{{ $doctorDepartment->id }}">{{ $doctorDepartment->name }}</option>
                                         @endforeach
-
                                     </select>
                                     @error('department_id')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -87,26 +70,45 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="charge">Giá:</label>
+                                    <label for="charge">Giá nhập:</label>
                                     <input type="text" name="charge" id="charge"
                                         class="form-control @error('charge') is-invalid @enderror"
                                         value="{{ old('charge') }}">
                                     @error('charge')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
-                                    
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="notes">Mô tả:</label>
-                                    <textarea class="form-control" id="notes" name="notes" rows="5"></textarea>
-                                    @error('notes')
+                                    <label for="quantity">Số lượng:</label>
+                                    <input type="text" name="quantity" id="quantity"
+                                        class="form-control @error('quantity') is-invalid @enderror"
+                                        value="{{ old('quantity') }}">
+                                    @error('quantity')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="expired_date">Ngày hết hạn:</label>
+                                    <input type="date" name="expired_date" id="expired_date"
+                                        class="form-control @error('expired_date') is-invalid @enderror"
+                                        value="{{ old('expired_date') }}">
+                                    @error('expired_date')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="description">Mô tả sản phẩm:</label>
+                                    <textarea class="form-control" id="description" name="description" rows="5"></textarea>
+                                    @error('description')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
                                 <div class="d-flex justify-content-between mt-4">
-                                    <a href="{{ route('beds.index') }}" class="btn btn-secondary">
+                                    <a href="{{ route('medical_devices.index') }}" class="btn btn-secondary">
                                         <i class="fas fa-arrow-left"></i> Quay lại
                                     </a>
 

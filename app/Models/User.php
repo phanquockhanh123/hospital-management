@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -21,22 +20,14 @@ class User extends Authenticatable
     // role
     public const ROLE_MEMBER = 0;
     public const ROLE_PATIENT = 1;
-    public const ROLE_CASE_HANDLER = 2;
-    public const ROLE_RECEPTIONIST = 3;
-    public const ROLE_PHARMACIST = 4;
-    public const ROLE_NURSE = 5;
-    public const ROLE_DOCTOR = 6;
-    public const ROLE_ADMIN_ROOT = 7;
+    public const ROLE_DOCTOR = 2;
+    public const ROLE_ADMIN_ROOT = 3;
 
     public static $roles = [
         self::ROLE_MEMBER => 'Member',
         self::ROLE_PATIENT => 'Patient',
-        self::ROLE_CASE_HANDLER => 'Case Handler',
-        self::ROLE_RECEPTIONIST => 'Receptionist',
-        self::ROLE_PHARMACIST => 'Pharmacist',
-        self::ROLE_NURSE => 'Admin nurse',
-        self::ROLE_DOCTOR => 'Admin doctor',
-        self::ROLE_ADMIN_ROOT => 'Admin root',
+        self::ROLE_DOCTOR => 'Doctor',
+        self::ROLE_ADMIN_ROOT => 'Root',
     ];
 
 
@@ -72,6 +63,8 @@ class User extends Authenticatable
         'dob',
         'status',
         'password',
+        'profile',
+        'filename'
     ];
 
     /**
@@ -93,15 +86,6 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-    ];
-
-    /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
-     */
-    protected $appends = [
-        'profile_photo_url',
     ];
 
     /**

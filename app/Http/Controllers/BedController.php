@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateBedRequest;
 use App\Models\Bed;
 use Illuminate\Http\Request;
 use App\Models\DoctorDepartment;
+use CreateBedsTable;
 
 class BedController extends Controller
 {
@@ -44,18 +46,11 @@ class BedController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateBedRequest $request)
     {
-        $validatedData = $request->validate([
-            'name' => 'required',
-            'bed_type' => 'required',
-            'notes' => 'nullable',
-            'department_id' => 'required',
-            'charge' => 'nullable',
-        ]);
+        $validatedData = $request->all();
         $validatedData['bed_code'] = Bed::generateNextCode();
         Bed::create($validatedData);
-
 
         return redirect()->route('beds.index')
             ->with('success', 'Giường bệnh đã được tạo thành công.');

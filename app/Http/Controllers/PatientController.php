@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Patient;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class PatientController extends Controller
@@ -45,17 +46,7 @@ class PatientController extends Controller
      */
     public function store(Request $request)
     {
-        // Kiểm tra xem request có chứa file không
-        if ($request->hasFile('profile')) {
-            // Lưu file vào thư mục uploads và lấy đường dẫn để lưu vào CSDL
-            $path = $request->file('profile')->store('public\assets\img\patients');
 
-            // Lấy tên file để hiển thị
-            $fileName = $request->file('profile')->getClientOriginalName();
-        } else {
-            $path = null;
-            $fileName = null;
-        }
         $validatedData = $request->validate([
             'name' => 'required',
             'blood_group' => 'required',
@@ -70,12 +61,14 @@ class PatientController extends Controller
             'identity_card_place' => 'required',
         ]);
 
-        // Lưu tệp
+        // Lưu ảnh
         if ($request->hasFile('profile')) {
             $profile = $request->file('profile');
 
             $filename = time() . '_' . $profile->getClientOriginalName();
+
             $path = $profile->move('imgPatient', $filename);
+
             $validatedData['profile'] = $path;
             $validatedData['filename'] = $filename;
         }
@@ -131,18 +124,20 @@ class PatientController extends Controller
             'identity_card_date' => 'required',
             'identity_card_place' => 'required',
         ]);
-        if ($request->hasFile('profile')) {
+        // Handle the avatar file upload
+        if ($request->profile) {
+            $imagePath = "./imgPatient/" . $patient->filename;
             // Delete the old profile file, if there is one
             if ($patient->profile) {
                 Storage::delete($patient->profile);
+                File::delete($imagePath);
             }
 
             $profile = $request->file('profile');
 
             $filename = time() . '_' . $profile->getClientOriginalName();
-
             // Store the new profile file
-            $profilePath = $request->file('profile')->store('public/imgPatient');
+            $profilePath = $request->file('profile')->move('imgPatient', $filename);
             $validatedData['profile'] = $profilePath;
             $validatedData['filename'] = $filename;
         }

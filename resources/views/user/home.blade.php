@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,6 +21,7 @@
 
   <link rel="stylesheet" href="../assets/css/theme.css">
 </head>
+
 <body>
 
   <!-- Back to top button -->
@@ -57,11 +59,13 @@
             <div class="input-group-prepend">
               <span class="input-group-text" id="icon-addon1"><span class="mai-search"></span></span>
             </div>
-            <input type="text" class="form-control" placeholder="Enter keyword.." aria-label="Username" aria-describedby="icon-addon1">
+            <input type="text" class="form-control" placeholder="Enter keyword.." aria-label="Username"
+              aria-describedby="icon-addon1">
           </div>
         </form>
 
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupport" aria-controls="navbarSupport" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupport"
+          aria-controls="navbarSupport" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -82,26 +86,25 @@
             <li class="nav-item">
               <a class="nav-link" href="contact.html">Contact</a>
             </li>
+              @if(Route::has('login'))
 
-            @if(Route::has('login'))
+              @auth
+              <x-app-layout>
+              </x-app-layout>
 
-            @auth
-            <x-app-layout>
-            </x-app-layout>
+              @else
+              <li class="nav-item">
+                <a class="btn btn-primary ml-lg-3" href="{{route('login')}}">Login</a>
+              </li>
 
-            @else
-            <li class="nav-item">
-              <a class="btn btn-primary ml-lg-3" href="{{route('login')}}">Login</a>
-            </li>
-
-            <li class="nav-item">
+              <li class="nav-item">
                 <a class="btn btn-primary ml-lg-3" href="{{route('register')}}">Register</a>
-            </li>
+              </li>
+             
+              @endauth 
 
-            @endauth
+              @endif
 
-            @endif
-            
           </ul>
         </div> <!-- .navbar-collapse -->
       </div> <!-- .container -->
@@ -156,7 +159,10 @@
         <div class="row align-items-center">
           <div class="col-lg-6 py-3 wow fadeInUp">
             <h1>Welcome to Your Health <br> Center</h1>
-            <p class="text-grey mb-4">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Accusantium aperiam earum ipsa eius, inventore nemo labore eaque porro consequatur ex aspernatur. Explicabo, excepturi accusantium! Placeat voluptates esse ut optio facilis!</p>
+            <p class="text-grey mb-4">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+              tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et
+              justo duo dolores et ea rebum. Accusantium aperiam earum ipsa eius, inventore nemo labore eaque porro
+              consequatur ex aspernatur. Explicabo, excepturi accusantium! Placeat voluptates esse ut optio facilis!</p>
             <a href="about.html" class="btn btn-primary">Learn More</a>
           </div>
           <div class="col-lg-6 wow fadeInRight" data-wow-delay="400ms">
@@ -170,27 +176,10 @@
   </div> <!-- .bg-light -->
 
   @include('user.doctor')
-  
+
   @include('user.lastest')
 
-  @include('user.appointment')
-
-  <div class="page-section banner-home bg-image" style="background-image: url(../assets/img/banner-pattern.svg);">
-    <div class="container py-5 py-lg-0">
-      <div class="row align-items-center">
-        <div class="col-lg-4 wow zoomIn">
-          <div class="img-banner d-none d-lg-block">
-            <img src="../assets/img/mobile_app.png" alt="">
-          </div>
-        </div>
-        <div class="col-lg-8 wow fadeInRight">
-          <h1 class="font-weight-normal mb-3">Get easy access of all features using One Health Application</h1>
-          <a href="#"><img src="../assets/img/google_play.svg" alt=""></a>
-          <a href="#" class="ml-2"><img src="../assets/img/app_store.svg" alt=""></a>
-        </div>
-      </div>
-    </div>
-  </div> <!-- .banner-home -->
+  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.6094175111193!2d105.79351121457799!3d21.00828818600949!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ad09966c771d%3A0xb7452a901ca9f4c0!2zUGjDsm5nIEtow6FtIMSQYSBLaG9hIFRodSBDw7pjIChUQ0kp!5e0!3m2!1svi!2s!4v1678201284539!5m2!1svi!2s" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 
   <footer class="page-footer">
     <div class="container">
@@ -240,19 +229,21 @@
 
       <hr>
 
-      <p id="copyright">Copyright &copy; 2020 <a href="https://macodeid.com/" target="_blank">MACode ID</a>. All right reserved</p>
+      <p id="copyright">Copyright &copy; 2020 <a href="https://macodeid.com/" target="_blank">MACode ID</a>. All right
+        reserved</p>
     </div>
   </footer>
 
-<script src="../assets/js/jquery-3.5.1.min.js"></script>
+  <script src="../assets/js/jquery-3.5.1.min.js"></script>
 
-<script src="../assets/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/bootstrap.bundle.min.js"></script>
 
-<script src="../assets/vendor/owl-carousel/js/owl.carousel.min.js"></script>
+  <script src="../assets/vendor/owl-carousel/js/owl.carousel.min.js"></script>
 
-<script src="../assets/vendor/wow/wow.min.js"></script>
+  <script src="../assets/vendor/wow/wow.min.js"></script>
 
-<script src="../assets/js/theme.js"></script>
-  
+  <script src="../assets/js/theme.js"></script>
+
 </body>
+
 </html>

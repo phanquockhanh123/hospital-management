@@ -25,6 +25,7 @@ return [
         'patient' => 'PA',
         'bed' => 'BED',
         'ipd_opd_patient' => 'IPD',
+        'medical_device' => 'DEV'
     ],
     'format' => [
         'datetime' => 'Y-m-d H:i:s',
@@ -36,12 +37,8 @@ return [
     'application_cv_file_extension' => ['png, jpeg'],
     'retry_time' => 3,
     'auth' => [
-        '7' => 'auth.role:' . User::ROLE_ADMIN_ROOT,
-        '6' => 'auth.role:' . User::ROLE_DOCTOR,
-        '5' => 'auth.role:' . User::ROLE_NURSE,
-        '4' => 'auth.role:' . User::ROLE_PHARMACIST,
-        '3' => 'auth.role:' . User::ROLE_RECEPTIONIST,
-        '2' => 'auth.role:' . User::ROLE_CASE_HANDLER,
+        '3' => 'auth.role:' . User::ROLE_ADMIN_ROOT,
+        '2' => 'auth.role:' . User::ROLE_DOCTOR,
         '1' => 'auth.role:' . User::ROLE_PATIENT,
         '0' => 'auth.role:' . User::ROLE_MEMBER,
     ],

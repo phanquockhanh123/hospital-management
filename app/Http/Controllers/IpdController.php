@@ -7,7 +7,6 @@ use App\Models\Ipd;
 use App\Models\Doctor;
 use App\Models\Patient;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class IpdController extends Controller
 {
@@ -22,9 +21,9 @@ class IpdController extends Controller
 
         $patientSearch = Patient::where('name',  'LIKE', '%' . $search . '%')->get();
         if ($patientSearch && $search) {
-            foreach($patientSearch as $patient) {
+            foreach ($patientSearch as $patient) {
                 $ipds = Ipd::where('patient_id', $patient->id)
-                ->orderByDesc('created_at')->paginate(config('const.perPage'));
+                    ->orderByDesc('created_at')->paginate(config('const.perPage'));
             }
         } else {
             $ipds = Ipd::orderByDesc('created_at')->paginate(config('const.perPage'));
@@ -55,21 +54,22 @@ class IpdController extends Controller
     {
         $validatedData = $request->validate([
             'patient_id' => 'required',
-            'doctor_id'=> 'required',
-            'bed_id'=> 'required',
-            'blood_group'=> 'nullable',
-            'height'=> 'nullable',
-            'weight'=> 'nullable',
-            'blood_pressure'=> 'nullable',
-            'addmission_date'=> 'nullable',
-            'symptoms'=> 'nullable',
-            'notes'=> 'nullable',
-            'patient_status'=> 'required'
+            'doctor_id' => 'required',
+            'bed_id' => 'required',
+            'blood_group' => 'nullable',
+            'height' => 'nullable',
+            'weight' => 'nullable',
+            'blood_pressure' => 'nullable',
+            'addmission_date' => 'nullable',
+            'symptoms' => 'nullable',
+            'notes' => 'nullable',
+            'patient_status' => 'required'
         ]);
         $validatedData['is_old_patient'] = Ipd::PATIENT_NEW;
         // check  new/old patient
-        if(Patient::findOrFail($validatedData['patient_id'])
-        ->created_at->addYear()->lt(now())) {
+        if (Patient::findOrFail($validatedData['patient_id'])
+            ->created_at->addYear()->lt(now())
+        ) {
             $validatedData['is_old_patient'] = Ipd::PATIENT_OLD;
         }
         $validatedData['ipd_code'] = Ipd::generateNextCode();
@@ -116,16 +116,16 @@ class IpdController extends Controller
     {
         $validatedData = $request->validate([
             'patient_id' => 'required',
-            'doctor_id'=> 'required',
-            'bed_id'=> 'required',
-            'blood_group'=> 'nullable',
-            'height'=> 'nullable',
-            'weight'=> 'nullable',
-            'blood_pressure'=> 'nullable',
-            'addmission_date'=> 'nullable',
-            'symptoms'=> 'nullable',
-            'notes'=> 'nullable',
-            'patient_status'=> 'required'
+            'doctor_id' => 'required',
+            'bed_id' => 'required',
+            'blood_group' => 'nullable',
+            'height' => 'nullable',
+            'weight' => 'nullable',
+            'blood_pressure' => 'nullable',
+            'addmission_date' => 'nullable',
+            'symptoms' => 'nullable',
+            'notes' => 'nullable',
+            'patient_status' => 'required'
         ]);
 
         $ipd->update($validatedData);

@@ -1,18 +1,20 @@
 <?php
 
 use App\Events\MessageCreated;
-use App\Http\Controllers\AddmissionPatientController;
-use App\Http\Controllers\AppointmentController;
+use App\Models\AddmissionPatient;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BedController;
-use App\Http\Controllers\ChatsController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\DoctorController;
-use App\Http\Controllers\DoctorDepartmentController;
 use App\Http\Controllers\IpdController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ChatsController;
+use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\PatientController;
-use App\Models\AddmissionPatient;
 use Symfony\Component\Mime\MessageConverter;
+use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\DoctorDepartmentController;
+use App\Http\Controllers\AddmissionPatientController;
+use App\Http\Controllers\MedicalDeviceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,9 +26,13 @@ use Symfony\Component\Mime\MessageConverter;
 | contains the "web" middleware group. Now create something great!
 |
 */
- Route::get('/', [HomeController::class, 'index']);
+
+Route::get('/', [HomeController::class, 'index']);
 
 Route::get('/home', [HomeController::class, 'redirect']);
+Route::get('/chat', function () {
+    return view('user.chat');
+});
 
 Route::middleware([
     'auth:sanctum',
@@ -37,6 +43,7 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
+
 
 //-----------------------------------Doctor Departments ----------------------------------------------------------------
 
@@ -109,7 +116,20 @@ Route::put('/ipds/{ipd}', [IpdController::class, 'update'])->name('ipds.update')
 Route::delete('/ipds/{ipd}', [IpdController::class, 'destroy'])->name('ipds.destroy');
 
 
+//-----------------------------------User ----------------------------------------------------------------
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
+Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+Route::post('/users', [UserController::class, 'store'])->name('users.store');
+Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
-
-
-
+//-----------------------------------User ----------------------------------------------------------------
+Route::get('/medical_devices', [MedicalDeviceController::class, 'index'])->name('medical_devices.index');
+Route::get('/medical_devices/create', [MedicalDeviceController::class, 'create'])->name('medical_devices.create');
+Route::post('/medical_devices', [MedicalDeviceController::class, 'store'])->name('medical_devices.store');
+Route::get('/medical_devices/{medical_device}', [MedicalDeviceController::class, 'show'])->name('medical_devices.show');
+Route::get('/medical_devices/{medical_device}/edit', [MedicalDeviceController::class, 'edit'])->name('medical_devices.edit');
+Route::put('/medical_devices/{medical_device}', [MedicalDeviceController::class, 'update'])->name('medical_devices.update');
+Route::delete('/medical_devices/{medical_device}', [MedicalDeviceController::class, 'destroy'])->name('medical_devices.destroy');
