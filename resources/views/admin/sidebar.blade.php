@@ -182,14 +182,6 @@
             </ul>
           </li>
           <li class="nav-item">
-            <a href="{{ route('ipds.index') }}" class="nav-link">
-              <i class="nav-icon far fa-image"></i>
-              <p>
-                IPD/OPD Patients
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
             <a href="{{ route('users.index') }}" class="nav-link">
               <i class="nav-icon far fa-image"></i>
               <p>
@@ -210,6 +202,14 @@
               <i class="nav-icon far fa-image"></i>
               <p>
                 Inventories
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('news.index') }}" class="nav-link">
+              <i class="nav-icon far fa-image"></i>
+              <p>
+                News
               </p>
             </a>
           </li>

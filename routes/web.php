@@ -15,6 +15,7 @@ use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\DoctorDepartmentController;
 use App\Http\Controllers\AddmissionPatientController;
 use App\Http\Controllers\MedicalDeviceController;
+use App\Http\Controllers\NewsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -125,7 +126,7 @@ Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.e
 Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
 Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
-//-----------------------------------User ----------------------------------------------------------------
+//-----------------------------------Medical Devices ----------------------------------------------------------------
 Route::get('/medical_devices', [MedicalDeviceController::class, 'index'])->name('medical_devices.index');
 Route::get('/medical_devices/create', [MedicalDeviceController::class, 'create'])->name('medical_devices.create');
 Route::post('/medical_devices', [MedicalDeviceController::class, 'store'])->name('medical_devices.store');
@@ -133,3 +134,12 @@ Route::get('/medical_devices/{medical_device}', [MedicalDeviceController::class,
 Route::get('/medical_devices/{medical_device}/edit', [MedicalDeviceController::class, 'edit'])->name('medical_devices.edit');
 Route::put('/medical_devices/{medical_device}', [MedicalDeviceController::class, 'update'])->name('medical_devices.update');
 Route::delete('/medical_devices/{medical_device}', [MedicalDeviceController::class, 'destroy'])->name('medical_devices.destroy');
+
+//-----------------------------------News ----------------------------------------------------------------
+Route::get('/news', [NewsController::class, 'index'])->name('news.index');
+Route::get('/news/create', [NewsController::class, 'create'])->name('news.create');
+Route::post('/news', [NewsController::class, 'store'])->name('news.store');
+Route::get('/news/{new}', [NewsController::class, 'show'])->name('news.show');
+Route::get('/news/{new}/edit', [NewsController::class, 'edit'])->name('news.edit');
+Route::put('/news/{new}', [NewsController::class, 'update'])->name('news.update');
+Route::delete('/news/{new}', [NewsController::class, 'destroy'])->name('news.destroy');
