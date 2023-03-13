@@ -21,11 +21,8 @@ class DatabaseSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         \App\Models\DoctorDepartment::truncate();
         \App\Models\Doctor::truncate();
-        \App\Models\Bed::truncate();
         \App\Models\Patient::truncate();
-        \App\Models\AddmissionPatient::truncate();
         \App\Models\Appointment::truncate();
-        \App\Models\Ipd::truncate();
         \App\Models\MedicalDevice::truncate();
         \App\Models\News::truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
@@ -34,11 +31,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             DoctorDepartmentSeeder::class,
             DoctorSeeder::class,
-            BedSeeder::class,
             PatientSeeder::class,
-            AddmissionPatientSeeder::class,
             AppointmentSeeder::class,
-            IpdSeeder::class,
             MedicalDeviceSeeder::class,
             NewsSeeder::class
         ]);

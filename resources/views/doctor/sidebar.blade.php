@@ -60,28 +60,6 @@
                 </a>
             </ul>
           </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-chart-pie"></i>
-              <p>
-                Live
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Live Consultations</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Live Meetings</p>
-                </a>
-            </ul>
-          </li>
 
           <li class="nav-item">
             <a href="#" class="nav-link">
@@ -128,26 +106,10 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ route('users.index') }}" class="nav-link">
-              <i class="nav-icon far fa-image"></i>
-              <p>
-                Users
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
             <a href="{{ route('medical_devices.index') }}" class="nav-link">
               <i class="nav-icon far fa-image"></i>
               <p>
                 Inventories
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{ route('news.index') }}" class="nav-link">
-              <i class="nav-icon far fa-image"></i>
-              <p>
-                News
               </p>
             </a>
           </li>

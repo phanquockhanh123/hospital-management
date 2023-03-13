@@ -3,9 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\AddmissionPatient;
 
-class AddmissionPatientSeeder extends Seeder
+class ChatSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +13,6 @@ class AddmissionPatientSeeder extends Seeder
      */
     public function run()
     {
-        AddmissionPatient::factory()->count(50)->create();
+        //
     }
 }

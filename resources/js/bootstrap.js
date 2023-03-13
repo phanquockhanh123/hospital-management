@@ -27,8 +27,3 @@ window.Echo = new Echo({
     encrypted: true,
     forceTLS: true
 });
-
-window.Echo.channel("messages").listen('MessageCreated', (event) => {
-  console.log("Laravel chat-realtime pusher");
-  console.log(event);
-})
