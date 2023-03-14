@@ -167,4 +167,8 @@ class MedicalDeviceController extends Controller
         return redirect()->route('medical_devices.index')
             ->with('success', 'Giường bệnh đã được xoá thành công.');
     }
+
+    public function requestDevices() {
+        
+    }
 }

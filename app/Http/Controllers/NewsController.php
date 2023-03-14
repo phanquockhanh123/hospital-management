@@ -57,9 +57,9 @@ class NewsController extends Controller
             'source_news' => 'nullable',
             'author' => 'nullable',
             'key_words' => 'nullable',
+            'priority_level' => 'required'
         ]);
         $validatedData['status'] = News::STATUS_SUBMITTED;
-        $validatedData['priority_level'] = News::LEVEL_NEW;
         // Lưu ảnh
         if ($request->hasFile('image')) {
             $image = $request->file('image');
@@ -113,13 +113,12 @@ class NewsController extends Controller
             'title' => 'required',
             'image' => 'nullable',
             'content' => 'nullable',
-            'submitted_date' => 'required',
             'source_news' => 'nullable',
             'author' => 'nullable',
             'priority_level' => 'nullable',
             'key_words' => 'nullable',
         ]);
-
+        $validatedData['submitted_date'] = now();
         // Handle the avatar file upload
         if ($request->image) {
             $imagePath = "./imgNews/" . $new->filename;

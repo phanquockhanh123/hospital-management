@@ -81,7 +81,7 @@
               <a class="nav-link" href="doctors.html">Doctors</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="blog.html">News</a>
+              <a class="nav-link" href="#">News</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="contact.html">Contact</a>

@@ -135,19 +135,45 @@
               </p>
             </a>
           </li>
+
           <li class="nav-item">
-            <a href="{{ route('medical_devices.index') }}" class="nav-link">
-              <i class="nav-icon far fa-image"></i>
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-chart-pie"></i>
               <p>
                 Inventories
+                <i class="right fas fa-angle-left"></i>
               </p>
             </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('medical_devices.index') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Medical Devices</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Accept Devices</p>
+                </a>
+              </li>
+            </ul>
           </li>
+
           <li class="nav-item">
             <a href="{{ route('news.index') }}" class="nav-link">
               <i class="nav-icon far fa-image"></i>
               <p>
                 News
+              </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon far fa-image"></i>
+              <p>
+                Payroll
               </p>
             </a>
           </li>

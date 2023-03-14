@@ -114,6 +114,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::put('/appointments/{appointment}', [AppointmentController::class, 'update'])->name('appointments.update');
             Route::delete('/appointments/{appointment}', [AppointmentController::class, 'destroy'])->name('appointments.destroy');
             Route::get('/appointments_calendar', [AppointmentController::class, 'calendar'])->name('appointments.calendar');
+            Route::post('/calendar', [AppointmentController::class, 'storeCalendar'])->name('calendar.store');
         });
 
         Route::middleware([config('const.auth.mid')])->group(function () {
@@ -138,8 +139,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     //-----------------------------------Medical Devices ----------------------------------------------------------------
     Route::controller(MedicalDeviceController::class)->group(function () {
-        Route::middleware([config('const.auth.high')])->group(function () {
+        Route::middleware([config('const.auth.mid')])->group(function () {
             Route::get('/medical_devices', [MedicalDeviceController::class, 'index'])->name('medical_devices.index');
+        });
+        Route::middleware([config('const.auth.high')])->group(function () {
+            
             Route::get('/medical_devices/create', [MedicalDeviceController::class, 'create'])->name('medical_devices.create');
             Route::post('/medical_devices', [MedicalDeviceController::class, 'store'])->name('medical_devices.store');
             Route::get('/medical_devices/{medical_device}', [MedicalDeviceController::class, 'show'])->name('medical_devices.show');
@@ -176,3 +180,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 // -----------------------------------Meetings ----------------------------------------------------------------
 Route::get('/meetings', [MeetingController::class, 'createLink'])->name('meetings.createLink');
+
+// ------------------------------------User site ------------------------------------------------------------
+
+// Route::get('/doctors', [HomeController::class, 'getDoctor'])->name('user.getDoctor');

@@ -93,7 +93,7 @@
 
                                 <div class="form-group">
                                     <label for="author">Tác giả:</label>
-                                    <input type="date" name="author" id="author"
+                                    <input type="text" name="author" id="author"
                                         class="form-control @error('author') is-invalid @enderror"
                                         value="{{ old('author', $new->author) }}">
                                     @error('author')
@@ -103,13 +103,16 @@
 
                                 <div class="form-group">
                                     <label for="priority_level">Mức độ ưu tiên:</label>
-                                    <input type="date" name="priority_level" id="priority_level"
-                                        class="form-control @error('priority_level') is-invalid @enderror"
-                                        value="{{ old('priority_level', $new->priority_level) }}">
+                                    <select name="priority_level" class="form-control input-sm m-bot15">
+                                        <option value="0" {{ $new->priority_level == 0 ? 'selected' : '' }}>Tin cũ</option>
+                                        <option value="1" {{ $new->priority_level == 1 ? 'selected' : '' }}>Tin thường</option>
+                                        <option value="2" {{ $new->priority_level == 2 ? 'selected' : '' }}>Tin hot</option>
+                                    </select>
                                     @error('priority_level')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
+        
 
                                 <div class="d-flex justify-content-between mt-4">
                                     <a href="{{ route('news.index') }}" class="btn btn-secondary">

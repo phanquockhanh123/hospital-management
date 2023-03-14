@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Appointment;
+use App\Models\Book;
 use App\Models\Doctor;
-use App\Models\DoctorDepartment;
 use App\Models\Patient;
+use App\Models\Appointment;
 use Illuminate\Http\Request;
+use App\Models\DoctorDepartment;
 
 class AppointmentController extends Controller
 {
@@ -131,7 +132,30 @@ class AppointmentController extends Controller
 
     public function calendar()
     {
-        return view('admin.appointments.calendar');
+        $bookings = Book::all();
+        $events = array();
+        foreach ($bookings as $booking) {
+            $events[] = [
+                'title' => $booking->title,
+                'start' => $booking->start_date,
+                'end' => $booking->end_date,
+            ];
+        }
+        
+        return view('admin.appointments.calendar', compact('events'));
+    }
+
+    public function storeCalendar(Request $request) {
+        $request->validate([
+            'title' => 'required|string',
+        ]);
+        $booking = Book::create([
+            'title' => $request->title,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+        ]);
+
+        return response()->json($booking);
     }
 
     /**

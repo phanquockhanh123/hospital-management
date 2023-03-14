@@ -94,6 +94,18 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <label for="priority_level">Mức độ ưu tiên :</label>
+                                    <select name="priority_level" class="form-control input-sm m-bot15">
+                                        <option value="">----Chọn mức độ ưu tiên----</option>
+                                        <option value="1">Tin thường</option>
+                                        <option value="2">Tin hot</option>
+                                    </select>
+                                    @error('priority_level')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
                                     <label for="submitted_date">Ngày đăng bài:</label>
                                     <input type="date" name="submitted_date" id="submitted_date"
                                         class="form-control @error('submitted_date') is-invalid @enderror"
