@@ -31,7 +31,7 @@ Route::get('/home', [AuthController::class, 'redirect'])->middleware(
     'auth',
     'verified'
 );
-// Auth::routes();
+// toroutes();
 Route::get('/chat', function () {
     return view('user.chat');
 });
@@ -47,8 +47,7 @@ Route::middleware([
 });
 
 
-//--------------------------------Chats ------------------------------------------------------------------------------------------------
-Route::get('/chats', [ChatController::class, 'index'])->name('chats.index');
+
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::controller(AuthController::class)->middleware([config('const.auth.low'), 'auth', 'verified'])->group(function () {
@@ -160,6 +159,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/news/{new}/edit', [NewsController::class, 'edit'])->name('news.edit');
             Route::put('/news/{new}', [NewsController::class, 'update'])->name('news.update');
             Route::delete('/news/{new}', [NewsController::class, 'destroy'])->name('news.destroy');
+        });
+    });
+
+    //--------------------------------Chats ------------------------------------------------------------------------------------------------
+    Route::controller(ChatController::class)->group(function () {
+        Route::middleware([config('const.auth.low')])->group(function () {
+            Route::get('/chats', 'index')->name('chats.index');
+            Route::get('/message/{id}', 'getMessage')->name('message');
+            Route::get('/infor/{id}', 'getInfor')->name('getInfor');
+            Route::post('/message', 'sendMessage')->name('sendMessage');
         });
     });
 });

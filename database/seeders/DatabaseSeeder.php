@@ -2,9 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\BedType;
-use App\Models\BloodGroup;
-use App\Models\Doctor;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -25,6 +22,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\Appointment::truncate();
         \App\Models\MedicalDevice::truncate();
         \App\Models\News::truncate();
+        \App\Models\Message::truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         // call seeder class
@@ -34,7 +32,8 @@ class DatabaseSeeder extends Seeder
             PatientSeeder::class,
             AppointmentSeeder::class,
             MedicalDeviceSeeder::class,
-            NewsSeeder::class
+            NewsSeeder::class,
+            MessageSeeder::class,
         ]);
     }
 }
