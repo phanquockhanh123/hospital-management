@@ -93,7 +93,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ route('doctors.index') }}" class="nav-link">
+                <a href="#" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Doctors</p>
                 </a>
@@ -174,6 +174,15 @@
               <i class="nav-icon far fa-image"></i>
               <p>
                 Payroll
+              </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="{{route('admin.get-bill-list')}}" class="nav-link">
+              <i class="nav-icon far fa-image"></i>
+              <p>
+                Bills
               </p>
             </a>
           </li>

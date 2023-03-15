@@ -17,6 +17,12 @@ class HomeController extends Controller
     }
 
     public function getDoctor() {
-        
+        $doctors = Doctor::where('status', 1)->get();
+        return view('user.doctor', compact('doctors'));
     }
+
+    public function aboutUs() {
+        return view('user.doctor', compact('doctors'));
+    }
+
 }

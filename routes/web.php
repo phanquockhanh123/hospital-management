@@ -25,7 +25,8 @@ use App\Http\Controllers\ChatController;
 |
 */
 
-Route::get('/', [HomeController::class, 'index']);
+Route::get('/', [HomeController::class, 'index'])->name('home.index');
+Route::get('/about', [HomeController::class, 'aboutUs'])->name('home.about');
 // Auth::routes(['verify' => true]);
 Route::get('/home', [AuthController::class, 'redirect'])->middleware(
     'auth',
@@ -115,6 +116,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::delete('/appointments/{appointment}', [AppointmentController::class, 'destroy'])->name('appointments.destroy');
             Route::get('/appointments_calendar', [AppointmentController::class, 'calendar'])->name('appointments.calendar');
             Route::post('/calendar', [AppointmentController::class, 'storeCalendar'])->name('calendar.store');
+            Route::patch('/calendar/update/{id}', [AppointmentController::class, 'updateCalendar'])->name('calendar.update');
+            Route::delete('/calendar/destroy/{id}', [AppointmentController::class, 'destroyCalendar'])->name('calendar.destroy');
         });
 
         Route::middleware([config('const.auth.mid')])->group(function () {
@@ -154,7 +157,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     //-----------------------------------News ----------------------------------------------------------------
-    Route::controller(MedicalDeviceController::class)->group(function () {
+    Route::controller(NewsController::class)->group(function () {
         Route::middleware([config('const.auth.high')])->group(function () {
             Route::get('/news', [NewsController::class, 'index'])->name('news.index');
             Route::get('/news/create', [NewsController::class, 'create'])->name('news.create');
@@ -163,6 +166,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/news/{new}/edit', [NewsController::class, 'edit'])->name('news.edit');
             Route::put('/news/{new}', [NewsController::class, 'update'])->name('news.update');
             Route::delete('/news/{new}', [NewsController::class, 'destroy'])->name('news.destroy');
+
+            Route::get('/bills', [NewsController::class, 'index2'])->name('admin.get-bill-list');
         });
     });
 
@@ -183,4 +188,4 @@ Route::get('/meetings', [MeetingController::class, 'createLink'])->name('meeting
 
 // ------------------------------------User site ------------------------------------------------------------
 
-// Route::get('/doctors', [HomeController::class, 'getDoctor'])->name('user.getDoctor');
+Route::get('/doctors', [HomeController::class, 'getDoctor'])->name('user.getDoctor');
