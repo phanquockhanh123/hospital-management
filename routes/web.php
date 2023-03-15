@@ -6,13 +6,13 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DoctorController;
-use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\MedicalDeviceController;
 use App\Http\Controllers\DoctorDepartmentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\ZoomController;
 
 /*
 |--------------------------------------------------------------------------
@@ -180,11 +180,23 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::post('/message', 'sendMessage')->name('sendMessage');
         });
     });
+
+    //--------------------------------Chats ------------------------------------------------------------------------------------------------
+    Route::controller(ZoomController::class)->group(function () {
+        Route::middleware([config('const.auth.high')])->group(function () {
+            Route::get('meetings', 'index')->name('meetings.index');
+            Route::get('start-meeting/{meeting}', 'start_meeting')->name('meeting.start');
+            Route::get('join-meeting/{meeting}', 'join_meeting')->name('meeting.join');
+            Route::get('leave-meeting', 'leave_meeting')->name('meeting.leave');
+            Route::get('create-new-meeting', 'create')->name('meeting.create');
+            Route::post('create-new-meeting', 'store')->name('meeting.store');
+            Route::delete('delete-meeting/{meeting}', 'destroy')->name('meeting.destroy');
+        });
+    });      
+   
 });
 
 
-// -----------------------------------Meetings ----------------------------------------------------------------
-Route::get('/meetings', [MeetingController::class, 'createLink'])->name('meetings.createLink');
 
 // ------------------------------------User site ------------------------------------------------------------
 

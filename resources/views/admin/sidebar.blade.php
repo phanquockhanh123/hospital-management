@@ -60,27 +60,14 @@
                 </a>
             </ul>
           </li>
+          
           <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-chart-pie"></i>
+            <a href="{{ route('meetings.index') }}" class="nav-link">
+              <i class="nav-icon far fa-image"></i>
               <p>
-                Live
-                <i class="right fas fa-angle-left"></i>
+                Live Meeting
               </p>
             </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Live Consultations</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Live Meetings</p>
-                </a>
-            </ul>
           </li>
 
           <li class="nav-item">
