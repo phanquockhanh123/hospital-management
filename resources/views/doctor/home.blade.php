@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Hospital Management</title>
-  @include('admin.css')
+  @include('doctor.css')
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -17,12 +17,12 @@
     </div>
 
     <!-- Navbar -->
-    @include('admin.navbar')
+    @include('doctor.navbar')
     <!-- /.navbar -->
 
-    @include('admin.sidebar')
+    @include('doctor.sidebar')
 
-    @include('admin.body')
+    @include('doctor.body')
 
     <footer class="main-footer">
       <strong>Copyright &copy; 2023 <a href="#">Khánh Engineer</a>.</strong>
@@ -40,7 +40,7 @@
   </div>
   <!-- ./wrapper -->
 
-  @include('admin.script')
+  @include('doctor.script')
 </body>
 
 </html>

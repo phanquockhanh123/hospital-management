@@ -20,6 +20,8 @@
   <link rel="stylesheet" href="../assets/vendor/animate/animate.css">
 
   <link rel="stylesheet" href="../assets/css/theme.css">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastr@2.1.4/build/toastr.min.css">
 </head>
 
 <body>
@@ -86,6 +88,10 @@
             <li class="nav-item">
               <a class="nav-link" href="contact.html">Contact</a>
             </li>
+            <li class="nav-item">
+              <button class="btn btn-primary" type="submit">Đặt lịch</button>
+            </li>
+            
               {{-- @if(Route::has('login')) --}}
 
               {{-- @auth
@@ -115,7 +121,13 @@
 
   @include('user.about')
 
-
+  <script>
+      @if (Session::has('success'))
+        showToastMessage("Guest added successfully test2")
+          .delay(5000)
+          .fadeOut(4000);
+      @endif
+  </script>
   @include('user.appointment')
 
   @include('user.doctor')
@@ -187,6 +199,8 @@
   <script src="../assets/vendor/wow/wow.min.js"></script>
 
   <script src="../assets/js/theme.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/toastr@2.1.4/build/toastr.min.js"></script>
 
 </body>
 

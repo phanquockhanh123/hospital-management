@@ -30,10 +30,10 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <form action="{{ route('users.index') }}" method="GET">
+                            <form action="{{ route('meetings.index') }}" method="GET">
                                 <div class="input-group mb-2">
                                     <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder="Search users"
+                                        <input type="text" class="form-control" placeholder="Search meetings"
                                             name="search">
                                         <div class="input-group-append">
                                             <button class="btn btn-outline-secondary" type="submit">Search</button>
@@ -43,7 +43,7 @@
                             </form>
                         </div>
                         <div class="col-sm-3" style="float: right;">
-                            <a href="{{ route('users.create') }}" class="btn btn-success">
+                            <a href="{{ route('meeting.create') }}" class="btn btn-success">
                                 <i class="fas fa-plus"></i> Tạo mới
                             </a>
                         </div>

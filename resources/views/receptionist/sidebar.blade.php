@@ -48,7 +48,7 @@
         </li>
 
         <li class="nav-item">
-          <a href="#" class="nav-link">
+          <a href="{{ route('patients.index') }}" class="nav-link">
             <i class="nav-icon far fa-image"></i>
             <p>
               Patients
@@ -58,12 +58,28 @@
 
         <li class="nav-item">
           <a href="#" class="nav-link">
-            <i class="nav-icon far fa-image"></i>
+            <i class="nav-icon fas fa-chart-pie"></i>
             <p>
               Appointments
+              <i class="right fas fa-angle-left"></i>
             </p>
           </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{{ route('book_appointments.index') }}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Book Appointments</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('appointments.index') }}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Appointments</p>
+              </a>
+            </li>
+          </ul>
         </li>
+
         <li class="nav-item">
           <a href="{{ route('chats.index')}}" class="nav-link">
             <i class="nav-icon far fa-image"></i>

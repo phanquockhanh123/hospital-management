@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\MedicalDevice::truncate();
         \App\Models\News::truncate();
         \App\Models\Message::truncate();
+        \App\Models\User::truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         // call seeder class
@@ -34,6 +35,7 @@ class DatabaseSeeder extends Seeder
             MedicalDeviceSeeder::class,
             NewsSeeder::class,
             MessageSeeder::class,
+            UserSeeder::class
         ]);
     }
 }

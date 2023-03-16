@@ -11,6 +11,7 @@ use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\MedicalDeviceController;
 use App\Http\Controllers\DoctorDepartmentController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BookAppointmentController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ZoomController;
 
@@ -146,7 +147,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/medical_devices', [MedicalDeviceController::class, 'index'])->name('medical_devices.index');
         });
         Route::middleware([config('const.auth.high')])->group(function () {
-            
             Route::get('/medical_devices/create', [MedicalDeviceController::class, 'create'])->name('medical_devices.create');
             Route::post('/medical_devices', [MedicalDeviceController::class, 'store'])->name('medical_devices.store');
             Route::get('/medical_devices/{medical_device}', [MedicalDeviceController::class, 'show'])->name('medical_devices.show');
@@ -181,7 +181,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         });
     });
 
-    //--------------------------------Chats ------------------------------------------------------------------------------------------------
+    //--------------------------------Meeeting ------------------------------------------------------------------------------------------------
     Route::controller(ZoomController::class)->group(function () {
         Route::middleware([config('const.auth.high')])->group(function () {
             Route::get('meetings', 'index')->name('meetings.index');
@@ -194,6 +194,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
         });
     });      
    
+     //-----------------------------------Book Appointments ----------------------------------------------------------------
+     Route::controller(BookAppointmentController::class)->group(function () {
+        Route::middleware([config('const.auth.low')])->group(function () {
+            Route::get('/book_appointments', 'index')->name('book_appointments.index');
+        });
+    });
 });
 
 
@@ -201,3 +207,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
 // ------------------------------------User site ------------------------------------------------------------
 
 Route::get('/doctors', [HomeController::class, 'getDoctor'])->name('user.getDoctor');
+
+Route::post('/user/appointments', [HomeController::class, 'storeAppointment'])->name('user.appointments-store');

@@ -27,9 +27,9 @@ class ZoomController extends Controller
 
         $token = [
             "iss" => $zoom_api_key,
-            "exp" => time() + 3600 //60 seconds as suggested
+            "exp" => time() + 3600
         ];
-        return JWT::encode($token, $zoom_api_secret);
+        return JWT::encode($token, $zoom_api_secret, 'HS256');
     }
 
     public function index()
@@ -87,7 +87,6 @@ class ZoomController extends Controller
             }
         }
 
-
         return redirect()->route('meetings.index');
     }
 
@@ -120,29 +119,6 @@ class ZoomController extends Controller
         ]);
 
         return redirect()->route('meetings.index');
-    }
-
-    public function create_zoom_credentials()
-    {
-        return view('teacher.zoom_meetings.create-zoom-credentials');
-    }
-
-    public function store_zoom_credentials(Request $request)
-    {
-        $teacher = auth()->user()->teacher;
-        if ($teacher->zoom == null) {
-            $teacher->zoom()->create([
-                'api_key' => $request->api_key,
-                'api_secret' => $request->api_secret
-            ]);
-        }
-
-        $teacher->zoom()->update([
-            'api_key' => $request->api_key,
-            'api_secret' => $request->api_secret
-        ]);
-
-        return redirect()->route('teacher.courses.index');
     }
 
     public function destroy($meeting_id)
