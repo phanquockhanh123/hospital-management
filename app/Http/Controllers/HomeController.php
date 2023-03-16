@@ -23,7 +23,11 @@ class HomeController extends Controller
     }
 
     public function aboutUs() {
-        return view('user.home', compact('doctors', 'news'));
+        return view('user.aboutUs');
+    }
+
+    public function blog() {
+        return view('user.blog');
     }
 
     public function storeAppointment(Request $request) {
@@ -33,16 +37,15 @@ class HomeController extends Controller
             'email' => 'nullable',
             'phone' => 'nullable',
             'reason' => 'nullable',
+            'experted_time' => 'nullable'
         ]);
-
+        $validatedData['status'] = BookAppointment::STATUS_PENDING;
         BookAppointment::create($validatedData);
         return redirect()->route('home.index')->with('success', 'Đã nhận lịch hẹn. Chúng tôi sẽ liên hệ với quý khách hàng sau !');
     }
 
 
-    public function showAppointment(BookAppointment $bookAppointment) {
-        return view('admin.doctors.show', compact('bookAppointment'));
-    }
+
 
 
 

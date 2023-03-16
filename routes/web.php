@@ -26,8 +26,6 @@ use App\Http\Controllers\ZoomController;
 |
 */
 
-Route::get('/', [HomeController::class, 'index'])->name('home.index');
-Route::get('/about', [HomeController::class, 'aboutUs'])->name('home.about');
 // Auth::routes(['verify' => true]);
 Route::get('/home', [AuthController::class, 'redirect'])->middleware(
     'auth',
@@ -59,8 +57,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     //-----------------------------------Doctor Departments ----------------------------------------------------------------
     Route::controller(DoctorDepartmentController::class)->group(function () {
-        Route::middleware([config('const.auth.high')])->group(function () {
+        Route::middleware([config('const.auth.low')])->group(function () {
             Route::get('/doctor_departments', [DoctorDepartmentController::class, 'index'])->name('doctor_departments.index');
+        });
+        Route::middleware([config('const.auth.high')])->group(function () {
             Route::get('/doctor_departments/create', [DoctorDepartmentController::class, 'create'])->name('doctor_departments.create');
             Route::post('/doctor_departments', [DoctorDepartmentController::class, 'store'])->name('doctor_departments.store');
             Route::get('/doctor_departments/{doctor_department}', [DoctorDepartmentController::class, 'show'])->name('doctor_departments.show');
@@ -72,14 +72,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     //-----------------------------------Doctors ----------------------------------------------------------------
     Route::controller(DoctorController::class)->group(function () {
+        Route::middleware([config('const.auth.low')])->group(function () {
+            Route::get('/doctors', 'index')->name('doctors.index');
+        });
         Route::middleware([config('const.auth.high')])->group(function () {
-            Route::get('/doctors', [DoctorController::class, 'index'])->name('doctors.index');
-            Route::get('/doctors/create', [DoctorController::class, 'create'])->name('doctors.create');
-            Route::post('/doctors', [DoctorController::class, 'store'])->name('doctors.store');
-            Route::get('/doctors/{doctor}', [DoctorController::class, 'show'])->name('doctors.show');
-            Route::get('/doctors/{doctor}/edit', [DoctorController::class, 'edit'])->name('doctors.edit');
-            Route::put('/doctors/{doctor}', [DoctorController::class, 'update'])->name('doctors.update');
-            Route::delete('/doctors/{doctor}', [DoctorController::class, 'destroy'])->name('doctors.destroy');
+            Route::get('/doctors/create', 'create')->name('doctors.create');
+            Route::post('/doctors', 'store')->name('doctors.store');
+            Route::get('/doctors/{doctor}', 'show')->name('doctors.show');
+            Route::get('/doctors/{doctor}/edit', 'edit')->name('doctors.edit');
+            Route::put('/doctors/{doctor}', 'update')->name('doctors.update');
+            Route::delete('/doctors/{doctor}', 'destroy')->name('doctors.destroy');
         });
     });
 
@@ -192,12 +194,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::post('create-new-meeting', 'store')->name('meeting.store');
             Route::delete('delete-meeting/{meeting}', 'destroy')->name('meeting.destroy');
         });
-    });      
-   
-     //-----------------------------------Book Appointments ----------------------------------------------------------------
-     Route::controller(BookAppointmentController::class)->group(function () {
+    });
+
+    //-----------------------------------Book Appointments ----------------------------------------------------------------
+    Route::controller(BookAppointmentController::class)->group(function () {
         Route::middleware([config('const.auth.low')])->group(function () {
             Route::get('/book_appointments', 'index')->name('book_appointments.index');
+            Route::get('/accepted_book_appointment/{book_appointment}', 'acceptedBookAppointment')->name('book_appointments.accepted');
+            Route::get('/denied_book_appointment/{book_appointment}', 'deniedBookAppointment')->name('book_appointments.denied');
         });
     });
 });
@@ -205,7 +209,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 
 // ------------------------------------User site ------------------------------------------------------------
-
-Route::get('/doctors', [HomeController::class, 'getDoctor'])->name('user.getDoctor');
-
-Route::post('/user/appointments', [HomeController::class, 'storeAppointment'])->name('user.appointments-store');
+Route::controller(HomeController::class)->group(function () {
+    Route::get('/', 'index')->name('home.index');
+    Route::get('/about', 'aboutUs')->name('home.about');
+    Route::get('/blog', 'blog')->name('home.blog');
+    Route::get('/doctors', 'getDoctor')->name('user.getDoctor');
+    Route::post('/user/appointments', 'storeAppointment')->name('user.appointments-store');
+});

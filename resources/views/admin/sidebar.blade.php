@@ -48,6 +48,12 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
+                <a href="{{ route('book_appointments.index') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Book Appointments</p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="{{ route('appointments.index') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Appointments</p>
@@ -60,16 +66,18 @@
                 </a>
             </ul>
           </li>
+          @if (Auth::user()->role >= 2)
+            <li class="nav-item">
+              <a href="{{ route('meetings.index') }}" class="nav-link">
+                <i class="nav-icon far fa-image"></i>
+                <p>
+                  Live Meeting
+                </p>
+              </a>
+            </li>
+          @endif
           
-          <li class="nav-item">
-            <a href="{{ route('meetings.index') }}" class="nav-link">
-              <i class="nav-icon far fa-image"></i>
-              <p>
-                Live Meeting
-              </p>
-            </a>
-          </li>
-
+          @if (Auth::user()->role == 0 || Auth::user()->role == 2)
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>
@@ -105,7 +113,9 @@
               </li>
             </ul>
           </li>
+          @endif
 
+          @if (Auth::user()->role == 0 || Auth::user()->role == 2)
           <li class="nav-item">
             <a href="{{ route('patients.index') }}" class="nav-link">
               <i class="nav-icon far fa-image"></i>
@@ -114,6 +124,8 @@
               </p>
             </a>
           </li>
+          @endif
+          @if (Auth::user()->role == 2)
           <li class="nav-item">
             <a href="{{ route('users.index') }}" class="nav-link">
               <i class="nav-icon far fa-image"></i>
@@ -122,7 +134,8 @@
               </p>
             </a>
           </li>
-
+          @endif
+          @if (Auth::user()->role  >= 1)
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>
@@ -146,7 +159,9 @@
               </li>
             </ul>
           </li>
+          @endif
 
+          @if (Auth::user()->role  == 2)
           <li class="nav-item">
             <a href="{{ route('news.index') }}" class="nav-link">
               <i class="nav-icon far fa-image"></i>
@@ -155,7 +170,9 @@
               </p>
             </a>
           </li>
+          @endif
 
+          @if (Auth::user()->role  == 2)
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon far fa-image"></i>
@@ -164,7 +181,9 @@
               </p>
             </a>
           </li>
+          @endif
 
+          @if (Auth::user()->role  == 0 || Auth::user()->role  == 2)
           <li class="nav-item">
             <a href="{{route('admin.get-bill-list')}}" class="nav-link">
               <i class="nav-icon far fa-image"></i>
@@ -173,6 +192,7 @@
               </p>
             </a>
           </li>
+          @endif
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

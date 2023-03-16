@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\MailBookAppoiment;
 use App\Models\Book;
 use App\Models\Doctor;
 use App\Models\Patient;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
 use App\Models\DoctorDepartment;
+use Illuminate\Support\Facades\Mail;
 
 class AppointmentController extends Controller
 {
@@ -203,6 +205,10 @@ class AppointmentController extends Controller
         $appointment->update([
             'status' => 2
         ]);
+        $patient = $appointment->patient;
+        $doctor = $appointment->doctor;
+        $doctorDepartment = $appointment->doctorDepartment;
+        Mail::send(new MailBookAppoiment($appointment, $patient, $doctor, $doctorDepartment));
         return redirect()->route('appointments.index')
             ->with('success', 'Chấp nhận cuộc hẹn thành công !');
     }

@@ -65,7 +65,7 @@
                                     <label for="date_of_birth">Ngày sinh:</label>
                                     <input type="date" name="date_of_birth" id="date_of_birth"
                                         class="form-control @error('date_of_birth') is-invalid @enderror"
-                                        value="{{ old('date_of_birth', $patient->date_of_birth->format(config('const.format.date_form'))) }}">
+                                        value="{{ old('date_of_birth', $patient->date_of_birth?->format(config('const.format.date_form'))) }}">
                                     @error('date_of_birth')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -144,7 +144,7 @@
                                     <label for="identity_card_date">Ngày cấp:</label>
                                     <input type="date" name="identity_card_date" id="identity_card_date"
                                         class="form-control @error('identity_card_date') is-invalid @enderror"
-                                        value="{{ old('identity_card_date',$patient->identity_card_date->format(config('const.format.date_form'))) }}">
+                                        value="{{ old('identity_card_date',$patient->identity_card_date?->format(config('const.format.date_form'))) }}">
                                     @error('identity_card_date')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror

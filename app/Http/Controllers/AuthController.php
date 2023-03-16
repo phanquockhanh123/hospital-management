@@ -10,13 +10,7 @@ class AuthController extends Controller
     public function redirect()
     {
         if (Auth::id()) {
-            if (Auth::user()->role == '2') {
-                return view('admin.home');
-            } else if (Auth::user()->role == '1') {
-                return view('doctor.home');
-            } else {
-                return view('receptionist.home');
-            }
+            return view('admin.home');
         } else {
             return redirect()->back();
         }

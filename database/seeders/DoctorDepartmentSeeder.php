@@ -17,31 +17,31 @@ class DoctorDepartmentSeeder extends Seeder
         $now  = now();
         \App\Models\DoctorDepartment::insert([
             [
-                'name' => 'Department 1',
+                'name' => 'Phòng khám nội tổng hợp ',
                 'description' => 'department 1 description',
                 'created_at' => $now,
                 'updated_at' => $now,
             ],
             [
-                'name' => 'Department 2',
+                'name' => 'Phòng khám chuyên khoa ngoại',
                 'description' => 'department 2 description',
                 'created_at' => $now,
                 'updated_at' => $now,
             ],
             [
-                'name' => 'Department 3',
+                'name' => 'Phòng khám chuyên khoa nội',
                 'description' => 'department 3 description',
                 'created_at' => $now,
                 'updated_at' => $now,
             ],
             [
-                'name' => 'Department 4',
+                'name' => 'Phòng khám chuyên khoa răng – hàm – mặt',
                 'description' => 'department 4 description',
                 'created_at' => $now,
                 'updated_at' => $now,
             ],
             [
-                'name' => 'Department 5',
+                'name' => 'Phòng khám chuyên khoa tai – mũi – họng',
                 'description' => 'department 5 description',
                 'created_at' => $now,
                 'updated_at' => $now,
