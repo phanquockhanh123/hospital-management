@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Appointment;
+use App\Mail\MailBookAppoiment;
+use App\Models\Book;
 use App\Models\Doctor;
-use App\Models\DoctorDepartment;
 use App\Models\Patient;
+use App\Models\Appointment;
 use Illuminate\Http\Request;
+use App\Models\DoctorDepartment;
+use Illuminate\Support\Facades\Mail;
 
 class AppointmentController extends Controller
 {
@@ -131,7 +134,64 @@ class AppointmentController extends Controller
 
     public function calendar()
     {
-        return view('admin.appointments.calendar');
+        $bookings = Book::all();
+        $events = array();
+        foreach ($bookings as $booking) {
+            $events[] = [
+                'id'   => $booking->id,
+                'title' => $booking->title,
+                'start' => $booking->start_date,
+                'end' => $booking->end_date,
+            ];
+        }
+
+        return view('admin.appointments.calendar', compact('events'));
+    }
+
+    public function storeCalendar(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string',
+        ]);
+        $booking = Book::create([
+            'title' => $request->title,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+        ]);
+
+        return response()->json([
+            'id' => $booking->id,
+            'start' => $booking->start_date,
+            'end' => $booking->end_date,
+            'title' => $booking->title,
+
+        ]);
+    }
+
+    public function updateCalendar(Request $request, $id)
+    {
+        $booking = Book::find($id);
+        if (!$booking) {
+            return response()->json([
+                'error' => 'Unable to locate the event'
+            ], 404);
+        }
+        $booking->update([
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+        ]);
+        return response()->json('Event updated');
+    }
+    public function destroyCalendar($id)
+    {
+        $booking = Book::find($id);
+        if (!$booking) {
+            return response()->json([
+                'error' => 'Unable to locate the event'
+            ], 404);
+        }
+        $booking->delete();
+        return $id;
     }
 
     /**
@@ -145,6 +205,10 @@ class AppointmentController extends Controller
         $appointment->update([
             'status' => 2
         ]);
+        $patient = $appointment->patient;
+        $doctor = $appointment->doctor;
+        $doctorDepartment = $appointment->doctorDepartment;
+        Mail::send(new MailBookAppoiment($appointment, $patient, $doctor, $doctorDepartment));
         return redirect()->route('appointments.index')
             ->with('success', 'Chấp nhận cuộc hẹn thành công !');
     }

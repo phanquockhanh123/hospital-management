@@ -93,15 +93,12 @@
                         </td>
                         <td>
                           @if($user->role == 0)
-                          <span class="text-danger">Member</span>
+                          <span class="text-primary">Lễ tân</span>
                           @endif
                           @if($user->role == 1)
-                          <span class="text-primary">Patient</span>
+                          <span class="text-primary">Bác sĩ</span>
                           @endif
                           @if($user->role == 2)
-                          <span class="text-primary">Doctor</span>
-                          @endif
-                          @if($user->role == 3)
                           <span class="text-primary">Root</span>
                           @endif
                         </td>

@@ -330,20 +330,23 @@
                     </div>
                     <div class="card-body contacts_body">
                         <ul class="contacts">
-                            <li class="active">
-                                <div class="d-flex bd-highlight">
-                                    <div class="img_cont">
-                                        <img src="https://therichpost.com/wp-content/uploads/2020/06/avatar2.png"
-                                            class="rounded-circle user_img">
-                                        <span class="online_icon"></span>
+                            @foreach ($users as $user)
+                                <li class="active">
+                                    <div class="d-flex bd-highlight">
+                                        <div class="img_cont">
+                                            <img src="https://therichpost.com/wp-content/uploads/2020/06/avatar2.png"
+                                                class="rounded-circle user_img">
+                                            <span class="online_icon"></span>
+                                        </div>
+                                        <div class="user_info">
+                                            <span>{{ $user->name }} {{ ($user->id == Auth::id()) ? '(You)' : '' }}</span>
+                                            <p>Kalid is online</p>
+                                        </div>
                                     </div>
-                                    <div class="user_info">
-                                        <span>jassa</span>
-                                        <p>Kalid is online</p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
+                                </li>
+                            @endforeach
+                            
+                            {{-- <li>
                                 <div class="d-flex bd-highlight">
                                     <div class="img_cont">
                                         <img src="https://therichpost.com/wp-content/uploads/2020/06/avatar2.png"
@@ -355,46 +358,7 @@
                                         <p>Taherah left 7 mins ago</p>
                                     </div>
                                 </div>
-                            </li>
-                            <li>
-                                <div class="d-flex bd-highlight">
-                                    <div class="img_cont">
-                                        <img src="https://therichpost.com/wp-content/uploads/2020/06/avatar2.png"
-                                            class="rounded-circle user_img">
-                                        <span class="online_icon"></span>
-                                    </div>
-                                    <div class="user_info">
-                                        <span>jassa Mann</span>
-                                        <p>Sami is online</p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="d-flex bd-highlight">
-                                    <div class="img_cont">
-                                        <img src="https://therichpost.com/wp-content/uploads/2020/06/avatar2.png"
-                                            class="rounded-circle user_img">
-                                        <span class="online_icon offline"></span>
-                                    </div>
-                                    <div class="user_info">
-                                        <span>jassa Mann</span>
-                                        <p>Nargis left 30 mins ago</p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="d-flex bd-highlight">
-                                    <div class="img_cont">
-                                        <img src="https://therichpost.com/wp-content/uploads/2020/06/avatar2.png"
-                                            class="rounded-circle user_img">
-                                        <span class="online_icon offline"></span>
-                                    </div>
-                                    <div class="user_info">
-                                        <span>jassa Mann</span>
-                                        <p>Rashid left 50 mins ago</p>
-                                    </div>
-                                </div>
-                            </li>
+                            </li> --}}
                         </ul>
                     </div>
                     <div class="card-footer"></div>
@@ -514,6 +478,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="/js/app.js">
+
         </div>
     </div>
     <script>

@@ -102,7 +102,6 @@
                                                                 
                                                             @else
                                                                 <i class="fa-solid fa-calendar-xmark" style="color:red;"></i>
-                                                                
                                                             @endif
                                                             
                                                         </td>

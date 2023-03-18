@@ -21,7 +21,7 @@ class MedicalDeviceFactory extends Factory
             'department_id' => $departmentIds->random(),
             'status' => $this->faker->randomElement(array_keys(\App\Models\MedicalDevice::$status)),
             'charge' => $this->faker->numberBetween(500, 20000),
-            'status' => $this->faker->randomElement(array_keys(\App\Models\Bed::$status)),
+            'status' => $this->faker->randomElement(array_keys(\App\Models\MedicalDevice::$status)),
             'expired_date' => $this->faker->date(),
             'quantity' => $this->faker->numberBetween(5, 10),
             'description' => $this->faker->text(30),

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -9,7 +10,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens;
     use HasFactory;
@@ -18,15 +19,13 @@ class User extends Authenticatable
     use TwoFactorAuthenticatable;
 
     // role
-    public const ROLE_MEMBER = 0;
-    public const ROLE_PATIENT = 1;
-    public const ROLE_DOCTOR = 2;
-    public const ROLE_ADMIN_ROOT = 3;
+    public const ROLE_RECEPTIONIST = 0;
+    public const ROLE_DOCTOR = 1;
+    public const ROLE_ADMIN_ROOT = 2;
 
     public static $roles = [
-        self::ROLE_MEMBER => 'Member',
-        self::ROLE_PATIENT => 'Patient',
-        self::ROLE_DOCTOR => 'Doctor',
+        self::ROLE_RECEPTIONIST => 'Lễ tân',
+        self::ROLE_DOCTOR => 'Bác sĩ',
         self::ROLE_ADMIN_ROOT => 'Root',
     ];
 

@@ -98,7 +98,7 @@
                                     </tr>
                                     <tr>
                                         <th>Ngày cấp:</th>
-                                        <td>{{ $patient->identity_card_date->format(config('const.format.date')) }}</td>
+                                        <td>{{ $patient->identity_card_date?->format(config('const.format.date')) }}</td>
                                     </tr>
                                     <tr>
                                         <th>Nơi cấp:</th>

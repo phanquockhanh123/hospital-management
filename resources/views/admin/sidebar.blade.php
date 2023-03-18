@@ -37,37 +37,6 @@
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-          {{-- <li class="nav-item menu-open">
-            <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Dashboard
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="./index.html" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v1</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="./index2.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v2</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="./index3.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v3</p>
-                </a>
-              </li>
-            </ul>
-          </li> --}}
 
           <li class="nav-item">
             <a href="#" class="nav-link">
@@ -78,6 +47,12 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('book_appointments.index') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Book Appointments</p>
+                </a>
+              </li>
               <li class="nav-item">
                 <a href="{{ route('appointments.index') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -91,37 +66,18 @@
                 </a>
             </ul>
           </li>
-          <li class="nav-item">
-            <a href="{{ route('beds.index') }}" class="nav-link">
-              <i class="nav-icon far fa-image"></i>
-              <p>
-                Beds
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-chart-pie"></i>
-              <p>
-                Live
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Live Consultations</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Live Meetings</p>
-                </a>
-            </ul>
-          </li>
-
+          @if (Auth::user()->role >= 2)
+            <li class="nav-item">
+              <a href="{{ route('meetings.index') }}" class="nav-link">
+                <i class="nav-icon far fa-image"></i>
+                <p>
+                  Live Meeting
+                </p>
+              </a>
+            </li>
+          @endif
+          
+          @if (Auth::user()->role == 0 || Auth::user()->role == 2)
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>
@@ -132,7 +88,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ route('doctors.index') }}" class="nav-link">
+                <a href="#" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Doctors</p>
                 </a>
@@ -157,38 +113,19 @@
               </li>
             </ul>
           </li>
+          @endif
 
+          @if (Auth::user()->role == 0 || Auth::user()->role == 2)
           <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-chart-pie"></i>
-              <p>
-                Patients
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{ route('patients.index') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Patients</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ route('addmission_patients.index') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Patient Addmissions</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="{{ route('ipds.index') }}" class="nav-link">
+            <a href="{{ route('patients.index') }}" class="nav-link">
               <i class="nav-icon far fa-image"></i>
               <p>
-                IPD/OPD Patients
+                Patients
               </p>
             </a>
           </li>
+          @endif
+          @if (Auth::user()->role == 2)
           <li class="nav-item">
             <a href="{{ route('users.index') }}" class="nav-link">
               <i class="nav-icon far fa-image"></i>
@@ -197,22 +134,65 @@
               </p>
             </a>
           </li>
+          @endif
+          @if (Auth::user()->role  >= 1)
           <li class="nav-item">
-            <a href="{{ route('ipds.index') }}" class="nav-link">
-              <i class="nav-icon far fa-image"></i>
-              <p>
-                IPD/OPD Patients
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{ route('medical_devices.index') }}" class="nav-link">
-              <i class="nav-icon far fa-image"></i>
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-chart-pie"></i>
               <p>
                 Inventories
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('medical_devices.index') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Medical Devices</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Accept Devices</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          @endif
+
+          @if (Auth::user()->role  == 2)
+          <li class="nav-item">
+            <a href="{{ route('news.index') }}" class="nav-link">
+              <i class="nav-icon far fa-image"></i>
+              <p>
+                News
               </p>
             </a>
           </li>
+          @endif
+
+          @if (Auth::user()->role  == 2)
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon far fa-image"></i>
+              <p>
+                Payroll
+              </p>
+            </a>
+          </li>
+          @endif
+
+          @if (Auth::user()->role  == 0 || Auth::user()->role  == 2)
+          <li class="nav-item">
+            <a href="{{route('admin.get-bill-list')}}" class="nav-link">
+              <i class="nav-icon far fa-image"></i>
+              <p>
+                Bills
+              </p>
+            </a>
+          </li>
+          @endif
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

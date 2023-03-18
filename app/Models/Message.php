@@ -7,7 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Message extends BaseModel
 {
-    protected $fillable = ['message'];
+    protected $fillable = [
+        'from',
+        'to',
+        'message',
+        'is_read'
+    ];
 
     protected $dates = [
         'created_at',

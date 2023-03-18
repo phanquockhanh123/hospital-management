@@ -37,10 +37,9 @@ return [
     'application_cv_file_extension' => ['png, jpeg'],
     'retry_time' => 3,
     'auth' => [
-        '3' => 'auth.role:' . User::ROLE_ADMIN_ROOT,
-        '2' => 'auth.role:' . User::ROLE_DOCTOR,
-        '1' => 'auth.role:' . User::ROLE_PATIENT,
-        '0' => 'auth.role:' . User::ROLE_MEMBER,
+        'high' => 'auth.role:' . User::ROLE_ADMIN_ROOT,
+        'mid' => 'auth.role:' . User::ROLE_DOCTOR,
+        'low' => 'auth.role:' . User::ROLE_RECEPTIONIST
     ],
     'presigned_get_lifetime' => '7 day',
     'default_password' => 'Aa@123456',

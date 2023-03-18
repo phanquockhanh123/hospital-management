@@ -116,10 +116,8 @@
                                     <label for="identity_number">Quyền:</label>
                                     <select name="role" class="form-control input-sm m-bot15">
                                         <option value="">----Chọn quyền----</option>
-                                        <option value="0" {{ $user->role == 0 ? 'selected' : '' }}>Member</option>
-                                        <option value="1" {{ $user->role == 1 ? 'selected' : '' }}>Patient</option>
-                                        <option value="2" {{ $user->role == 2 ? 'selected' : '' }}>Admin doctor</option>
-                                        <option value="3" {{ $user->role == 3 ? 'selected' : '' }}>Admin root</option>
+                                        <option value="0" {{ $user->role == 0 ? 'selected' : '' }}>Lễ tân</option>
+                                        <option value="1" {{ $user->role == 1 ? 'selected' : '' }}>Bác sĩ</option>
                                     </select>
                                     @error('identity_number')
                                     <div class="invalid-feedback">{{ $message }}</div>
