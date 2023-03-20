@@ -16,6 +16,7 @@ class CreateDoctorDepartmentsTable extends Migration
         Schema::create('doctor_departments', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->tinyInteger('status');
             $table->string('description')->nullable();
             $table->timestamps();
             $table->softDeletes();

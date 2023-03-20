@@ -79,9 +79,9 @@
             <li class="nav-item">
               <a class="nav-link" href="{{route('home.about')}}">About Us</a>
             </li>
-            <li class="nav-item">
+            {{-- <li class="nav-item">
               <a class="nav-link" href="{{ route('user.getDoctor') }}">Doctors</a>
-            </li>
+            </li> --}}
             <li class="nav-item">
               <a class="nav-link" href=" {{ route('home.blog') }}">Blog</a>
             </li>

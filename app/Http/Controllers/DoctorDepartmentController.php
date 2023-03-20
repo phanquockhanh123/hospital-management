@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DoctorDepartment;
+use App\Models\Appointment;
 use Illuminate\Http\Request;
+use App\Models\DoctorDepartment;
 
 class DoctorDepartmentController extends Controller
 {
@@ -45,10 +46,10 @@ class DoctorDepartmentController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required',
-            'description' => 'nullable',
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string|max:255',
         ]);
-
+        $validatedData['status'] = DoctorDepartment::STATUS_FREE;
         DoctorDepartment::create($validatedData);
 
         return redirect()->route('doctor_departments.index')
@@ -87,10 +88,10 @@ class DoctorDepartmentController extends Controller
     public function update(Request $request, DoctorDepartment $doctorDepartment)
     {
         $validatedData = $request->validate([
-            'name' => 'required',
-            'description' => 'nullable',
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string|max:255',
         ]);
-
+        $validatedData['status'] = DoctorDepartment::STATUS_FREE;
         $doctorDepartment->update($validatedData);
 
         return redirect()->route('doctor_departments.index')

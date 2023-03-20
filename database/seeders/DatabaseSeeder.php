@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
             MedicalDeviceSeeder::class,
             NewsSeeder::class,
             MessageSeeder::class,
-            UserSeeder::class
+            //UserSeeder::class
         ]);
     }
 }

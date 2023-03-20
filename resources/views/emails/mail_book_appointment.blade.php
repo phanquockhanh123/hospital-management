@@ -9,7 +9,8 @@
     - Mã bệnh nhân : {{ $patientCode}} <br/>
     - Bác sĩ chịu trách nhiệm: {{ $doctorName }} <br/>
     - Phòng khám: {{ $doctorDepatment }} <br/>
-    - Thời gian thăm khám: {{ $appointmentDate }}
+    - Thời gian thăm khám bắt đầu từ: {{ $startDate }} 
+    - Thời gian thăm khám kết thúc: {{ $endDate }} 
 </div>
 <div>
     Cảm ơn qúy khách. Rất mong nhận được phản hồi lại từ quý khách!

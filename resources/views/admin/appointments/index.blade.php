@@ -77,7 +77,8 @@
                                                     <th>PATIENT</th>
                                                     <th>DOCTOR</th>
                                                     <th>DOCTOR DEPARTMENT</th>
-                                                    <th>APPOINTMENT DATE</th>
+                                                    <th>START TIME</th>
+                                                    <th>END TIME</th>
                                                     <th>ACTION</th>
                                                     <th></th>
                                                 </tr>
@@ -91,7 +92,8 @@
                                                         <td>{{ $appointment->patient->name }}</td>
                                                         <td>{{ $appointment->doctor->name }}</td>
                                                         <td>{{ $appointment->doctorDepartment->name }}</td>
-                                                        <td>{{ $appointment->appointment_date }}</td>
+                                                        <td>{{ $appointment->start_time }}</td>
+                                                        <td>{{ $appointment->end_time }}</td>
                                                         <td>
                                                             @if($appointment->status == 2) 
                                                                 <i class="fa-solid fa-calendar-check" style="color:green;"></i>

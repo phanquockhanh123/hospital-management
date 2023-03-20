@@ -6,6 +6,15 @@ use Database\Seeders\MedicalDeviceSeeder;
 
 class DoctorDepartment extends BaseModel
 {
+    //status
+    public const STATUS_BUSY = 1;
+    public const STATUS_FREE = 0;
+
+    public static $status = [
+        self::STATUS_FREE => 'Đang trống',
+        self::STATUS_BUSY => 'Đang bận',
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -14,6 +23,7 @@ class DoctorDepartment extends BaseModel
     protected $fillable = [
         'name',
         'description',
+        'status'
     ];
 
     protected $dates = [

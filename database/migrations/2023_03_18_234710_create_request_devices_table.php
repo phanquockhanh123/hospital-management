@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAppointmentsTable extends Migration
+class CreateRequestDevicesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,31 +13,33 @@ class CreateAppointmentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('appointments', function (Blueprint $table) {
+        Schema::create('request_devices', function (Blueprint $table) {
             $table->id();
-            $table->text('title')->nullable();
             $table->unsignedBigInteger('doctor_id');
             $table->unsignedBigInteger('patient_id');
-            $table->unsignedBigInteger('doctor_department_id');
-            $table->dateTime('start_time');
-            $table->dateTime('end_time');
-            $table->text('description')->nullable();
-            $table->tinyInteger('status')->default(1);
+            $table->unsignedBigInteger('medical_device_id');
+            $table->integer('quantity');
+            $table->dateTime('borrow_time');
+            $table->dateTime('return_time');
+            $table->string('description');
+            $table->string('status')->default(0);
             $table->timestamps();
             $table->softDeletes();
 
             // declare foreign key
-            $table->foreign('doctor_department_id', 'FK_appointments_1')
-                ->references('id')
-                ->on('doctor_departments')
-                ->onDelete('cascade');
-            $table->foreign('doctor_id', 'FK_appointments_2')
+            $table->foreign('doctor_id', 'FK_request_devices_1')
                 ->references('id')
                 ->on('doctors')
                 ->onDelete('cascade');
-            $table->foreign('patient_id', 'FK_appointments_3')
+
+            $table->foreign('patient_id', 'FK_request_devices_2')
                 ->references('id')
                 ->on('patients')
+                ->onDelete('cascade');
+
+            $table->foreign('medical_device_id', 'FK_request_devices_3')
+                ->references('id')
+                ->on('medical_devices')
                 ->onDelete('cascade');
         });
     }
@@ -49,6 +51,6 @@ class CreateAppointmentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('appointments');
+        Schema::dropIfExists('request_devices');
     }
 }

@@ -28,13 +28,16 @@ class Appointment extends BaseModel
         'patient_id',
         'doctor_id',
         'doctor_department_id',
-        'appointment_date',
+        'start_time',
+        'end_time',
         'description',
-        'status'
+        'status',
+        'title'
     ];
 
     protected $dates = [
-        'appointment_date',
+        'start_time',
+        'end_time',
         'created_at',
         'updated_at',
         'deleted_at',

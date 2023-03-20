@@ -42,7 +42,7 @@
                                         class="form-control @error('title') is-invalid @enderror"
                                         value="{{ old('title') }}">
                                     @error('title')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="form-group">
@@ -51,7 +51,7 @@
                                         class="form-control @error('key_words') is-invalid @enderror"
                                         value="{{ old('key_words') }}">
                                     @error('key_words')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -61,7 +61,7 @@
                                         class="form-control @error('image') is-invalid @enderror"
                                         value="{{ old('image') }}">
                                     @error('image')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -69,7 +69,7 @@
                                     <label for="content">Nội dung:</label>
                                     <textarea class="form-control" id="content" name="content" rows="5"></textarea>
                                     @error('content')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -79,7 +79,7 @@
                                         class="form-control @error('author') is-invalid @enderror"
                                         value="{{ old('author') }}">
                                     @error('author')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -89,7 +89,7 @@
                                         class="form-control @error('source_news') is-invalid @enderror"
                                         value="{{ old('source_news') }}">
                                     @error('source_news')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -111,7 +111,7 @@
                                         class="form-control @error('submitted_date') is-invalid @enderror"
                                         value="{{ old('submitted_date') }}">
                                     @error('submitted_date')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
@@ -133,6 +133,21 @@
         </div>
 
         @include('admin.script')
+        <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+        <script>
+        
+            ClassicEditor
+                .create( document.querySelector( '#content' ), {
+                    extraPlugins: [ MyCustomUploadAdapterPlugin ],
+
+                    // More configuration options.
+                    // ...
+                } )
+                .catch( error => {
+                    console.log( error );
+                } );
+
+        </script>
 </body>
 
 </html>

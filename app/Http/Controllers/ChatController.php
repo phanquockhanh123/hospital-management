@@ -17,7 +17,7 @@ class ChatController extends Controller
         from users LEFT  JOIN  messages ON users.id = messages.from and is_read = 0 and messages.to = " . Auth::id() . "
         where users.id != " . Auth::id() . " 
         group by users.id, users.name, users.filename, users.email");
-        return view('receptionist.chat', compact('users'));
+        return view('chat-realtime.chat', compact('users'));
     }
     public function getMessage($user_id) {
         $my_id = Auth::id();
@@ -32,7 +32,7 @@ class ChatController extends Controller
             $query->where('from', $user_id)->where('to', $my_id);
         })->get();
 
-        return view('receptionist.message_component', ['messages' => $messages]);
+        return view('chat-realtime.message_component', ['messages' => $messages]);
     }
 
     public function sendMessage(Request $request) {

@@ -30,10 +30,10 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <form action="{{ route('doctor_departments.index') }}" method="GET">
+                            <form action="{{ route('request_devices.index') }}" method="GET">
                                 <div class="input-group mb-2">
                                     <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder="Search Doctor Departments"
+                                        <input type="text" class="form-control" placeholder="Search request_devices"
                                             name="search">
                                         <div class="input-group-append">
                                             <button class="btn btn-outline-secondary" type="submit">Search</button>
@@ -43,7 +43,7 @@
                             </form>
                         </div>
                         <div class="col-sm-3" style="float: right;">
-                            <a href="{{ route('doctor_departments.create') }}" class="btn btn-success">
+                            <a href="{{ route('request_devices.create') }}" class="btn btn-success">
                                 <i class="fas fa-plus"></i> Tạo mới
                             </a>
                         </div>
@@ -58,93 +58,101 @@
                         <div class="col-md-12">
                             <div class="card">
                                 <h2>
-                                    @if (session('success'))
+                                    @if(session('success'))
                                         <div class="alert alert-success">
                                             {{ session('success') }}
                                         </div>
-                                    @endif
-                                </h2>
+                                    @endif</h2>
                                 <!-- /.card-header -->
                                 <div class="card-body">
-                                    @if ($doctorDepartments->isEmpty())
+                                    @if ($request_devices->isEmpty())
                                         <div class="alert alert-danger" role="alert">
-                                            No doctor departments found.
+                                            No request_devices found.
                                         </div>
                                     @else
                                         <table id="example2" class="table table-bordered table-hover">
                                             <thead>
                                                 <tr>
-                                                    <th>ID</th>
-                                                    <th>NAME</th>
+                                                    <th>DOCTOR</th>
+                                                    <th>PATIENT</th>
+                                                    <th>MEDICAL DEVICE</th>
+                                                    <th>QUANTITY</th>
+                                                    <th>BORROW TIME</th>
+                                                    <th>RETURN TIME</th>
                                                     <th>STATUS</th>
                                                     <th>DESCRIPTION</th>
-                                                    <th></th>
+                                                    @if(Auth::user()->role == 1)
+                                                    <th>ACTION</th>
+                                                    @endif
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($doctorDepartments as $doctorDepartment)
+                                                @foreach ($request_devices as $request_device)
                                                     <tr>
-                                                        <td><a
-                                                                href="{{ route('doctor_departments.show', $doctorDepartment) }}">{{ $doctorDepartment->id }}</a>
-                                                        </td>
-                                                        <td>{{ $doctorDepartment->name }}</td>
+                                                        <td>{{ $request_device->doctor->name }}</td>
+                                                        <td>{{ $request_device->patient->name }}</td>
+                                                        <td>{{ $request_device->medicalDevice->name }}</td>
+                                                        <td>{{ $request_device->quantity }}</td>
+                                                        <td>{{ $request_device->borrow_time->format(config('const.format.datetime')) }}</td>
+                                                        <td>{{ $request_device->return_time->format(config('const.format.datetime')) }}</td>
                                                         <td>
-                                                            @if($doctorDepartment->status == 0) 
-                                                                <span class="text text-primary"> Đang trống</span>
-                                                            @else
-                                                                <span class="text text-danger"> Đang bận</span>
+                                                            @if($request_device->status == 0)
+                                                            <span class="text-warning">Đang mượn</span>
+                                                            @endif
+                                                            @if($request_device->status == 1)
+                                                            <span class="text-primary">Đã trả</span>
                                                             @endif
                                                         </td>
-                                                        <td>{{ $doctorDepartment->description }}</td>
+                                                        <td>{{ $request_device->description }}</td>
+                                                        @if(Auth::user()->role == 1)
                                                         <td>
                                                             <div class="btn-group">
-                                                                <a href="{{ route('doctor_departments.edit', $doctorDepartment->id) }}"
+                                                                <a href="{{ route('request_devices.edit', $request_device->id) }}"
                                                                     class="btn btn-primary">
                                                                     <i class="fas fa-edit"></i> Sửa
                                                                 </a>
                                                                 <button type="button" class="btn btn-danger"
                                                                     data-toggle="modal"
-                                                                    data-target="#deleteModal{{ $doctorDepartment->id }}"
+                                                                    data-target="#deleteModal{{ $request_device->id }}"
                                                                     style="color: red;">
                                                                     <i class="fas fa-trash-alt"></i> Xóa
                                                                 </button>
                                                             </div>
                                                         </td>
-
+                                                        @endif
                                                         <!-- Modal -->
-                                                        <div class="modal fade"
-                                                            id="deleteModal{{ $doctorDepartment->id }}" tabindex="-1"
-                                                            role="dialog"
-                                                            aria-labelledby="deleteModalLabel{{ $doctorDepartment->id }}"
+                                                        <div class="modal fade" id="deleteModal{{ $request_device->id }}"
+                                                            tabindex="-1" role="dialog"
+                                                            aria-labelledby="deleteModalLabel{{ $request_device->id }}"
                                                             aria-hidden="true">
                                                             <div class="modal-dialog" role="document">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
                                                                         <h5 class="modal-title"
-                                                                            id="deleteModalLabel{{ $doctorDepartment->id }}">
-                                                                            Xóa loại giường</h5>
+                                                                            id="deleteModalLabel{{ $request_device->id }}">
+                                                                            Xóa yêu cầu thiết bị</h5>
                                                                         <button type="button" class="close"
                                                                             data-dismiss="modal" aria-label="Close">
                                                                             <span aria-hidden="true">&times;</span>
                                                                         </button>
                                                                     </div>
                                                                     <div class="modal-body">
-                                                                        Bạn có chắc chắn muốn xóa loại giường
-                                                                        "{{ $doctorDepartment->name }}" không? Hành
-                                                                        động này không
+                                                                        Bạn có chắc chắn muốn xóa yêu cầu thiết bị
+                                                                        "{{ $request_device->id }}" không? Hành động này
+                                                                        không
                                                                         thể hoàn tác!
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary" style="color: black;"
-                                                                            data-dismiss="modal">Hủy</button>
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-dismiss="modal" style="color:black;">Hủy</button>
                                                                         <form
-                                                                            action="{{ route('doctor_departments.destroy', $doctorDepartment->id) }}"
+                                                                            action="{{ route('request_devices.destroy', $request_device->id) }}"
                                                                             method="POST">
                                                                             @csrf
                                                                             @method('DELETE')
-                                                                            <button type="submit"
-                                                                                class="btn btn-danger" style="color: red;"
-                                                                                onclick="return confirm('Bạn có chắc chắn muốn xóa loại giường này không?')">Xóa</button>
+                                                                            <button type="submit" style="color:red;"
+                                                                                class="btn btn-danger"
+                                                                                onclick="return confirm('Bạn có chắc chắn muốn xóa thiết bị y tế này không?')">Xóa</button>
                                                                         </form>
                                                                     </div>
                                                                 </div>
@@ -153,10 +161,9 @@
                                                     </tr>
                                                 @endforeach
 
-
                                             </tbody>
                                         </table>
-                                        {{ $doctorDepartments->links() }}
+                                        {{ $request_devices->links() }}
                                     @endif
                                 </div>
                                 <!-- /.card-body -->
@@ -192,3 +199,4 @@
 </body>
 
 </html>
+
