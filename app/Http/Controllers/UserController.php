@@ -65,8 +65,7 @@ class UserController extends Controller
             ],
             'password' => 'required|min:8|regex:#(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])#',
             'confirmPassword' => 'required_with:password|same:password|min:6',
-            'profile' => 'required|file|max:5120|file|mimes:'
-                . implode(',', config('const.application_cv_file_extension')),
+            'profile' => 'required',
 
         ]);
         $validatedData = $request->all();
@@ -133,8 +132,6 @@ class UserController extends Controller
                 'date_format:' . config('const.format.date_form'),
                 'before_or_equal:' . Carbon::now()->format(config('const.format.date_form'))
             ],
-            'password' => 'required|min:8|regex:#(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])#',
-            'confirmPassword' => 'required_with:password|same:password|min:6',
             'profile' => 'required',
         ]);
         if ($request->profile) {
@@ -157,7 +154,6 @@ class UserController extends Controller
             $validatedData['filename'] = $filename;
         }
         $validatedData['status'] = User::STATUS_ACTIVE;
-        $validatedData['password'] = Hash::make($request->password);
 
         $user->update($validatedData);
 

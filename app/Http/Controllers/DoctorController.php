@@ -58,8 +58,7 @@ class DoctorController extends Controller
                 . config('const.regex_email_admin'),
             'designation' => 'nullable|string|max:255',
             'phone' => 'nullable|size:10|regex:' . config('const.regex_telephone'),
-            'profile' => 'required|file|max:5120|file|mimes:'
-                . implode(',', config('const.application_cv_file_extension')),
+            'profile' => 'required',
             'academic_level' => 'required|in:' . implode(',', array_keys(Doctor::$academicLevels)),
             'date_of_birth' => [
                 'nullable',
@@ -138,16 +137,16 @@ class DoctorController extends Controller
      */
     public function update(Request $request, Doctor $doctor)
     {
+        $doctorId = $doctor->id;
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'doctor_department_id' => 'required|integer|exists:doctor_departments,id,deleted_at,NULL',
             'blood_group' => 'required|in:' . implode(',', array_keys(Doctor::$bloodGroups)),
-            'email' => 'required|string|max:255|unique:doctors,email|regex:'
+            'email' => 'required|string|max:255|unique:doctors,email,' . $doctorId . '|regex:'
                 . config('const.regex_email_admin'),
             'designation' => 'nullable|string|max:255',
             'phone' => 'nullable|size:10|regex:' . config('const.regex_telephone'),
-            'profile' => 'required|file|max:5120|file|mimes:'
-                . implode(',', config('const.application_cv_file_extension')),
+            'profile' => 'required',
             'academic_level' => 'required|in:' . implode(',', array_keys(Doctor::$academicLevels)),
             'date_of_birth' => [
                 'nullable',

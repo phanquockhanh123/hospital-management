@@ -40,7 +40,7 @@
             background-color: rgba(0, 0, 0, 0.4) !important;
         }
         .contacts_body {
-            padding: 0.75rem 0 !important;
+            padding: 1.5rem 0 !important;
             overflow-y: auto;
             white-space: nowrap;
         }
@@ -275,19 +275,21 @@
 
 <body>
     <div class="container-fluid h-50">
-        <div class="row justify-content-center h-100">
-            <div class="col-md-4 col-xl-3 chat">
+        <div class="row justify-content-center h-100"  style="margin-top: 20px">
+            
+            <div class="col-md-4 col-xl-3 chat" >
+                
                 <div class="card mb-sm-3 mb-md-0 contacts_card">
                     <div class="card-header">
                         <div class="input-group">
-                            <input type="text" placeholder="Search..." name="" class="form-control search">
+                            <input type="text" placeholder="Search..." name="search" id="search" class="form-control search">
                             <div class="input-group-prepend">
                                 <span class="input-group-text search_btn"><i class="fas fa-search"></i></span>
                             </div>
                         </div>
                     </div>
                     <div class="card-body contacts_body">
-                        <ul class="users">
+                        <ul class="users" style="list-style:none">
                             @foreach ($users as $user)
                                 <li class="user" id="{{ $user->id }}">
                                     @if ($user->unread)

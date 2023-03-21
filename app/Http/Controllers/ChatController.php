@@ -12,15 +12,22 @@ use Illuminate\Support\Facades\Auth;
 class ChatController extends Controller
 {
     public function index() {
+        
         // count how many message are unread from the selected user
         $users = DB::select("select users.id, users.name, users.filename, users.email, count(is_read) as unread 
         from users LEFT  JOIN  messages ON users.id = messages.from and is_read = 0 and messages.to = " . Auth::id() . "
         where users.id != " . Auth::id() . " 
         group by users.id, users.name, users.filename, users.email");
+
         return view('chat-realtime.chat', compact('users'));
     }
     public function getMessage($user_id) {
         $my_id = Auth::id();
+
+        $users = DB::select("select users.id, users.name, users.filename, users.email, count(is_read) as unread 
+        from users LEFT  JOIN  messages ON users.id = messages.from and is_read = 0 and messages.to = " . Auth::id() . "
+        where users.id != " . Auth::id() . " 
+        group by users.id, users.name, users.filename, users.email");
 
         // Make read all unread message
         Message::where(['from' => $user_id, 'to' => $my_id])->update(['is_read' => 1]);
@@ -32,7 +39,7 @@ class ChatController extends Controller
             $query->where('from', $user_id)->where('to', $my_id);
         })->get();
 
-        return view('chat-realtime.message_component', ['messages' => $messages]);
+        return view('chat-realtime.message_component', compact('messages', 'users'));
     }
 
     public function sendMessage(Request $request) {

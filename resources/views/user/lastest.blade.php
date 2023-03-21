@@ -26,7 +26,7 @@
                   </div>
                   <span>{{ $new->author }}</span>
                 </div>
-                <span class="mai-time">{{ $new->created_at->diffForHumans() }}</span>
+                <span class="mai-time">{{ $new->updated_at->diffForHumans() }}</span>
               </div>
             </div>
           </div>

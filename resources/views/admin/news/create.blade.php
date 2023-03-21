@@ -105,17 +105,6 @@
                                     @enderror
                                 </div>
 
-                                <div class="form-group">
-                                    <label for="submitted_date">Ngày đăng bài:</label>
-                                    <input type="date" name="submitted_date" id="submitted_date"
-                                        class="form-control @error('submitted_date') is-invalid @enderror"
-                                        value="{{ old('submitted_date') }}">
-                                    @error('submitted_date')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-
                                 <div class="d-flex justify-content-between mt-4">
                                     <a href="{{ route('news.index') }}" class="btn btn-secondary">
                                         <i class="fas fa-arrow-left"></i> Quay lại

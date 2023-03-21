@@ -64,8 +64,7 @@ class MedicalDeviceController extends Controller
             'expired_date' => 'required',
             'quantity' => 'required|integer',
             'charge' => 'required|integer',
-            'profile' => 'required|file|max:5120|file|mimes:'
-                . implode(',', config('const.application_cv_file_extension')),
+            'profile' => 'required',
         ]);
         $validatedData['medical_device_code'] = MedicalDevice::generateNextCode();
         $validatedData['status'] = MedicalDevice::STATUS_CENSORED;
@@ -126,8 +125,7 @@ class MedicalDeviceController extends Controller
             'expired_date' => 'required',
             'quantity' => 'required|integer',
             'charge' => 'required|integer',
-            'profile' => 'required|file|max:5120|file|mimes:'
-                . implode(',', config('const.application_cv_file_extension')),
+            'profile' => 'required',
         ]);
 
         // Handle the avatar file upload

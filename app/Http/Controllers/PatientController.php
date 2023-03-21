@@ -60,8 +60,7 @@ class PatientController extends Controller
                 'before_or_equal:' . Carbon::now()->format(config('const.format.date_form'))
             ],
             'gender' => 'required|in:' . implode(',', array_keys(Patient::$genders)),
-            'profile'  => 'required|file|max:5120|file|mimes:'
-            . implode(',', config('const.application_cv_file_extension')),
+            'profile'  => 'required',
             'address' => 'required|string|max:255',
             'identity_number' => [
                 'required',

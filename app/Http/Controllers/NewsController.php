@@ -62,10 +62,8 @@ class NewsController extends Controller
     {
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
-            'image' => 'required|file|max:5120|file|mimes:'
-                . implode(',', config('const.application_cv_file_extension')),
+            'image' => 'required',
             'content' => 'required|string|max:1000',
-            'submitted_date' => 'required',
             'source_news' => 'nullable|string|max:255',
             'author' => 'nullable|string|max:255',
             'key_words' => 'nullable|string|max:255',
@@ -130,16 +128,13 @@ class NewsController extends Controller
     {
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
-            'image' => 'required|file|max:5120|file|mimes:'
-                . implode(',', config('const.application_cv_file_extension')),
+            'image' => 'required',
             'content' => 'required|string|max:1000',
-            'submitted_date' => 'required',
             'source_news' => 'nullable|string|max:255',
             'author' => 'nullable|string|max:255',
             'key_words' => 'nullable|string|max:255',
             'priority_level' => 'required|in:' . implode(',', array_keys(News::$priorityLevels)),
         ]);
-        $validatedData['submitted_date'] = now();
         // Handle the avatar file upload
         if ($request->image) {
             $imagePath = "./imgNews/" . $new->filename;
