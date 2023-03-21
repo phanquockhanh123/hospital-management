@@ -30,20 +30,20 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <form action="{{ route('appointments.index') }}" method="GET">
+                            <form action="{{ route('documents.index') }}" method="GET">
                                 <div class="input-group mb-2">
                                     <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder="Tìm kiếm lịch hẹn"
+                                        <input type="text" class="form-control" placeholder="Search documents"
                                             name="search">
                                         <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
+                                            <button class="btn btn-outline-secondary" type="submit">Search</button>
                                         </div>
                                     </div>
                                 </div>
                             </form>
                         </div>
                         <div class="col-sm-3" style="float: right;">
-                            <a href="{{ route('appointments.create') }}" class="btn btn-success">
+                            <a href="{{ route('documents.create') }}" class="btn btn-success">
                                 <i class="fas fa-plus"></i> Tạo mới
                             </a>
                         </div>
@@ -65,57 +65,62 @@
                                     @endif</h2>
                                 <!-- /.card-header -->
                                 <div class="card-body">
-                                    @if ($appointments->isEmpty())
+                                    @if ($documents->isEmpty())
                                         <div class="alert alert-danger" role="alert">
-                                            No appointments found.
+                                            No documents found.
                                         </div>
                                     @else
                                         <table id="example2" class="table table-bordered table-hover">
                                             <thead>
                                                 <tr>
-                                                    <th>STT</th>
-                                                    <th>Bệnh nhân</th>
-                                                    <th>Bác sĩ</th>
-                                                    <th>Phòng ban</th>
-                                                    <th>Bắt đầu</th>
-                                                    <th>Kết thúc</th>
-                                                    <th>Trạng thái</th>
-                                                    <th>Sửa/Xóa</th>
+                                                    <th>TITLE</th>
+                                                    <th>PATIENT</th>
+                                                    <th>DOCTOR</th>
+                                                    <th>CREATED_AT</th>
+                                                    <th>DOCUMENT_TYPE</th>
+                                                    <th>NOTE</th>
+                                                    <th></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($appointments as $appointment)
+                                                @foreach ($documents as $document)
                                                     <tr>
-                                                        <td><a
-                                                                href="{{ route('appointments.show', $appointment->id) }}">{{ $count++ }}</a>
-                                                        </td>
-                                                        <td>{{ $appointment->patient->name }}</td>
-                                                        <td>{{ $appointment->doctor->name }}</td>
-                                                        <td>{{ $appointment->doctorDepartment->name }}</td>
-                                                        <td>{{ $appointment->start_time }}</td>
-                                                        <td>{{ $appointment->end_time }}</td>
+                                                        <td>{{ $document->title }}</td>
+                                                        <td>{{ $document->patient->name }}</td>
+                                                        <td>{{ $document->doctor->name }}</td>
+                                                        <td>{{ $document->created_at->format(config('const.format.date')) }}</td>
                                                         <td>
-                                                            @if($appointment->status == 2) 
-                                                                <i class="fa-solid fa-calendar-check" style="color:green;"></i>
-                                                                
-                                                            @elseif ($appointment->status == 1)
-                                                                <a href="{{ route('appointments.denied', $appointment->id) }}"><i class="fa-solid fa-calendar-xmark"  style="color:red;"></i></a>
-                                                                <a href="{{ route('appointments.accepted', $appointment->id) }}"><i class="fa-solid fa-calendar-check"  style="color:blue;"></i></a>
-                                                                
-                                                            @else
-                                                                <i class="fa-solid fa-calendar-xmark" style="color:red;"></i>
+                                                            @if($document->document_type ==  0)
+                                                            <span>X-Quang</span>
                                                             @endif
-                                                            
+                                                            @if($document->document_type ==  1)
+                                                            <span>CLS</span>
+                                                            @endif
+                                                            @if($document->document_type ==  2)
+                                                            <span>Hồ sơ tổng quát</span>
+                                                            @endif
+                                                            @if($document->document_type ==  3)
+                                                            <span>MRI</span>
+                                                            @endif
+                                                            @if($document->document_type ==  4)
+                                                            <span>Siêu âm</span>
+                                                            @endif
                                                         </td>
+                                                        <td>{{ $document->note }}</td>
+                                                        
                                                         <td>
                                                             <div class="btn-group">
-                                                                <a href="{{ route('appointments.edit', $appointment->id) }}"
+                                                                <a href="#"
+                                                                    class="btn btn-warning">
+                                                                    <i class="fa-solid fa-download"></i> Tải xuống
+                                                                </a>
+                                                                <a href="{{ route('documents.edit', $document->id) }}"
                                                                     class="btn btn-primary">
                                                                     <i class="fas fa-edit"></i> Sửa
                                                                 </a>
                                                                 <button type="button" class="btn btn-danger"
                                                                     data-toggle="modal"
-                                                                    data-target="#deleteModal{{ $appointment->id }}"
+                                                                    data-target="#deleteModal{{ $document->id }}"
                                                                     style="color: red;">
                                                                     <i class="fas fa-trash-alt"></i> Xóa
                                                                 </button>
@@ -123,24 +128,24 @@
                                                         </td>
 
                                                         <!-- Modal -->
-                                                        <div class="modal fade" id="deleteModal{{ $appointment->id }}"
+                                                        <div class="modal fade" id="deleteModal{{ $document->id }}"
                                                             tabindex="-1" role="dialog"
-                                                            aria-labelledby="deleteModalLabel{{ $appointment->id }}"
+                                                            aria-labelledby="deleteModalLabel{{ $document->id }}"
                                                             aria-hidden="true">
                                                             <div class="modal-dialog" role="document">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
                                                                         <h5 class="modal-title"
-                                                                            id="deleteModalLabel{{ $appointment->id }}">
-                                                                            Xóa loại giường</h5>
+                                                                            id="deleteModalLabel{{ $document->id }}">
+                                                                            Xóa tài liệu bệnh nhân</h5>
                                                                         <button type="button" class="close"
                                                                             data-dismiss="modal" aria-label="Close">
                                                                             <span aria-hidden="true">&times;</span>
                                                                         </button>
                                                                     </div>
                                                                     <div class="modal-body">
-                                                                        Bạn có chắc chắn muốn xóa lịch hẹn với bệnh nhân
-                                                                        "{{ $appointment->patient->name }}" không? Hành động này
+                                                                        Bạn có chắc chắn muốn xóa tài liệu bệnh nhân
+                                                                        "{{ $document->patient->name }}" không? Hành động này
                                                                         không
                                                                         thể hoàn tác!
                                                                     </div>
@@ -148,13 +153,13 @@
                                                                         <button type="button" class="btn btn-secondary"
                                                                             data-dismiss="modal" style="color:black;">Hủy</button>
                                                                         <form
-                                                                            action="{{ route('appointments.destroy', $appointment->id) }}"
+                                                                            action="{{ route('documents.destroy', $document->id) }}"
                                                                             method="POST">
                                                                             @csrf
                                                                             @method('DELETE')
                                                                             <button type="submit" style="color:red;"
                                                                                 class="btn btn-danger"
-                                                                                onclick="return confirm('Bạn có chắc chắn muốn xóa lịch hẹn này không?')">Xóa</button>
+                                                                                onclick="return confirm('Bạn có chắc chắn muốn xóa thiết bị y tế này không?')">Xóa</button>
                                                                         </form>
                                                                     </div>
                                                                 </div>
@@ -163,10 +168,9 @@
                                                     </tr>
                                                 @endforeach
 
-
                                             </tbody>
                                         </table>
-                                        {{ $appointments->links() }}
+                                        {{ $documents->links() }}
                                     @endif
                                 </div>
                                 <!-- /.card-body -->

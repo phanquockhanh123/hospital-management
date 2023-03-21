@@ -17,7 +17,8 @@ class BookAppointmentController extends Controller
         } else {
             $book_appointments = BookAppointment::orderByDesc('created_at')->paginate(config('const.perPage'));
         }
-        return view('admin.book_appointments.index', compact('book_appointments'));
+        $count = 1;
+        return view('admin.book_appointments.index', compact('book_appointments', 'count'));
     }
 
     

@@ -74,10 +74,11 @@
                   <table id="example2" class="table table-bordered table-hover">
                     <thead>
                       <tr>
-                        <th>PATIENT</th>
-                        <th>PHONE</th>
-                        <th>ADDRESS</th>
-                        <th>BLOOD GROUP</th>
+                        <th>Mã bệnh nhân</th>
+                        <th>Họ tên</th>
+                        <th>Số điện thoại</th>
+                        <th>Địa chỉ</th>
+                        <th>Nhóm máu</th>
                         <th></th>
                       </tr>
                     </thead>
@@ -89,8 +90,9 @@
                               style="border-radius: 50%;vertical-align: middle;
                                           width: 50px;
                                           height: 50px;
-                                          border-radius: 50%;" alt="" title="">{{ $patient->name }}</a>
+                                          border-radius: 50%;" alt="" title="">{{ $patient->patient_code }}</a>
                         </td>
+                        <td>{{ $patient->name }}</td>
                         <td>{{ $patient->phone }}</td>
                         <td>{{ $patient->address }}</td>
                         <td>

@@ -30,44 +30,54 @@
             background: -webkit-linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
             background: linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
         }
+
         .chat {
             margin-top: auto;
             margin-bottom: auto;
         }
+
         .card {
             height: 550px;
             border-radius: 15px !important;
             background-color: rgba(0, 0, 0, 0.4) !important;
         }
+
         .contacts_body {
             padding: 1.5rem 0 !important;
             overflow-y: auto;
             white-space: nowrap;
         }
+
         .msg_card_body {
             overflow-y: auto;
         }
+
         .card-header {
             border-radius: 15px 15px 0 0 !important;
             border-bottom: 0 !important;
         }
+
         .card-footer {
             border-radius: 0 0 15px 15px !important;
             border-top: 0 !important;
         }
+
         .container {
             align-content: center;
         }
+
         .search {
             border-radius: 15px 0 0 15px !important;
             background-color: rgba(0, 0, 0, 0.3) !important;
             border: 0 !important;
             color: white !important;
         }
+
         .search:focus {
             box-shadow: none !important;
             outline: 0px !important;
         }
+
         .type_msg {
             background-color: rgba(0, 0, 0, 0.3) !important;
             border: 0 !important;
@@ -75,10 +85,12 @@
             height: 60px !important;
             overflow-y: auto;
         }
+
         .type_msg:focus {
             box-shadow: none !important;
             outline: 0px !important;
         }
+
         .attach_btn {
             border-radius: 15px 0 0 15px !important;
             background-color: rgba(0, 0, 0, 0.3) !important;
@@ -86,6 +98,7 @@
             color: white !important;
             cursor: pointer;
         }
+
         .send_btn {
             border-radius: 0 15px 15px 0 !important;
             background-color: rgba(0, 0, 0, 0.3) !important;
@@ -93,6 +106,7 @@
             color: white !important;
             cursor: pointer;
         }
+
         .search_btn {
             border-radius: 0 15px 15px 0 !important;
             background-color: rgba(0, 0, 0, 0.3) !important;
@@ -100,37 +114,45 @@
             color: white !important;
             cursor: pointer;
         }
+
         .contacts {
             list-style: none;
             padding: 0;
         }
+
         .contacts li {
             width: 100% !important;
             padding: 5px 10px;
             margin-bottom: 15px !important;
         }
+
         .active {
             background-color: rgba(0, 0, 0, 0.3);
         }
+
         .user_img {
             height: 70px;
             width: 70px;
             border: 1.5px solid #f5f6fa;
         }
+
         .user_img_msg {
             height: 40px;
             width: 40px;
             border: 1.5px solid #f5f6fa;
         }
+
         .img_cont {
             position: relative;
             height: 70px;
             width: 70px;
         }
+
         .img_cont_msg {
             height: 40px;
             width: 40px;
         }
+
         .online_icon {
             position: absolute;
             height: 15px;
@@ -141,32 +163,39 @@
             right: 0.4em;
             border: 1.5px solid white;
         }
+
         .offline {
             background-color: #c23616 !important;
         }
+
         .user_info {
             margin-top: auto;
             margin-bottom: auto;
             margin-left: 15px;
         }
+
         .user_info span {
             font-size: 20px;
             color: white;
         }
+
         .user_info p {
             font-size: 10px;
             color: rgba(255, 255, 255, 0.6);
         }
+
         .video_cam {
             margin-left: 50px;
             margin-top: 5px;
         }
+
         .video_cam span {
             color: white;
             font-size: 20px;
             cursor: pointer;
             margin-right: 20px;
         }
+
         .msg_cotainer {
             margin-top: auto;
             margin-bottom: auto;
@@ -176,6 +205,7 @@
             padding: 10px;
             position: relative;
         }
+
         .msg_cotainer_send {
             margin-top: auto;
             margin-bottom: auto;
@@ -185,6 +215,7 @@
             padding: 10px;
             position: relative;
         }
+
         .msg_time {
             position: absolute;
             left: 0;
@@ -192,6 +223,7 @@
             color: rgba(255, 255, 255, 0.5);
             font-size: 10px;
         }
+
         .msg_time_send {
             position: absolute;
             right: 0;
@@ -199,9 +231,11 @@
             color: rgba(255, 255, 255, 0.5);
             font-size: 10px;
         }
+
         .msg_head {
             position: relative;
         }
+
         #action_menu_btn {
             position: absolute;
             right: 10px;
@@ -210,6 +244,7 @@
             cursor: pointer;
             font-size: 20px;
         }
+
         .action_menu {
             z-index: 1;
             position: absolute;
@@ -221,42 +256,51 @@
             right: 15px;
             display: none;
         }
+
         .action_menu ul {
             list-style: none;
             padding: 0;
             margin: 0;
         }
+
         .action_menu ul li {
             width: 100%;
             padding: 10px 15px;
             margin-bottom: 5px;
         }
+
         .action_menu ul li i {
             padding-right: 10px;
         }
+
         .action_menu ul li:hover {
             cursor: pointer;
             background-color: rgba(0, 0, 0, 0.2);
         }
+
         @media(max-width: 576px) {
             .contacts_card {
                 margin-bottom: 15px !important;
             }
         }
+
         /* width */
         ::-webkit-scrollbar {
             width: 10px;
         }
+
         /* Track */
         ::-webkit-scrollbar-track {
             box-shadow: inset 0 0 5px grey;
             border-radius: 10px;
         }
+
         /* Handle */
         ::-webkit-scrollbar-thumb {
             background: #7F7FD5;
             border-radius: 10px;
         }
+
         /* Handle on hover */
         ::-webkit-scrollbar-thumb:hover {
             background: #5454b6;
@@ -275,14 +319,15 @@
 
 <body>
     <div class="container-fluid h-50">
-        <div class="row justify-content-center h-100"  style="margin-top: 20px">
-            
-            <div class="col-md-4 col-xl-3 chat" >
-                
+        <div class="row justify-content-center h-100" style="margin-top: 20px">
+
+            <div class="col-md-4 col-xl-3 chat">
+
                 <div class="card mb-sm-3 mb-md-0 contacts_card">
                     <div class="card-header">
                         <div class="input-group">
-                            <input type="text" placeholder="Search..." name="search" id="search" class="form-control search">
+                            <input type="text" placeholder="Search..." name="search" id="search"
+                                class="form-control search">
                             <div class="input-group-prepend">
                                 <span class="input-group-text search_btn"><i class="fas fa-search"></i></span>
                             </div>
@@ -291,26 +336,24 @@
                     <div class="card-body contacts_body">
                         <ul class="users" style="list-style:none">
                             @foreach ($users as $user)
-                                <li class="user" id="{{ $user->id }}">
-                                    @if ($user->unread)
-                                        <span class="pending" style="color:red;">{{ $user->unread }}</span>
-                                    @endif
-                                    <div class="d-flex bd-highlight">
-                                        <div class="img_cont">
-                                            <img src="{{ asset('imgUser/' . $user->filename) }}"
-                                                style="border-radius: 50%;vertical-align: middle;
+                            <li class="user" id="{{ $user->id }}">
+                                @if ($user->unread)
+                                <span class="pending" style="color:red;">{{ $user->unread }}</span>
+                                @endif
+                                <div class="d-flex bd-highlight">
+                                    <div class="img_cont">
+                                        <img src="{{ asset('imgUser/' . $user->filename) }}" style="border-radius: 50%;vertical-align: middle;
                                             width: 50px;
                                             height: 50px;
-                                            border-radius: 50%;"
-                                                alt="" title="">
-                                            <span class="online_icon"></span>
-                                        </div>
-                                        <div class="user_info">
-                                            <span>{{ $user->name }} {{ $user->id == Auth::id() }}</span>
-                                            <p>{{ $user->email }}</p>
-                                        </div>
+                                            border-radius: 50%;" alt="" title="">
+                                        <span class="online_icon"></span>
                                     </div>
-                                </li>
+                                    <div class="user_info">
+                                        <span>{{ $user->name }} {{ $user->id == Auth::id() }}</span>
+                                        <p>{{ $user->email }}</p>
+                                    </div>
+                                </div>
+                            </li>
                             @endforeach
                         </ul>
                     </div>
@@ -319,7 +362,7 @@
             </div>
             <div class="col-md-8 col-xl-6 chat">
                 <div class="card">
-                    <div class="card-body msg_card_body" class="messages" id="messages">
+                    <div class="card-body msg_card_body" name="messages" id="messages">
                     </div>
                     <div class="card-footer">
                         <div class="input-group">

@@ -31,7 +31,8 @@ class AppointmentController extends Controller
         } else {
             $appointments = Appointment::orderByDesc('created_at')->paginate(config('const.perPage'));
         }
-        return view('admin.appointments.index', compact('appointments'));
+        $count = 1;
+        return view('admin.appointments.index', compact('appointments', 'count'));
     }
 
     /**

@@ -13,6 +13,7 @@ use App\Http\Controllers\DoctorDepartmentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookAppointmentController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\RequestDeviceController;
 use App\Http\Controllers\ZoomController;
 
@@ -170,6 +171,19 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/request_devices/{request_device}/edit', 'edit')->name('request_devices.edit')->withoutMiddleware(config('const.auth.high'));
             Route::put('/request_devices/{request_device}', 'update')->name('request_devices.update')->withoutMiddleware(config('const.auth.high'));
             Route::delete('/request_devices/{request_device}', 'destroy')->name('request_devices.destroy')->withoutMiddleware(config('const.auth.high'));
+        });
+    });
+
+    //-----------------------------------Files ----------------------------------------------------------------
+    Route::controller(DocumentController::class)->group(function () {
+        Route::middleware([config('const.auth.mid')])->group(function () {
+            Route::get('/documents', 'index')->name('documents.index');
+            Route::get('/documents/create', 'create')->name('documents.create');
+            Route::post('/documents', 'store')->name('documents.store');
+            Route::get('/documents/{document}', 'show')->name('documents.show');
+            Route::get('/documents/{document}/edit', 'edit')->name('documents.edit');
+            Route::put('/documents/{document}', 'update')->name('documents.update');
+            Route::delete('/documents/{document}', 'destroy')->name('documents.destroy');
         });
     });
 

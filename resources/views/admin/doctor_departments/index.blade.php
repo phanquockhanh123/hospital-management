@@ -33,10 +33,10 @@
                             <form action="{{ route('doctor_departments.index') }}" method="GET">
                                 <div class="input-group mb-2">
                                     <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder="Search Doctor Departments"
+                                        <input type="text" class="form-control" placeholder="Tìm kiếm phòng ban"
                                             name="search">
                                         <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary" type="submit">Search</button>
+                                            <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
                                         </div>
                                     </div>
                                 </div>
@@ -68,16 +68,16 @@
                                 <div class="card-body">
                                     @if ($doctorDepartments->isEmpty())
                                         <div class="alert alert-danger" role="alert">
-                                            No doctor departments found.
+                                            Không tìm thấy phòng ban nào!.
                                         </div>
                                     @else
                                         <table id="example2" class="table table-bordered table-hover">
                                             <thead>
                                                 <tr>
-                                                    <th>ID</th>
-                                                    <th>NAME</th>
-                                                    <th>STATUS</th>
-                                                    <th>DESCRIPTION</th>
+                                                    <th>STT</th>
+                                                    <th>Tên phòng ban</th>
+                                                    <th>Trạng thái</th>
+                                                    <th>Mô tả</th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
@@ -129,7 +129,7 @@
                                                                         </button>
                                                                     </div>
                                                                     <div class="modal-body">
-                                                                        Bạn có chắc chắn muốn xóa loại giường
+                                                                        Bạn có chắc chắn muốn xóa
                                                                         "{{ $doctorDepartment->name }}" không? Hành
                                                                         động này không
                                                                         thể hoàn tác!
