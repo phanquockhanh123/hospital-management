@@ -33,10 +33,10 @@
                             <form action="{{ route('news.index') }}" method="GET">
                                 <div class="input-group mb-2">
                                     <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder="Search news"
+                                        <input type="text" class="form-control" placeholder="Tìm kiếm tin"
                                             name="search">
                                         <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary" type="submit">Search</button>
+                                            <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
                                         </div>
                                     </div>
                                 </div>
@@ -73,12 +73,12 @@
                                         <table id="example2" class="table table-bordered table-hover">
                                             <thead>
                                                 <tr>
-                                                    <th>TITLE</th>
-                                                    <th>KEYWORDS</th>
-                                                    <th>CONTENT</th>
-                                                    <th>SUBMITTED_DATE</th>
-                                                    <th>SOURCE_NEWS</th>
-                                                    <th>AUTHOR</th>
+                                                    <th>Tiêu đề</th>
+                                                    <th>Từ khóa</th>
+                                                    <th>Nội dung</th>
+                                                    <th>Ngày đăng</th>
+                                                    <th>Nguồn</th>
+                                                    <th>Tác giả</th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
@@ -90,7 +90,7 @@
                                                         </td>
                                                         <td>{{ $new->key_words }}</td>
                                                         <td>{{ $new->content }}</td>
-                                                        <td>{{ $new->submitted_date->format(config('const.format.date')) }}</td>
+                                                        <td>{{ $new->created_at->format(config('const.format.date')) }}</td>
                                                         <td>{{ $new->source_news }}</td>
                                                         <td>{{ $new->author }}</td>
                                                         <td>

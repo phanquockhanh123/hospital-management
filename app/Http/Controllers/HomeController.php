@@ -30,6 +30,10 @@ class HomeController extends Controller
         return view('user.blog');
     }
 
+    public function bookAppointmentUser() {
+        return view('user.bookAppointmentUser');
+    }
+
     public function storeAppointment(Request $request) {
 
         $validatedData = $request->validate([

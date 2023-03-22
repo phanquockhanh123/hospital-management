@@ -30,22 +30,18 @@
                 <div class="col-md-9">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title"> <span class="text-primary">BỆNH NHÂN :  {{ $patient->name }}</span></h3>
+                            <h3 class="card-title"> <span class="text-primary">NGƯỜI DÙNG :  {{ $user->name }}</span></h3>
                         </div>
                         <div class="card-body">
                             <table class="table">
                                 <tbody>
                                     <tr>
-                                        <th>Mã bệnh nhân:</th>
-                                        <td>{{ $patient->code }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Tên bệnh nhân:</th>
-                                        <td>{{ $patient->name }}</td>
+                                        <th>Họ tên người dùng:</th>
+                                        <td>{{ $user->name }}</td>
                                     </tr>
                                     <tr>
                                         <th>Avatar:</th>
-                                        <td><img src="{{ asset('./imgPatient/'. $patient->filename) }}" 
+                                        <td><img src="{{ asset('./imgUser/'. $user->filename) }}" 
                                                     style="vertical-align: middle;
                                                         width: 200px;
                                                         height: 300px;">
@@ -55,74 +51,48 @@
                                     <tr>
                                         <th>Giới tính:</th>
                                         <td>
-                                            @if($patient->gender == 0)
+                                            @if($user->gender == 0)
                                             <span class="text-primary">Nam</span>
                                             @endif
-                                            @if($patient->gender == 1)
+                                            @if($user->gender == 1)
                                             <span class="text-primary">Nữ</span>
                                             @endif
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <th>Nhóm máu:</th>
-                                        <td>
-                                            @if($patient->blood_group == 0)
-                                            <span class="text-primary">Group O</span>
-                                            @endif
-                                            @if($patient->blood_group == 1)
-                                            <span class="text-primary">Group A</span>
-                                            @endif
-                                            @if($patient->blood_group == 2)
-                                            <span class="text-primary">Group B</span>
-                                            @endif
-                                            @if($patient->blood_group == 3)
-                                            <span class="text-primary">Group AB</span>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                    <tr>
                                         <th>Điện thoại:</th>
-                                        <td>{{ $patient->phone }}</td>
+                                        <td>{{ $user->phone }}</td>
                                     </tr>
                                     <tr>
                                         <th>Địa chỉ:</th>
-                                        <td>{{ $patient->address }}</td>
+                                        <td>{{ $user->address }}</td>
                                     </tr>
                                     <tr>
                                         <th>Email:</th>
-                                        <td>{{ $patient->email }}</td>
+                                        <td>{{ $user->email }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Số CMT/CCCD:</th>
-                                        <td>{{ $patient->identity_number }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Ngày cấp:</th>
-                                        <td>{{ $patient->identity_card_date->format(config('const.format.date')) }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Nơi cấp:</th>
-                                        <td>{{ $patient->identity_card_place }}</td>
+                                        <th>Ngày sinh:</th>
+                                        <td>{{ $user->dob }}</td>
                                     </tr>
                                 </tbody>
                             </table>
 
                             <div class="d-flex justify-content-between mt-4">
-                                <a href="{{ route('patients.index') }}" class="btn btn-secondary">
+                                <a href="{{ route('users.index') }}" class="btn btn-secondary">
                                     <i class="fas fa-arrow-left"></i> Quay lại
                                 </a>
 
                                 <div>
-                                    <a href="{{ route('patients.edit', $patient->id) }}"
+                                    <a href="{{ route('users.edit', $user->id) }}"
                                         class="btn btn-primary">
                                         <i class="fas fa-edit"></i> Sửa
                                     </a>
-                                    <form action="{{ route('patients.destroy', $patient->id) }}" method="POST"
+                                    <form action="{{ route('users.destroy', $user->id) }}" method="POST"
                                         class="d-inline-block">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger" style="color: red"
-                                            onclick="return confirm('Bạn có chắc chắn muốn xoá bệnh nhân này?')">
+                                            onclick="return confirm('Bạn có chắc chắn muốn xoá tài khoản người dùng này?')">
                                             <i class="fas fa-trash"></i> Xoá
                                         </button>
                                     </form>

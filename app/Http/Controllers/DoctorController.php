@@ -69,6 +69,7 @@ class DoctorController extends Controller
             'address' => 'nullable|string|max:255',
             'identity_number' => [
                 'required',
+                'unique:doctors,identity_number',
                 'regex:' . config('const.regex_identity_number'),
             ],
             'identity_card_date' => [
@@ -157,6 +158,7 @@ class DoctorController extends Controller
             'address' => 'nullable|string|max:255',
             'identity_number' => [
                 'required',
+                'unique:doctors,identity_number,' . $doctorId . '',
                 'regex:' . config('const.regex_identity_number'),
             ],
             'identity_card_date' => [

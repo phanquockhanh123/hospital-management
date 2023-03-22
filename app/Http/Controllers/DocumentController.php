@@ -113,7 +113,7 @@ class DocumentController extends Controller
     {
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
-            'document_file' => 'required',
+            'document_file' => 'required|mimes:csv,txt,xlx,xls,pdf|max:5120',
             'patient_id' => 'required|integer|exists:patients,id,deleted_at,NULL',
             'doctor_id' => 'required|integer|exists:doctors,id,deleted_at,NULL',
             'note' => 'nullable|string|max:255',

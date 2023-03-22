@@ -244,6 +244,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/', 'index')->name('home.index');
     Route::get('/about', 'aboutUs')->name('home.about');
     Route::get('/blog', 'blog')->name('home.blog');
-    // Route::get('/doctors', 'getDoctor')->name('user.getDoctor');
+    Route::get('/book_appointment_user', 'bookAppointmentUser')->name('home.book-appointment-user');
     Route::post('/user/appointments', 'storeAppointment')->name('user.appointments-store');
+
 });

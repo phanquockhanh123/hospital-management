@@ -33,10 +33,10 @@
                             <form action="{{ route('documents.index') }}" method="GET">
                                 <div class="input-group mb-2">
                                     <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder="Search documents"
+                                        <input type="text" class="form-control" placeholder="Tìm kiếm file của bệnh nhân"
                                             name="search">
                                         <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary" type="submit">Search</button>
+                                            <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
                                         </div>
                                     </div>
                                 </div>
@@ -67,18 +67,18 @@
                                 <div class="card-body">
                                     @if ($documents->isEmpty())
                                         <div class="alert alert-danger" role="alert">
-                                            No documents found.
+                                            Không tìm thấy file nào.
                                         </div>
                                     @else
                                         <table id="example2" class="table table-bordered table-hover">
                                             <thead>
                                                 <tr>
-                                                    <th>TITLE</th>
-                                                    <th>PATIENT</th>
-                                                    <th>DOCTOR</th>
+                                                    <th>Tiêu đề</th>
+                                                    <th>Bệnh nhân</th>
+                                                    <th>Bác sĩ</th>
                                                     <th>CREATED_AT</th>
-                                                    <th>DOCUMENT_TYPE</th>
-                                                    <th>NOTE</th>
+                                                    <th>File</th>
+                                                    <th>Lưu ý</th>
                                                     <th></th>
                                                 </tr>
                                             </thead>

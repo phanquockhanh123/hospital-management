@@ -32,9 +32,9 @@
               <form action="{{ route('users.index') }}" method="GET">
                 <div class="input-group mb-2">
                   <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Search users" name="search">
+                    <input type="text" class="form-control" placeholder="Tìm kiếm người dùng" name="search">
                     <div class="input-group-append">
-                      <button class="btn btn-outline-secondary" type="submit">Search</button>
+                      <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
                     </div>
                   </div>
                 </div>
@@ -74,11 +74,11 @@
                   <table id="example2" class="table table-bordered table-hover">
                     <thead>
                       <tr>
-                        <th>USER</th>
-                        <th>ROLE</th>
-                        <th>EMAIL</th>
-                        <th>STATUS</th>
-                        <th>ACTION</th>
+                        <th>Người dùng</th>
+                        <th>Quyền</th>
+                        <th>Email</th>
+                        <th>Trạng thái</th>
+                        <th>Sửa/Xóa</th>
                       </tr>
                     </thead>
                     <tbody>

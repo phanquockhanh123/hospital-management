@@ -33,20 +33,22 @@
                             <form action="{{ route('request_devices.index') }}" method="GET">
                                 <div class="input-group mb-2">
                                     <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder="Search request_devices"
+                                        <input type="text" class="form-control" placeholder="Tìm kiếm yêu cầu thiết bị"
                                             name="search">
                                         <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary" type="submit">Search</button>
+                                            <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
                                         </div>
                                     </div>
                                 </div>
                             </form>
                         </div>
+                        @if(Auth::user()->role == 1)
                         <div class="col-sm-3" style="float: right;">
                             <a href="{{ route('request_devices.create') }}" class="btn btn-success">
                                 <i class="fas fa-plus"></i> Tạo mới
                             </a>
                         </div>
+                        @endif
                     </div>
                 </div><!-- /.container-fluid -->
             </section>
@@ -73,16 +75,16 @@
                                         <table id="example2" class="table table-bordered table-hover">
                                             <thead>
                                                 <tr>
-                                                    <th>DOCTOR</th>
-                                                    <th>PATIENT</th>
-                                                    <th>MEDICAL DEVICE</th>
-                                                    <th>QUANTITY</th>
-                                                    <th>BORROW TIME</th>
-                                                    <th>RETURN TIME</th>
-                                                    <th>STATUS</th>
-                                                    <th>DESCRIPTION</th>
+                                                    <th>Bác sĩ</th>
+                                                    <th>Bệnh nhân</th>
+                                                    <th>Tên thiết bị</th>
+                                                    <th>Số lượng mượn</th>
+                                                    <th>Thời gian mượn</th>
+                                                    <th>Thời gian trả</th>
+                                                    <th>Trạng thái</th>
+                                                    <th>Mô tả</th>
                                                     @if(Auth::user()->role == 1)
-                                                    <th>ACTION</th>
+                                                    <th>Sửa/Xóa</th>
                                                     @endif
                                                 </tr>
                                             </thead>
