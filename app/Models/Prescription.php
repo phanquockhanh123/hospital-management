@@ -12,20 +12,35 @@ class Prescription extends BaseModel
     protected $fillable = [
         'patient_id',
         'doctor_id',
-        'name',
-        'description',
-        'expired_date',
-        'quantity',
-        'charge',
-        'status',
-        'filename',
-        'profile'
+        'main_disease',
+        'side_disease',
+        'medical_name',
+        'dosage',
+        'dosage_note',
+        'unit',
+        'amount',
+        'note'
     ];
 
     protected $dates = [
-        'expired_date',
         'created_at',
         'updated_at',
         'deleted_at',
     ];
+
+        /**
+     * Get the patient
+     */
+    public function patient()
+    {
+        return $this->belongsTo(Patient::class);
+    }
+
+    /**
+     * Get the patient
+     */
+    public function doctor()
+    {
+        return $this->belongsTo(Doctor::class);
+    }
 }

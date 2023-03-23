@@ -80,20 +80,20 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupport">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
+          <ul class="navbar-nav ml-auto" name="navEle" id="navEle">
+            <li class="nav-item  @if(Request::route()->getName() == 'home.index') active @endif">
               <a class="nav-link" href="{{ route('home.index')}}">Trang chủ</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item @if(Request::route()->getName() == 'home.about') active @endif">
               <a class="nav-link" href="{{route('home.about')}}">Giới thiệu</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item @if(Request::route()->getName() == 'home.doctor') active @endif">
               <a class="nav-link" href="#">Bác sĩ</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item @if(Request::route()->getName() == 'home.blog') active @endif">
               <a class="nav-link" href=" {{ route('home.blog') }}">Blog</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item @if(Request::route()->getName() == 'home.contact') active @endif">
               <a class="nav-link" href="contact.html">Liên hệ</a>
             </li>
             <li class="nav-item">

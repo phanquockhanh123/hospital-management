@@ -14,6 +14,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookAppointmentController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\PrescriptionController;
 use App\Http\Controllers\RequestDeviceController;
 use App\Http\Controllers\ZoomController;
 
@@ -171,6 +172,19 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/request_devices/{request_device}/edit', 'edit')->name('request_devices.edit')->withoutMiddleware(config('const.auth.high'));
             Route::put('/request_devices/{request_device}', 'update')->name('request_devices.update')->withoutMiddleware(config('const.auth.high'));
             Route::delete('/request_devices/{request_device}', 'destroy')->name('request_devices.destroy')->withoutMiddleware(config('const.auth.high'));
+        });
+    });
+
+    //-----------------------------------Prescriptions----------------------------------------------------------------
+    Route::controller(PrescriptionController::class)->group(function () {
+        Route::middleware([config('const.auth.mid')])->group(function () {
+            Route::get('/prescriptions', 'index')->name('prescriptions.index');
+            Route::get('/prescriptions/create', 'create')->name('prescriptions.create');
+            Route::post('/prescriptions', 'store')->name('prescriptions.store');
+            Route::get('/prescriptions/{prescription}', 'show')->name('prescriptions.show');
+            Route::get('/prescriptions/{prescription}/edit', 'edit')->name('prescriptions.edit');
+            Route::put('/prescriptions/{prescription}', 'update')->name('prescriptions.update');
+            Route::delete('/prescriptions/{prescription}', 'destroy')->name('prescriptions.destroy');
         });
     });
 

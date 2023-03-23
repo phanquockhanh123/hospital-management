@@ -100,7 +100,7 @@
         </li>
 
         <li class="nav-item">
-          <a href="pages/charts/uplot.html" class="nav-link">
+          <a href="{{route('prescriptions.index')}}" class="nav-link">
             <i class="nav-icon far fa-image"></i>
             <p>Đơn thuốc</p>
           </a>
@@ -155,7 +155,7 @@
           <a href="{{ route('news.index') }}" class="nav-link">
             <i class="nav-icon far fa-image"></i>
             <p>
-              News
+              Blog
             </p>
           </a>
         </li>
@@ -166,7 +166,7 @@
           <a href="#" class="nav-link">
             <i class="nav-icon far fa-image"></i>
             <p>
-              Payroll
+              Thanh toán lương
             </p>
           </a>
         </li>
@@ -177,7 +177,7 @@
           <a href="{{route('admin.get-bill-list')}}" class="nav-link">
             <i class="nav-icon far fa-image"></i>
             <p>
-              Bills
+              Hóa đơn
             </p>
           </a>
         </li>
@@ -187,7 +187,7 @@
           <a href="{{ route('chats.index') }}" class="nav-link">
             <i class="nav-icon far fa-image"></i>
             <p>
-              Messages
+              Tin nhắn
             </p>
           </a>
         </li>
