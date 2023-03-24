@@ -94,6 +94,14 @@
                                     @enderror
                                 </div>
 
+                                <div class="form-group">
+                                    <label for="dosage_note">Lưu ý:</label>
+                                    <textarea class="form-control" id="dosage_note" name="dosage_note" rows="5"></textarea>
+                                    @error('dosage_note')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
 
                                 <div class="form-group">
                                     <label for="dosage">Lượng:</label>
@@ -127,7 +135,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="note">Mô tả:</label>
+                                    <label for="note">Mô tả</label>
                                     <textarea class="form-control" id="note" name="note" rows="5"></textarea>
                                     @error('note')
                                         <div class="invalid-feedback">{{ $message }}</div>
