@@ -56,7 +56,7 @@ class PrescriptionController extends Controller
             'main_disease' => 'required|string|max:255',
             'side_disease' => 'nullable|string|max:255',
             'medical_name' => 'required|string|max:255',
-            'dosage' => 'required|integer|max:255',
+            'dosage' => 'required|string|max:255',
             'dosage_note' => 'required|string|max:255',
             'unit' => 'required|string|max:255',
             'amount' => 'required|integer|max:255',

@@ -113,7 +113,6 @@ class DoctorController extends Controller
      */
     public function show(Doctor $doctor)
     {
-
         return view('admin.doctors.show', compact('doctor'));
     }
 
@@ -147,7 +146,7 @@ class DoctorController extends Controller
                 . config('const.regex_email_admin'),
             'designation' => 'nullable|string|max:255',
             'phone' => 'nullable|size:10|regex:' . config('const.regex_telephone'),
-            'profile' => 'required',
+            'profile' => 'nullable',
             'academic_level' => 'required|in:' . implode(',', array_keys(Doctor::$academicLevels)),
             'date_of_birth' => [
                 'nullable',
@@ -172,7 +171,7 @@ class DoctorController extends Controller
                 'date_format:' . config('const.format.date_form'),
                 'before_or_equal:' . Carbon::now()->format(config('const.format.date_form'))
             ],
-            'specialist' => 'nullable|string|max:255',
+            'specialist' => 'nullable|string|max:1000',
         ]);
 
         // Handle the avatar file upload

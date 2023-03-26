@@ -24,7 +24,7 @@ class CreatePrescriptionsTable extends Migration
             $table->string('dosage_note')->nullable();
             $table->string('unit');
             $table->integer('amount');
-            $table->string('note');
+            $table->string('note')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

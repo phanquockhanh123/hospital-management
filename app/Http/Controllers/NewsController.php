@@ -172,4 +172,18 @@ class NewsController extends Controller
         return redirect()->route('news.index')
             ->with('success', 'Bài viết đã được xoá thành công.');
     }
+
+    public function upload(Request $request) {
+        if($request->hasFile('upload')) {
+            $file = $request->upload;
+            $newName = time() . "." . $file->getClientOriginalExtension();
+            $file->remove("images", $newName);
+            $url  = asset("imgNews");
+            return response()->json(
+                ['filename' => $newName,
+                 'url' => $url,
+                 'uploaded' => 1]
+            );
+        }
+    }
 }

@@ -126,15 +126,14 @@
         <script>
         
             ClassicEditor
-                .create( document.querySelector( '#content' ), {
-                    extraPlugins: [ MyCustomUploadAdapterPlugin ],
-
-                    // More configuration options.
-                    // ...
-                } )
-                .catch( error => {
-                    console.log( error );
-                } );
+            .create( document.querySelector( '#content' ), {
+                ckfinker:{
+                    uploadUrl:"{{ route('ckeditor.upload').'?_token='.csrf_token()  }}"
+                }
+            } )
+            .catch( error => {
+                console.error( error );
+            } );
 
         </script>
 </body>

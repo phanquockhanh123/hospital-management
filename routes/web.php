@@ -213,6 +213,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::delete('/news/{new}', [NewsController::class, 'destroy'])->name('news.destroy');
 
             Route::get('/bills', [NewsController::class, 'index2'])->name('admin.get-bill-list');
+
+            Route::post('/upload', [NewsController::class, 'upload'])->name('ckeditor.upload');
         });
     });
 
@@ -260,5 +262,6 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/blog', 'blog')->name('home.blog');
     Route::get('/book_appointment_user', 'bookAppointmentUser')->name('home.book-appointment-user');
     Route::post('/user/appointments', 'storeAppointment')->name('user.appointments-store');
-
+    Route::get('/get_doctor_list_for_user_site', 'getDoctorListForUserSite')->name('home.get-doctor-list-for-user-site');
+    Route::get('/get_doctor_detail_for_user_site/{doctor}', 'getDoctorDetailForUserSite')->name('home.get-doctor-detail-for-user-site');
 });

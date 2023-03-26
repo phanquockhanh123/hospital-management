@@ -87,8 +87,8 @@
             <li class="nav-item @if(Request::route()->getName() == 'home.about') active @endif">
               <a class="nav-link" href="{{route('home.about')}}">Giới thiệu</a>
             </li>
-            <li class="nav-item @if(Request::route()->getName() == 'home.doctor') active @endif">
-              <a class="nav-link" href="#">Bác sĩ</a>
+            <li class="nav-item @if(Request::route()->getName() == 'home.get-doctor-list-for-user-site') active @endif">
+              <a class="nav-link" href="{{route('home.get-doctor-list-for-user-site')}}">Bác sĩ</a>
             </li>
             <li class="nav-item @if(Request::route()->getName() == 'home.blog') active @endif">
               <a class="nav-link" href=" {{ route('home.blog') }}">Blog</a>
