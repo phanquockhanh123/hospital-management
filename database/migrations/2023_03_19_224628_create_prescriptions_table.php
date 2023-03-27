@@ -19,11 +19,6 @@ class CreatePrescriptionsTable extends Migration
             $table->unsignedBigInteger('patient_id');
             $table->string('main_disease');
             $table->string('side_disease')->nullable();
-            $table->string('medical_name');
-            $table->string('dosage');
-            $table->string('dosage_note')->nullable();
-            $table->string('unit');
-            $table->integer('amount');
             $table->string('note')->nullable();
             $table->timestamps();
             $table->softDeletes();

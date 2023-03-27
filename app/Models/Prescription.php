@@ -14,11 +14,6 @@ class Prescription extends BaseModel
         'doctor_id',
         'main_disease',
         'side_disease',
-        'medical_name',
-        'dosage',
-        'dosage_note',
-        'unit',
-        'amount',
         'note'
     ];
 
@@ -28,7 +23,7 @@ class Prescription extends BaseModel
         'deleted_at',
     ];
 
-        /**
+    /**
      * Get the patient
      */
     public function patient()
@@ -37,7 +32,7 @@ class Prescription extends BaseModel
     }
 
     /**
-     * Get the patient
+     * Get the doctor
      */
     public function doctor()
     {

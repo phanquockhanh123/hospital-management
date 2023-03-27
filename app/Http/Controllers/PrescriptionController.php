@@ -50,6 +50,7 @@ class PrescriptionController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->input('medical_name'));
         $validatedData = $request->validate([
             'doctor_id' => 'nullable|integer|exists:doctors,id,deleted_at,NULL',
             'patient_id' => 'nullable|integer|exists:patients,id,deleted_at,NULL',
@@ -62,8 +63,7 @@ class PrescriptionController extends Controller
             'amount' => 'required|integer|max:255',
             'note' => 'nullable|string|max:1000',
         ]);
-
-        Prescription::create($validatedData);
+        // Prescription::create($validatedData);
 
 
         return redirect()->route('prescriptions.index')
