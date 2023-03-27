@@ -185,6 +185,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/prescriptions/{prescription}/edit', 'edit')->name('prescriptions.edit');
             Route::put('/prescriptions/{prescription}', 'update')->name('prescriptions.update');
             Route::delete('/prescriptions/{prescription}', 'destroy')->name('prescriptions.destroy');
+
+            Route::get('/prescriptions/{prescription}/pdf', 'renderPdf')->name('prescriptions.pdf');
         });
     });
 

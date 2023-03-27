@@ -78,11 +78,8 @@
                                                     <th>Bác sĩ</th>
                                                     <th>Bệnh chính</th>
                                                     <th>Bệnh phụ</th>
-                                                    <th>Thuốc</th>
-                                                    <th>Lượng</th>
-                                                    <th>Đơn vị</th>
-                                                    <th>Số lượng</th>
                                                     <th>Lưu ý</th>
+                                                    <th>PDF</th>
                                                     <th>Sửa/Xóa</th>
                                                 </tr>
                                             </thead>
@@ -96,11 +93,8 @@
                                                         <td>{{ $prescription->doctor->name }}</td>
                                                         <td>{{ $prescription->main_disease }}</td>
                                                         <td>{{ $prescription->side_disease }}</td>
-                                                        <td>{{ $prescription->medical_name }}</td>
-                                                        <td>{{ $prescription->dosage }}</td>
-                                                        <td>{{ $prescription->unit }}</td>
-                                                        <td>{{ $prescription->amount }}</td>
                                                         <td>{{ $prescription->note }}</td>
+                                                        <td><a href="{{ route('prescriptions.pdf', $prescription->id) }}">Tải xuống</a></td>
                                                         <td>
                                                             <div class="btn-group">
                                                                 <a href="{{ route('prescriptions.edit', $prescription->id) }}"

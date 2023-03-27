@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Doctor;
 use App\Models\Patient;
+use PDF;
 use App\Models\Prescription;
 use Illuminate\Http\Request;
+use App\Models\PrescriptionItem;
 
 
 class PrescriptionController extends Controller
@@ -50,21 +52,48 @@ class PrescriptionController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->input('medical_name'));
+        // dd($request);
         $validatedData = $request->validate([
             'doctor_id' => 'nullable|integer|exists:doctors,id,deleted_at,NULL',
             'patient_id' => 'nullable|integer|exists:patients,id,deleted_at,NULL',
             'main_disease' => 'required|string|max:255',
             'side_disease' => 'nullable|string|max:255',
-            'medical_name' => 'required|string|max:255',
-            'dosage' => 'required|string|max:255',
-            'dosage_note' => 'required|string|max:255',
-            'unit' => 'required|string|max:255',
-            'amount' => 'required|integer|max:255',
+            'medical_name' => 'required|array',
+            'dosage' => 'required|array',
+            'dosage_note' => 'required|array',
+            'unit' => 'required|array',
+            'amount' => 'required|array',
             'note' => 'nullable|string|max:1000',
         ]);
-        // Prescription::create($validatedData);
-
+        $prescription = Prescription::create([
+            'doctor_id' => $request->doctor_id,
+            'patient_id' => $request->patient_id,
+            'main_disease' => $request->main_disease,
+            'side_disease' => $request->side_disease,
+            'note' => $request->note,
+        ]);
+        
+        $data = [
+            "medical_name" => array_values($validatedData['medical_name']),
+            "dosage" => array_values($validatedData['dosage']),
+            "dosage_note" => array_values($validatedData['dosage_note']),
+            "unit" => array_values($validatedData['unit']),
+            "amount" => array_values($validatedData['amount']),
+        ];
+        
+        $newArrays = array();
+        foreach ($data as $key => $values) {
+            $i = 0;
+            foreach ($values as $value) {
+                $newArrays[$i][$key] = $value;
+                $i++;
+            }
+        }
+        $prescriptionItemData = array_map(function ($preItem) use ($prescription) {
+            $preItem['prescription_id'] = $prescription->id;
+            return $preItem;
+        }, $newArrays);
+        PrescriptionItem::insert($prescriptionItemData);
 
         return redirect()->route('prescriptions.index')
             ->with('success', 'Đơn thuốc đã được tạo thành công.');
@@ -134,6 +163,35 @@ class PrescriptionController extends Controller
 
         return redirect()->route('prescriptions.index')
             ->with('success', 'Đơn thuốc đã được xoá thành công.');
+    }
+
+    /**
+     * render pdf a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function renderPdf(Request $request, Prescription $prescription)
+    {
+        $prescription = Prescription::with('patient', 'doctor')->first();
+        $preItem = PrescriptionItem::where('prescription_id', $prescription->id)->get()->toArray();
+        // $data = [
+        //     'doctorName' =>  $prescription->doctor->name,
+        //     'patientCode' => $prescription->doctor->code,
+        //     'patientName' => $prescription->doctor->name,
+        //     'patientBloodGroup' => $prescription->doctor->bloodGroup,
+        //     'patientAddress' => $prescription->doctor->address,
+        //     'patientGender' => $prescription->doctor->gender,
+        //     'patientDob' => $prescription->doctor->date_of_birth,
+        //     'mainDisease' => $prescription->main_disease,
+        //     'sideDisease' => $prescription->side_disease,
+        //     'note' => $prescription->note,
+        //     'medicals' => $preItemArr,
+        //     'created_at' => $prescription->created_at
+        // ];
+        $pdf = \PDF::loadView('prescription', compact('prescription', 'preItem'), []);
+
+        return $pdf->stream('prescription.pdf');
     }
 
 }
