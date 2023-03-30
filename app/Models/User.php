@@ -63,7 +63,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'status',
         'password',
         'profile',
-        'filename'
+        'filename',
+        'profile_photo_path',
+        'google_id',
+        'google_token',
+        'google_refresh_token',
     ];
 
     /**

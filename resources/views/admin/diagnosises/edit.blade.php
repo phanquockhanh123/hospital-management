@@ -30,10 +30,10 @@
                     </div>
                     <div class="col-md-9">
                         <div class="card-header">
-                            <h3 class="card-title">Chỉnh sửa đơn thuốc</h3>
+                            <h3 class="card-title">Chỉnh sửa xét nghiệm/chẩn đoán</h3>
                         </div>
                         <div class="card-body">
-                            <form action="{{ route('prescriptions.update', $prescription->id) }}" method="POST">
+                            <form action="{{ route('diagnosises.update', $diagnosis->id) }}" method="POST">
                                 @csrf
                                 @method('PUT')
 
@@ -42,7 +42,7 @@
                                     <select name="patient_id" class="form-control input-sm m-bot15">
                                         <option value="">----Chọn bệnh nhân----</option>
                                         @foreach ($patients as $patient)
-                                        <option value="{{ $patient->id }}" {{ $prescription->patient_id == $patient->id
+                                        <option value="{{ $patient->id }}" {{ $diagnosis->patient_id == $patient->id
                                             ?
                                             'selected' : '' }}>{{ $patient->name }}</option>
                                         @endforeach
@@ -58,7 +58,7 @@
                                     <select name="doctor_id" class="form-control input-sm m-bot15">
                                         <option value="">----Chọn bác sĩ----</option>
                                         @foreach ($doctors as $doctor)
-                                        <option value="{{ $doctor->id }}" {{ $prescription->doctor_id == $doctor->id ?
+                                        <option value="{{ $doctor->id }}" {{ $diagnosis->doctor_id == $doctor->id ?
                                             'selected' : '' }}>{{ $doctor->name }}</option>
                                         @endforeach
                                     </select>
@@ -68,52 +68,58 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="main_disease">Bệnh chính:</label>
-                                    <input type="text" name="main_disease" id="main_disease"
-                                        class="form-control @error('main_disease') is-invalid @enderror"
-                                        value="{{ old('main_disease', $prescription->main_disease) }}">
-                                    @error('main_disease')
+                                    <label for="main_diagnosis">Chẩn đoán bệnh chính:</label>
+                                    <input type="text" name="main_diagnosis" id="main_diagnosis"
+                                        class="form-control @error('main_diagnosis') is-invalid @enderror"
+                                        value="{{ old('main_diagnosis', $diagnosis->main_diagnosis) }}">
+                                    @error('main_diagnosis')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="side_disease">Bệnh phụ:</label>
-                                    <input type="text" name="side_disease" id="side_disease"
-                                        class="form-control @error('side_disease') is-invalid @enderror"
-                                        value="{{ old('side_disease', $prescription->side_disease) }}">
-                                    @error('side_disease')
+                                    <label for="side_diagnosis">Chẩn đoán bệnh phụ:</label>
+                                    <input type="text" name="side_diagnosis" id="side_diagnosis"
+                                        class="form-control @error('side_diagnosis') is-invalid @enderror"
+                                        value="{{ old('side_diagnosis', $diagnosis->side_diagnosis) }}">
+                                    @error('side_diagnosis')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="card-header" style="display: flex!important">
-                                    <label style="font-size: 20px;">Thuốc</label>
+                                    <label style="font-size: 20px;">Xét nghiệm</label>
                                     <button style="margin-left: 80%;" class="btn btn-primary" id="btAddMedicine">Thêm
-                                        thuốc</button>
+                                        xét nghiệm</button>
                                 </div>
                                 <table class="table" id="table">
                                     <thead>
                                         <tr>
-                                            <th scope="col">TÊN THUỐC</th>
-                                            <th scope="col">HÀM LƯỢNG</th>
-                                            <th scope="col">ĐVT</th>
-                                            <th scope="col">SỐ LƯỢNG</th>
+                                            <th scope="col">TÊN XÉT NGHIỆM</th>
+                                            <th scope="col">KẾT QUẢ</th>
+                                            <th scope="col">TRỊ SÓ THAM CHIẾU</th>
+                                            <th scope="col">ĐƠN VỊ</th>
+                                            <th scope="col">PHƯƠNG THỨC</th>
                                             <th scope="col">LƯU Ý</th>
                                             <th scope="col">THAO TÁC</th>
                                         </tr>
                                     </thead>
                                     <tbody id="tbody" name="tbody">
-                                        @foreach ($preItem as $item)
+                                        @foreach ($diaPre as $item)
                                         <tr id="sectionMain" name="sectionMain">
                                             <td>
-                                                <input type="text" name="medical_name[]" id="medical_name"
-                                                    class="form-control @error('medical_name') is-invalid @enderror"
-                                                    value="{{ old('medical_name', $item['medical_name']) }}">
+                                                <input type="text" name="diagnosis_name[]" id="diagnosis_name"
+                                                    class="form-control @error('diagnosis_name') is-invalid @enderror"
+                                                    value="{{ old('diagnosis_name', $item['diagnosis_name']) }}">
                                             </td>
                                             <td>
-                                                <input type="text" name="dosage[]" id="dosage"
-                                                    class="form-control @error('dosage') is-invalid @enderror"
-                                                    value="{{ old('dosage', $item['dosage']) }}">
+                                                <input type="text" name="result[]" id="result"
+                                                    class="form-control @error('result') is-invalid @enderror"
+                                                    value="{{ old('result', $item['result']) }}">
+                                            </td>
+                                            <td>
+                                                <input type="text" name="references_range[]" id="references_range"
+                                                    class="form-control @error('references_range') is-invalid @enderror"
+                                                    value="{{ old('references_range', $item['references_range']) }}">
                                             </td>
                                             <td>
                                                 <input type="text" name="unit[]" id="unit"
@@ -121,14 +127,14 @@
                                                     value="{{ old('unit', $item['unit']) }}">
                                             </td>
                                             <td>
-                                                <input type="text" name="amount[]" id="amount"
-                                                    class="form-control @error('amount') is-invalid @enderror"
-                                                    value="{{ old('amount', $item['amount']) }}">
+                                                <input type="text" name="method[]" id="method"
+                                                    class="form-control @error('method') is-invalid @enderror"
+                                                    value="{{ old('method', $item['method']) }}">
                                             </td>
                                             <td>
-                                                <input type="text" name="dosage_note[]" id="dosage_note"
-                                                    class="form-control @error('dosage_note') is-invalid @enderror"
-                                                    value="{{ old('dosage_note', $item['dosage_note']) }}">
+                                                <input type="text" name="diagnosis_note[]" id="diagnosis_note"
+                                                    class="form-control @error('diagnosis_note') is-invalid @enderror"
+                                                    value="{{ old('diagnosis_note', $item['diagnosis_note']) }}">
                                             </td>
                                             <td>
                                                 <svg style="color: red" xmlns="http://www.w3.org/2000/svg" width="26"
@@ -146,14 +152,14 @@
                                 <div class="form-group">
                                     <label for="note">Mô tả:</label>
                                     <textarea class="form-control" id="note" name="note"
-                                        rows="5">{{  $prescription->note }}</textarea>
+                                        rows="5">{{  $diagnosis->note }}</textarea>
                                     @error('note')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
                                 <div class="d-flex justify-content-between mt-4">
-                                    <a href="{{ route('prescriptions.index') }}" class="btn btn-secondary">
+                                    <a href="{{ route('diagnosises.index') }}" class="btn btn-secondary">
                                         <i class="fas fa-arrow-left"></i> Quay lại
                                     </a>
 

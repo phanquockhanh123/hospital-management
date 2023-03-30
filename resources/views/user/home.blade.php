@@ -3,6 +3,7 @@
   
 
   @include('user.about')
+  
 
   <script>
       @if (Session::has('success'))

@@ -30,48 +30,50 @@
                 <div class="col-md-9">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Chi tiết đơn thuốc</h3>
+                            <h3 class="card-title">Kết quả xét nghiệm/chẩn đoán</h3>
                         </div>
                         <div class="card-body">
                             <table class="table">
                                 <tbody>
                                     <tr>
                                         <th>Bệnh nhân:</th>
-                                        <td>{{ $prescription->patient->name }}</td>
+                                        <td>{{ $diagnosis->patient->name }}</td>
                                     </tr>
                                     <tr>
                                         <th>Bác sĩ:</th>
-                                        <td>{{ $prescription->doctor->name }}</td>
+                                        <td>{{ $diagnosis->doctor->name }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Bệnh chính:</th>
-                                        <td>{{ $prescription->main_disease }}</td>
+                                        <th>Chẩn đoán bệnh chính:</th>
+                                        <td>{{ $diagnosis->main_disease }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Bệnh phụ:</th>
-                                        <td>{{ $prescription->side_disease }}</td>
+                                        <th>Chẩn đoán bệnh phụ:</th>
+                                        <td>{{ $diagnosis->side_disease }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Thuốc:</th>
+                                        <th>Xét nghiệm:</th>
                                         <td>
                                             <table>
                                                 <thead>
                                                     <tr>
-                                                        <th>Tên thuốc</th>
-                                                        <th>Hàm lượng</th>
+                                                        <th>Tên xét nghiệm</th>
+                                                        <th>Kết quả</th>
+                                                        <th>Trị số tham chiếu</th>
+                                                        <th>Đơn vị</th>
+                                                        <th>QT/PPXN</th>
                                                         <th>Lưu ý</th>
-                                                        <th>DVT</th>
-                                                        <th>Số lượng</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach($preItem as $val)
+                                                    @foreach($diaPre as $val)
                                                     <tr>
-                                                        <td>{{ $val['medical_name'] }}</td>
-                                                        <td>{{ $val['dosage'] }}</td>
-                                                        <td>{{ $val['dosage_note'] }}</td>
+                                                        <td>{{ $val['diagnosis_name'] }}</td>
+                                                        <td>{{ $val['result'] }}</td>
+                                                        <td>{{ $val['references_range'] }}</td>
                                                         <td>{{ $val['unit'] }}</td>
-                                                        <td>{{ $val['amount'] }}</td>
+                                                        <td>{{ $val['method'] }}</td>
+                                                        <td>{{ $val['diagnosis_note'] }}</td>
                                                     </tr>
                                                     @endforeach
                                                 </tbody>
@@ -81,26 +83,26 @@
                                     </tr>
                                     <tr>
                                         <th>Lưu ý:</th>
-                                        <td>{{ $prescription->note }}</td>
+                                        <td>{{ $diagnosis->note }}</td>
                                     </tr>
                                 </tbody>
                             </table>
 
                             <div class="d-flex justify-content-between mt-4">
-                                <a href="{{ route('prescriptions.index') }}" class="btn btn-secondary">
+                                <a href="{{ route('diagnosises.index') }}" class="btn btn-secondary">
                                     <i class="fas fa-arrow-left"></i> Quay lại
                                 </a>
 
                                 <div>
-                                    <a href="{{ route('prescriptions.edit', $prescription->id) }}" class="btn btn-primary">
+                                    <a href="{{ route('diagnosises.edit', $diagnosis->id) }}" class="btn btn-primary">
                                         <i class="fas fa-edit"></i> Sửa
                                     </a>
-                                    <form action="{{ route('prescriptions.destroy', $prescription->id) }}" method="POST"
+                                    <form action="{{ route('diagnosises.destroy', $diagnosis->id) }}" method="POST"
                                         class="d-inline-block">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger" style="color: red;"
-                                            onclick="return confirm('Bạn có chắc chắn muốn xoá lịch hẹn này?')">
+                                            onclick="return confirm('Bạn có chắc chắn muốn xoá xét nghiệm/chẩn đoán này?')">
                                             <i class="fas fa-trash"></i> Xoá
                                         </button>
                                     </form>

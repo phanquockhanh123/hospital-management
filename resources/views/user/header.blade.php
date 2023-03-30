@@ -64,7 +64,7 @@
       <div class="container">
         <a class="navbar-brand" href="#"><span class="text-primary">One</span>-Health</a>
 
-        <form action="#">
+        {{-- <form action="#">
           <div class="input-group input-navbar">
             <div class="input-group-prepend">
               <span class="input-group-text" id="icon-addon1"><span class="mai-search"></span></span>
@@ -72,7 +72,7 @@
             <input type="text" class="form-control" placeholder="Enter keyword.." aria-label="Username"
               aria-describedby="icon-addon1">
           </div>
-        </form>
+        </form> --}}
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupport"
           aria-controls="navbarSupport" aria-expanded="false" aria-label="Toggle navigation">
@@ -99,7 +99,15 @@
             <li class="nav-item">
               <a href="{{route('home.book-appointment-user')}}"><button class="btn btn-primary" type="submit" style="padding: 10px 40px;font-size: 16px;">Đặt lịch</button></a>
             </li>
-
+            @if(!Auth::user()->id) 
+            <li class="nav-item">
+              <a href="{{ route('home.login-with-google') }}"><button class="btn btn-primary" type="submit" style="margin-left: 10px;font-size: 16px;padding: 10px 40px;">Đăng nhập</button></a>
+            </li>
+            @else
+              <li class="nav-item">
+                <a href="#"><button class="btn btn-primary" type="submit" style="margin-left: 10px;font-size: 16px;padding: 10px 40px;">{{ Auth::user()->name }}</button></a>
+              </li>
+            @endif
           </ul>
         </div> <!-- .navbar-collapse -->
       </div> <!-- .container -->

@@ -52,7 +52,6 @@ class PrescriptionController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
         $validatedData = $request->validate([
             'doctor_id' => 'nullable|integer|exists:doctors,id,deleted_at,NULL',
             'patient_id' => 'nullable|integer|exists:patients,id,deleted_at,NULL',
@@ -107,7 +106,8 @@ class PrescriptionController extends Controller
      */
     public function show(Prescription $prescription)
     {
-        return view('admin.prescriptions.show', compact('prescription'));
+        $preItem = PrescriptionItem::where('prescription_id', $prescription->id)->get()->toArray();
+        return view('admin.prescriptions.show', compact('prescription', 'preItem'));
     }
 
     /**
@@ -120,7 +120,8 @@ class PrescriptionController extends Controller
     {
         $doctors = Doctor::all();
         $patients = Patient::all();
-        return view('admin.prescriptions.edit', compact('prescription', 'doctors', 'patients'));
+        $preItem = PrescriptionItem::where('prescription_id', $prescription->id)->get()->toArray();
+        return view('admin.prescriptions.edit', compact('prescription', 'doctors', 'patients', 'preItem'));
     }
 
     /**
@@ -137,16 +138,43 @@ class PrescriptionController extends Controller
             'patient_id' => 'nullable|integer|exists:patients,id,deleted_at,NULL',
             'main_disease' => 'required|string|max:255',
             'side_disease' => 'nullable|string|max:255',
-            'medical_name' => 'required|string|max:255',
-            'dosage' => 'required|integer|max:255',
-            'dosage_note' => 'required|string|max:255',
-            'unit' => 'required|string|max:255',
-            'amount' => 'required|integer|max:255',
+            'medical_name' => 'required|array',
+            'dosage' => 'required|array',
+            'dosage_note' => 'required|array',
+            'unit' => 'required|array',
+            'amount' => 'required|array',
             'note' => 'nullable|string|max:1000',
         ]);
+        $prescription->update([
+            'doctor_id' => $request->doctor_id,
+            'patient_id' => $request->patient_id,
+            'main_disease' => $request->main_disease,
+            'side_disease' => $request->side_disease,
+            'note' => $request->note,
+        ]);
+        
+        $data = [
+            "medical_name" => array_values($validatedData['medical_name']),
+            "dosage" => array_values($validatedData['dosage']),
+            "dosage_note" => array_values($validatedData['dosage_note']),
+            "unit" => array_values($validatedData['unit']),
+            "amount" => array_values($validatedData['amount']),
+        ];
+        $prescriptionItem = PrescriptionItem::where('prescription_id', $prescription->id)->delete();
 
-        $prescription->update($validatedData);
-
+        $newArrays = array();
+        foreach ($data as $key => $values) {
+            $i = 0;
+            foreach ($values as $value) {
+                $newArrays[$i][$key] = $value;
+                $i++;
+            }
+        }
+        $prescriptionItemData = array_map(function ($preItem) use ($prescription) {
+            $preItem['prescription_id'] = $prescription->id;
+            return $preItem;
+        }, $newArrays);
+        PrescriptionItem::insert($prescriptionItemData);
         return redirect()->route('prescriptions.index')
             ->with('success', 'Thông tin đơn thuốc đã được cập nhật thành công.');
     }
@@ -175,22 +203,9 @@ class PrescriptionController extends Controller
     {
         $prescription = Prescription::with('patient', 'doctor')->first();
         $preItem = PrescriptionItem::where('prescription_id', $prescription->id)->get()->toArray();
-        // $data = [
-        //     'doctorName' =>  $prescription->doctor->name,
-        //     'patientCode' => $prescription->doctor->code,
-        //     'patientName' => $prescription->doctor->name,
-        //     'patientBloodGroup' => $prescription->doctor->bloodGroup,
-        //     'patientAddress' => $prescription->doctor->address,
-        //     'patientGender' => $prescription->doctor->gender,
-        //     'patientDob' => $prescription->doctor->date_of_birth,
-        //     'mainDisease' => $prescription->main_disease,
-        //     'sideDisease' => $prescription->side_disease,
-        //     'note' => $prescription->note,
-        //     'medicals' => $preItemArr,
-        //     'created_at' => $prescription->created_at
-        // ];
-        $pdf = \PDF::loadView('prescription', compact('prescription', 'preItem'), []);
-
+        
+        $pdf = \PDF::loadView('pdf.prescription', compact('prescription', 'preItem'), []);
+        $pdf->setPaper('a4', 'portrait', 'UTF-8');
         return $pdf->stream('prescription.pdf');
     }
 

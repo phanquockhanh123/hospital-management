@@ -1,22 +1,25 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ZoomController;
+use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\PatientController;
-use App\Http\Controllers\AppointmentController;
-use App\Http\Controllers\MedicalDeviceController;
-use App\Http\Controllers\DoctorDepartmentController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\BookAppointmentController;
-use App\Http\Controllers\ChatController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\DiagnosisController;
+use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\PrescriptionController;
+use App\Http\Controllers\MedicalDeviceController;
 use App\Http\Controllers\RequestDeviceController;
-use App\Http\Controllers\ZoomController;
+use App\Http\Controllers\BookAppointmentController;
+use App\Http\Controllers\DoctorDepartmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -190,6 +193,22 @@ Route::middleware(['auth:sanctum'])->group(function () {
         });
     });
 
+    //-----------------------------------Chẩn đoán/Xét nghiệm----------------------------------------------------------------
+    Route::controller(DiagnosisController::class)->group(function () {
+        Route::middleware([config('const.auth.mid')])->group(function () {
+            Route::get('/diagnosises', 'index')->name('diagnosises.index');
+            Route::get('/diagnosises/create', 'create')->name('diagnosises.create');
+            Route::post('/diagnosises', 'store')->name('diagnosises.store');
+            Route::get('/diagnosises/{diagnosis}', 'show')->name('diagnosises.show');
+            Route::get('/diagnosises/{diagnosis}/edit', 'edit')->name('diagnosises.edit');
+            Route::put('/diagnosises/{diagnosis}', 'update')->name('diagnosises.update');
+            Route::delete('/diagnosises/{diagnosis}', 'destroy')->name('diagnosises.destroy');
+
+            Route::get('/diagnosises/{diagnosis}/pdf', 'renderPdf')->name('diagnosises.pdf');
+        });
+    });
+
+
     //-----------------------------------Files ----------------------------------------------------------------
     Route::controller(DocumentController::class)->group(function () {
         Route::middleware([config('const.auth.mid')])->group(function () {
@@ -266,4 +285,25 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('/user/appointments', 'storeAppointment')->name('user.appointments-store');
     Route::get('/get_doctor_list_for_user_site', 'getDoctorListForUserSite')->name('home.get-doctor-list-for-user-site');
     Route::get('/get_doctor_detail_for_user_site/{doctor}', 'getDoctorDetailForUserSite')->name('home.get-doctor-detail-for-user-site');
+});
+
+ 
+Route::get('/auth/google', function () {
+    return Socialite::driver('google')->redirect();
+})->name('home.login-with-google');
+ 
+Route::get('/auth/google/callback', function () {
+    $googleUser = Socialite::driver('google')->user();  
+    $user = User::updateOrCreate([
+        'google_id' => $googleUser->id,
+    ], [
+        'name' => $googleUser->name,
+        'email' => $googleUser->email,
+        'google_token' => $googleUser->token,
+        'google_refresh_token' => $googleUser->refreshToken,
+    ]);
+ 
+    Auth::login($user);
+
+    return redirect('/');
 });

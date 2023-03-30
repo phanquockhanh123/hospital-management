@@ -172,6 +172,17 @@
         </li>
         @endif
 
+        @if (Auth::user()->role == 2)
+        <li class="nav-item">
+          <a href="{{ route('diagnosises.index') }}" class="nav-link">
+            <i class="nav-icon far fa-image"></i>
+            <p>
+              Chẩn đoán/Xét nghiệm
+            </p>
+          </a>
+        </li>
+        @endif
+
         @if (Auth::user()->role == 0 || Auth::user()->role == 2)
         <li class="nav-item">
           <a href="{{route('admin.get-bill-list')}}" class="nav-link">

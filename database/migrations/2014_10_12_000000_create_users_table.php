@@ -24,11 +24,15 @@ return new class extends Migration
             $table->date('dob')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+            $table->string('password')->nullable();
+            $table->string('google_token')->nullable()->unique();
+            $table->string('google_refresh_token')->nullable();
+            $table->string('google_id')->nullable();
+            $table->rememberToken()->nullable();
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile')->nullable();
             $table->string('filename')->nullable();
+            $table->string('profile_photo_path')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
