@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Patient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -48,17 +49,29 @@ class PatientController extends Controller
     {
 
         $validatedData = $request->validate([
-            'name' => 'required',
-            'blood_group' => 'required',
-            'email' => 'required',
-            'phone' => 'required',
-            'date_of_birth' => 'required',
-            'gender' => 'required',
-            'profile' => 'nullable',
-            'address' => 'required',
-            'identity_number' => 'required',
-            'identity_card_date' => 'required',
-            'identity_card_place' => 'required',
+            'name' => 'required|string|max:255',
+            'blood_group' => 'required|in:' . implode(',', array_keys(Patient::$bloodGroups)),
+            'email' => 'required|string|max:255|unique:doctors,email|regex:'
+            . config('const.regex_email_admin'),
+            'phone' => 'nullable|size:10|regex:' . config('const.regex_telephone'),
+            'date_of_birth'  => [
+                'required',
+                'date_format:' . config('const.format.date_form'),
+                'before_or_equal:' . Carbon::now()->format(config('const.format.date_form'))
+            ],
+            'gender' => 'required|in:' . implode(',', array_keys(Patient::$genders)),
+            'profile'  => 'required',
+            'address' => 'required|string|max:255',
+            'identity_number' => [
+                'required',
+                'regex:' . config('const.regex_identity_number'),
+            ],
+            'identity_card_date' => [
+                'nullable',
+                'date_format:' . config('const.format.date_form'),
+                'before_or_equal:' . Carbon::now()->format(config('const.format.date_form'))
+            ],
+            'identity_card_place'  => 'nullable|string|max:255',
         ]);
 
         // Lưu ảnh
@@ -112,17 +125,29 @@ class PatientController extends Controller
     public function update(Request $request, Patient $patient)
     {
         $validatedData = $request->validate([
-            'name' => 'required',
-            'blood_group' => 'required',
-            'email' => 'required',
-            'phone' => 'required',
-            'date_of_birth' => 'required',
-            'gender' => 'required',
-            'profile' => 'nullable',
-            'address' => 'required',
-            'identity_number' => 'required',
-            'identity_card_date' => 'required',
-            'identity_card_place' => 'required',
+            'name' => 'required|string|max:255',
+            'blood_group' => 'required|in:' . implode(',', array_keys(Patient::$bloodGroups)),
+            'email' => 'required|string|max:255|unique:doctors,email|regex:'
+            . config('const.regex_email_admin'),
+            'phone' => 'nullable|size:10|regex:' . config('const.regex_telephone'),
+            'date_of_birth'  => [
+                'required',
+                'date_format:' . config('const.format.date_form'),
+                'before_or_equal:' . Carbon::now()->format(config('const.format.date_form'))
+            ],
+            'gender' => 'required|in:' . implode(',', array_keys(Patient::$genders)),
+            'profile'  => 'required',
+            'address' => 'required|string|max:255',
+            'identity_number' => [
+                'required',
+                'regex:' . config('const.regex_identity_number'),
+            ],
+            'identity_card_date' => [
+                'nullable',
+                'date_format:' . config('const.format.date_form'),
+                'before_or_equal:' . Carbon::now()->format(config('const.format.date_form'))
+            ],
+            'identity_card_place'  => 'nullable|string|max:255',
         ]);
         // Handle the avatar file upload
         if ($request->profile) {

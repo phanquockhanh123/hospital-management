@@ -1,19 +1,25 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ZoomController;
+use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\DiagnosisController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\PrescriptionController;
 use App\Http\Controllers\MedicalDeviceController;
-use App\Http\Controllers\DoctorDepartmentController;
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RequestDeviceController;
 use App\Http\Controllers\BookAppointmentController;
-use App\Http\Controllers\ChatController;
-use App\Http\Controllers\ZoomController;
+use App\Http\Controllers\DoctorDepartmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -124,6 +130,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         });
 
         Route::middleware([config('const.auth.mid')])->group(function () {
+            Route::get('/schedules', [AppointmentController::class, 'getAppointmentByDoctor'])->name('appointments.get-appointment-by-doctor');
             Route::get('/accepted_appointment/{appointment}', [AppointmentController::class, 'acceptedAppointment'])->name('appointments.accepted');
             Route::get('/denied_appointment/{appointment}', [AppointmentController::class, 'deniedAppointment'])->name('appointments.denied');
         });
@@ -143,18 +150,75 @@ Route::middleware(['auth:sanctum'])->group(function () {
         });
     });
 
-    //-----------------------------------Medical Devices ----------------------------------------------------------------
+    //-----------------------------------Request Devices ----------------------------------------------------------------
     Route::controller(MedicalDeviceController::class)->group(function () {
         Route::middleware([config('const.auth.mid')])->group(function () {
-            Route::get('/medical_devices', [MedicalDeviceController::class, 'index'])->name('medical_devices.index');
+            Route::get('/medical_devices', 'index')->name('medical_devices.index');
         });
         Route::middleware([config('const.auth.high')])->group(function () {
-            Route::get('/medical_devices/create', [MedicalDeviceController::class, 'create'])->name('medical_devices.create');
-            Route::post('/medical_devices', [MedicalDeviceController::class, 'store'])->name('medical_devices.store');
-            Route::get('/medical_devices/{medical_device}', [MedicalDeviceController::class, 'show'])->name('medical_devices.show');
-            Route::get('/medical_devices/{medical_device}/edit', [MedicalDeviceController::class, 'edit'])->name('medical_devices.edit');
-            Route::put('/medical_devices/{medical_device}', [MedicalDeviceController::class, 'update'])->name('medical_devices.update');
-            Route::delete('/medical_devices/{medical_device}', [MedicalDeviceController::class, 'destroy'])->name('medical_devices.destroy');
+            Route::get('/medical_devices/create', 'create')->name('medical_devices.create');
+            Route::post('/medical_devices', 'store')->name('medical_devices.store');
+            Route::get('/medical_devices/{medical_device}', 'show')->name('medical_devices.show');
+            Route::get('/medical_devices/{medical_device}/edit', 'edit')->name('medical_devices.edit');
+            Route::put('/medical_devices/{medical_device}', 'update')->name('medical_devices.update');
+            Route::delete('/medical_devices/{medical_device}', 'destroy')->name('medical_devices.destroy');
+        });
+    });
+
+    //-----------------------------------Medical Devices ----------------------------------------------------------------
+    Route::controller(RequestDeviceController::class)->group(function () {
+        Route::middleware([config('const.auth.mid')])->group(function () {
+            Route::get('/request_devices', 'index')->name('request_devices.index');
+            Route::get('/request_devices/create', 'create')->name('request_devices.create')->withoutMiddleware(config('const.auth.high'));
+            Route::post('/request_devices', 'store')->name('request_devices.store')->withoutMiddleware(config('const.auth.high'));
+            Route::get('/request_devices/{request_device}', 'show')->name('request_devices.show')->withoutMiddleware(config('const.auth.high'));
+            Route::get('/request_devices/{request_device}/edit', 'edit')->name('request_devices.edit')->withoutMiddleware(config('const.auth.high'));
+            Route::put('/request_devices/{request_device}', 'update')->name('request_devices.update')->withoutMiddleware(config('const.auth.high'));
+            Route::delete('/request_devices/{request_device}', 'destroy')->name('request_devices.destroy')->withoutMiddleware(config('const.auth.high'));
+        });
+    });
+
+    //-----------------------------------Prescriptions----------------------------------------------------------------
+    Route::controller(PrescriptionController::class)->group(function () {
+        Route::middleware([config('const.auth.mid')])->group(function () {
+            Route::get('/prescriptions', 'index')->name('prescriptions.index');
+            Route::get('/prescriptions/create', 'create')->name('prescriptions.create');
+            Route::post('/prescriptions', 'store')->name('prescriptions.store');
+            Route::get('/prescriptions/{prescription}', 'show')->name('prescriptions.show');
+            Route::get('/prescriptions/{prescription}/edit', 'edit')->name('prescriptions.edit');
+            Route::put('/prescriptions/{prescription}', 'update')->name('prescriptions.update');
+            Route::delete('/prescriptions/{prescription}', 'destroy')->name('prescriptions.destroy');
+
+            Route::get('/prescriptions/{prescription}/pdf', 'renderPdf')->name('prescriptions.pdf');
+        });
+    });
+
+    //-----------------------------------Chẩn đoán/Xét nghiệm----------------------------------------------------------------
+    Route::controller(DiagnosisController::class)->group(function () {
+        Route::middleware([config('const.auth.mid')])->group(function () {
+            Route::get('/diagnosises', 'index')->name('diagnosises.index');
+            Route::get('/diagnosises/create', 'create')->name('diagnosises.create');
+            Route::post('/diagnosises', 'store')->name('diagnosises.store');
+            Route::get('/diagnosises/{diagnosis}', 'show')->name('diagnosises.show');
+            Route::get('/diagnosises/{diagnosis}/edit', 'edit')->name('diagnosises.edit');
+            Route::put('/diagnosises/{diagnosis}', 'update')->name('diagnosises.update');
+            Route::delete('/diagnosises/{diagnosis}', 'destroy')->name('diagnosises.destroy');
+
+            Route::get('/diagnosises/{diagnosis}/pdf', 'renderPdf')->name('diagnosises.pdf');
+        });
+    });
+
+
+    //-----------------------------------Files ----------------------------------------------------------------
+    Route::controller(DocumentController::class)->group(function () {
+        Route::middleware([config('const.auth.mid')])->group(function () {
+            Route::get('/documents', 'index')->name('documents.index');
+            Route::get('/documents/create', 'create')->name('documents.create');
+            Route::post('/documents', 'store')->name('documents.store');
+            Route::get('/documents/{document}', 'show')->name('documents.show');
+            Route::get('/documents/{document}/edit', 'edit')->name('documents.edit');
+            Route::put('/documents/{document}', 'update')->name('documents.update');
+            Route::delete('/documents/{document}', 'destroy')->name('documents.destroy');
         });
     });
 
@@ -170,6 +234,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::delete('/news/{new}', [NewsController::class, 'destroy'])->name('news.destroy');
 
             Route::get('/bills', [NewsController::class, 'index2'])->name('admin.get-bill-list');
+
+            Route::post('/upload', [NewsController::class, 'upload'])->name('ckeditor.upload');
         });
     });
 
@@ -183,13 +249,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
         });
     });
 
-    //--------------------------------Meeeting ------------------------------------------------------------------------------------------------
+    //--------------------------------Meeting ------------------------------------------------------------------------------------------------
     Route::controller(ZoomController::class)->group(function () {
-        Route::middleware([config('const.auth.high')])->group(function () {
+        Route::middleware([config('const.auth.low')])->group(function () {
             Route::get('meetings', 'index')->name('meetings.index');
-            Route::get('start-meeting/{meeting}', 'start_meeting')->name('meeting.start');
             Route::get('join-meeting/{meeting}', 'join_meeting')->name('meeting.join');
             Route::get('leave-meeting', 'leave_meeting')->name('meeting.leave');
+        });
+        Route::middleware([config('const.auth.high')])->group(function () {
+            Route::get('start-meeting/{meeting}', 'start_meeting')->name('meeting.start');
             Route::get('create-new-meeting', 'create')->name('meeting.create');
             Route::post('create-new-meeting', 'store')->name('meeting.store');
             Route::delete('delete-meeting/{meeting}', 'destroy')->name('meeting.destroy');
@@ -213,6 +281,29 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/', 'index')->name('home.index');
     Route::get('/about', 'aboutUs')->name('home.about');
     Route::get('/blog', 'blog')->name('home.blog');
-    Route::get('/doctors', 'getDoctor')->name('user.getDoctor');
+    Route::get('/book_appointment_user', 'bookAppointmentUser')->name('home.book-appointment-user');
     Route::post('/user/appointments', 'storeAppointment')->name('user.appointments-store');
+    Route::get('/get_doctor_list_for_user_site', 'getDoctorListForUserSite')->name('home.get-doctor-list-for-user-site');
+    Route::get('/get_doctor_detail_for_user_site/{doctor}', 'getDoctorDetailForUserSite')->name('home.get-doctor-detail-for-user-site');
+});
+
+ 
+Route::get('/auth/google', function () {
+    return Socialite::driver('google')->redirect();
+})->name('home.login-with-google');
+ 
+Route::get('/auth/google/callback', function () {
+    $googleUser = Socialite::driver('google')->user();  
+    $user = User::updateOrCreate([
+        'google_id' => $googleUser->id,
+    ], [
+        'name' => $googleUser->name,
+        'email' => $googleUser->email,
+        'google_token' => $googleUser->token,
+        'google_refresh_token' => $googleUser->refreshToken,
+    ]);
+ 
+    Auth::login($user);
+
+    return redirect('/');
 });

@@ -49,18 +49,26 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'name' => 'required',
-            'email' => 'required',
-            'phone' => 'nullable',
-            'gender' => 'nullable',
-            'address' => 'nullable',
-            'role' => 'required',
-            'dob' => 'nullable',
-            'password' => 'required',
-            'profile' => 'nullable',
-            'filename' => 'nullable',
+
+        $request->validate([
+            'name' => 'nullable|string|max:255',
+            'email' => 'required|string|max:255|unique:users,email|regex:'
+                . config('const.regex_email_admin'),
+            'phone' => 'nullable|size:10|regex:' . config('const.regex_telephone'),
+            'gender' => 'nullable|in:' . implode(',', array_keys(User::$gender)),
+            'address' => 'nullable|max:10|string',
+            'role' => 'nullable|in:' . implode(',', array_keys(User::$roles)),
+            'dob' => [
+                'nullable',
+                'date_format:' . config('const.format.date_form'),
+                'before_or_equal:' . Carbon::now()->format(config('const.format.date_form'))
+            ],
+            'password' => 'required|min:8|regex:#(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])#',
+            'confirmPassword' => 'required_with:password|same:password|min:6',
+            'profile' => 'required',
+
         ]);
+        $validatedData = $request->all();
 
         // Lưu tệp
         if ($request->hasFile('profile')) {
@@ -110,14 +118,21 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        $userId = $user->id;
         $validatedData = $request->validate([
-            'name' => 'nullable',
-            'email' => 'required',
-            'phone' => 'nullable',
-            'gender' => 'nullable',
-            'address' => 'nullable',
-            'role' => 'required',
-            'dob' => 'required'
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|max:255|unique:users,email,' . $userId . '|regex:'
+                . config('const.regex_email_admin'),
+            'phone' => 'nullable|size:10|regex:' . config('const.regex_telephone'),
+            'gender' => 'nullable|in:' . implode(',', array_keys(User::$gender)),
+            'address' => 'nullable|max:10|string',
+            'role' => 'nullable|in:' . implode(',', array_keys(User::$roles)),
+            'dob' => [
+                'nullable',
+                'date_format:' . config('const.format.date_form'),
+                'before_or_equal:' . Carbon::now()->format(config('const.format.date_form'))
+            ],
+            'profile' => 'required',
         ]);
         if ($request->profile) {
             $imagePath = "./imgUser/" . $user->filename;
@@ -139,7 +154,6 @@ class UserController extends Controller
             $validatedData['filename'] = $filename;
         }
         $validatedData['status'] = User::STATUS_ACTIVE;
-        $validatedData['password'] = Hash::make($request->password);
 
         $user->update($validatedData);
 

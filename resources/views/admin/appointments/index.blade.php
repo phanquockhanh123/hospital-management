@@ -33,10 +33,10 @@
                             <form action="{{ route('appointments.index') }}" method="GET">
                                 <div class="input-group mb-2">
                                     <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder="Search Appointments"
+                                        <input type="text" class="form-control" placeholder="Tìm kiếm lịch hẹn"
                                             name="search">
                                         <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary" type="submit">Search</button>
+                                            <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
                                         </div>
                                     </div>
                                 </div>
@@ -73,25 +73,27 @@
                                         <table id="example2" class="table table-bordered table-hover">
                                             <thead>
                                                 <tr>
-                                                    <th>APPOINTMENT ID</th>
-                                                    <th>PATIENT</th>
-                                                    <th>DOCTOR</th>
-                                                    <th>DOCTOR DEPARTMENT</th>
-                                                    <th>APPOINTMENT DATE</th>
-                                                    <th>ACTION</th>
-                                                    <th></th>
+                                                    <th>STT</th>
+                                                    <th>Bệnh nhân</th>
+                                                    <th>Bác sĩ</th>
+                                                    <th>Phòng ban</th>
+                                                    <th>Bắt đầu</th>
+                                                    <th>Kết thúc</th>
+                                                    <th>Trạng thái</th>
+                                                    <th>Sửa/Xóa</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach ($appointments as $appointment)
                                                     <tr>
                                                         <td><a
-                                                                href="{{ route('appointments.show', $appointment->id) }}">{{ $appointment->id }}</a>
+                                                                href="{{ route('appointments.show', $appointment->id) }}">{{ $count++ }}</a>
                                                         </td>
                                                         <td>{{ $appointment->patient->name }}</td>
                                                         <td>{{ $appointment->doctor->name }}</td>
                                                         <td>{{ $appointment->doctorDepartment->name }}</td>
-                                                        <td>{{ $appointment->appointment_date }}</td>
+                                                        <td>{{ $appointment->start_time }}</td>
+                                                        <td>{{ $appointment->end_time }}</td>
                                                         <td>
                                                             @if($appointment->status == 2) 
                                                                 <i class="fa-solid fa-calendar-check" style="color:green;"></i>
@@ -137,8 +139,8 @@
                                                                         </button>
                                                                     </div>
                                                                     <div class="modal-body">
-                                                                        Bạn có chắc chắn muốn xóa lịch hẹn
-                                                                        "{{ $appointment->id }}" không? Hành động này
+                                                                        Bạn có chắc chắn muốn xóa lịch hẹn với bệnh nhân
+                                                                        "{{ $appointment->patient->name }}" không? Hành động này
                                                                         không
                                                                         thể hoàn tác!
                                                                     </div>

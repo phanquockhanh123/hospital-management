@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\News;
+use Illuminate\Http\Request;
+use Intervention\Image\Image;
 use App\Models\DoctorDepartment;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -60,14 +61,13 @@ class NewsController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'title' => 'required',
-            'image' => 'nullable',
-            'content' => 'nullable',
-            'submitted_date' => 'required',
-            'source_news' => 'nullable',
-            'author' => 'nullable',
-            'key_words' => 'nullable',
-            'priority_level' => 'required'
+            'title' => 'required|string|max:255',
+            'image' => 'required',
+            'content' => 'required|string|max:1000',
+            'source_news' => 'nullable|string|max:255',
+            'author' => 'nullable|string|max:255',
+            'key_words' => 'nullable|string|max:255',
+            'priority_level' => 'required|in:' . implode(',', array_keys(News::$priorityLevels)),
         ]);
         $validatedData['status'] = News::STATUS_SUBMITTED;
         // Lưu ảnh
@@ -80,6 +80,13 @@ class NewsController extends Controller
 
             $validatedData['image'] = $path;
             $validatedData['filename'] = $filename;
+
+            // resize image here
+            // $thumbnailpath = public_path('/uploads/thumbnail/'.$filename);
+            // $img = Image::make($thumbnailpath)->resize(500, 150, function ($constraint) {
+            //     $constraint->aspectRatio();
+            // });
+            // $img->save($thumbnailpath);
         }
         News::create($validatedData);
 
@@ -120,15 +127,14 @@ class NewsController extends Controller
     public function update(Request $request, News $new)
     {
         $validatedData = $request->validate([
-            'title' => 'required',
-            'image' => 'nullable',
-            'content' => 'nullable',
-            'source_news' => 'nullable',
-            'author' => 'nullable',
-            'priority_level' => 'nullable',
-            'key_words' => 'nullable',
+            'title' => 'required|string|max:255',
+            'image' => 'required',
+            'content' => 'required|string|max:1000',
+            'source_news' => 'nullable|string|max:255',
+            'author' => 'nullable|string|max:255',
+            'key_words' => 'nullable|string|max:255',
+            'priority_level' => 'required|in:' . implode(',', array_keys(News::$priorityLevels)),
         ]);
-        $validatedData['submitted_date'] = now();
         // Handle the avatar file upload
         if ($request->image) {
             $imagePath = "./imgNews/" . $new->filename;
@@ -165,5 +171,19 @@ class NewsController extends Controller
 
         return redirect()->route('news.index')
             ->with('success', 'Bài viết đã được xoá thành công.');
+    }
+
+    public function upload(Request $request) {
+        if($request->hasFile('upload')) {
+            $file = $request->upload;
+            $newName = time() . "." . $file->getClientOriginalExtension();
+            $file->remove("images", $newName);
+            $url  = asset("imgNews");
+            return response()->json(
+                ['filename' => $newName,
+                 'url' => $url,
+                 'uploaded' => 1]
+            );
+        }
     }
 }

@@ -33,10 +33,10 @@
                             <form action="{{ route('meetings.index') }}" method="GET">
                                 <div class="input-group mb-2">
                                     <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder="Search meetings"
+                                        <input type="text" class="form-control" placeholder="Tìm kiếm cuộc họp"
                                             name="search">
                                         <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary" type="submit">Search</button>
+                                            <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
                                         </div>
                                     </div>
                                 </div>
@@ -60,7 +60,7 @@
             @endif
             <div class="card">
                 <div class="card-header">
-                    All Zoom Meetings
+                    Tất cả các cuộc họp
                 </div>
                 <div class="card-body">
                     <ul class="list-group">
@@ -68,18 +68,17 @@
                         @foreach ($meetings as $meeting)
                         <li class="list-group-item">
                             <div>
-                                Meeting Name: <strong>{{$meeting->meeting_name}}</strong>
+                                Tên cuộc họp: <strong>{{$meeting->meeting_name}}</strong>
                             </div>
                             <div>
-                                Meeting Password: <strong>{{$meeting->meeting_password}}</strong>
+                                Mật khẩu: <strong>{{$meeting->meeting_password}}</strong>
                             </div>
                             @if (!$meeting->is_active && !$meeting->finished)
                             <div>
-                                <a href="{{ route('meeting.start', $meeting->meeting_id)}}"><strong>Click To Start
-                                        Meeting</strong></a>
+                                <a href="{{ route('meeting.start', $meeting->meeting_id)}}"><strong>Nhấn để vào cuộc họp</strong></a>
                             </div>
                             @elseif ($meeting->is_active && !$meeting->finished)
-                            Meeting Status: <img src="{{ asset('live-streaming.png') }}" style="color:red" width="40px"
+                            Trạng thái cuộc họp: <img src="{{ asset('live-streaming.png') }}" style="color:red" width="40px"
                                 height="40px" alt="">
                             <div>
                                 <a href="{{ route('meeting.join', $meeting->meeting_id) }}"><strong>Click To Join
@@ -91,13 +90,13 @@
                             <form action="{{ route('meeting.destroy', $meeting->meeting_id) }}" method="POST">
                                 @csrf
                                 @method('delete')
-                                <button class="btn btn-danger btn-sm">Delete Meeting</button>
+                                <button class="btn btn-danger btn-sm">Xóa cuộc họp</button>
                             </form>
                             @endif
                         </li>
                         @endforeach
                         @else
-                        <h3 style="color:red;text-align:center">No Meetings Created Yet!</h3>
+                        <h3 style="color:red;text-align:center">Không tồn tại cuộc họp!</h3>
                         @endif
                     </ul>
                 </div>

@@ -33,10 +33,10 @@
                             <form action="{{ route('medical_devices.index') }}" method="GET">
                                 <div class="input-group mb-2">
                                     <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder="Search medical_devices"
+                                        <input type="text" class="form-control" placeholder="Tìm kiếm thiết bị y tế"
                                             name="search">
                                         <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary" type="submit">Search</button>
+                                            <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
                                         </div>
                                     </div>
                                 </div>
@@ -73,13 +73,13 @@
                                         <table id="example2" class="table table-bordered table-hover">
                                             <thead>
                                                 <tr>
-                                                    <th>DEVICE CODE</th>
-                                                    <th>NAME</th>
-                                                    <th>DEPARTMENT</th>
-                                                    <th>CHARGE</th>
-                                                    <th>STATUS</th>
-                                                    <th>QUANTITY</th>
-                                                    <th>EXPIRED AT</th>
+                                                    <th>Mã thiết bị</th>
+                                                    <th>Tên thiết bị</th>
+                                                    <th>Phòng ban</th>
+                                                    <th>Giá</th>
+                                                    <th>Trạng thái</th>
+                                                    <th>Số lượng còn</th>
+                                                    <th>Hết hạn kiểm định</th>
                                                     <th></th>
                                                 </tr>
                                             </thead>

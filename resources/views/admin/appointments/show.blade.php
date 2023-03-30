@@ -49,8 +49,13 @@
                                     </tr>
 
                                     <tr>
-                                        <th>Ngày hẹn:</th>
-                                        <td>{{ $appointment->appointment_date }}</td>
+                                        <th>Thời gian bắt đầu:</th>
+                                        <td>{{ $appointment->start_time }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>Thời gian kết thúc:</th>
+                                        <td>{{ $appointment->end_time }}</td>
                                     </tr>
                                     <tr>
                                         <th>Mô tả:</th>

@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\MailBookAppoiment;
 use App\Models\Book;
+use App\Models\User;
 use App\Models\Doctor;
 use App\Models\Patient;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
+use App\Mail\MailBookAppoiment;
 use App\Models\DoctorDepartment;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 class AppointmentController extends Controller
@@ -29,7 +31,8 @@ class AppointmentController extends Controller
         } else {
             $appointments = Appointment::orderByDesc('created_at')->paginate(config('const.perPage'));
         }
-        return view('admin.appointments.index', compact('appointments'));
+        $count = 1;
+        return view('admin.appointments.index', compact('appointments', 'count'));
     }
 
     /**
@@ -39,7 +42,12 @@ class AppointmentController extends Controller
      */
     public function create(Request $request)
     {
-        $doctors = Doctor::all();
+        $appointments = Appointment::where('end_time', '<=' , now())->get();
+        $doctorIds = array_map(function ($appointment) { 
+            return $appointment['doctor_id'];
+        }, $appointments->toArray());
+
+        $doctors = Doctor::whereIn('id', $doctorIds)->get();
         $patients = Patient::all();
         $doctorDepartments = DoctorDepartment::all();
         return view('admin.appointments.create', compact('doctors', 'patients', 'doctorDepartments'));
@@ -54,11 +62,20 @@ class AppointmentController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'doctor_id' => 'required',
-            'patient_id' => 'required',
-            'doctor_department_id' => 'required',
-            'appointment_date' => 'required',
-            'description' => 'nullable',
+            'doctor_id' => 'nullable|integer|exists:doctors,id,deleted_at,NULL',
+            'patient_id' => 'nullable|integer|exists:patients,id,deleted_at,NULL',
+            'doctor_department_id' => 'nullable|integer|exists:doctor_departments,id,deleted_at,NULL',
+            'start_time' => [
+                'required',
+                'before_or_equal:end_time',
+                'date_format:' . config('const.format.date_form')
+            ],
+            'end_time' => [
+                'nullable',
+                'after_or_equal:start_date',
+                'date_format:' . config('const.format.date_form')
+            ],
+            'description' => 'nullable|string|max:1000',
         ]);
 
         $validatedData['status'] = Appointment::STATUS_PENDING;
@@ -104,11 +121,20 @@ class AppointmentController extends Controller
     public function update(Request $request, Appointment $appointment)
     {
         $validatedData = $request->validate([
-            'doctor_id' => 'required',
-            'patient_id' => 'required',
-            'doctor_department_id' => 'required',
-            'appointment_date' => 'required',
-            'description' => 'nullable',
+            'doctor_id' => 'nullable|integer|exists:doctors,id,deleted_at,NULL',
+            'patient_id' => 'nullable|integer|exists:patients,id,deleted_at,NULL',
+            'doctor_department_id' => 'nullable|integer|exists:doctor_departments,id,deleted_at,NULL',
+            'start_time' => [
+                'required',
+                'before_or_equal:end_time',
+                'date_format:' . config('const.format.date_form')
+            ],
+            'end_time' => [
+                'nullable',
+                'after_or_equal:start_date',
+                'date_format:' . config('const.format.date_form')
+            ],
+            'description' => 'nullable|string|max:1000',
         ]);
 
         $validatedData['status'] = Appointment::STATUS_PENDING;
@@ -134,37 +160,47 @@ class AppointmentController extends Controller
 
     public function calendar()
     {
-        $bookings = Book::all();
+        $doctors = Doctor::all();
+        $patients = Patient::all();
+        $doctorDepartments = DoctorDepartment::all();
+        $bookings = Appointment::where('status', Appointment::STATUS_ACCEPTED)->get();
         $events = array();
         foreach ($bookings as $booking) {
             $events[] = [
                 'id'   => $booking->id,
                 'title' => $booking->title,
-                'start' => $booking->start_date,
-                'end' => $booking->end_date,
+                'start' => $booking->start_time,
+                'end' => $booking->end_time,
+                'description' => $booking->description
             ];
         }
 
-        return view('admin.appointments.calendar', compact('events'));
+        return view('admin.appointments.calendar', compact('events', 'doctors', 'patients','doctorDepartments'));
     }
 
     public function storeCalendar(Request $request)
     {
-        $request->validate([
-            'title' => 'required|string',
+        $validateData = $request->validate([
+            'title' => 'nullable',
+            'doctor_id' => 'nullable|integer|exists:doctors,id,deleted_at,NULL',
+            'patient_id' => 'nullable|integer|exists:patients,id,deleted_at,NULL',
+            'doctor_department_id' => 'nullable|integer|exists:doctor_departments,id,deleted_at,NULL',
+            'start_time' => 'required',
+            'end_time' => 'required',
+            'description' => 'nullable|string|max:1000',
         ]);
-        $booking = Book::create([
-            'title' => $request->title,
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
-        ]);
+        $validateData['status'] = Appointment::STATUS_ACCEPTED;
 
+        $booking = Appointment::create($validateData);
         return response()->json([
             'id' => $booking->id,
-            'start' => $booking->start_date,
-            'end' => $booking->end_date,
             'title' => $booking->title,
-
+            'start_time' => $booking->start_time,
+            'end_time' => $booking->end_time,
+            'doctor_id' => $booking->doctor_id,
+            'patient_id' => $booking->patient_id,
+            'doctor_department_id' => $booking->doctor_department_id,
+            'description' => $booking->description,
         ]);
     }
 
@@ -227,5 +263,14 @@ class AppointmentController extends Controller
         ]);
         return redirect()->route('appointments.index')
             ->with('success', 'Từ chối cuộc hẹn thành công !');
+    }
+
+    public function getAppointmentByDoctor()
+    {
+        $doctor = Doctor::where('email', Auth::user()->email)->first();
+
+        $appointments = Appointment::where('doctor_id', $doctor->id)
+            ->orderByDesc('created_at')->paginate(config('const.perPage'));
+        return view('admin.appointments.index', compact('appointments'));
     }
 }

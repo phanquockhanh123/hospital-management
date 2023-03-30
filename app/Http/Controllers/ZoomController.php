@@ -32,9 +32,16 @@ class ZoomController extends Controller
         return JWT::encode($token, $zoom_api_secret, 'HS256');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $meetings = Meeting::all();
+        $search = $request->input('search');
+
+        if ($search) {
+            $meetings = Meeting::where('meeting_name', 'LIKE', '%' . $search . '%')
+                ->orderByDesc('created_at')->paginate(config('const.perPage'));
+        } else {
+            $meetings = Meeting::orderByDesc('created_at')->paginate(config('const.perPage'));
+        }
         return view('zoom.index', compact('meetings'));
     }
 

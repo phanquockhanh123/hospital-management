@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\MailBookAppoiment;
 use App\Models\Patient;
 use Illuminate\Http\Request;
 use App\Models\BookAppointment;
-use Illuminate\Support\Facades\Mail;
 
 class BookAppointmentController extends Controller
 {
@@ -14,12 +12,13 @@ class BookAppointmentController extends Controller
         $search = $request->input('search');
 
         if ($search) {
-            $book_appointments = BookAppointment::where('id', 'LIKE', '%' . $search . '%')
+            $book_appointments = BookAppointment::where('fullname', 'LIKE', '%' . $search . '%')
                 ->orderByDesc('created_at')->paginate(config('const.perPage'));
         } else {
             $book_appointments = BookAppointment::orderByDesc('created_at')->paginate(config('const.perPage'));
         }
-        return view('admin.book_appointments.index', compact('book_appointments'));
+        $count = 1;
+        return view('admin.book_appointments.index', compact('book_appointments', 'count'));
     }
 
     

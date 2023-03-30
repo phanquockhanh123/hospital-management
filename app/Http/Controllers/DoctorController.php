@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Bed;
 use App\Models\Doctor;
 use Illuminate\Http\Request;
@@ -50,23 +51,39 @@ class DoctorController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required',
-            'doctor_department_id' => 'required',
-            'blood_group' => 'required',
-            'email' => 'required',
-            'designation' => 'required',
-            'phone' => 'required',
+            'name' => 'required|string|max:255',
+            'doctor_department_id' => 'required|integer|exists:doctor_departments,id,deleted_at,NULL',
+            'blood_group' => 'required|in:' . implode(',', array_keys(Doctor::$bloodGroups)),
+            'email' => 'required|string|max:255|unique:doctors,email|regex:'
+                . config('const.regex_email_admin'),
+            'designation' => 'nullable|string|max:255',
+            'phone' => 'nullable|size:10|regex:' . config('const.regex_telephone'),
             'profile' => 'required',
-            'academic_level' => 'required',
-            'date_of_birth' => 'required',
-            'gender' => 'required',
-            'profile' => 'required',
-            'address' => 'required',
-            'identity_number' => 'required',
-            'identity_card_date' => 'required',
-            'identity_card_place' => 'required',
-            'start_work_date' => 'required',
-            'specialist' => 'required',
+            'academic_level' => 'required|in:' . implode(',', array_keys(Doctor::$academicLevels)),
+            'date_of_birth' => [
+                'nullable',
+                'date_format:' . config('const.format.date_form'),
+                'before_or_equal:' . Carbon::now()->format(config('const.format.date_form'))
+            ],
+            'gender' => 'required|in:' . implode(',', array_keys(Doctor::$genders)),
+            'address' => 'nullable|string|max:255',
+            'identity_number' => [
+                'required',
+                'unique:doctors,identity_number',
+                'regex:' . config('const.regex_identity_number'),
+            ],
+            'identity_card_date' => [
+                'nullable',
+                'date_format:' . config('const.format.date_form'),
+                'before_or_equal:' . Carbon::now()->format(config('const.format.date_form'))
+            ],
+            'identity_card_place'  => 'nullable|string|max:255',
+            'start_work_date' => [
+                'nullable',
+                'date_format:' . config('const.format.date_form'),
+                'before_or_equal:' . Carbon::now()->format(config('const.format.date_form'))
+            ],
+            'specialist' => 'nullable|string|max:255',
         ]);
 
         // Lưu ảnh
@@ -96,7 +113,6 @@ class DoctorController extends Controller
      */
     public function show(Doctor $doctor)
     {
-
         return view('admin.doctors.show', compact('doctor'));
     }
 
@@ -121,22 +137,41 @@ class DoctorController extends Controller
      */
     public function update(Request $request, Doctor $doctor)
     {
+        $doctorId = $doctor->id;
         $validatedData = $request->validate([
-            'name' => 'required',
-            'doctor_department_id' => 'required',
-            'blood_group' => 'required',
-            'email' => 'required',
-            'designation' => 'required',
-            'phone' => 'required',
-            'academic_level' => 'required',
-            'date_of_birth' => 'required',
-            'gender' => 'required',
-            'address' => 'required',
-            'identity_number' => 'required',
-            'identity_card_date' => 'required',
-            'identity_card_place' => 'required',
-            'start_work_date' => 'required',
-            'specialist' => 'required',
+            'name' => 'required|string|max:255',
+            'doctor_department_id' => 'required|integer|exists:doctor_departments,id,deleted_at,NULL',
+            'blood_group' => 'required|in:' . implode(',', array_keys(Doctor::$bloodGroups)),
+            'email' => 'required|string|max:255|unique:doctors,email,' . $doctorId . '|regex:'
+                . config('const.regex_email_admin'),
+            'designation' => 'nullable|string|max:255',
+            'phone' => 'nullable|size:10|regex:' . config('const.regex_telephone'),
+            'profile' => 'nullable',
+            'academic_level' => 'required|in:' . implode(',', array_keys(Doctor::$academicLevels)),
+            'date_of_birth' => [
+                'nullable',
+                'date_format:' . config('const.format.date_form'),
+                'before_or_equal:' . Carbon::now()->format(config('const.format.date_form'))
+            ],
+            'gender' => 'required|in:' . implode(',', array_keys(Doctor::$genders)),
+            'address' => 'nullable|string|max:255',
+            'identity_number' => [
+                'required',
+                'unique:doctors,identity_number,' . $doctorId . '',
+                'regex:' . config('const.regex_identity_number'),
+            ],
+            'identity_card_date' => [
+                'nullable',
+                'date_format:' . config('const.format.date_form'),
+                'before_or_equal:' . Carbon::now()->format(config('const.format.date_form'))
+            ],
+            'identity_card_place'  => 'nullable|string|max:255',
+            'start_work_date' => [
+                'nullable',
+                'date_format:' . config('const.format.date_form'),
+                'before_or_equal:' . Carbon::now()->format(config('const.format.date_form'))
+            ],
+            'specialist' => 'nullable|string|max:1000',
         ]);
 
         // Handle the avatar file upload

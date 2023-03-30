@@ -58,14 +58,13 @@ class MedicalDeviceController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'department_id' => 'required',
-            'name' => 'required',
-            'description'  => 'nullable',
+            'department_id' => 'required|integer|exists:doctor_departments,id,deleted_at,NULL',
+            'name' => 'required|string|max:255',
+            'description'  => 'nullable|string|max:255',
             'expired_date' => 'required',
-            'quantity' => 'required',
-            'charge' => 'required',
-            'filename' => 'nullable',
-            'profile' => 'nullable',
+            'quantity' => 'required|integer',
+            'charge' => 'required|integer',
+            'profile' => 'required',
         ]);
         $validatedData['medical_device_code'] = MedicalDevice::generateNextCode();
         $validatedData['status'] = MedicalDevice::STATUS_CENSORED;
@@ -120,14 +119,13 @@ class MedicalDeviceController extends Controller
     public function update(Request $request, MedicalDevice $medical_device)
     {
         $validatedData = $request->validate([
-            'department_id' => 'required',
-            'name' => 'required',
-            'description'  => 'nullable',
+            'department_id' => 'required|integer|exists:doctor_departments,id,deleted_at,NULL',
+            'name' => 'required|string|max:255',
+            'description'  => 'nullable|string|max:255',
             'expired_date' => 'required',
-            'quantity' => 'required',
-            'charge' => 'required',
-            'filename' => 'nullable',
-            'profile' => 'nullable',
+            'quantity' => 'required|integer',
+            'charge' => 'required|integer',
+            'profile' => 'required',
         ]);
 
         // Handle the avatar file upload

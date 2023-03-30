@@ -33,10 +33,10 @@
                             <form action="{{ route('book_appointments.index') }}" method="GET">
                                 <div class="input-group mb-2">
                                     <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder="Search book_appointments"
+                                        <input type="text" class="form-control" placeholder="Tìm kiếm yêu cầu lịch hẹn"
                                             name="search">
                                         <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary" type="submit">Search</button>
+                                            <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
                                         </div>
                                     </div>
                                 </div>
@@ -62,25 +62,25 @@
                                 <div class="card-body">
                                     @if ($book_appointments->isEmpty())
                                         <div class="alert alert-danger" role="alert">
-                                            No book_appointments found.
+                                            Không tìm thấy kết quả yêu cầu lịch hẹn.
                                         </div>
                                     @else
                                         <table id="example2" class="table table-bordered table-hover">
                                             <thead>
                                                 <tr>
-                                                    <th>ID</th>
-                                                    <th>NAME</th>
-                                                    <th>PHONE</th>
-                                                    <th>EMAIL</th>
-                                                    <th>EXPERTED TIME</th>
-                                                    <th>REASON</th>
-                                                    <th>ACTION</th>
+                                                    <th>STT</th>
+                                                    <th>Họ tên</th>
+                                                    <th>Số điện thoại</th>
+                                                    <th>Email</th>
+                                                    <th>Thời gian mong muốn</th>
+                                                    <th>Nguyên nhân</th></th>
+                                                    <th></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach ($book_appointments as $book_appointment)
                                                     <tr>
-                                                        <td>{{ $book_appointment->id }}</td>
+                                                        <td>{{ $count++; }}</td>
                                                         <td>{{ $book_appointment->fullname }}</td>
                                                         <td>{{ $book_appointment->phone }}</td>
                                                         <td>{{ $book_appointment->email }}</td>
@@ -91,8 +91,8 @@
                                                                 <i class="fa-solid fa-calendar-check" style="color:green;"></i>
                                                                 
                                                             @elseif ($book_appointment->status == 1)
-                                                                <a href="{{ route('book_appointments.denied', $book_appointment->id) }}"><i class="fa-solid fa-calendar-xmark"  style="color:red;"></i></a>
-                                                                <a href="{{ route('book_appointments.accepted', $book_appointment->id) }}"><i class="fa-solid fa-calendar-check"  style="color:blue;"></i></a>
+                                                                <a href="{{ route('book_appointments.denied', $book_appointment->id) }}" title="Từ chối"><i class="fa-solid fa-calendar-xmark"  style="color:red;"></i></a>
+                                                                <a href="{{ route('book_appointments.accepted', $book_appointment->id) }}" title="Chấp nhận"><i class="fa-solid fa-calendar-check"  style="color:blue;"></i></a>
                                                                 
                                                             @else
                                                                 <i class="fa-solid fa-calendar-xmark" style="color:red;"></i>

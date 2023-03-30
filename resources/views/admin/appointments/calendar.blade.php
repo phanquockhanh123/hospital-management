@@ -38,12 +38,77 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Booking title</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Booking Appointment</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <input type="text" class="form-control" id="title">
-                        <span id="titleError" class="text-danger"></span>
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label for="title">Title:</label>
+                                <input type="text" class="form-control" name="title" id="title">
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label for="doctor_id">Chọn bác sĩ:</label>
+                                <select name="doctor_id" id="doctor_id" class="form-control input-sm m-bot15">
+                                    <option value="">----Chọn bác sĩ----</option>
+                                    @foreach ($doctors as $doctor)
+                                    <option value="{{ $doctor->id }}">{{ $doctor->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('doctor_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label for="patient_id">Chọn bệnh nhân:</label>
+                                <select name="patient_id" id="patient_id" class="form-control input-sm m-bot15">
+                                    <option value="">----Chọn bệnh nhân----</option>
+                                    @foreach ($doctors as $doctor)
+                                    <option value="{{ $doctor->id }}">{{ $doctor->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('patient_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label for="doctor_department_id">Phòng ban:</label>
+                                <select name="doctor_department_id" id="doctor_department_id" class="form-control input-sm m-bot15">
+                                    <option value="">----Chọn phòng ban----</option>
+                                    @foreach ($doctorDepartments as $doctorDepartment)
+                                    <option value="{{ $doctorDepartment->id }}">{{ $doctorDepartment->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('doctor_department_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            {{-- <div class="form-group col-md-12">
+                                <label for="start_time">Thời gian bắt đầu:</label>
+                                    <input type="date" name="start_time" id="start_time"
+                                        class="form-control @error('start_time') is-invalid @enderror"
+                                        value="{{ old('start_time') }}">
+                                    @error('start_time')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                            </div>
+
+                            <div class="form-group col-md-12">
+                                <label for="end_time">Thời gian kết thúc:</label>
+                                <input type="date" name="end_time" id="end_time"
+                                    class="form-control @error('end_time') is-invalid @enderror"
+                                    value="{{ old('end_time') }}">
+                                @error('end_time')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div> --}}
+                            <div class="form-group col-md-12">
+                                <label for="description">Description:</label>
+                                <input type="text" class="form-control" name="description" id="description">
+                            </div>
+
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" style="color: black;"
@@ -80,13 +145,14 @@
                 });
 
                 var booking = @json($events);
+
                 var calendarEl = document.getElementById('calendar');
                 var calendar = new FullCalendar.Calendar(calendarEl, {
                     initialView: 'dayGridWeek',
                     headerToolbar: {
                         left: 'prev,next',
                         center: 'title',
-                        right: 'dayGridDay,dayGridWeek,dayGridMonth,dayGridYear' // user can switch between the two
+                        right: 'dayGridYear,dayGridMonth,timeGridWeek,timeGridDay' // user can switch between the two
                     },
                     events: booking,
                     selectable: true,
@@ -96,8 +162,12 @@
 
                         $('#saveBtn').click(function() {
                             var title = $('#title').val();
-                            var start_date = moment(selectionInfo.start).format('YYYY-MM-DD');
-                            var end_date = moment(selectionInfo.end).format('YYYY-MM-DD');
+                            var description = $('#description').val();
+                            var doctor_id = $('#doctor_id :selected').val();
+                            var patient_id = $('#patient_id :selected').val();
+                            var doctor_department_id = $('#doctor_department_id :selected').val();
+                            var start_time = moment(selectionInfo.start).format('YYYY/MM/DD hh:mm');
+                            var end_time = moment(selectionInfo.end).format('YYYY/MM/DD hh:mm');
 
                             $.ajax({
                                 url: "{{ route('calendar.store') }}",
@@ -105,16 +175,23 @@
                                 dataType: 'json',
                                 data: {
                                     title,
-                                    start_date,
-                                    end_date
+                                    doctor_id,
+                                    patient_id,
+                                    doctor_department_id,
+                                    start_time,
+                                    end_time,
+                                    description
                                 },
                                 success: function(response) {
                                     $('#bookingModal').modal('hide')
                                     $('#calendar').fullCalendar('renderEvent', {
-                                        'title': response.title,
-                                        'start': response.start,
-                                        'end': response.end,
-                                        'color': response.color
+                                        'title' : response.title,
+                                        'doctor_id': response.doctor_id,
+                                        'patient_id': response.patient_id,
+                                        'doctor_department_id': response.doctor_department_id,
+                                        'description': response.description,
+                                        'start_time': response.start_time,
+                                        'end_time': response.end_time,
                                     });
                                 },
                                 error: function(error) {
@@ -127,44 +204,6 @@
                         });
                     },
                     editable: true,
-                    eventDrop: function(eventDropInfo) {
-                        var id = eventDropInfo.id;
-                        console.log(eventDropInfo);
-                        var start_date = moment(eventDropInfo.start).format('YYYY-MM-DD');
-                        var end_date = moment(eventDropInfo.end).format('YYYY-MM-DD');
-                        $.ajax({
-                            url: "{{ route('calendar.update', '') }}" + '/' + id,
-                            type: "PATCH",
-                            dataType: 'json',
-                            data: {
-                                start_date,
-                                end_date
-                            },
-                            success: function(response) {
-                                swal("Good job!", "Event Updated!", "success");
-                            },
-                            error: function(error) {
-                                console.log(error)
-                            },
-                        });
-                    },
-                    eventClick: function(event) {
-                        var id = event.id;
-                        if (confirm('Are you sure want to remove it')) {
-                            $.ajax({
-                                url: "{{ route('calendar.destroy', '') }}" + '/' + id,
-                                type: "DELETE",
-                                dataType: 'json',
-                                success: function(response) {
-                                    $('#calendar').fullCalendar('removeEvents', response);
-                                    // swal("Good job!", "Event Deleted!", "success");
-                                },
-                                error: function(error) {
-                                    console.log(error)
-                                },
-                            });
-                        }
-                    },
                 });
                 calendar.render();
             });

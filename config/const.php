@@ -34,7 +34,7 @@ return [
         'date_with_slash' => 'd/m/Y',
         'date_folder_s3' => 'Ymd'
     ],
-    'application_cv_file_extension' => ['png, jpeg'],
+    'application_cv_file_extension' => ['png, jpeg, pdf, jpg, gif'],
     'retry_time' => 3,
     'auth' => [
         'high' => 'auth.role:' . User::ROLE_ADMIN_ROOT,

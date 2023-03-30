@@ -82,11 +82,21 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="appointment_date">Ngày hẹn:</label>
-                                    <input type="date" name="appointment_date" id="appointment_date"
-                                        class="form-control @error('appointment_date') is-invalid @enderror"
-                                        value="{{ old('appointment_date', $appointment->appointment_date->format(config('const.format.date_form'))) }}">
-                                    @error('appointment_date')
+                                    <label for="start_time">Thời gian bắt đầu:</label>
+                                    <input type="date" name="start_time" id="start_time"
+                                        class="form-control @error('start_time') is-invalid @enderror"
+                                        value="{{ old('start_time', $appointment->start_time->format(config('const.format.date_form'))) }}">
+                                    @error('start_time')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="end_time">Thời gian kết thúc:</label>
+                                    <input type="date" name="end_time" id="end_time"
+                                        class="form-control @error('end_time') is-invalid @enderror"
+                                        value="{{ old('end_time', $appointment->end_time->format(config('const.format.date_form'))) }}">
+                                    @error('end_time')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>

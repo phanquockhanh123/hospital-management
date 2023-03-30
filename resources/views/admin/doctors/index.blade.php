@@ -33,10 +33,10 @@
                             <form action="{{ route('doctors.index') }}" method="GET">
                                 <div class="input-group mb-2">
                                     <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder="Search Doctors"
+                                        <input type="text" class="form-control" placeholder="Tìm kiếm bác sĩ"
                                             name="search">
                                         <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary" type="submit">Search</button>
+                                            <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
                                         </div>
                                     </div>
                                 </div>
@@ -70,17 +70,17 @@
                                 <div class="card-body">
                                     @if ($doctors->isEmpty())
                                     <div class="alert alert-danger" role="alert">
-                                        No doctors found.
+                                        Không tìm thấy bác sĩ!.
                                     </div>
                                     @else
                                     <table id="example2" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
-                                                <th>DOCTOR</th>
-                                                <th>DEPARTMENT</th>
-                                                <th>SPECIALIST</th>
-                                                <th>START WORK</th>
-                                                <th>STATUS</th>
+                                                <th>Bác sĩ</th>
+                                                <th>Phòng ban</th>
+                                                <th>Chuyên ngành</th>
+                                                <th>Ngày vào làm</th>
+                                                <th>Trạng thái</th>
                                                 <th></th>
                                             </tr>
                                         </thead>

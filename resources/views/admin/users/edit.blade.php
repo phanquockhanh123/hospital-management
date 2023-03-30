@@ -113,13 +113,13 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="identity_number">Quyền:</label>
+                                    <label for="role">Quyền:</label>
                                     <select name="role" class="form-control input-sm m-bot15">
                                         <option value="">----Chọn quyền----</option>
                                         <option value="0" {{ $user->role == 0 ? 'selected' : '' }}>Lễ tân</option>
                                         <option value="1" {{ $user->role == 1 ? 'selected' : '' }}>Bác sĩ</option>
                                     </select>
-                                    @error('identity_number')
+                                    @error('role')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>

@@ -53,10 +53,10 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $exception)
     {
         switch (get_class($exception)) {
-            case ValidationException::class:
-                return response()->json([
-                    'errors' => $exception->validator->getMessageBag()
-                ], Response::HTTP_BAD_REQUEST);
+            // case ValidationException::class:
+            //     return response()->json([
+            //         'errors' => $exception->validator->getMessageBag()
+            //     ], Response::HTTP_BAD_REQUEST);
             case NotFoundHttpException::class:
                 return response()->json([
                     'errors' => 'Page not found'
