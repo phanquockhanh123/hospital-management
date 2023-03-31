@@ -38,5 +38,7 @@
 </script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.js"></script>
 
+{{-- Ckeditor --}}
+<script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
 
 

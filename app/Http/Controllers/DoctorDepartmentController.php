@@ -92,6 +92,7 @@ class DoctorDepartmentController extends Controller
             'description' => 'nullable|string|max:255',
         ]);
         $validatedData['status'] = DoctorDepartment::STATUS_FREE;
+
         $doctorDepartment->update($validatedData);
 
         return redirect()->route('doctor_departments.index')

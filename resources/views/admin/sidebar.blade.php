@@ -2,7 +2,7 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <!-- Brand Logo -->
   <a href="{{ route('admin.home') }}" class="brand-link">
-    <img src="admin2/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+    <img src="https://scontent.fhan3-1.fna.fbcdn.net/v/t39.30808-6/302494543_501115628684397_602739320082206623_n.png?_nc_cat=105&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=gWSXdE-iCDcAX8ONLKV&_nc_ht=scontent.fhan3-1.fna&oh=00_AfA2T6engLV8TSneHwDSeaZSDQeV7JyLS9DuafymDN0Eog&oe=642C1AB2" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
       style="opacity: .8">
     <span class="brand-text font-weight-light">An Khánh</span>
   </a>
@@ -40,7 +40,7 @@
 
         <li class="nav-item">
           <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-chart-pie"></i>
+            <i class="nav-icon far fa-calendar-alt"></i>
             <p>
               Lịch hẹn
               <i class="right fas fa-angle-left"></i>

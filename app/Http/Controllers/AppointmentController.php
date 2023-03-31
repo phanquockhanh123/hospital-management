@@ -81,7 +81,6 @@ class AppointmentController extends Controller
         $validatedData['status'] = Appointment::STATUS_PENDING;
         Appointment::create($validatedData);
 
-
         return redirect()->route('appointments.index')
             ->with('success', 'Lịch hẹn đã được tạo thành công.');
     }

@@ -99,6 +99,7 @@
             <li class="nav-item">
               <a href="{{route('home.book-appointment-user')}}"><button class="btn btn-primary" type="submit" style="padding: 10px 40px;font-size: 16px;">Đặt lịch</button></a>
             </li>
+
             @if(!Auth::user()->id) 
             <li class="nav-item">
               <a href="{{ route('home.login-with-google') }}"><button class="btn btn-primary" type="submit" style="margin-left: 10px;font-size: 16px;padding: 10px 40px;">Đăng nhập</button></a>
