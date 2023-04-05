@@ -30,10 +30,10 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <form action="{{ route('bills.index') }}" method="GET">
+                            <form action="{{ route('medicals.index') }}" method="GET">
                                 <div class="input-group mb-2">
                                     <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder="Tìm kiếm hóa đơn"
+                                        <input type="text" class="form-control" placeholder="Tìm kiếm thuốc"
                                             name="search">
                                         <div class="input-group-append">
                                             <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
@@ -43,7 +43,7 @@
                             </form>
                         </div>
                         <div class="col-sm-3" style="float: right;">
-                            <a href="{{ route('bills.create') }}" class="btn btn-success">
+                            <a href="{{ route('medicals.create') }}" class="btn btn-success">
                                 <i class="fas fa-plus"></i> Tạo mới
                             </a>
                         </div>
@@ -65,46 +65,42 @@
                                     @endif</h2>
                                 <!-- /.card-header -->
                                 <div class="card-body">
-                                    @if ($bills->isEmpty())
+                                    @if ($medicals->isEmpty())
                                         <div class="alert alert-danger" role="alert">
-                                            No bills found.
+                                            Không tìm thấy thuốc.
                                         </div>
                                     @else
                                         <table id="example2" class="table table-bordered table-hover">
                                             <thead>
                                                 <tr>
-                                                    <th>STT</th>
-                                                    <th>Bệnh nhân</th>
-                                                    <th>Người lập</th>
-                                                    <th>Ngày tạo</th>
-                                                    <th>Tổng tiền</th>
-                                                    <th>Đã thanh toán</th>
-                                                    <th>Còn nợ</th>
-                                                    <th>Sửa/Xóa</th>
+                                                    <th>Mã thuốc</th>
+                                                    <th>Tên thuốc</th>
+                                                    <th>Đơn vị</th>
+                                                    <th>Giá bán</th>
+                                                    <th>Tồn kho</th>
+                                                    <th></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($bills as $bill)
+                                                @foreach ($medicals as $medical)
                                                     <tr>
                                                         <td><a
-                                                                href="{{ route('bills.show', $bill->id) }}">{{ $count++ }}</a>
+                                                                href="{{ route('medicals.show', $medical->id) }}">{{ $medical->medical_code }}</a>
                                                         </td>
-                                                        <td>{{ $bill->patient->name }}</td>
-                                                        <td>{{ $bill->doctor->name }}</td>
-                                                        <td>{{ $bill->created_at }}</td>
-                                                        <td>{{ $bill->total_money }}</td>
-                                                        <td>{{ $bill->paid_money }}</td>
-                                                        <td>{{ $bill->total_money - $bill->paid_money }}</td>
-                                                    
+                                                        <td>{{ $medical->medical_name }}</td>
+                                                        <td>{{ $medical->unit }}</td>
+                                                        
+                                                        <td>{{ $medical->export_price}}</td>
+                                                        <td>{{ $medical->quantity }}</td>
                                                         <td>
                                                             <div class="btn-group">
-                                                                <a href="{{ route('bills.edit', $bill->id) }}"
+                                                                <a href="{{ route('medicals.edit', $medical->id) }}"
                                                                     class="btn btn-primary">
                                                                     <i class="fas fa-edit"></i> Sửa
                                                                 </a>
                                                                 <button type="button" class="btn btn-danger"
                                                                     data-toggle="modal"
-                                                                    data-target="#deleteModal{{ $bill->id }}"
+                                                                    data-target="#deleteModal{{ $medical->id }}"
                                                                     style="color: red;">
                                                                     <i class="fas fa-trash-alt"></i> Xóa
                                                                 </button>
@@ -112,24 +108,24 @@
                                                         </td>
 
                                                         <!-- Modal -->
-                                                        <div class="modal fade" id="deleteModal{{ $bill->id }}"
+                                                        <div class="modal fade" id="deleteModal{{ $medical->id }}"
                                                             tabindex="-1" role="dialog"
-                                                            aria-labelledby="deleteModalLabel{{ $bill->id }}"
+                                                            aria-labelledby="deleteModalLabel{{ $medical->id }}"
                                                             aria-hidden="true">
                                                             <div class="modal-dialog" role="document">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
                                                                         <h5 class="modal-title"
-                                                                            id="deleteModalLabel{{ $bill->id }}">
-                                                                            Xóa loại hóa đơn</h5>
+                                                                            id="deleteModalLabel{{ $medical->id }}">
+                                                                            Xóa loại thuốc</h5>
                                                                         <button type="button" class="close"
                                                                             data-dismiss="modal" aria-label="Close">
                                                                             <span aria-hidden="true">&times;</span>
                                                                         </button>
                                                                     </div>
                                                                     <div class="modal-body">
-                                                                        Bạn có chắc chắn muốn xóa hóa đơn của bệnh nhân
-                                                                        "{{ $bill->patient->name }}" không? Hành động này
+                                                                        Bạn có chắc chắn muốn xóa thuốc
+                                                                        "{{ $medical->name }}" không? Hành động này
                                                                         không
                                                                         thể hoàn tác!
                                                                     </div>
@@ -137,13 +133,13 @@
                                                                         <button type="button" class="btn btn-secondary"
                                                                             data-dismiss="modal" style="color:black;">Hủy</button>
                                                                         <form
-                                                                            action="{{ route('bills.destroy', $bill->id) }}"
+                                                                            action="{{ route('medicals.destroy', $medical->id) }}"
                                                                             method="POST">
                                                                             @csrf
                                                                             @method('DELETE')
                                                                             <button type="submit" style="color:red;"
                                                                                 class="btn btn-danger"
-                                                                                onclick="return confirm('Bạn có chắc chắn muốn xóa lịch hẹn này không?')">Xóa</button>
+                                                                                onclick="return confirm('Bạn có chắc chắn muốn xóa thiết bị y tế này không?')">Xóa</button>
                                                                         </form>
                                                                     </div>
                                                                 </div>
@@ -152,10 +148,9 @@
                                                     </tr>
                                                 @endforeach
 
-
                                             </tbody>
                                         </table>
-                                        {{ $bills->links() }}
+                                        {{ $medicals->links() }}
                                     @endif
                                 </div>
                                 <!-- /.card-body -->

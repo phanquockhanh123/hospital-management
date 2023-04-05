@@ -49,7 +49,7 @@
                                     </div>
                                 </a>
                                 <div class="content">
-                                    {{ $new->content }}
+                                    {{ substr($new->content,0, 70) . '....' }}
                                 </div>
                                 
                             </li>

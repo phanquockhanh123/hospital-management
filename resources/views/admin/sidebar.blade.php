@@ -129,7 +129,7 @@
           <a href="#" class="nav-link">
             <i class="nav-icon fas fa-chart-pie"></i>
             <p>
-              Trang thiết bị y tế
+              Thuốc - Vật tư
               <i class="right fas fa-angle-left"></i>
             </p>
           </a>
@@ -144,6 +144,12 @@
               <a href="{{ route('request_devices.index') }}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Đơn yêu cầu thiết bị</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('medicals.index') }}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Thuốc</p>
               </a>
             </li>
           </ul>
@@ -183,9 +189,9 @@
         </li>
         @endif
 
-        @if (Auth::user()->role == 0 || Auth::user()->role == 2)
+        @if (Auth::user()->role == 1 || Auth::user()->role == 2)
         <li class="nav-item">
-          <a href="{{route('admin.get-bill-list')}}" class="nav-link">
+          <a href="{{route('bills.index')}}" class="nav-link">
             <i class="nav-icon far fa-image"></i>
             <p>
               Hóa đơn

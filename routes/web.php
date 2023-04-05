@@ -15,11 +15,13 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\DiagnosisController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\BillController;
 use App\Http\Controllers\PrescriptionController;
 use App\Http\Controllers\MedicalDeviceController;
 use App\Http\Controllers\RequestDeviceController;
 use App\Http\Controllers\BookAppointmentController;
 use App\Http\Controllers\DoctorDepartmentController;
+use App\Http\Controllers\MedicalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -178,6 +180,33 @@ Route::middleware(['auth:sanctum'])->group(function () {
         });
     });
 
+    //-----------------------------------Medicals ----------------------------------------------------------------
+    Route::controller(MedicalController::class)->group(function () {
+        Route::middleware([config('const.auth.high')])->group(function () {
+            Route::get('/medicals', 'index')->name('medicals.index');
+            Route::get('/medicals/create', 'create')->name('medicals.create');
+            Route::post('/medicals', 'store')->name('medicals.store');
+            Route::get('/medicals/{medical}', 'show')->name('medicals.show');
+            Route::get('/medicals/{medical}/edit', 'edit')->name('medicals.edit');
+            Route::put('/medicals/{medical}', 'update')->name('medicals.update');
+            Route::delete('/medicals/{medical}', 'destroy')->name('medicals.destroy');
+        });
+    });
+
+    //-----------------------------------Bills ----------------------------------------------------------------
+    Route::controller(BillController::class)->group(function () {
+        Route::middleware([config('const.auth.mid')])->group(function () {
+            Route::get('/bills', 'index')->name('bills.index');
+            Route::get('/bills/create', 'create')->name('bills.create');
+            Route::post('/bills', 'store')->name('bills.store');
+            Route::get('/bills/{bill}', 'show')->name('bills.show');
+            Route::get('/bills/{bill}/edit', 'edit')->name('bills.edit');
+            Route::put('/bills/{bill}', 'update')->name('bills.update');
+            Route::delete('/bills/{bill}', 'destroy')->name('bills.destroy');
+        });
+    });
+
+
     //-----------------------------------Prescriptions----------------------------------------------------------------
     Route::controller(PrescriptionController::class)->group(function () {
         Route::middleware([config('const.auth.mid')])->group(function () {
@@ -233,7 +262,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::put('/news/{new}', [NewsController::class, 'update'])->name('news.update');
             Route::delete('/news/{new}', [NewsController::class, 'destroy'])->name('news.destroy');
 
-            Route::get('/bills', [NewsController::class, 'index2'])->name('admin.get-bill-list');
+            // Route::get('/bills', [NewsController::class, 'index2'])->name('admin.get-bill-list');
 
             Route::post('/upload', [NewsController::class, 'upload'])->name('ckeditor.upload');
         });
@@ -288,13 +317,13 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/get_doctor_detail_for_user_site/{doctor}', 'getDoctorDetailForUserSite')->name('home.get-doctor-detail-for-user-site');
 });
 
- 
+
 Route::get('/auth/google', function () {
     return Socialite::driver('google')->redirect();
 })->name('home.login-with-google');
- 
+
 Route::get('/auth/google/callback', function () {
-    $googleUser = Socialite::driver('google')->user();  
+    $googleUser = Socialite::driver('google')->user();
     $user = User::updateOrCreate([
         'google_id' => $googleUser->id,
     ], [
@@ -303,7 +332,7 @@ Route::get('/auth/google/callback', function () {
         'google_token' => $googleUser->token,
         'google_refresh_token' => $googleUser->refreshToken,
     ]);
- 
+
     Auth::login($user);
 
     return redirect('/');

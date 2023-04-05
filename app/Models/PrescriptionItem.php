@@ -14,7 +14,7 @@ class PrescriptionItem extends BaseModel
      */
     protected $fillable = [
         'prescription_id',
-        'medical_name',
+        'medical_id',
         'dosage',
         'dosage_note',
         'unit',
@@ -33,5 +33,13 @@ class PrescriptionItem extends BaseModel
     public function prescription()
     {
         return $this->belongsTo(Prescription::class);
+    }
+
+    /**
+     * Get the medical
+     */
+    public function medical()
+    {
+    return $this->belongsTo(Medical::class);
     }
 }

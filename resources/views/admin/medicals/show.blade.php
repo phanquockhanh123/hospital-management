@@ -30,55 +30,57 @@
                 <div class="col-md-9">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">{{ $appointment->id }}</h3>
+                            <h3 class="card-title">{{ $medical->name }}</h3>
                         </div>
                         <div class="card-body">
                             <table class="table">
                                 <tbody>
                                     <tr>
-                                        <th>Bệnh nhân:</th>
-                                        <td>{{ $appointment->patient->name }}</td>
+                                        <th>Mã thuốc:</th>
+                                        <td>{{ $medical->medical_code }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Bác sĩ:</th>
-                                        <td>{{ $appointment->doctor->name }}</td>
+                                        <th>Tên thuốc:</th>
+                                        <td>{{ $medical->medical_name }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Phòng ban:</th>
-                                        <td>{{ $appointment->doctorDepartment->name }}</td>
+                                        <th>Giá nhập:</th>
+                                        <td>{{ $medical->import_price }}</td>
                                     </tr>
-
                                     <tr>
-                                        <th>Thời gian bắt đầu:</th>
-                                        <td>{{ $appointment->start_time }}</td>
+                                        <th>Giá bán:</th>
+                                        <td>{{ $medical->export_price }}</td>
                                     </tr>
-
                                     <tr>
-                                        <th>Thời gian kết thúc:</th>
-                                        <td>{{ $appointment->end_time }}</td>
+                                        <th>Tồn kho:</th>
+                                        <td>{{ $medical->quantity }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Số lượng/ngày:</th>
+                                        <td>{{ $medical->amount_day }}</td>
                                     </tr>
                                     <tr>
                                         <th>Mô tả:</th>
-                                        <td>{{ $appointment->description }}</td>
+                                        <td>{{ $medical->description }}</td>
                                     </tr>
                                 </tbody>
                             </table>
 
                             <div class="d-flex justify-content-between mt-4">
-                                <a href="{{ route('appointments.index') }}" class="btn btn-secondary">
+                                <a href="{{ route('medicals.index') }}" class="btn btn-secondary">
                                     <i class="fas fa-arrow-left"></i> Quay lại
                                 </a>
 
                                 <div>
-                                    <a href="{{ route('appointments.edit', $appointment->id) }}" class="btn btn-primary">
+                                    <a href="{{ route('medicals.edit', $medical->id) }}" class="btn btn-primary">
                                         <i class="fas fa-edit"></i> Sửa
                                     </a>
-                                    <form action="{{ route('appointments.destroy', $appointment->id) }}" method="POST"
+                                    <form action="{{ route('medicals.destroy', $medical->id) }}" method="POST"
                                         class="d-inline-block">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger" style="color: red;"
-                                            onclick="return confirm('Bạn có chắc chắn muốn xoá lịch hẹn này?')">
+                                        <button type="submit" class="btn btn-danger" style="color: red"
+                                            onclick="return confirm('Bạn có chắc chắn muốn xoá loại thuốc này?')">
                                             <i class="fas fa-trash"></i> Xoá
                                         </button>
                                     </form>

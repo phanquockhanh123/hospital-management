@@ -105,10 +105,13 @@
                                     <tbody id="tbody" name="tbody">
                                         @foreach ($preItem as $item)
                                         <tr id="sectionMain" name="sectionMain">
-                                            <td>
-                                                <input type="text" name="medical_name[]" id="medical_name"
-                                                    class="form-control @error('medical_name') is-invalid @enderror"
-                                                    value="{{ old('medical_name', $item['medical_name']) }}">
+                                            <td style="width:200px">
+                                                <select name="medical_id[]" class="form-control input-sm m-bot15">
+                                                    @foreach ($medicals as $medical)
+                                                        <option value="{{ $medical->id }}" {{ $item['medical_id'] ==
+                                                            $medical->id ? 'selected' : '' }}>{{ $medical->medical_name }}</option>
+                                                    @endforeach
+                                                </select>
                                             </td>
                                             <td>
                                                 <input type="text" name="dosage[]" id="dosage"

@@ -145,7 +145,7 @@
 		<tbody>
             @foreach($preItem as $val)
 			<tr>
-				<td>{{ $val['medical_name'] }}</td>
+				<td>{{ $val['medical_id'] }}</td>
 				<td>{{ $val['dosage'] }}</td>
 				<td>{{ $val['dosage_note'] }}</td>
                 <td>{{ $val['unit'] }}</td>

@@ -83,9 +83,9 @@
 
                                 <div class="form-group">
                                     <label for="start_time">Thời gian bắt đầu:</label>
-                                    <input type="date" name="start_time" id="start_time"
+                                    <input type="datetime-local" name="start_time" id="start_time"
                                         class="form-control @error('start_time') is-invalid @enderror"
-                                        value="{{ old('start_time', $appointment->start_time->format(config('const.format.date_form'))) }}">
+                                        value="{{ old('start_time', $appointment->start_time) }}">
                                     @error('start_time')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -93,9 +93,9 @@
 
                                 <div class="form-group">
                                     <label for="end_time">Thời gian kết thúc:</label>
-                                    <input type="date" name="end_time" id="end_time"
+                                    <input type="datetime-local" name="end_time" id="end_time"
                                         class="form-control @error('end_time') is-invalid @enderror"
-                                        value="{{ old('end_time', $appointment->end_time->format(config('const.format.date_form'))) }}">
+                                        value="{{ old('end_time', $appointment->end_time) }}">
                                     @error('end_time')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror

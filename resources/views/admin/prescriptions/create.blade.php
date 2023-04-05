@@ -104,10 +104,12 @@
                                     </thead>
                                     <tbody id="tbody" name="tbody">
                                         <tr id="sectionMain" name="sectionMain">
-                                            <td >
-                                                <input type="text" name="medical_name[]" id="medical_name"
-                                                    class="form-control @error('medical_name') is-invalid @enderror"
-                                                    value="{{ htmlspecialchars(old('medical_name')) }}">
+                                            <td style="width:200px">
+                                                <select name="medical_id[]" class="form-control input-sm m-bot15">
+                                                    @foreach ($medicals as $medical)
+                                                        <option value="{{ $medical->id }}">{{ $medical->medical_name }}</option>
+                                                    @endforeach
+                                                </select>
                                             </td>
                                             <td>
                                                 <input type="text" name="dosage[]" id="dosage"

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Doctor;
-use App\Models\Patient;
 use PDF;
+use App\Models\Bill;
+use App\Models\Doctor;
+use App\Models\Medical;
+use App\Models\Patient;
 use App\Models\Prescription;
 use Illuminate\Http\Request;
 use App\Models\PrescriptionItem;
@@ -41,7 +43,8 @@ class PrescriptionController extends Controller
     {
         $doctors = Doctor::all();
         $patients = Patient::all();
-        return view('admin.prescriptions.create', compact('doctors', 'patients'));
+        $medicals = Medical::all();
+        return view('admin.prescriptions.create', compact('doctors', 'patients', 'medicals'));
     }
 
     /**
@@ -57,13 +60,14 @@ class PrescriptionController extends Controller
             'patient_id' => 'nullable|integer|exists:patients,id,deleted_at,NULL',
             'main_disease' => 'required|string|max:255',
             'side_disease' => 'nullable|string|max:255',
-            'medical_name' => 'required|array',
+            'medical_id' => 'required|array',
             'dosage' => 'required|array',
             'dosage_note' => 'required|array',
             'unit' => 'required|array',
             'amount' => 'required|array',
             'note' => 'nullable|string|max:1000',
         ]);
+        // Create prescriptions
         $prescription = Prescription::create([
             'doctor_id' => $request->doctor_id,
             'patient_id' => $request->patient_id,
@@ -73,13 +77,13 @@ class PrescriptionController extends Controller
         ]);
         
         $data = [
-            "medical_name" => array_values($validatedData['medical_name']),
+            "medical_id" => array_values($validatedData['medical_id']),
             "dosage" => array_values($validatedData['dosage']),
             "dosage_note" => array_values($validatedData['dosage_note']),
             "unit" => array_values($validatedData['unit']),
             "amount" => array_values($validatedData['amount']),
         ];
-        
+
         $newArrays = array();
         foreach ($data as $key => $values) {
             $i = 0;
@@ -92,7 +96,32 @@ class PrescriptionController extends Controller
             $preItem['prescription_id'] = $prescription->id;
             return $preItem;
         }, $newArrays);
+
         PrescriptionItem::insert($prescriptionItemData);
+
+        // Create Bills
+        $totalMoney = 0;
+        foreach ($newArrays as $dataItem) {
+            $medicalUpdate = Medical::where('id', $dataItem['medical_id'])->first();
+            $totalMoney += $medicalUpdate->export_price * $dataItem['amount'];
+            // check quantity input with database
+            if($dataItem['amount'] > $medicalUpdate->quantity) {
+                
+            }
+            $medicalUpdate->update(['quantity' => $medicalUpdate->quantity - $dataItem['amount']]);
+        }
+
+        $billData = [
+            'doctor_id' => $prescription->doctor_id,
+            'patient_id' => $prescription->patient_id,
+            'total_money' => $totalMoney,
+        ];
+        Bill::create($billData);
+
+        // Update amount medical in db
+        
+
+
 
         return redirect()->route('prescriptions.index')
             ->with('success', 'Đơn thuốc đã được tạo thành công.');
@@ -120,8 +149,10 @@ class PrescriptionController extends Controller
     {
         $doctors = Doctor::all();
         $patients = Patient::all();
+        $medicals = Medical::all();
         $preItem = PrescriptionItem::where('prescription_id', $prescription->id)->get()->toArray();
-        return view('admin.prescriptions.edit', compact('prescription', 'doctors', 'patients', 'preItem'));
+
+        return view('admin.prescriptions.edit', compact('prescription', 'doctors', 'patients', 'preItem', 'medicals'));
     }
 
     /**
@@ -138,7 +169,7 @@ class PrescriptionController extends Controller
             'patient_id' => 'nullable|integer|exists:patients,id,deleted_at,NULL',
             'main_disease' => 'required|string|max:255',
             'side_disease' => 'nullable|string|max:255',
-            'medical_name' => 'required|array',
+            'medical_id' => 'required|array',
             'dosage' => 'required|array',
             'dosage_note' => 'required|array',
             'unit' => 'required|array',
@@ -154,7 +185,7 @@ class PrescriptionController extends Controller
         ]);
         
         $data = [
-            "medical_name" => array_values($validatedData['medical_name']),
+            "medical_id" => array_values($validatedData['medical_id']),
             "dosage" => array_values($validatedData['dosage']),
             "dosage_note" => array_values($validatedData['dosage_note']),
             "unit" => array_values($validatedData['unit']),
