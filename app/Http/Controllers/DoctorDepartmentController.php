@@ -24,6 +24,13 @@ class DoctorDepartmentController extends Controller
             $doctorDepartments = DoctorDepartment::orderByDesc('created_at')->paginate(config('const.perPage'));
         }
 
+        $appointment = Appointment::whereBetween('end_time', [now(), now()->addHours(1)])->first();
+        if($appointment) {
+            DoctorDepartment::where('id', $appointment->doctor_department_id)->update([
+                'status' => DoctorDepartment::STATUS_BUSY,
+                'description' => 'Phòng sẽ kết thúc trong '. $appointment->end_time->diffForHumans()
+            ]);
+        }
         return view('admin.doctor_departments.index', compact('doctorDepartments'));
     }
 
