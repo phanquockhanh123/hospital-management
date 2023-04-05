@@ -22,7 +22,7 @@
             </div>
             <div class="col-md-6" style="margin-top: 20px;">
                 <label for="validationDefault05" class="form-label">Thời gian mong muốn</label>
-                <input type="date" name="experted_time" class="form-control" id="validationDefault05" required>
+                <input type="datetime-local" name="experted_time" class="form-control" id="validationDefault05" required>
             </div>
             <div class="col-md-12" style="margin-top: 20px;">
                 <label for="validationDefault05" class="form-label">Mô tả triệu chứng</label>

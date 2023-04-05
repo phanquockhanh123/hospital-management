@@ -19,7 +19,7 @@ class CreateBookAppointmentsTable extends Migration
             $table->string('phone');
             $table->string('email');
             $table->string('reason');
-            $table->date('experted_time');
+            $table->datetime('experted_time');
             $table->tinyInteger('status');
             $table->timestamps();
             $table->softDeletes();

@@ -1,7 +1,6 @@
   @include('user.header')
   @include('user.banner')
   
-
   @include('user.about')
   
 

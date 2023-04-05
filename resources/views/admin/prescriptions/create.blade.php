@@ -179,7 +179,7 @@
                 e.preventDefault();
                 var body = document.getElementById("tbody");
                 var section = document.getElementById("sectionMain");
-                body.removeChild(section);
+                body.removeChild(body.lastElementChild);
             }
 
         </script>

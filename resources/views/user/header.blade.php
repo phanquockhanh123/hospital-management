@@ -62,7 +62,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-light shadow-sm">
       <div class="container">
-        <a class="navbar-brand" href="#"><span class="text-primary">One</span>-Health</a>
+        <a class="navbar-brand" href="#"><span class="text-primary">An</span>-Khang</a>
 
         {{-- <form action="#">
           <div class="input-group input-navbar">
@@ -94,7 +94,7 @@
               <a class="nav-link" href=" {{ route('home.blog') }}">Blog</a>
             </li>
             <li class="nav-item @if(Request::route()->getName() == 'home.contact') active @endif">
-              <a class="nav-link" href="contact.html">Liên hệ</a>
+              <a class="nav-link" href=" {{ route('home.contact') }}">Liên hệ</a>
             </li>
             <li class="nav-item">
               <a href="{{route('home.book-appointment-user')}}"><button class="btn btn-primary" type="submit" style="padding: 10px 40px;font-size: 16px;">Đặt lịch</button></a>
