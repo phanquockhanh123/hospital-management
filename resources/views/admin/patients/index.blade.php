@@ -76,9 +76,12 @@
                       <tr>
                         <th>Mã bệnh nhân</th>
                         <th>Họ tên</th>
+                        <th>Giới tính</th>
                         <th>Số điện thoại</th>
-                        <th>Địa chỉ</th>
+                        <th style="width:300px">Địa chỉ</th>
+                        <th>Ngày tạo</th>
                         <th>Nhóm máu</th>
+                        <th>Hồ sơ</th>
                         <th></th>
                       </tr>
                     </thead>
@@ -86,15 +89,24 @@
                       @foreach ($patients as $patient)
                       <tr>
                         <td>
-                          <a href="{{ route('patients.show', $patient) }}"><img src="./imgPatient/{{ $patient->filename}}"
-                              style="border-radius: 50%;vertical-align: middle;
+                          <a href="{{ route('patients.show', $patient) }}"><img
+                              src="./imgPatient/{{ $patient->filename}}" style="border-radius: 50%;vertical-align: middle;
                                           width: 50px;
                                           height: 50px;
                                           border-radius: 50%;" alt="" title="">{{ $patient->patient_code }}</a>
                         </td>
+                        
                         <td>{{ $patient->name }}</td>
+                        <td>
+                          @if($patient->gender == 1)
+                          <span class="text-primary">Nam</span>
+                          @else
+                          <span class="text-primary">Nữ</span>
+                          @endif
+                        </td>
                         <td>{{ $patient->phone }}</td>
                         <td>{{ $patient->address }}</td>
+                        <td>{{ $patient->created_at->format('d/m/Y') }}</td>
                         <td>
                           @if($patient->blood_group == 0)
                           <span class="text-primary">Group O</span>
@@ -110,7 +122,13 @@
                           @endif
                         </td>
                         <td>
+                          <a href="{{ route('patients.show', $patient) }}" class="btn btn-warning">
+                            <i class="bi bi-file-earmark-text-fill"></i> Hồ sơ
+                          </a>
+                        </td>
+                        <td>
                           <div class="btn-group">
+                            
                             <a href="{{ route('patients.edit', $patient->id) }}" class="btn btn-primary">
                               <i class="fas fa-edit"></i> Sửa
                             </a>

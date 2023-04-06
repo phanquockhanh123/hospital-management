@@ -37,7 +37,7 @@
                                 <tbody>
                                     <tr>
                                         <th>Mã bệnh nhân:</th>
-                                        <td>{{ $patient->code }}</td>
+                                        <td>{{ $patient->patient_code }}</td>
                                     </tr>
                                     <tr>
                                         <th>Tên bệnh nhân:</th>
