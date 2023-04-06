@@ -19,14 +19,16 @@ class User extends Authenticatable implements MustVerifyEmail
     use TwoFactorAuthenticatable;
 
     // role
-    public const ROLE_RECEPTIONIST = 0;
-    public const ROLE_DOCTOR = 1;
-    public const ROLE_ADMIN_ROOT = 2;
+    public const ROLE_PATIENT = 0;
+    public const ROLE_RECEPTIONIST = 1;
+    public const ROLE_DOCTOR =2;
+    public const ROLE_ADMIN_ROOT = 3;
 
     public static $roles = [
         self::ROLE_RECEPTIONIST => 'Lễ tân',
         self::ROLE_DOCTOR => 'Bác sĩ',
         self::ROLE_ADMIN_ROOT => 'Root',
+        self::ROLE_PATIENT => 'Bệnh nhân',
     ];
 
 
