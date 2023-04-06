@@ -14,48 +14,45 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="false">
+                @if (Auth::user()->role == 1 && Auth::user()->role == 2)
+                    <li class="nav-item">
+                        <a href="{{ route('appointments.index') }}" class="nav-link">
+                            <i class="nav-icon far fa-calendar-alt"></i>
+                            <p>
+                                Lịch hẹn
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
 
-                <li class="nav-item">
-                    <a href="{{ route('appointments.index') }}" class="nav-link">
-                        <i class="nav-icon far fa-calendar-alt"></i>
-                        <p>
-                            Lịch hẹn
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        @if (Auth::user()->role >= 1)
                             <li class="nav-item">
                                 <a href="{{ route('book_appointments.index') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Lịch hẹn yêu cầu</p>
                                 </a>
                             </li>
-                        
-                        <li class="nav-item">
-                            <a href="{{ route('appointments.index') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Quản lý lịch hẹn</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('appointments.calendar') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Lịch</p>
-                            </a>
-                        </li>
-                        @endif
-                        @if (Auth::user()->role == 2)
+                            <li class="nav-item">
+                                <a href="{{ route('appointments.index') }}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Quản lý lịch hẹn</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('appointments.calendar') }}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Lịch</p>
+                                </a>
+                            </li>
+
                             <li class="nav-item">
                                 <a href="{{ route('appointments.get-appointment-by-doctor') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Lịch trình</p>
                                 </a>
                             </li>
-                        @endif
-                    </ul>
-                </li>
-
+                        </ul>
+                    </li>
+                @endif
 
                 {{-- <li class="nav-item">
                   <a href="{{route('prescriptions.index')}}" class="nav-link">
