@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Bill;
 use App\Models\Doctor;
+use App\Models\Medical;
 use App\Models\Patient;
+use App\Models\Service;
 use Illuminate\Http\Request;
 
 class BillController extends Controller
@@ -72,8 +74,11 @@ class BillController extends Controller
      */
     public function show(Bill $bill)
     {
-
-        return view('admin.bills.show', compact('bill'));
+        $services = Service::all();
+        $medicals = Medical::all();
+        $diaPre = $bill->diagnosis->diagnosisItems->toArray();
+        $preItem = $bill?->prescription?->prescriptionItems->toArray();
+        return view('admin.bills.show', compact('bill', 'diaPre', 'services', 'preItem', 'medicals'));
     }
 
     /**

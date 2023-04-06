@@ -4,16 +4,6 @@ namespace App\Models;
 
 class Bill extends BaseModel
 {
-    //status
-    public const STATUS_DENIED = 0;
-    public const STATUS_PENDING = 1;
-    public const STATUS_ACCEPTED = 2;
-
-    public static $status = [
-        self::STATUS_PENDING => 'Đang chờ',
-        self::STATUS_ACCEPTED => 'Chấp nhận ',
-        self::STATUS_DENIED => 'Từ chối',
-    ];
 
     /**
      * The attributes that are mass assignable.
@@ -21,8 +11,8 @@ class Bill extends BaseModel
      * @var string[]
      */
     protected $fillable = [
-        'patient_id',
-        'doctor_id',
+        'diagnosis_id',
+        'prescription_id',
         'total_money',
         'paid_money',
         'note'
@@ -35,18 +25,19 @@ class Bill extends BaseModel
     ];
 
     /**
-     * Get the patient
+     * Get the prescription
      */
-    public function patient()
+    public function prescription()
     {
-        return $this->belongsTo(Patient::class);
+        return $this->belongsTo(Prescription::class);
     }
 
     /**
-     * Get the patient
+     * Get the diagnosis
      */
-    public function doctor()
+    public function diagnosis()
     {
-        return $this->belongsTo(Doctor::class);
+        return $this->belongsTo(Diagnosis::class);
     }
+
 }

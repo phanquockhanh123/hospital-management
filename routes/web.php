@@ -4,6 +4,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BillController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsController;
@@ -11,17 +12,17 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ZoomController;
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\MedicalController;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\DiagnosisController;
 use App\Http\Controllers\AppointmentController;
-use App\Http\Controllers\BillController;
 use App\Http\Controllers\PrescriptionController;
 use App\Http\Controllers\MedicalDeviceController;
 use App\Http\Controllers\RequestDeviceController;
 use App\Http\Controllers\BookAppointmentController;
 use App\Http\Controllers\DoctorDepartmentController;
-use App\Http\Controllers\MedicalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -193,6 +194,19 @@ Route::middleware(['auth:sanctum'])->group(function () {
         });
     });
 
+    //-----------------------------------Services ----------------------------------------------------------------
+    Route::controller(ServiceController::class)->group(function () {
+        Route::middleware([config('const.auth.high')])->group(function () {
+            Route::get('/services', 'index')->name('services.index');
+            Route::get('/services/create', 'create')->name('services.create');
+            Route::post('/services', 'store')->name('services.store');
+            Route::get('/services/{service}', 'show')->name('services.show');
+            Route::get('/services/{service}/edit', 'edit')->name('services.edit');
+            Route::put('/services/{service}', 'update')->name('services.update');
+            Route::delete('/services/{service}', 'destroy')->name('services.destroy');
+        });
+    });
+
     //-----------------------------------Bills ----------------------------------------------------------------
     Route::controller(BillController::class)->group(function () {
         Route::middleware([config('const.auth.mid')])->group(function () {
@@ -219,6 +233,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::delete('/prescriptions/{prescription}', 'destroy')->name('prescriptions.destroy');
 
             Route::get('/prescriptions/{prescription}/pdf', 'renderPdf')->name('prescriptions.pdf');
+
+            Route::get('/diagnosises/{diagnosis}/create/prescriptions', 'createPrescription')->name('diagnosises.create-prescription');
+            Route::post('/diagnosises/{diagnosis}/prescriptions', 'storePrescription')->name('diagnosises.store-prescription');
         });
     });
 
@@ -229,11 +246,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/diagnosises/create', 'create')->name('diagnosises.create');
             Route::post('/diagnosises', 'store')->name('diagnosises.store');
             Route::get('/diagnosises/{diagnosis}', 'show')->name('diagnosises.show');
-            Route::get('/diagnosises/{diagnosis}/edit', 'edit')->name('diagnosises.edit');
+            Route::get('/diagnosises/{diagnosis}/create', 'edit')->name('diagnosises.edit');
             Route::put('/diagnosises/{diagnosis}', 'update')->name('diagnosises.update');
             Route::delete('/diagnosises/{diagnosis}', 'destroy')->name('diagnosises.destroy');
 
             Route::get('/diagnosises/{diagnosis}/pdf', 'renderPdf')->name('diagnosises.pdf');
+
+            
         });
     });
 

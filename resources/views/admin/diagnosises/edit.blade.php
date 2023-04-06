@@ -106,10 +106,13 @@
                                     <tbody id="tbody" name="tbody">
                                         @foreach ($diaPre as $item)
                                         <tr id="sectionMain" name="sectionMain">
-                                            <td>
-                                                <input type="text" name="diagnosis_name[]" id="diagnosis_name"
-                                                    class="form-control @error('diagnosis_name') is-invalid @enderror"
-                                                    value="{{ old('diagnosis_name', $item['diagnosis_name']) }}">
+                                            <td style="width:200px">
+                                                <select name="service_id[]" class="form-control input-sm m-bot15">
+                                                    @foreach ($services as $service)
+                                                        <option value="{{ $service->id }}" {{ $item['service_id'] ==
+                                                            $service->id ? 'selected' : '' }}>{{ $service->service_name }}</option>
+                                                    @endforeach
+                                                </select>
                                             </td>
                                             <td>
                                                 <input type="text" name="result[]" id="result"

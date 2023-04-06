@@ -92,19 +92,14 @@
             <p>Bác sĩ</p>
           </a>
         </li>
-        <li class="nav-item">
-          <a href="{{ route('doctor_departments.index') }}" class="nav-link">
-            <i class="nav-icon far fa-image"></i>
-            <p>Phòng ban</p>
-          </a>
-        </li>
+       
 
-        <li class="nav-item">
+        {{-- <li class="nav-item">
           <a href="{{route('prescriptions.index')}}" class="nav-link">
             <i class="nav-icon far fa-image"></i>
             <p>Đơn thuốc</p>
           </a>
-        </li>
+        </li> --}}
 
         <li class="nav-item">
           <a href="{{ route('patients.index') }}" class="nav-link">
@@ -129,7 +124,7 @@
           <a href="#" class="nav-link">
             <i class="nav-icon fas fa-chart-pie"></i>
             <p>
-              Thuốc - Vật tư
+              Quản lý
               <i class="right fas fa-angle-left"></i>
             </p>
           </a>
@@ -150,6 +145,18 @@
               <a href="{{ route('medicals.index') }}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Thuốc</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('services.index') }}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Dịch vụ</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('doctor_departments.index') }}" class="nav-link">
+                <i class="nav-icon far fa-image"></i>
+                <p>Phòng ban</p>
               </a>
             </li>
           </ul>

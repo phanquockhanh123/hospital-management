@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Doctor;
-use App\Models\Patient;
 use PDF;
+use App\Models\Bill;
+use App\Models\Doctor;
+use App\Models\Medical;
+use App\Models\Patient;
+use App\Models\Service;
 use App\Models\Diagnosis;
 use Illuminate\Http\Request;
 use App\Models\DiagnosisItem;
@@ -40,8 +43,9 @@ class DiagnosisController extends Controller
     public function create(Request $request)
     {
         $doctors = Doctor::all();
-    $patients = Patient::all();
-        return view('admin.diagnosises.create', compact('doctors', 'patients'));
+        $patients = Patient::all();
+        $services = Service::all();
+        return view('admin.diagnosises.create', compact('doctors', 'patients', 'services'));
     }
 
     /**
@@ -52,31 +56,25 @@ class DiagnosisController extends Controller
      */
     public function store(Request $request)
     {
-
         $validatedData = $request->validate([
             'doctor_id' => 'nullable|integer|exists:doctors,id,deleted_at,NULL',
             'patient_id' => 'nullable|integer|exists:patients,id,deleted_at,NULL',
             'main_diagnosis' => 'required|string|max:255',
             'side_diagnosis' => 'nullable|string|max:255',
-            'diagnosis_name' => 'required|array',
+            'service_id' => 'required|array',
             'result' => 'required|array',
             'references_range' => 'nullable|array',
             'unit' => 'required|array',
             'method' => 'required|array',
             'diagnosis_note' => 'nullable|array|max:1000',
-            'note ' => 'nullable|string|max:255',
+            'note' => 'nullable|string|max:255',
         ]);
+        $validatedData['status'] = Diagnosis::STATUS_PENDING;
 
-        $diagnosis = Diagnosis::create([
-            'doctor_id' => $request->doctor_id,
-            'patient_id' => $request->patient_id,
-            'main_diagnosis' => $request->main_diagnosis,
-            'side_diagnosis' => $request->side_diagnosis,
-            'note' => $request->note,
-        ]);
-       
+        $diagnosis = Diagnosis::create($validatedData);
+
         $data = [
-            "diagnosis_name" => array_values($validatedData['diagnosis_name']),
+            "service_id" => array_values($validatedData['service_id']),
             "result" => array_values($validatedData['result']),
             "references_range" => array_values($validatedData['references_range']),
             "unit" => array_values($validatedData['unit']),
@@ -99,6 +97,19 @@ class DiagnosisController extends Controller
         }, $newArrays);
         DiagnosisItem::insert($diagnosisItemData);
 
+        // Create Bills
+        $totalMoney = 0;
+        foreach ($newArrays as $dataItem) {
+            $service = Service::where('id', $dataItem['service_id'])->first();
+            $totalMoney += $service->all_price;
+        }
+
+        $billData = [
+            'diagnosis_id' => $diagnosis->id,
+            'total_money' => $totalMoney,
+        ];
+        Bill::create($billData);
+
         return redirect()->route('diagnosises.index')
             ->with('success', 'Xét nghiệm/Chẩn đoán đã được tạo thành công.');
     }
@@ -111,8 +122,9 @@ class DiagnosisController extends Controller
      */
     public function show(Diagnosis $diagnosis)
     {
+        $services = Service::all();
         $diaPre = DiagnosisItem::where('Diagnosis_id', $diagnosis->id)->get()->toArray();
-        return view('admin.diagnosises.show', compact('diagnosis', 'diaPre'));
+        return view('admin.diagnosises.show', compact('diagnosis', 'diaPre', 'services'));
     }
 
     /**
@@ -125,8 +137,9 @@ class DiagnosisController extends Controller
     {
         $doctors = Doctor::all();
         $patients = Patient::all();
+        $services = Service::all();
         $diaPre = DiagnosisItem::where('diagnosis_id', $diagnosis->id)->get()->toArray();
-        return view('admin.diagnosises.edit', compact('diagnosis', 'doctors', 'patients', 'diaPre'));
+        return view('admin.diagnosises.edit', compact('diagnosis', 'doctors', 'patients', 'diaPre', 'services'));
     }
 
     /**
@@ -143,7 +156,7 @@ class DiagnosisController extends Controller
             'patient_id' => 'nullable|integer|exists:patients,id,deleted_at,NULL',
             'main_diagnosis' => 'required|string|max:255',
             'side_diagnosis' => 'nullable|string|max:255',
-            'diagnosis_name' => 'required|array',
+            'service_id' => 'required|array',
             'result' => 'required|array',
             'references_range' => 'required|array',
             'unit' => 'required|array',
@@ -158,9 +171,9 @@ class DiagnosisController extends Controller
             'side_diagnosis' => $request->side_diagnosis,
             'note' => $request->note,
         ]);
-        
+
         $data = [
-            "diagnosis_name" => array_values($validatedData['diagnosis_name']),
+            "service_id" => array_values($validatedData['service_id']),
             "result" => array_values($validatedData['result']),
             "references_range" => array_values($validatedData['references_range']),
             "unit" => array_values($validatedData['unit']),
@@ -177,10 +190,12 @@ class DiagnosisController extends Controller
             }
         }
         $diagnosisItemData = array_map(function ($diaPre) use ($diagnosis) {
-            $diaPre['Diagnosis_id'] = $diagnosis->id;
+            $diaPre['diagnosis_id'] = $diagnosis->id;
             return $diaPre;
         }, $newArrays);
         DiagnosisItem::insert($diagnosisItemData);
+
+
         return redirect()->route('diagnosises.index')
             ->with('success', 'Thông tin Xét nghiệm/Chẩn đoán đã được cập nhật thành công.');
     }
@@ -209,11 +224,9 @@ class DiagnosisController extends Controller
     {
         $diagnosis = Diagnosis::with('patient', 'doctor')->first();
         $diaPre = DiagnosisItem::where('diagnosis_id', $diagnosis->id)->get()->toArray();
-        
-        $pdf = \PDF::loadView('pdf.diagnosises', compact('diagnosis', 'diaPre'), []);
+        $services = Service::all();
+        $pdf = \PDF::loadView('pdf.diagnosises', compact('diagnosis', 'diaPre', 'services'), []);
         $pdf->setPaper('a4', 'portrait', 'UTF-8');
         return $pdf->stream('Diagnosis.pdf');
     }
-
 }
-

@@ -78,7 +78,7 @@
                                                     <th>Bác sĩ</th>
                                                     <th>Chẩn đoán bệnh chính</th>
                                                     <th>Chẩn đoán bệnh phụ</th>
-                                                    <th>Lưu ý</th>
+                                                    <th>Trạng thái</th>
                                                     <th>PDF</th>
                                                     <th>Sửa/Xóa</th>
                                                 </tr>
@@ -93,7 +93,13 @@
                                                         <td>{{ $diagnosis->doctor->name }}</td>
                                                         <td>{{ $diagnosis->main_diagnosis }}</td>
                                                         <td>{{ $diagnosis->side_diagnosis }}</td>
-                                                        <td>{{ $diagnosis->note }}</td>
+                                                        <td>
+                                                            @if($diagnosis->status == 1) 
+                                                                <span style="color:green;">Đã tạo đơn thuốc</span>
+                                                            @else
+                                                                <span style="color:red;">Chưa tạo đơn thuốc</span>
+                                                            @endif
+                                                        </td>
                                                         <td><button class="btn btn-primary"><a href="{{ route('diagnosises.pdf', $diagnosis->id) }}">In</a></button></td>
                                                         <td>
                                                             <div class="btn-group">
@@ -107,6 +113,10 @@
                                                                     style="color: red;">
                                                                     <i class="fas fa-trash-alt"></i> Xóa
                                                                 </button>
+                                                                <a  href="{{ route('diagnosises.create-prescription', $diagnosis->id) }}"
+                                                                    class="btn btn-warning @if ($diagnosis->status == 1) disabled @endif">
+                                                                    <i class="fas fa-edit"></i> Tạo đơn thuốc
+                                                                </a>
                                                             </div>
                                                         </td>
 

@@ -15,21 +15,21 @@ class CreateBillsTable extends Migration
     {
         Schema::create('bills', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('doctor_id');
-            $table->unsignedBigInteger('patient_id');
+            $table->unsignedBigInteger('prescription_id')->nullable();
+            $table->unsignedBigInteger('diagnosis_id')->nullable();
             $table->float('total_money');
             $table->float('paid_money')->nullable();
             $table->text('note')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('doctor_id', 'FK_bills_2')
+            $table->foreign('prescription_id', 'FK_bills_1')
                 ->references('id')
-                ->on('doctors')
+                ->on('prescriptions')
                 ->onDelete('cascade');
-            $table->foreign('patient_id', 'FK_bills_3')
+            $table->foreign('diagnosis_id', 'FK_bills_2')
                 ->references('id')
-                ->on('patients')
+                ->on('diagnosis')
                 ->onDelete('cascade');
         });
     }

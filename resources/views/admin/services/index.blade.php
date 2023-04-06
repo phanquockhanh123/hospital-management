@@ -30,10 +30,10 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <form action="{{ route('prescriptions.index') }}" method="GET">
+                            <form action="{{ route('services.index') }}" method="GET">
                                 <div class="input-group mb-2">
                                     <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder="Tìm kiếm đơn thuốc"
+                                        <input type="text" class="form-control" placeholder="Tìm kiếm dịch vụ khám bệnh"
                                             name="search">
                                         <div class="input-group-append">
                                             <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
@@ -43,7 +43,7 @@
                             </form>
                         </div>
                         <div class="col-sm-3" style="float: right;">
-                            <a href="{{ route('prescriptions.create') }}" class="btn btn-success">
+                            <a href="{{ route('services.create') }}" class="btn btn-success">
                                 <i class="fas fa-plus"></i> Tạo mới
                             </a>
                         </div>
@@ -65,45 +65,40 @@
                                     @endif</h2>
                                 <!-- /.card-header -->
                                 <div class="card-body">
-                                    @if ($prescriptions->isEmpty())
+                                    @if ($services->isEmpty())
                                         <div class="alert alert-danger" role="alert">
-                                            Không tìm thấy đơn thuốc nào.
+                                            Không tìm thấy dịch vụ khám bệnh.
                                         </div>
                                     @else
                                         <table id="example2" class="table table-bordered table-hover">
                                             <thead>
                                                 <tr>
-                                                    <th>STT</th>
-                                                    <th>Bệnh nhân</th>
-                                                    <th>Bác sĩ</th>
-                                                    <th>Bệnh chính</th>
-                                                    <th>Bệnh phụ</th>
-                                                    <th>Lưu ý</th>
-                                                    <th>PDF</th>
-                                                    <th>Sửa/Xóa</th>
+                                                    <th>Mã dịch vụ</th>
+                                                    <th>Tên dịch vụ</th>
+                                                    <th>Tổng gói</th>
+                                                    <th>Giảm giá (%)</th>
+                                                    <th></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($prescriptions as $prescription)
+                                                @foreach ($services as $service)
                                                     <tr>
                                                         <td><a
-                                                                href="{{ route('prescriptions.show', $prescription->id) }}"><ins>{{ $count++ }}</ins></a>
+                                                                href="{{ route('services.show', $service->id) }}">{{ $service->service_code }}</a>
                                                         </td>
-                                                        <td>{{ $prescription->diagnosis->patient->name }}</td>
-                                                        <td>{{ $prescription->diagnosis->doctor->name }}</td>
-                                                        <td>{{ $prescription->diagnosis->main_diagnosis }}</td>
-                                                        <td>{{ $prescription->diagnosis->side_diagnosis }}</td>
-                                                        <td>{{ $prescription->note }}</td>
-                                                        <td><button class="btn btn-primary"><a href="{{ route('prescriptions.pdf', $prescription->id) }}">In</a></button></td>
+                                                        <td>{{ $service->service_name }}</td>
+                                                        <td>{{ $service->all_price }}</td>
+                                                        
+                                                        <td>{{ $service->discount}}</td>
                                                         <td>
                                                             <div class="btn-group">
-                                                                <a href="{{ route('prescriptions.edit', $prescription->id) }}"
+                                                                <a href="{{ route('services.edit', $service->id) }}"
                                                                     class="btn btn-primary">
                                                                     <i class="fas fa-edit"></i> Sửa
                                                                 </a>
                                                                 <button type="button" class="btn btn-danger"
                                                                     data-toggle="modal"
-                                                                    data-target="#deleteModal{{ $prescription->id }}"
+                                                                    data-target="#deleteModal{{ $service->id }}"
                                                                     style="color: red;">
                                                                     <i class="fas fa-trash-alt"></i> Xóa
                                                                 </button>
@@ -111,24 +106,24 @@
                                                         </td>
 
                                                         <!-- Modal -->
-                                                        <div class="modal fade" id="deleteModal{{ $prescription->id }}"
+                                                        <div class="modal fade" id="deleteModal{{ $service->id }}"
                                                             tabindex="-1" role="dialog"
-                                                            aria-labelledby="deleteModalLabel{{ $prescription->id }}"
+                                                            aria-labelledby="deleteModalLabel{{ $service->id }}"
                                                             aria-hidden="true">
                                                             <div class="modal-dialog" role="document">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
                                                                         <h5 class="modal-title"
-                                                                            id="deleteModalLabel{{ $prescription->id }}">
-                                                                            Xóa loại giường</h5>
+                                                                            id="deleteModalLabel{{ $service->id }}">
+                                                                            Xóa loại dịch vụ khám bệnh</h5>
                                                                         <button type="button" class="close"
                                                                             data-dismiss="modal" aria-label="Close">
                                                                             <span aria-hidden="true">&times;</span>
                                                                         </button>
                                                                     </div>
                                                                     <div class="modal-body">
-                                                                        Bạn có chắc chắn muốn xóa đơn thuốc với bệnh nhân
-                                                                        "{{ $prescription->diagnosis->patient->name }}" không? Hành động này
+                                                                        Bạn có chắc chắn muốn xóa dịch vụ khám bệnh
+                                                                        "{{ $service->service_name }}" không? Hành động này
                                                                         không
                                                                         thể hoàn tác!
                                                                     </div>
@@ -136,13 +131,13 @@
                                                                         <button type="button" class="btn btn-secondary"
                                                                             data-dismiss="modal" style="color:black;">Hủy</button>
                                                                         <form
-                                                                            action="{{ route('prescriptions.destroy', $prescription->id) }}"
+                                                                            action="{{ route('services.destroy', $service->id) }}"
                                                                             method="POST">
                                                                             @csrf
                                                                             @method('DELETE')
                                                                             <button type="submit" style="color:red;"
                                                                                 class="btn btn-danger"
-                                                                                onclick="return confirm('Bạn có chắc chắn muốn xóa đơn thuốc này không?')">Xóa</button>
+                                                                                onclick="return confirm('Bạn có chắc chắn muốn xóa dịch vụ khám bệnh này không?')">Xóa</button>
                                                                         </form>
                                                                     </div>
                                                                 </div>
@@ -151,10 +146,9 @@
                                                     </tr>
                                                 @endforeach
 
-
                                             </tbody>
                                         </table>
-                                        {{ $prescriptions->links() }}
+                                        {{ $services->links() }}
                                     @endif
                                 </div>
                                 <!-- /.card-body -->

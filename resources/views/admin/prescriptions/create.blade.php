@@ -96,7 +96,7 @@
                                         <tr>
                                             <th scope="col">TÊN THUỐC</th>
                                             <th scope="col">HÀM LƯỢNG</th>
-                                            <th scope="col">ĐVT</th>
+                                            <th scope="col">DVT</th>
                                             <th scope="col">SỐ LƯỢNG</th>
                                             <th scope="col">LƯU Ý</th>
                                             <th scope="col">THAO TÁC</th>

@@ -89,11 +89,11 @@
                                                         <td><a
                                                                 href="{{ route('bills.show', $bill->id) }}">{{ $count++ }}</a>
                                                         </td>
-                                                        <td>{{ $bill->patient->name }}</td>
-                                                        <td>{{ $bill->doctor->name }}</td>
+                                                        <td>{{ $bill->diagnosis->patient->name }}</td>
+                                                        <td>{{ $bill->diagnosis->doctor->name }}</td>
                                                         <td>{{ $bill->created_at }}</td>
                                                         <td>{{ $bill->total_money }}</td>
-                                                        <td>{{ $bill->paid_money }}</td>
+                                                        <td>@if(empty($bill->paid_money)) 0 @endif</td>
                                                         <td>{{ $bill->total_money - $bill->paid_money }}</td>
                                                     
                                                         <td>
@@ -129,7 +129,7 @@
                                                                     </div>
                                                                     <div class="modal-body">
                                                                         Bạn có chắc chắn muốn xóa hóa đơn của bệnh nhân
-                                                                        "{{ $bill->patient->name }}" không? Hành động này
+                                                                        "{{ $bill->diagnosis->patient->name }}" không? Hành động này
                                                                         không
                                                                         thể hoàn tác!
                                                                     </div>

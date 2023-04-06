@@ -5,6 +5,16 @@ namespace App\Models;
 class Diagnosis extends BaseModel
 {
     protected $table = 'diagnosis';
+
+    //status
+    public const STATUS_PENDING = 0;
+    public const STATUS_CREATED = 1;
+
+    public static $status = [
+        self::STATUS_PENDING => 'Chưa tạo đơn thuốc',
+        self::STATUS_CREATED => 'Đã tạo đơn ',
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -15,7 +25,8 @@ class Diagnosis extends BaseModel
         'doctor_id',
         'main_diagnosis',
         'side_diagnosis',
-        'note'
+        'note',
+        'status'
     ];
 
     protected $dates = [
@@ -40,11 +51,11 @@ class Diagnosis extends BaseModel
         return $this->belongsTo(Doctor::class);
     }
 
-     /**
+    /**
      * Get the diagnosisItems
      */
     public function diagnosisItems()
     {
-        return $this->has(DiagnosisItem::class);
+        return $this->hasMany(DiagnosisItem::class);
     }
 }
