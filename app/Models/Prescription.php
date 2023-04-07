@@ -27,11 +27,19 @@ class Prescription extends BaseModel
     {
         return $this->belongsTo(Diagnosis::class);
     }
-     /**
+    /**
      * Get the prescriptionItems
      */
     public function prescriptionItems()
     {
         return $this->hasMany(PrescriptionItem::class);
+    }
+
+     /**
+     * Get the bill
+     */
+    public function bill()
+    {
+        return $this->hasOne(Bill::class);
     }
 }

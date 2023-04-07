@@ -106,7 +106,7 @@
             </li>
             @else
               <li class="nav-item">
-                <a href="#"><button class="btn btn-primary" type="submit" style="margin-left: 10px;font-size: 16px;padding: 10px 40px;">{{ Auth::user()->name }}</button></a>
+                <a href="#"><button class="btn btn-primary" type="submit" style="margin-left: 10px;font-size: 16px;padding: 10px 40px;">{{ substr(Auth::user()->name, 0,5) }}</button></a>
               </li>
             @endif
           </ul>

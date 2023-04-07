@@ -58,4 +58,12 @@ class Diagnosis extends BaseModel
     {
         return $this->hasMany(DiagnosisItem::class);
     }
+
+    /**
+     * Get the bill
+     */
+    public function bill()
+    {
+        return $this->hasOne(Bill::class);
+    }
 }

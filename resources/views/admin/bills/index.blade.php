@@ -80,7 +80,7 @@
                                                     <th>Tổng tiền</th>
                                                     <th>Đã thanh toán</th>
                                                     <th>Còn nợ</th>
-                                                    <th>Sửa/Xóa</th>
+                                                    <th>Hành động</th>
                                                 </tr>
                                             </thead>
                                             <tbody>

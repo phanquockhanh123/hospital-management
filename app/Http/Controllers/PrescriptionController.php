@@ -316,7 +316,7 @@ class PrescriptionController extends Controller
         ];
         $bill->update($billData);
 
-        return redirect()->route('prescriptions.index')
+        return redirect()->route('bills.index')
             ->with('success', 'Đơn thuốc đã được tạo thành công.');
     }
 

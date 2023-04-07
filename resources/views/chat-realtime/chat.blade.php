@@ -367,7 +367,7 @@
                     <div class="card-footer">
                         <div class="input-group">
                             <input type="text" v-model="message" name="message" class="form-control type_msg submit"
-                                placeholder="Type your message..." />
+                                placeholder="Nhập tin nhắn của bạn..." />
                         </div>
                     </div>
                 </div>
@@ -424,7 +424,7 @@
                     cache: false,
                     success: function(data) {
                         $('#messages').html(data);
-                        scrollToBottomFunc();
+                        
                     }
                 })
             })
@@ -440,22 +440,18 @@
                         data: datastr,
                         cache: false,
                         success: function(data) {
+                            console.log(data);
                         },
                         error: function(jqXHR, status, err) {
                         },
                         complete: function() {
-                            scrollToBottomFunc();
+                            
                         }
                     })
                 }
             })
         });
-        // make a function to scroll down auto
-        function scrollToBottomFunc() {
-            $('.card-body msg_card_body').animate({
-                scrollTop: $('.card-body msg_card_body').get(0).scrollHeight
-            }, 80);
-        }
+
     </script>
 </body>
 

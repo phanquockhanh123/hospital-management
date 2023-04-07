@@ -14,7 +14,7 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="false">
-                @if (Auth::user()->role == 1 && Auth::user()->role == 2)
+                @if (Auth::user()->role == 1 || Auth::user()->role == 2)
                     <li class="nav-item">
                         <a href="{{ route('appointments.index') }}" class="nav-link">
                             <i class="nav-icon far fa-calendar-alt"></i>
@@ -60,15 +60,18 @@
                     <p>Đơn thuốc</p>
                   </a>
                 </li> --}}
+                @if (Auth::user()->role == 3 || Auth::user()->role == 1 )
+                <li class="nav-item">
+                    <a href="{{ route('patients.index') }}" class="nav-link">
+                        <i class="nav-icon far fa-image"></i>
+                        <p>
+                            Bệnh nhân
+                        </p>
+                    </a>
+                </li>
+                @endif
                 @if (Auth::user()->role == 3)
-                    <li class="nav-item">
-                        <a href="{{ route('patients.index') }}" class="nav-link">
-                            <i class="nav-icon far fa-image"></i>
-                            <p>
-                                Bệnh nhân
-                            </p>
-                        </a>
-                    </li>
+                    
                     <li class="nav-item">
                         <a href="{{ route('meetings.index') }}" class="nav-link">
                             <i class="nav-icon far fa-image"></i>

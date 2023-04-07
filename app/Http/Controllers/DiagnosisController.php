@@ -93,6 +93,8 @@ class DiagnosisController extends Controller
 
         $diagnosisItemData = array_map(function ($diaPre) use ($diagnosis) {
             $diaPre['diagnosis_id'] = $diagnosis->id;
+            $diaPre['created_at'] = now();
+            $diaPre['updated_at'] = now();
             return $diaPre;
         }, $newArrays);
         DiagnosisItem::insert($diagnosisItemData);
@@ -191,6 +193,8 @@ class DiagnosisController extends Controller
         }
         $diagnosisItemData = array_map(function ($diaPre) use ($diagnosis) {
             $diaPre['diagnosis_id'] = $diagnosis->id;
+            $diaPre['created_at'] = now();
+            $diaPre['updated_at'] = now();
             return $diaPre;
         }, $newArrays);
         DiagnosisItem::insert($diagnosisItemData);
