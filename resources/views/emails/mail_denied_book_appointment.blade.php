@@ -2,8 +2,9 @@
     Thân gửi qúy khách hàng {{ $patientName }},
 </div>
 <div>
-    Phòng khám đa khoa vừa ghi nhận được yêu cầu đặt lịch của quý khách. Phòng khám chúng tôi rất hân hạnh được phục vụ
-    quý khách và đã sắp xếp lịch khám cho quý khách, thông tin cụ thể như sau:
+    Phòng khám đa khoa vừa ghi nhận được yêu cầu đặt lịch của quý khách. Theo như thông tin phòng khám nhận được,
+     trong khoảng thời gian 1 tiếng khoảng thời gian quý khách mong muôn, phòng <b>{{ $doctorDepatment }}</b> bận. Chúng tôi
+     xin được chuyển thời gian sang khoảng thời gian khác.Thông tin như sau:
 </div>
 <div>
     - Mã bệnh nhân : {{ $patientCode}} <br/>

@@ -11,6 +11,7 @@ use App\Models\Service;
 use App\Models\Diagnosis;
 use Illuminate\Http\Request;
 use App\Models\DiagnosisItem;
+use Illuminate\Support\Facades\Auth;
 
 
 class DiagnosisController extends Controller
@@ -42,10 +43,10 @@ class DiagnosisController extends Controller
      */
     public function create(Request $request)
     {
-        $doctors = Doctor::all();
+        $doctor = Doctor::where('email', Auth::user()->email)->first();
         $patients = Patient::all();
         $services = Service::all();
-        return view('admin.diagnosises.create', compact('doctors', 'patients', 'services'));
+        return view('admin.diagnosises.create', compact('doctor', 'patients', 'services'));
     }
 
     /**

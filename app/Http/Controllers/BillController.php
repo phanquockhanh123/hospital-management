@@ -130,4 +130,20 @@ class BillController extends Controller
         return redirect()->route('bills.index')
             ->with('success', 'Hóa đơn đã được xoá thành công.');
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  Bill $bill
+     * @return \Illuminate\Http\Response
+     */
+    public function payment(Bill $bill)
+    {
+        $bill->update([
+            'paid_money' => $bill->total_money,
+            'status' => Bill::STATUS_PAYMENT
+        ]);
+        return redirect()->route('bills.index')
+            ->with('success', 'Hóa đơn đã được thanh toán thành công.');
+    }
 }

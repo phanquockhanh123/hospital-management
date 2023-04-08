@@ -66,9 +66,9 @@
 
                 <!-- /.card-header -->
                 <div class="card-body">
-                  @if ($patients->isEmpty())
+                  @if ($patients->count() == 0)
                   <div class="alert alert-danger" role="alert">
-                    No patients found.
+                    Không tìm thấy bệnh nhân nào.
                   </div>
                   @else
                   <table id="example2" class="table table-bordered table-hover">

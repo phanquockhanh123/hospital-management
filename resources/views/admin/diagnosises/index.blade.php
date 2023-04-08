@@ -65,7 +65,7 @@
                                     @endif</h2>
                                 <!-- /.card-header -->
                                 <div class="card-body">
-                                    @if ($diagnosises->isEmpty())
+                                    @if ($diagnosises->count() == 0)
                                         <div class="alert alert-danger" role="alert">
                                             Không tìm thấy xét nghiệm/chẩn đoán nào.
                                         </div>

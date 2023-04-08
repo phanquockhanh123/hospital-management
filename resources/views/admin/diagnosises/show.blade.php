@@ -45,11 +45,11 @@
                                     </tr>
                                     <tr>
                                         <th>Chẩn đoán bệnh chính:</th>
-                                        <td>{{ $diagnosis->main_disease }}</td>
+                                        <td>{{ $diagnosis->main_diagnosis }}</td>
                                     </tr>
                                     <tr>
                                         <th>Chẩn đoán bệnh phụ:</th>
-                                        <td>{{ $diagnosis->side_disease }}</td>
+                                        <td>{{ $diagnosis->side_diagnosis }}</td>
                                     </tr>
                                     <tr>
                                         <th>Xét nghiệm:</th>

@@ -13,7 +13,7 @@
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                @if (Auth::user()->role == 1 && Auth::user()->role == 2)
+                @if (Auth::user()->role == 1 || Auth::user()->role == 2)
                 <li class="nav-item">
                     <a href="{{ route('appointments.index') }}" class="nav-link">
                         <i class="nav-icon far fa-calendar-alt"></i>
@@ -52,13 +52,14 @@
                     </ul>
                 </li>
                 @endif
-
-                {{-- <li class="nav-item">
+                @if (Auth::user()->role == 2)
+                <li class="nav-item">
                     <a href="{{route('prescriptions.index')}}" class="nav-link">
                         <i class="nav-icon far fa-image"></i>
                         <p>Đơn thuốc</p>
                     </a>
-                </li> --}}
+                </li>
+                @endif
                 @if (Auth::user()->role == 3 || Auth::user()->role == 1 )
                 <li class="nav-item">
                     <a href="{{ route('patients.index') }}" class="nav-link">
@@ -150,93 +151,6 @@
                             </p>
                         </a>
                     </li>
-                <li class="nav-item">
-                    <a href="{{ route('patients.index') }}" class="nav-link">
-                        <i class="nav-icon far fa-image"></i>
-                        <p>
-                            Bệnh nhân
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('meetings.index') }}" class="nav-link">
-                        <i class="nav-icon far fa-image"></i>
-                        <p>
-                            Cuộc họp
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('users.index') }}" class="nav-link">
-                        <i class="nav-icon far fa-image"></i>
-                        <p>
-                            Tài khoản nhân viên
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('doctors.index') }}" class="nav-link">
-                        <i class="nav-icon far fa-image"></i>
-                        <p>Bác sĩ</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-chart-pie"></i>
-                        <p>
-                            Quản lý
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('medical_devices.index') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Quản lý thiết bị</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('request_devices.index') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Đơn yêu cầu thiết bị</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('medicals.index') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Thuốc</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('services.index') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Dịch vụ</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('doctor_departments.index') }}" class="nav-link">
-                                <i class="nav-icon far fa-image"></i>
-                                <p>Phòng ban</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('news.index') }}" class="nav-link">
-                        <i class="nav-icon far fa-image"></i>
-                        <p>
-                            Blog
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon far fa-image"></i>
-                        <p>
-                            Thanh toán lương
-                        </p>
-                    </a>
-                </li>
                 @endif
 
                 @if (Auth::user()->role == 3)

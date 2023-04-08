@@ -65,7 +65,7 @@
                                     @endif</h2>
                                 <!-- /.card-header -->
                                 <div class="card-body">
-                                    @if ($prescriptions->isEmpty())
+                                    @if ($prescriptions->count() == 0)
                                         <div class="alert alert-danger" role="alert">
                                             Không tìm thấy đơn thuốc nào.
                                         </div>

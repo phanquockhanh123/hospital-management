@@ -54,11 +54,8 @@
 
                                     <div class="form-group col-md-6">
                                         <label for="doctor_id">Bác sĩ:</label>
-                                        <select name="doctor_id" class="form-control input-sm m-bot15">
-                                            <option value="">----Chọn bác sĩ----</option>
-                                            @foreach ($doctors as $doctor)
-                                                <option value="{{ $doctor->id }}">{{ $doctor->name }}</option>
-                                            @endforeach
+                                        <select name="doctor_id" class="form-control input-sm m-bot15 disabled  ">
+                                            <option value="{{ $doctor->id }}">{{ $doctor->name }}</option>
                                         </select>
                                         @error('doctor_id')
                                             <div class="invalid-feedback">{{ $message }}</div>

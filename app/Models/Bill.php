@@ -4,7 +4,14 @@ namespace App\Models;
 
 class Bill extends BaseModel
 {
+    //status
+    public const STATUS_NO_PAYMENT = 0;
+    public const STATUS_PAYMENT = 1;
 
+    public static $status = [
+        self::STATUS_NO_PAYMENT => 'Chưa thanh toán',
+        self::STATUS_PAYMENT => 'Đã thanh toán',
+    ];
     /**
      * The attributes that are mass assignable.
      *
@@ -15,7 +22,8 @@ class Bill extends BaseModel
         'prescription_id',
         'total_money',
         'paid_money',
-        'note'
+        'note',
+        'status'
     ];
 
     protected $dates = [

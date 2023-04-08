@@ -66,9 +66,9 @@
 
                 <!-- /.card-header -->
                 <div class="card-body">
-                  @if ($users->isEmpty())
+                  @if ($users->count() == 0)
                   <div class="alert alert-danger" role="alert">
-                    No users found.
+                    Không tìm thấy tài khoản người dùng nào.
                   </div>
                   @else
                   <table id="example2" class="table table-bordered table-hover">

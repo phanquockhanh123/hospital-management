@@ -130,10 +130,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::post('/calendar', [AppointmentController::class, 'storeCalendar'])->name('calendar.store');
             Route::patch('/calendar/update/{id}', [AppointmentController::class, 'updateCalendar'])->name('calendar.update');
             Route::delete('/calendar/destroy/{id}', [AppointmentController::class, 'destroyCalendar'])->name('calendar.destroy');
+            Route::get('/schedules', [AppointmentController::class, 'getAppointmentByDoctor'])->name('appointments.get-appointment-by-doctor');
         });
 
         Route::middleware([config('const.auth.mid')])->group(function () {
-            Route::get('/schedules', [AppointmentController::class, 'getAppointmentByDoctor'])->name('appointments.get-appointment-by-doctor');
             Route::get('/accepted_appointment/{appointment}', [AppointmentController::class, 'acceptedAppointment'])->name('appointments.accepted');
             Route::get('/denied_appointment/{appointment}', [AppointmentController::class, 'deniedAppointment'])->name('appointments.denied');
         });
@@ -209,7 +209,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     //-----------------------------------Bills ----------------------------------------------------------------
     Route::controller(BillController::class)->group(function () {
-        Route::middleware([config('const.auth.mid')])->group(function () {
+        Route::middleware([config('const.auth.low')])->group(function () {
             Route::get('/bills', 'index')->name('bills.index');
             Route::get('/bills/create', 'create')->name('bills.create');
             Route::post('/bills', 'store')->name('bills.store');
@@ -217,6 +217,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/bills/{bill}/edit', 'edit')->name('bills.edit');
             Route::put('/bills/{bill}', 'update')->name('bills.update');
             Route::delete('/bills/{bill}', 'destroy')->name('bills.destroy');
+
+            Route::get('/bills/{bill}', 'payment')->name('bills.payment');
         });
     });
 

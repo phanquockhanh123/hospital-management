@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class MessageFactory extends Factory
@@ -13,10 +14,15 @@ class MessageFactory extends Factory
      */
     public function definition()
     {
-        
+        $userIds = User::pluck('id');
+        if(count($userIds) >= 10) {
+            $userId = $userIds->random();
+        }else {
+            $userId = rand(1, 30);
+        }
         return [
-            'from' => rand(1, 10),
-            'to' => rand(1, 10),
+            'from' => $userId,
+            'to' =>  $userId,
             'message' => $this->faker->text(20),
             'is_read'=>rand(0,1),
         ];

@@ -19,6 +19,7 @@ class CreateBillsTable extends Migration
             $table->unsignedBigInteger('diagnosis_id')->nullable();
             $table->float('total_money');
             $table->float('paid_money')->nullable();
+            $table->integer('status')->default(0);
             $table->text('note')->nullable();
             $table->timestamps();
             $table->softDeletes();

@@ -65,9 +65,9 @@
                                     @endif</h2>
                                 <!-- /.card-header -->
                                 <div class="card-body">
-                                    @if ($appointments->isEmpty())
+                                    @if ($appointments->count() == 0)
                                         <div class="alert alert-danger" role="alert">
-                                            No appointments found.
+                                            Không tìm thấy cuộc hẹn nào.
                                         </div>
                                     @else
                                         <table id="example2" class="table table-bordered table-hover">

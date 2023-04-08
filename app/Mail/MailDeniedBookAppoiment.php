@@ -12,7 +12,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Mockery\Generator\StringManipulation\Pass\Pass;
 
-class MailBookAppoiment extends Mailable
+class MailDeniedBookAppoiment extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -48,8 +48,8 @@ class MailBookAppoiment extends Mailable
                     'patientCode' => $this->patient->patient_code,
                     'doctorName' => $this->doctor->name,
                     'doctorDepatment' => $this->doctorDepartment->name,
-                    'startDate' => $this->appointment->start_time,
-                    'endDate' => $this->appointment->end_time
+                    'startDate' => $this->appointment->start_date,
+                    'endDate' => $this->appointment->end_date
                 ]);
     }
 }

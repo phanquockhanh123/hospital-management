@@ -65,7 +65,7 @@
                                     @endif</h2>
                                 <!-- /.card-header -->
                                 <div class="card-body">
-                                    @if ($services->isEmpty())
+                                    @if ($services->count() == 0)
                                         <div class="alert alert-danger" role="alert">
                                             Không tìm thấy dịch vụ khám bệnh.
                                         </div>

@@ -20,6 +20,7 @@ class BookAppointment extends BaseModel
      ];
 
     protected $fillable =[
+        'appointment_id',
         'fullname',
         'email',
         'phone',

@@ -60,7 +60,7 @@
                                     @endif</h2>
                                 <!-- /.card-header -->
                                 <div class="card-body">
-                                    @if ($book_appointments->isEmpty())
+                                    @if ($book_appointments->count() == 0))
                                         <div class="alert alert-danger" role="alert">
                                             Không tìm thấy kết quả yêu cầu lịch hẹn.
                                         </div>

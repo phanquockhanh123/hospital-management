@@ -1,4 +1,3 @@
-
 <nav class="main-header navbar navbar-expand navbar-black navbar-dark">
   <!-- Left navbar links -->
   <ul class="navbar-nav">
@@ -16,7 +15,7 @@
   <!-- Right navbar links -->
   <ul class="navbar-nav ml-auto">
     <!-- Navbar Search -->
-    <li class="nav-item">
+    {{-- <li class="nav-item">
       <a class="nav-link" data-widget="navbar-search" href="#" role="button">
         <i class="fas fa-search"></i>
       </a>
@@ -35,38 +34,46 @@
           </div>
         </form>
       </div>
-    </li>
+    </li> --}}
 
     <!-- Messages Dropdown Menu -->
     <li class="nav-item dropdown">
       <a class="nav-link" data-toggle="dropdown" href="#">
         <i class="far fa-comments"></i>
-        <span class="badge badge-danger navbar-badge">3</span>
+        <span class="badge badge-danger navbar-badge">{{ empty($messages) ? 0 : count($messages->toArray()) }}</span>
       </a>
       <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-        @foreach ($messages as $message)
-        <a href="#" class="dropdown-item">
+
+        @if(!empty($messages))
+        @foreach ($messages ?? [] as $message)
+        <a href="{{ route('chats.index') }}" class="dropdown-item">
           <!-- Message Start -->
           <div class="media">
-            <img src="dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+            <img src=" ./imgUser/{{ $message->user?->filename}}" alt="User Avatar" class="img-size-50 img-circle mr-3">
             <div class="media-body">
               <h3 class="dropdown-item-title">
                 {{$message->user}}
                 <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
               </h3>
               <p class="text-sm"> {{$message->message}}</p>
-              <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+              <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i>{{ $message->created_at->diffForHumans()}}</p>
             </div>
           </div>
           <!-- Message End -->
         </a>
         <div class="dropdown-divider"></div>
-        <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
+        
         @endforeach
-       
+        
+        @else
+          <a href="{{ route('chats.index') }}" class="dropdown-item dropdown-footer">Không có tin nhắn mới </a>
+        @endif
+        <a href="{{ route('chats.index') }}" class="dropdown-item dropdown-footer">Xem tất cả </a>
       </div>
     </li>
-    <!-- Notifications Dropdown Menu -->
+
+
+    {{-- <!-- Notifications Dropdown Menu -->
     <li class="nav-item dropdown">
       <a class="nav-link" data-toggle="dropdown" href="#">
         <i class="far fa-bell"></i>
@@ -102,9 +109,8 @@
       <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
         <i class="fas fa-th-large"></i>
       </a>
-    </li>
+    </li> --}}
     <x-app-layout>
     </x-app-layout>
   </ul>
 </nav>
-
