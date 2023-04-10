@@ -37,6 +37,7 @@ class AuthController extends Controller
             $countNews = News::count();
             $appointmentTodays = Appointment::WhereDate('end_time', $today)->get();
             $medicalDevices = MedicalDevice::whereDate('expired_date', '>=', $sixtyYesterday )->get();
+            $bookAppointmentTodays = BookAppointment::WhereBetWeen('experted_time',[now()->subDay(), now()->addDays(10)])->get();
             return view('admin.home', compact(
                 'countUsers',
                 'countPatients',
@@ -49,7 +50,8 @@ class AuthController extends Controller
                 'countNews',
                 'appointmentTodays',
                 'medicalDevices',
-                'messages'
+                'messages',
+                'bookAppointmentTodays'
             ));
         } else if(Auth::user()->role == 1 || Auth::user()->role == 2) {
             $today = now()->toDateString();
