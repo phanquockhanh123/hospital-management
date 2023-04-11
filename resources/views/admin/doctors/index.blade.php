@@ -68,7 +68,7 @@
 
                                 <!-- /.card-header -->
                                 <div class="card-body">
-                                    @if ($doctors->isEmpty())
+                                    @if ($doctors->count() == 0)
                                     <div class="alert alert-danger" role="alert">
                                         Không tìm thấy bác sĩ!.
                                     </div>

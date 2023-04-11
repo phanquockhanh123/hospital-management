@@ -16,7 +16,7 @@ class CreateDiagnosisItemsTable extends Migration
         Schema::create('diagnosis_items', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('diagnosis_id');
-            $table->string('diagnosis_name');
+            $table->unsignedBigInteger('service_id');
             $table->string('result');
             $table->string('references_range')->nullable();
             $table->string('unit');
@@ -25,9 +25,14 @@ class CreateDiagnosisItemsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('diagnosis_id', 'FK_diagnosis_items_2')
+            $table->foreign('diagnosis_id', 'FK_diagnosis_items_1')
                 ->references('id')
                 ->on('diagnosis')
+                ->onDelete('cascade');
+
+            $table->foreign('service_id', 'FK_diagnosis_items_2')
+                ->references('id')
+                ->on('services')
                 ->onDelete('cascade');
         });
     }

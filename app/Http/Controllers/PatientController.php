@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\Doctor;
 use App\Models\Patient;
+use App\Models\Service;
+use App\Models\Diagnosis;
 use Illuminate\Http\Request;
+use App\Models\DiagnosisItem;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -101,7 +105,19 @@ class PatientController extends Controller
      */
     public function show(Patient $patient)
     {
-        return view('admin.patients.show', compact('patient'));
+
+        $diagnosises = $patient?->diagnosises;
+        $diagnosisItems = [];
+        foreach ($diagnosises as $diagnosis) {
+            $diagnosisItems = $diagnosis?->diagnosisItems;
+        }
+
+        $diaPre = !empty($diagnosisItems) ? $diagnosisItems->toArray() : [];
+        $services = Service::all();
+        $diagnosisesList = !empty($diagnosises) ? $diagnosises->toArray() : [];
+        $doctors = Doctor::all();
+
+        return view('admin.patients.show', compact('patient', 'diaPre', 'services', 'diagnosisesList', 'doctors'));
     }
 
     /**

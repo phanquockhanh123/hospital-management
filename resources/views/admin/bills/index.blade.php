@@ -30,23 +30,25 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <form action="{{ route('news.index') }}" method="GET">
+                            <form action="{{ route('bills.index') }}" method="GET">
                                 <div class="input-group mb-2">
                                     <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder="Search news"
+                                        <input type="text" class="form-control" placeholder="Tìm kiếm hóa đơn"
                                             name="search">
                                         <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary" type="submit">Search</button>
+                                            <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
                                         </div>
                                     </div>
                                 </div>
                             </form>
                         </div>
+                        @if(Auth::user()->role == 2)
                         <div class="col-sm-3" style="float: right;">
-                            <a href="{{ route('news.create') }}" class="btn btn-success">
+                            <a href="{{ route('bills.create') }}" class="btn btn-success">
                                 <i class="fas fa-plus"></i> Tạo mới
                             </a>
                         </div>
+                        @endif
                     </div>
                 </div><!-- /.container-fluid -->
             </section>
@@ -59,99 +61,131 @@
                             <div class="card">
                                 <h2>
                                     @if(session('success'))
-                                        <div class="alert alert-success">
-                                            {{ session('success') }}
-                                        </div>
-                                    @endif</h2>
+                                    <div class="alert alert-success">
+                                        {{ session('success') }}
+                                    </div>
+                                    @endif
+                                </h2>
                                 <!-- /.card-header -->
                                 <div class="card-body">
-                                    @if ($news->isEmpty())
-                                        <div class="alert alert-danger" role="alert">
-                                            No news found.
-                                        </div>
+                                    @if ($bills->count() == 0)
+                                    <div class="alert alert-danger" role="alert">
+                                        Không tìm thấy hóa đơn nào.
+                                    </div>
                                     @else
-                                        <table id="example2" class="table table-bordered table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th>TITLE</th>
-                                                    <th>KEYWORDS</th>
-                                                    <th>CONTENT</th>
-                                                    <th>SUBMITTED_DATE</th>
-                                                    <th>SOURCE_NEWS</th>
-                                                    <th>AUTHOR</th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($news as $new)
-                                                    <tr>
-                                                        <td><a
-                                                                href="{{ route('news.show', $new->id) }}">{{ $new->title }}</a>
-                                                        </td>
-                                                        <td>{{ $new->key_words }}</td>
-                                                        <td>{{ $new->content }}</td>
-                                                        <td>{{ $new->submitted_date->format(config('const.format.date')) }}</td>
-                                                        <td>{{ $new->source_news }}</td>
-                                                        <td>{{ $new->author }}</td>
-                                                        <td>
-                                                            <div class="btn-group">
-                                                                <a href="{{ route('news.edit', $new->id) }}"
-                                                                    class="btn btn-primary">
-                                                                    <i class="fas fa-edit"></i> Sửa
-                                                                </a>
-                                                                <button type="button" class="btn btn-danger"
-                                                                    data-toggle="modal"
-                                                                    data-target="#deleteModal{{ $new->id }}"
-                                                                    style="color: red;">
-                                                                    <i class="fas fa-trash-alt"></i> Xóa
+                                    <table id="example2" class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>STT</th>
+                                                <th>Bệnh nhân</th>
+                                                <th>Người lập</th>
+                                                <th>Ngày tạo</th>
+                                                <th>Tổng tiền</th>
+                                                <th>Đã thanh toán</th>
+                                                <th>Còn nợ</th>
+                                                <th>Trạng thái</th>
+                                                @if(Auth::user()->role == 2)
+                                                <th>Hành động</th>
+                                                @endif
+                                                @if(Auth::user()->role == 1)
+                                                <th>Thanh toán</th>
+                                                @endif
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($bills as $bill)
+                                            <tr>
+                                                <td><a href="{{ route('bills.show', $bill->id) }}">{{ $count++ }}</a>
+                                                </td>
+                                                <td>{{ $bill->diagnosis->patient->name }}</td>
+                                                <td>{{ $bill->diagnosis->doctor->name }}</td>
+                                                <td>{{ $bill->created_at }}</td>
+                                                <td>{{ $bill->total_money }}</td>
+                                                <td>@if(empty($bill->paid_money)) 0 @else {{ $bill->total_money }} @endif</td>
+                                                <td>{{ $bill->total_money - $bill->paid_money }}</td>
+                                                <th>
+                                                    @if ($bill->status == 0)
+                                                    <span class="text-warning">Chưa thanh toán</span>
+                                                    @elseif ($bill->status == 1)
+                                                    <span class="text-primary">Đã thanh toán</span>
+                                                    @endif
+                                                </th>
+                                                @if(Auth::user()->role == 2)
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <a href="{{ route('bills.show', $bill->id) }}"
+                                                            class="btn btn-warning">
+                                                            <i class="fas fa-edit"></i> Xem chi tiết
+                                                        </a>
+                                                        <a href="{{ route('bills.edit', $bill->id) }}"
+                                                            class="btn btn-primary">
+                                                            <i class="fas fa-edit"></i> Sửa
+                                                        </a>
+                                                        <button type="button" class="btn btn-danger" data-toggle="modal"
+                                                            data-target="#deleteModal{{ $bill->id }}"
+                                                            style="color: red;">
+                                                            <i class="fas fa-trash-alt"></i> Xóa
+                                                        </button>
+                                                    </div>
+                                                </td>
+
+                                                @endif
+                                                @if(Auth::user()->role == 1)
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <a href="{{ route('bills.payment', $bill->id) }}"
+                                                            class="btn btn-warning  @if ($bill->status == 1) disabled @endif">
+                                                            <i class="fas fa-edit"></i> Thanh toán
+                                                        </a>
+                                                    </div>
+                                                </td>
+
+                                                @endif
+                                                <!-- Modal -->
+                                                <div class="modal fade" id="deleteModal{{ $bill->id }}" tabindex="-1"
+                                                    role="dialog" aria-labelledby="deleteModalLabel{{ $bill->id }}"
+                                                    aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title"
+                                                                    id="deleteModalLabel{{ $bill->id }}">
+                                                                    Xóa loại hóa đơn</h5>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
                                                                 </button>
                                                             </div>
-                                                        </td>
-
-                                                        <!-- Modal -->
-                                                        <div class="modal fade" id="deleteModal{{ $new->id }}"
-                                                            tabindex="-1" role="dialog"
-                                                            aria-labelledby="deleteModalLabel{{ $new->id }}"
-                                                            aria-hidden="true">
-                                                            <div class="modal-dialog" role="document">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title"
-                                                                            id="deleteModalLabel{{ $new->id }}">
-                                                                            Xóa bài viết</h5>
-                                                                        <button type="button" class="close"
-                                                                            data-dismiss="modal" aria-label="Close">
-                                                                            <span aria-hidden="true">&times;</span>
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        Bạn có chắc chắn muốn xóa bài viết
-                                                                        "{{ $new->title }}" không? Hành động này
-                                                                        không
-                                                                        thể hoàn tác!
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary"
-                                                                            data-dismiss="modal" style="color:black;">Hủy</button>
-                                                                        <form
-                                                                            action="{{ route('news.destroy', $new->id) }}"
-                                                                            method="POST">
-                                                                            @csrf
-                                                                            @method('DELETE')
-                                                                            <button type="submit" style="color:red;"
-                                                                                class="btn btn-danger"
-                                                                                onclick="return confirm('Bạn có chắc chắn muốn xóa thiết bị y tế này không?')">Xóa</button>
-                                                                        </form>
-                                                                    </div>
-                                                                </div>
+                                                            <div class="modal-body">
+                                                                Bạn có chắc chắn muốn xóa hóa đơn của bệnh nhân
+                                                                "{{ $bill->diagnosis->patient->name }}" không? Hành động
+                                                                này
+                                                                không
+                                                                thể hoàn tác!
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal"
+                                                                    style="color:black;">Hủy</button>
+                                                                <form action="{{ route('bills.destroy', $bill->id) }}"
+                                                                    method="POST">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="submit" style="color:red;"
+                                                                        class="btn btn-danger"
+                                                                        onclick="return confirm('Bạn có chắc chắn muốn xóa lịch hẹn này không?')">Xóa</button>
+                                                                </form>
                                                             </div>
                                                         </div>
-                                                    </tr>
-                                                @endforeach
+                                                    </div>
+                                                </div>
+                                            </tr>
+                                            @endforeach
 
-                                            </tbody>
-                                        </table>
-                                        {{ $news->links() }}
+
+                                        </tbody>
+                                    </table>
+                                    {{ $bills->links() }}
                                     @endif
                                 </div>
                                 <!-- /.card-body -->
@@ -187,4 +221,3 @@
 </body>
 
 </html>
-

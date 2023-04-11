@@ -65,7 +65,7 @@
                                     @endif</h2>
                                 <!-- /.card-header -->
                                 <div class="card-body">
-                                    @if ($prescriptions->isEmpty())
+                                    @if ($prescriptions->count() == 0)
                                         <div class="alert alert-danger" role="alert">
                                             Không tìm thấy đơn thuốc nào.
                                         </div>
@@ -89,10 +89,10 @@
                                                         <td><a
                                                                 href="{{ route('prescriptions.show', $prescription->id) }}"><ins>{{ $count++ }}</ins></a>
                                                         </td>
-                                                        <td>{{ $prescription->patient->name }}</td>
-                                                        <td>{{ $prescription->doctor->name }}</td>
-                                                        <td>{{ $prescription->main_disease }}</td>
-                                                        <td>{{ $prescription->side_disease }}</td>
+                                                        <td>{{ $prescription->diagnosis->patient->name }}</td>
+                                                        <td>{{ $prescription->diagnosis->doctor->name }}</td>
+                                                        <td>{{ $prescription->diagnosis->main_diagnosis }}</td>
+                                                        <td>{{ $prescription->diagnosis->side_diagnosis }}</td>
                                                         <td>{{ $prescription->note }}</td>
                                                         <td><button class="btn btn-primary"><a href="{{ route('prescriptions.pdf', $prescription->id) }}">In</a></button></td>
                                                         <td>
@@ -128,7 +128,7 @@
                                                                     </div>
                                                                     <div class="modal-body">
                                                                         Bạn có chắc chắn muốn xóa đơn thuốc với bệnh nhân
-                                                                        "{{ $prescription->patient->name }}" không? Hành động này
+                                                                        "{{ $prescription->diagnosis->patient->name }}" không? Hành động này
                                                                         không
                                                                         thể hoàn tác!
                                                                     </div>

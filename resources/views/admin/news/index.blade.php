@@ -65,9 +65,9 @@
                                     @endif</h2>
                                 <!-- /.card-header -->
                                 <div class="card-body">
-                                    @if ($news->isEmpty())
+                                    @if ($news->count() == 0)
                                         <div class="alert alert-danger" role="alert">
-                                            No news found.
+                                            Không tìm thấy bào viết nào.
                                         </div>
                                     @else
                                         <table id="example2" class="table table-bordered table-hover">

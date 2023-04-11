@@ -11,7 +11,7 @@ class DiagnosisItem extends BaseModel
      */
     protected $fillable = [
         'diagnosis_id',
-        'diagnosis_name',
+        'service_id',
         'result',
         'references_range',
         'unit',
@@ -31,5 +31,13 @@ class DiagnosisItem extends BaseModel
     public function diagnosis()
     {
         return $this->belongsTo(Diagnosis::class);
+    }
+
+    /**
+     * Get the service
+     */
+    public function service()
+    {
+        return $this->belongsTo(Service::class);
     }
 }

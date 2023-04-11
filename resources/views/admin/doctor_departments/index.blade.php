@@ -66,7 +66,7 @@
                                 </h2>
                                 <!-- /.card-header -->
                                 <div class="card-body">
-                                    @if ($doctorDepartments->isEmpty())
+                                    @if ($doctorDepartments->count() == 0)
                                         <div class="alert alert-danger" role="alert">
                                             Không tìm thấy phòng ban nào!.
                                         </div>

@@ -1,9 +1,11 @@
 <?php
 
 use App\Models\User;
+use App\Models\Attendance;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BillController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsController;
@@ -11,15 +13,19 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ZoomController;
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\MedicalController;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\DiagnosisController;
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\PrescriptionController;
 use App\Http\Controllers\MedicalDeviceController;
 use App\Http\Controllers\RequestDeviceController;
 use App\Http\Controllers\BookAppointmentController;
 use App\Http\Controllers\DoctorDepartmentController;
+use App\Http\Controllers\SalaryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -127,10 +133,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::post('/calendar', [AppointmentController::class, 'storeCalendar'])->name('calendar.store');
             Route::patch('/calendar/update/{id}', [AppointmentController::class, 'updateCalendar'])->name('calendar.update');
             Route::delete('/calendar/destroy/{id}', [AppointmentController::class, 'destroyCalendar'])->name('calendar.destroy');
+            Route::get('/schedules', [AppointmentController::class, 'getAppointmentByDoctor'])->name('appointments.get-appointment-by-doctor');
         });
 
         Route::middleware([config('const.auth.mid')])->group(function () {
-            Route::get('/schedules', [AppointmentController::class, 'getAppointmentByDoctor'])->name('appointments.get-appointment-by-doctor');
             Route::get('/accepted_appointment/{appointment}', [AppointmentController::class, 'acceptedAppointment'])->name('appointments.accepted');
             Route::get('/denied_appointment/{appointment}', [AppointmentController::class, 'deniedAppointment'])->name('appointments.denied');
         });
@@ -178,6 +184,48 @@ Route::middleware(['auth:sanctum'])->group(function () {
         });
     });
 
+    //-----------------------------------Medicals ----------------------------------------------------------------
+    Route::controller(MedicalController::class)->group(function () {
+        Route::middleware([config('const.auth.high')])->group(function () {
+            Route::get('/medicals', 'index')->name('medicals.index');
+            Route::get('/medicals/create', 'create')->name('medicals.create');
+            Route::post('/medicals', 'store')->name('medicals.store');
+            Route::get('/medicals/{medical}', 'show')->name('medicals.show');
+            Route::get('/medicals/{medical}/edit', 'edit')->name('medicals.edit');
+            Route::put('/medicals/{medical}', 'update')->name('medicals.update');
+            Route::delete('/medicals/{medical}', 'destroy')->name('medicals.destroy');
+        });
+    });
+
+    //-----------------------------------Services ----------------------------------------------------------------
+    Route::controller(ServiceController::class)->group(function () {
+        Route::middleware([config('const.auth.high')])->group(function () {
+            Route::get('/services', 'index')->name('services.index');
+            Route::get('/services/create', 'create')->name('services.create');
+            Route::post('/services', 'store')->name('services.store');
+            Route::get('/services/{service}', 'show')->name('services.show');
+            Route::get('/services/{service}/edit', 'edit')->name('services.edit');
+            Route::put('/services/{service}', 'update')->name('services.update');
+            Route::delete('/services/{service}', 'destroy')->name('services.destroy');
+        });
+    });
+
+    //-----------------------------------Bills ----------------------------------------------------------------
+    Route::controller(BillController::class)->group(function () {
+        Route::middleware([config('const.auth.low')])->group(function () {
+            Route::get('/bills', 'index')->name('bills.index');
+            Route::get('/bills/create', 'create')->name('bills.create');
+            Route::post('/bills', 'store')->name('bills.store');
+            Route::get('/bills/{bill}', 'show')->name('bills.show');
+            Route::get('/bills/{bill}/edit', 'edit')->name('bills.edit');
+            Route::put('/bills/{bill}', 'update')->name('bills.update');
+            Route::delete('/bills/{bill}', 'destroy')->name('bills.destroy');
+
+            Route::get('/bills/{bill}/payment', 'payment')->name('bills.payment');
+        });
+    });
+
+
     //-----------------------------------Prescriptions----------------------------------------------------------------
     Route::controller(PrescriptionController::class)->group(function () {
         Route::middleware([config('const.auth.mid')])->group(function () {
@@ -190,6 +238,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::delete('/prescriptions/{prescription}', 'destroy')->name('prescriptions.destroy');
 
             Route::get('/prescriptions/{prescription}/pdf', 'renderPdf')->name('prescriptions.pdf');
+
+            Route::get('/diagnosises/{diagnosis}/create/prescriptions', 'createPrescription')->name('diagnosises.create-prescription');
+            Route::post('/diagnosises/{diagnosis}/prescriptions', 'storePrescription')->name('diagnosises.store-prescription');
         });
     });
 
@@ -200,11 +251,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/diagnosises/create', 'create')->name('diagnosises.create');
             Route::post('/diagnosises', 'store')->name('diagnosises.store');
             Route::get('/diagnosises/{diagnosis}', 'show')->name('diagnosises.show');
-            Route::get('/diagnosises/{diagnosis}/edit', 'edit')->name('diagnosises.edit');
+            Route::get('/diagnosises/{diagnosis}/create', 'edit')->name('diagnosises.edit');
             Route::put('/diagnosises/{diagnosis}', 'update')->name('diagnosises.update');
             Route::delete('/diagnosises/{diagnosis}', 'destroy')->name('diagnosises.destroy');
 
             Route::get('/diagnosises/{diagnosis}/pdf', 'renderPdf')->name('diagnosises.pdf');
+
+            
         });
     });
 
@@ -222,6 +275,21 @@ Route::middleware(['auth:sanctum'])->group(function () {
         });
     });
 
+    //-----------------------------------Chấm công ----------------------------------------------------------------
+    Route::controller(AttendanceController::class)->group(function () {
+        Route::middleware([config('const.auth.high')])->group(function () {
+            Route::get('/attendances', 'index')->name('attendances.index');
+        });
+    });
+
+    //-----------------------------------Tính lương ----------------------------------------------------------------
+    Route::controller(SalaryController::class)->group(function () {
+        Route::middleware([config('const.auth.high')])->group(function () {
+            Route::get('/salaries', 'index')->name('salaries.index');
+            Route::get('/salaries/{salary}/payment', 'payment')->name('salaries.payment');
+        });
+    });
+
     //-----------------------------------News ----------------------------------------------------------------
     Route::controller(NewsController::class)->group(function () {
         Route::middleware([config('const.auth.high')])->group(function () {
@@ -233,7 +301,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::put('/news/{new}', [NewsController::class, 'update'])->name('news.update');
             Route::delete('/news/{new}', [NewsController::class, 'destroy'])->name('news.destroy');
 
-            Route::get('/bills', [NewsController::class, 'index2'])->name('admin.get-bill-list');
+            // Route::get('/bills', [NewsController::class, 'index2'])->name('admin.get-bill-list');
 
             Route::post('/upload', [NewsController::class, 'upload'])->name('ckeditor.upload');
         });
@@ -281,19 +349,20 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/', 'index')->name('home.index');
     Route::get('/about', 'aboutUs')->name('home.about');
     Route::get('/blog', 'blog')->name('home.blog');
+    Route::get('/contact', 'contact')->name('home.contact');
     Route::get('/book_appointment_user', 'bookAppointmentUser')->name('home.book-appointment-user');
     Route::post('/user/appointments', 'storeAppointment')->name('user.appointments-store');
     Route::get('/get_doctor_list_for_user_site', 'getDoctorListForUserSite')->name('home.get-doctor-list-for-user-site');
     Route::get('/get_doctor_detail_for_user_site/{doctor}', 'getDoctorDetailForUserSite')->name('home.get-doctor-detail-for-user-site');
 });
 
- 
+
 Route::get('/auth/google', function () {
     return Socialite::driver('google')->redirect();
 })->name('home.login-with-google');
- 
+
 Route::get('/auth/google/callback', function () {
-    $googleUser = Socialite::driver('google')->user();  
+    $googleUser = Socialite::driver('google')->user();
     $user = User::updateOrCreate([
         'google_id' => $googleUser->id,
     ], [
@@ -302,7 +371,6 @@ Route::get('/auth/google/callback', function () {
         'google_token' => $googleUser->token,
         'google_refresh_token' => $googleUser->refreshToken,
     ]);
- 
     Auth::login($user);
 
     return redirect('/');

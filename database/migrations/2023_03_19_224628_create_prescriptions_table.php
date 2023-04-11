@@ -15,22 +15,14 @@ class CreatePrescriptionsTable extends Migration
     {
         Schema::create('prescriptions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('doctor_id');
-            $table->unsignedBigInteger('patient_id');
-            $table->string('main_disease');
-            $table->string('side_disease')->nullable();
+            $table->unsignedBigInteger('diagnosis_id')->nullable();
             $table->string('note')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
-
-            $table->foreign('doctor_id', 'FK_prescriptions_2')
+            $table->foreign('diagnosis_id', 'FK_prescriptions_1')
                 ->references('id')
-                ->on('doctors')
-                ->onDelete('cascade');
-            $table->foreign('patient_id', 'FK_prescriptions_3')
-                ->references('id')
-                ->on('patients')
+                ->on('diagnosis')
                 ->onDelete('cascade');
         });
     }

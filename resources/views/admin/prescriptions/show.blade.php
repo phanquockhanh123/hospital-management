@@ -67,7 +67,7 @@
                                                 <tbody>
                                                     @foreach($preItem as $val)
                                                     <tr>
-                                                        <td>{{ $val['medical_name'] }}</td>
+                                                        <td>{{ $medicals->where('id', $val['medical_id'])->first()->medical_name }}</td>
                                                         <td>{{ $val['dosage'] }}</td>
                                                         <td>{{ $val['dosage_note'] }}</td>
                                                         <td>{{ $val['unit'] }}</td>

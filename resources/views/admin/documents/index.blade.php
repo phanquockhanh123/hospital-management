@@ -65,7 +65,7 @@
                                     @endif</h2>
                                 <!-- /.card-header -->
                                 <div class="card-body">
-                                    @if ($documents->isEmpty())
+                                    @if ($documents->count() == 0)
                                         <div class="alert alert-danger" role="alert">
                                             Không tìm thấy file nào.
                                         </div>

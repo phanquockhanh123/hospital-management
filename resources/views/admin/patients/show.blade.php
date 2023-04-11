@@ -37,7 +37,7 @@
                                 <tbody>
                                     <tr>
                                         <th>Mã bệnh nhân:</th>
-                                        <td>{{ $patient->code }}</td>
+                                        <td>{{ $patient->patient_code }}</td>
                                     </tr>
                                     <tr>
                                         <th>Tên bệnh nhân:</th>
@@ -104,6 +104,70 @@
                                         <th>Nơi cấp:</th>
                                         <td>{{ $patient->identity_card_place }}</td>
                                     </tr>
+                                    @if(!empty($diagnosisesList))
+                                    <tr>
+                                        <th>Lịch sử khám bệnh</th>
+                                        <td>
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Bác sĩ khám bệnh</th>
+                                                        <th>Chẩn đoán bệnh chính</th>
+                                                        <th>Chẩn đoán bệnh phụ</th>
+                                                        <th>Ngày khám</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach($diagnosisesList as $val)
+                                                    <tr>
+                                                        <td>{{
+                                                            $doctors->where('id', $val['doctor_id'])->first()->name
+                                                        }}</td>
+                                                        <td>{{ $val['main_diagnosis'] }}</td>
+                                                        <td>{{ $val['side_diagnosis'] }}</td>
+                                                        <td>{{ $val['created_at'] }}</td>
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    @endif
+                                    @if(!empty($diaPre))
+                                    <tr>
+                                        <th>Lịch sử bệnh án:</th>
+                                        <td>
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Tên xét nghiệm</th>
+                                                        <th>Kết quả</th>
+                                                        <th>Trị số tham chiếu</th>
+                                                        <th>Đơn vị</th>
+                                                        <th>QT/PPXN</th>
+                                                        <th>Lưu ý</th>
+                                                        <th>Ngày xét nghiệm</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach($diaPre as $val)
+                                                    <tr>
+                                                        <td>{{
+                                                            $services->where('id', $val['service_id'])->first()->service_name
+                                                        }}</td>
+                                                        <td>{{ $val['result'] }}</td>
+                                                        <td>{{ $val['references_range'] }}</td>
+                                                        <td>{{ $val['unit'] }}</td>
+                                                        <td>{{ $val['method'] }}</td>
+                                                        <td>{{ $val['diagnosis_note'] }}</td>
+                                                        <th>{{ $val['updated_at'] }}</th>
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    @endif
                                 </tbody>
                             </table>
 

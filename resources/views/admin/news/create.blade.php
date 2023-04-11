@@ -33,7 +33,7 @@
                             <h3 class="card-title">Tạo mới bài viết</h3>
                         </div>
                         <div class="card-body">
-                            <form action="{{ route('news.store') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('news.store') }}" id="submitform" method="POST" enctype="multipart/form-data">
                                 @csrf
 
                                 <div class="form-group">
@@ -124,16 +124,28 @@
         @include('admin.script')
         <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
         <script>
-        
-            ClassicEditor
-            .create( document.querySelector( '#content' ), {
-                ckfinker:{
-                    uploadUrl:"{{ route('ckeditor.upload').'?_token='.csrf_token()  }}"
-                }
-            } )
-            .catch( error => {
-                console.error( error );
-            } );
+            CKEDITOR.replace('content', {
+                filebrowserUploadUrl: "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}",
+                filebrowserUploadMethod: 'form'
+            });
+
+            $(document).ready(function() { 
+                $('body').on('submit', '#submitform', function(e) {
+                    e.preventDefault();
+
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        data: new FormData(this),
+                        type: 'POST',
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        success: function(data) {
+                            alert('data.msg');
+                        }
+                    })
+                });
+            });
 
         </script>
 </body>

@@ -61,9 +61,9 @@ class ChatController extends Controller
         );
 
         $pusher = new Pusher(
-            env('PUSHER_APP_KEY'),
-            env('PUSHER_APP_SECRET'),
-            env('PUSHER_APP_ID'),
+            '8c1354121f011fe5d921',
+            '5955f0b4915c9063013c',
+            '1563047',
             $options
         );
 

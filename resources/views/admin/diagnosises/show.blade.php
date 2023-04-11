@@ -45,11 +45,11 @@
                                     </tr>
                                     <tr>
                                         <th>Chẩn đoán bệnh chính:</th>
-                                        <td>{{ $diagnosis->main_disease }}</td>
+                                        <td>{{ $diagnosis->main_diagnosis }}</td>
                                     </tr>
                                     <tr>
                                         <th>Chẩn đoán bệnh phụ:</th>
-                                        <td>{{ $diagnosis->side_disease }}</td>
+                                        <td>{{ $diagnosis->side_diagnosis }}</td>
                                     </tr>
                                     <tr>
                                         <th>Xét nghiệm:</th>
@@ -68,7 +68,9 @@
                                                 <tbody>
                                                     @foreach($diaPre as $val)
                                                     <tr>
-                                                        <td>{{ $val['diagnosis_name'] }}</td>
+                                                        <td>{{
+                                                            $services->where('id', $val['service_id'])->first()->service_name
+                                                        }}</td>
                                                         <td>{{ $val['result'] }}</td>
                                                         <td>{{ $val['references_range'] }}</td>
                                                         <td>{{ $val['unit'] }}</td>

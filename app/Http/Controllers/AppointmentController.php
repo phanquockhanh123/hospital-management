@@ -12,6 +12,7 @@ use App\Mail\MailBookAppoiment;
 use App\Models\DoctorDepartment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\MailDeniedBookAppoiment;
 
 class AppointmentController extends Controller
 {
@@ -32,6 +33,7 @@ class AppointmentController extends Controller
             $appointments = Appointment::orderByDesc('created_at')->paginate(config('const.perPage'));
         }
         $count = 1;
+        
         return view('admin.appointments.index', compact('appointments', 'count'));
     }
 
@@ -80,7 +82,6 @@ class AppointmentController extends Controller
 
         $validatedData['status'] = Appointment::STATUS_PENDING;
         Appointment::create($validatedData);
-
 
         return redirect()->route('appointments.index')
             ->with('success', 'Lịch hẹn đã được tạo thành công.');
@@ -261,6 +262,10 @@ class AppointmentController extends Controller
         $appointment->update([
             'status' => 0
         ]);
+        $patient = $appointment->patient;
+        $doctor = $appointment->doctor;
+        $doctorDepartment = $appointment->doctorDepartment;
+        Mail::send(new MailDeniedBookAppoiment($appointment, $patient, $doctor, $doctorDepartment));
         return redirect()->route('appointments.index')
             ->with('success', 'Từ chối cuộc hẹn thành công !');
     }
@@ -268,9 +273,13 @@ class AppointmentController extends Controller
     public function getAppointmentByDoctor()
     {
         $doctor = Doctor::where('email', Auth::user()->email)->first();
-
-        $appointments = Appointment::where('doctor_id', $doctor->id)
+        if($doctor) {
+            $appointments = Appointment::where('doctor_id', $doctor->id)
             ->orderByDesc('created_at')->paginate(config('const.perPage'));
-        return view('admin.appointments.index', compact('appointments'));
+        }else {
+            $appointments = [];
+        }
+        $count=1;
+        return view('admin.appointments.index', compact('appointments', 'count'));
     }
 }

@@ -22,6 +22,14 @@ class CreateMessagesTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
+            $table->foreign('from', 'FK_messages_1')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
+            $table->foreign('to', 'FK_messages_2')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
         });
     }
 

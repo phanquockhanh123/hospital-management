@@ -65,9 +65,9 @@
                                     @endif</h2>
                                 <!-- /.card-header -->
                                 <div class="card-body">
-                                    @if ($medical_devices->isEmpty())
+                                    @if ($medical_devices->count() == 0)
                                         <div class="alert alert-danger" role="alert">
-                                            No medical_devices found.
+                                            Không tìm thấy thiết bị y tế nào.
                                         </div>
                                     @else
                                         <table id="example2" class="table table-bordered table-hover">

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-
 class Meeting extends BaseModel
 {
     protected $fillable = [

@@ -24,11 +24,17 @@ class HomeController extends Controller
     }
 
     public function aboutUs() {
-        return view('user.aboutUs');
+        $news = News::where('status', News::STATUS_SUBMITTED)->orderByDesc('priority_level')->orderByDesc('created_at')->take(6)->get();
+        return view('user.aboutUs', compact('news'));
     }
 
     public function blog() {
         return view('user.blog');
+    }
+
+    public function contact() {
+        $news = News::where('status', News::STATUS_SUBMITTED)->orderByDesc('priority_level')->orderByDesc('created_at')->take(5)->get();
+        return view('user.contact', compact('news'));
     }
 
     public function bookAppointmentUser() {
@@ -66,7 +72,7 @@ class HomeController extends Controller
         return view('user.getDoctorDetailForUserSite', compact('doctor', 'doctors'));
     }
 
-
+    
 
 
 }

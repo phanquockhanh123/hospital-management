@@ -25,7 +25,9 @@ return [
         'patient' => 'PA',
         'bed' => 'BED',
         'ipd_opd_patient' => 'IPD',
-        'medical_device' => 'DEV'
+        'medical_device' => 'DEV',
+        'medical' => 'MED',
+        'service' => 'SEV'
     ],
     'format' => [
         'datetime' => 'Y-m-d H:i:s',
@@ -39,7 +41,8 @@ return [
     'auth' => [
         'high' => 'auth.role:' . User::ROLE_ADMIN_ROOT,
         'mid' => 'auth.role:' . User::ROLE_DOCTOR,
-        'low' => 'auth.role:' . User::ROLE_RECEPTIONIST
+        'low' => 'auth.role:' . User::ROLE_RECEPTIONIST,
+        'patient' => 'auth.role:' . User::ROLE_PATIENT,
     ],
     'presigned_get_lifetime' => '7 day',
     'default_password' => 'Aa@123456',

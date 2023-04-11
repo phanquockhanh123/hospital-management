@@ -15,14 +15,21 @@ class CreateBookAppointmentsTable extends Migration
     {
         Schema::create('book_appointments', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('appointment_id')->nullable();
             $table->string('fullname');
             $table->string('phone');
             $table->string('email');
             $table->string('reason');
-            $table->date('experted_time');
+            $table->datetime('experted_time');
             $table->tinyInteger('status');
             $table->timestamps();
             $table->softDeletes();
+
+            // declare foreign key
+            $table->foreign('appointment_id', 'FK_book_appointments_1')
+                ->references('id')
+                ->on('appointments')
+                ->onDelete('cascade');
         });
     }
 

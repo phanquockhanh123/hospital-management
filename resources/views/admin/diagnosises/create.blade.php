@@ -54,11 +54,8 @@
 
                                     <div class="form-group col-md-6">
                                         <label for="doctor_id">Bác sĩ:</label>
-                                        <select name="doctor_id" class="form-control input-sm m-bot15">
-                                            <option value="">----Chọn bác sĩ----</option>
-                                            @foreach ($doctors as $doctor)
-                                                <option value="{{ $doctor->id }}">{{ $doctor->name }}</option>
-                                            @endforeach
+                                        <select name="doctor_id" class="form-control input-sm m-bot15 disabled  ">
+                                            <option value="{{ $doctor->id }}">{{ $doctor->name }}</option>
                                         </select>
                                         @error('doctor_id')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -105,10 +102,12 @@
                                     </thead>
                                     <tbody id="tbody" name="tbody">
                                         <tr id="sectionMain" name="sectionMain">
-                                            <td >
-                                                <input type="text" name="diagnosis_name[]" id="diagnosis_name"
-                                                    class="form-control @error('diagnosis_name') is-invalid @enderror"
-                                                    value="{{ old('diagnosis_name') }}">
+                                            <td style="width:200px">
+                                                <select name="service_id[]" class="form-control input-sm m-bot15">
+                                                    @foreach ($services as $service)
+                                                        <option value="{{ $service->id }}">{{ $service->service_name }}</option>
+                                                    @endforeach
+                                                </select>
                                             </td>
                                             <td>
                                                 <input type="text" name="result[]" id="result"

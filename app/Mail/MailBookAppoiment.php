@@ -48,8 +48,8 @@ class MailBookAppoiment extends Mailable
                     'patientCode' => $this->patient->patient_code,
                     'doctorName' => $this->doctor->name,
                     'doctorDepatment' => $this->doctorDepartment->name,
-                    'startDate' => $this->appointment->start_date,
-                    'endDate' => $this->appointment->end_date
+                    'startDate' => $this->appointment->start_time,
+                    'endDate' => $this->appointment->end_time
                 ]);
     }
 }

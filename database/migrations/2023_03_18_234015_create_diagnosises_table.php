@@ -18,6 +18,7 @@ class CreateDiagnosisesTable extends Migration
             $table->unsignedBigInteger('doctor_id');
             $table->unsignedBigInteger('patient_id');
             $table->string('main_diagnosis');
+            $table->string('status');
             $table->string('side_diagnosis')->nullable();
             $table->string('note')->nullable();
             $table->timestamps();

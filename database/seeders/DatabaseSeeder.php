@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
             AppointmentSeeder::class,
             MedicalDeviceSeeder::class,
             NewsSeeder::class,
-            MessageSeeder::class,
+           //MessageSeeder::class,
             //UserSeeder::class
         ]);
     }

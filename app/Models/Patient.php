@@ -76,4 +76,12 @@ class Patient extends BaseModel
             substr($maxIdentifierCode, strlen(config('const.prefix_code.patient'))) + 1
         );
     }
+
+    /**
+     * Get the diagnosises
+     */
+    public function diagnosises()
+    {
+        return $this->hasMany(Diagnosis::class);
+    }
 }

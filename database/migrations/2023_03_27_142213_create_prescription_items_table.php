@@ -16,7 +16,7 @@ class CreatePrescriptionItemsTable extends Migration
         Schema::create('prescription_items', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('prescription_id');
-            $table->string('medical_name');
+            $table->unsignedBigInteger('medical_id');
             $table->string('dosage');
             $table->string('dosage_note')->nullable();
             $table->string('unit');
@@ -24,9 +24,14 @@ class CreatePrescriptionItemsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('prescription_id', 'FK_prescription_items_2')
+            $table->foreign('prescription_id', 'FK_prescription_items_1')
                 ->references('id')
                 ->on('prescriptions')
+                ->onDelete('cascade');
+
+                $table->foreign('medical_id', 'FK_prescription_items_2')
+                ->references('id')
+                ->on('medicals')
                 ->onDelete('cascade');
         });
     }

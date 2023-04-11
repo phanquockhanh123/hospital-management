@@ -30,65 +30,129 @@
                 <div class="col-md-9">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">{{ $new->name }}</h3>
+                            <h3 class="card-title">Hóa đơn</h3>
                         </div>
                         <div class="card-body">
                             <table class="table">
                                 <tbody>
                                     <tr>
-                                        <th>Tiêu đề:</th>
-                                        <td>{{ $new->title }}</td>
+                                        <th>Bệnh nhân:</th>
+                                        <td>{{ $bill->diagnosis->patient->name }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Tác giả:</th>
-                                        <td>{{ $new->author }}</td>
+                                        <th>Bác sĩ:</th>
+                                        <td>{{ $bill->diagnosis->doctor->name }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Avatar:</th>
-                                        <td><img src="{{ asset('./imgNews/'. $new->filename) }}" 
-                                                    style="vertical-align: middle;
-                                                        width: 200px;
-                                                        height: 300px;">
+                                        <th>Bệnh chính:</th>
+                                        <td>{{ $bill->diagnosis->main_diagnosis }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Bệnh phụ:</th>
+                                        <td>{{ $bill->diagnosis->side_diagnosis }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Xét nghiệm:</th>
+                                        <td>
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Mã xét nghiệm</th>
+                                                        <th>Tên xét nghiệm</th>
+                                                        <th>Kết quả</th>
+                                                        <th>Trị số tham chiếu</th>
+                                                        <th>Đơn vị</th>
+                                                        <th>QT/PPXN</th>
+                                                        <th>Lưu ý</th>
+                                                        <th>Giá tiền</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach($diaPre as $val)
+                                                    <tr>
+                                                        <td>{{ $services->where('id', $val['service_id'])->first()->service_code }}</td>
+                                                        <td>{{ $services->where('id', $val['service_id'])->first()->service_name }}</td>
+                                                        <td>{{ $val['result'] }}</td>
+                                                        <td>{{ $val['references_range'] }}</td>
+                                                        <td>{{ $val['unit'] }}</td>
+                                                        <td>{{ $val['method'] }}</td>
+                                                        <td>{{ $val['diagnosis_note'] }}</td>
+                                                        <td>{{ $services->where('id', $val['service_id'])->first()->all_price }}</td>
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
                                         </td>
+                                        
                                     </tr>
                                     <tr>
-                                        <th>Nội dung:</th>
-                                        <td>{{ $new->content }}</td>
+                                        <th>Lưu ý:</th>
+                                        <td>{{ $bill->diagnosis->note }}</td>
+                                    </tr>
+                                    @if (!empty($preItem))
+                                    <tr>
+                                        <th>Thuốc:</th>
+                                        <td>
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Tên thuốc</th>
+                                                        <th>Hàm lượng</th>
+                                                        <th>Lưu ý</th>
+                                                        <th>DVT</th>
+                                                        <th>Số lượng</th>
+                                                        <th>Đơn giá</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach($preItem as $val)
+                                                    <tr>
+                                                        <td>{{ $medicals->where('id', $val['medical_id'])->first()->medical_name }}</td>
+                                                        <td>{{ $val['dosage'] }}</td>
+                                                        <td>{{ $val['dosage_note'] }}</td>
+                                                        <td>{{ $val['unit'] }}</td>
+                                                        <td>{{ $val['amount'] }}</td>
+                                                        <td>{{ $medicals->where('id', $val['medical_id'])->first()->export_price }}</td>
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                        
+                                    </tr>
+                                    @endif
+
+                                    <tr>
+                                        <th>Tổng thanh toán</th>
+                                        <td>{{$bill->total_money}}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>Đã thanh toán</th>
+                                        <td>@if(empty($bill->paid_money)) 0 @endif</td>
                                     </tr>
                                     <tr>
-                                        <th>Mức độ ưu tiên:</th>
-                                        <td>{{ $new->priority_level }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Ngày tạo:</th>
-                                        <td>{{ $new->submitted_date }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Nguồn tin:</th>
-                                        <td>{{ $new->source_news }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Từ khóa:</th>
-                                        <td>{{ $new->source_news }}</td>
+                                        <th>Còn lại</th>
+                                        <td>{{$bill->total_money - $bill->paid_money}}</td>
                                     </tr>
                                 </tbody>
                             </table>
 
                             <div class="d-flex justify-content-between mt-4">
-                                <a href="{{ route('news.index') }}" class="btn btn-secondary">
+                                <a href="{{ route('bills.index') }}" class="btn btn-secondary">
                                     <i class="fas fa-arrow-left"></i> Quay lại
                                 </a>
 
                                 <div>
-                                    <a href="{{ route('news.edit', $new->id) }}" class="btn btn-primary">
+                                    <a href="{{ route('bills.edit', $bill->id) }}" class="btn btn-primary">
                                         <i class="fas fa-edit"></i> Sửa
                                     </a>
-                                    <form action="{{ route('news.destroy', $new->id) }}" method="POST"
+                                    <form action="{{ route('bills.destroy', $bill->id) }}" method="POST"
                                         class="d-inline-block">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger" style="color: red"
-                                            onclick="return confirm('Bạn có chắc chắn muốn xoá bài viết này?')">
+                                        <button type="submit" class="btn btn-danger" style="color: red;"
+                                            onclick="return confirm('Bạn có chắc chắn muốn xoá hóa đơn này?')">
                                             <i class="fas fa-trash"></i> Xoá
                                         </button>
                                     </form>

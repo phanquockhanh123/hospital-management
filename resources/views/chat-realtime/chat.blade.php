@@ -338,7 +338,7 @@
                             @foreach ($users as $user)
                             <li class="user" id="{{ $user->id }}">
                                 @if ($user->unread)
-                                <span class="pending" style="color:red;">{{ $user->unread }}</span>
+                                <span class="pending" style="color:blue;">{{ $user->unread }}</span>
                                 @endif
                                 <div class="d-flex bd-highlight">
                                     <div class="img_cont">
@@ -349,7 +349,7 @@
                                         <span class="online_icon"></span>
                                     </div>
                                     <div class="user_info">
-                                        <span>{{ $user->name }} {{ $user->id == Auth::id() }}</span>
+                                        <span style="font-size: 18px">{{ $user->name }} {{ $user->id == Auth::id() }}</span>
                                         <p>{{ $user->email }}</p>
                                     </div>
                                 </div>
@@ -367,7 +367,7 @@
                     <div class="card-footer">
                         <div class="input-group">
                             <input type="text" v-model="message" name="message" class="form-control type_msg submit"
-                                placeholder="Type your message..." />
+                                placeholder="Nhập tin nhắn của bạn..." />
                         </div>
                     </div>
                 </div>
@@ -424,7 +424,7 @@
                     cache: false,
                     success: function(data) {
                         $('#messages').html(data);
-                        scrollToBottomFunc();
+                        
                     }
                 })
             })
@@ -440,22 +440,18 @@
                         data: datastr,
                         cache: false,
                         success: function(data) {
+                            console.log(data);
                         },
                         error: function(jqXHR, status, err) {
                         },
                         complete: function() {
-                            scrollToBottomFunc();
+                            
                         }
                     })
                 }
             })
         });
-        // make a function to scroll down auto
-        function scrollToBottomFunc() {
-            $('.card-body msg_card_body').animate({
-                scrollTop: $('.card-body msg_card_body').get(0).scrollHeight
-            }, 80);
-        }
+
     </script>
 </body>
 

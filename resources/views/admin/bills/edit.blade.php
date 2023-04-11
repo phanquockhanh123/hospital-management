@@ -30,97 +30,93 @@
                     </div>
                     <div class="col-md-9">
                         <div class="card-header">
-                            <h3 class="card-title">Chỉnh sửa bài viết</h3>
+                            <h3 class="card-title">Chỉnh sửa lịch hẹn</h3>
                         </div>
                         <div class="card-body">
-                            <form action="{{ route('news.update', $new->id) }}" method="POST"
-                                enctype="multipart/form-data">
+                            <form action="{{ route('appointments.update', $appointment->id) }}" method="POST">
                                 @csrf
                                 @method('PUT')
 
                                 <div class="form-group">
-                                    <label for="title">Tiêu đề bài viết:</label>
-                                    <input type="text" name="title" id="title"
-                                        class="form-control @error('title') is-invalid @enderror"
-                                        value="{{ old('title', $new->title) }}">
-                                    @error('title')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="key_words">Từ khóa:</label>
-                                    <input type="text" name="key_words" id="key_words"
-                                        class="form-control @error('key_words') is-invalid @enderror"
-                                        value="{{ old('key_words', $new->key_words) }}">
-                                    @error('key_words')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="image">Ảnh đại diện:</label>
-                                    <img src="{{ asset('./imgNews/'. $new->filename) }}" style="vertical-align: middle;
-                                                        width: 200px;
-                                                        height: 300px;
-                                                        margin-bottom:20px;">
-                                    <input type="file" name="image" id="image"
-                                        class="form-control @error('image') is-invalid @enderror"
-                                        value="{{ old('image', $new->image) }}">
-                                    @error('image')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="content">Nội dung:</label>
-                                    <textarea class="form-control" id="content" name="content"
-                                        rows="5">{{ $new->content }}</textarea>
-                                    @error('content')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="source_news">Nguồn:</label>
-                                    <input type="text" name="source_news" id="source_news"
-                                        class="form-control @error('source_news') is-invalid @enderror"
-                                        value="{{ old('source_news', $new->source_news) }}">
-                                    @error('source_news')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="author">Tác giả:</label>
-                                    <input type="text" name="author" id="author"
-                                        class="form-control @error('author') is-invalid @enderror"
-                                        value="{{ old('author', $new->author) }}">
-                                    @error('author')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="priority_level">Mức độ ưu tiên:</label>
-                                    <select name="priority_level" class="form-control input-sm m-bot15">
-                                        <option value="0" {{ $new->priority_level == 0 ? 'selected' : '' }}>Tin cũ</option>
-                                        <option value="1" {{ $new->priority_level == 1 ? 'selected' : '' }}>Tin thường</option>
-                                        <option value="2" {{ $new->priority_level == 2 ? 'selected' : '' }}>Tin hot</option>
+                                    <label for="patient_id">Bệnh nhân:</label>
+                                    <select name="patient_id" class="form-control input-sm m-bot15">
+                                        <option value="">----Chọn bệnh nhân----</option>
+                                        @foreach ($patients as $patient)
+                                        <option value="{{ $patient->id }}" {{ $appointment->patient_id == $patient->id ?
+                                            'selected' : '' }}>{{ $patient->name }}</option>
+                                        @endforeach
                                     </select>
-                                    @error('priority_level')
+                                    @error('patient_id')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-        
+
+
+                                <div class="form-group">
+                                    <label for="doctor_id">Bác sĩ:</label>
+                                    <select name="doctor_id" class="form-control input-sm m-bot15">
+                                        <option value="">----Chọn bác sĩ----</option>
+                                        @foreach ($doctors as $doctor)
+                                        <option value="{{ $doctor->id }}" {{ $appointment->doctor_id == $doctor->id ?
+                                            'selected' : '' }}>{{ $doctor->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('doctor_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="doctor_department_id">Phòng ban:</label>
+                                    <select name="doctor_department_id" class="form-control input-sm m-bot15">
+                                        <option value="">----Chọn phòng ban----</option>
+                                        @foreach ($doctorDepartments as $doctorDepartment)
+                                        <option value="{{ $doctorDepartment->id }}" {{ $appointment->
+                                            doctor_department_id == $doctorDepartment->id ? 'selected' : '' }}>{{
+                                            $doctorDepartment->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('doctor_department_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="start_time">Thời gian bắt đầu:</label>
+                                    <input type="datetime-local" name="start_time" id="start_time"
+                                        class="form-control @error('start_time') is-invalid @enderror"
+                                        value="{{ old('start_time', $appointment->start_time) }}">
+                                    @error('start_time')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="end_time">Thời gian kết thúc:</label>
+                                    <input type="datetime-local" name="end_time" id="end_time"
+                                        class="form-control @error('end_time') is-invalid @enderror"
+                                        value="{{ old('end_time', $appointment->end_time) }}">
+                                    @error('end_time')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="description">Mô tả:</label>
+                                    <textarea class="form-control" id="description" name="description"
+                                        rows="5">{{  $appointment->description }}</textarea>
+                                    @error('description')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
 
                                 <div class="d-flex justify-content-between mt-4">
-                                    <a href="{{ route('news.index') }}" class="btn btn-secondary">
+                                    <a href="{{ route('appointments.index') }}" class="btn btn-secondary">
                                         <i class="fas fa-arrow-left"></i> Quay lại
                                     </a>
 
                                     <button type="submit" class="btn btn-primary" style="color:blue;">
-                                        <i class="fas fa-save"></i> Chỉnh sửa
+                                        <i class="fas fa-save"></i> Lưu lại
                                     </button>
                                 </div>
                             </form>

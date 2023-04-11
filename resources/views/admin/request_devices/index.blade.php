@@ -67,9 +67,9 @@
                                     @endif</h2>
                                 <!-- /.card-header -->
                                 <div class="card-body">
-                                    @if ($request_devices->isEmpty())
+                                    @if ($request_devices->count() == 0)
                                         <div class="alert alert-danger" role="alert">
-                                            No request_devices found.
+                                            Không tìm thấy đơn yêu cầu thiệt bị nào.
                                         </div>
                                     @else
                                         <table id="example2" class="table table-bordered table-hover">

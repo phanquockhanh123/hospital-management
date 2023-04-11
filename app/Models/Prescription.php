@@ -10,10 +10,7 @@ class Prescription extends BaseModel
      * @var string[]
      */
     protected $fillable = [
-        'patient_id',
-        'doctor_id',
-        'main_disease',
-        'side_disease',
+        'diagnosis_id',
         'note'
     ];
 
@@ -24,26 +21,25 @@ class Prescription extends BaseModel
     ];
 
     /**
-     * Get the patient
+     * Get the diagnosis
      */
-    public function patient()
+    public function diagnosis()
     {
-        return $this->belongsTo(Patient::class);
+        return $this->belongsTo(Diagnosis::class);
     }
-
     /**
-     * Get the doctor
-     */
-    public function doctor()
-    {
-        return $this->belongsTo(Doctor::class);
-    }
-
-     /**
      * Get the prescriptionItems
      */
     public function prescriptionItems()
     {
-        return $this->has(PrescriptionItem::class);
+        return $this->hasMany(PrescriptionItem::class);
+    }
+
+     /**
+     * Get the bill
+     */
+    public function bill()
+    {
+        return $this->hasOne(Bill::class);
     }
 }
