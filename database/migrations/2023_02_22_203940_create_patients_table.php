@@ -17,15 +17,15 @@ class CreatePatientsTable extends Migration
             $table->id();
             $table->string('patient_code')->unique();
             $table->string('name');
-            $table->string('blood_group');
-            $table->string('phone');
+            $table->string('blood_group')->nullable();
+            $table->string('phone')->nullable();
             $table->string('address')->nullable();
             $table->string('profile')->nullable();
             $table->string('filename')->nullable();
             $table->integer('gender')->default(0);
             $table->string('email')->unique();
             $table->date('date_of_birth')->nullable();
-            $table->string('identity_number')->unique();
+            $table->string('identity_number')->unique()->nullable();
             $table->date('identity_card_date')->nullable();
             $table->string('identity_card_place')->nullable();
             $table->timestamps();

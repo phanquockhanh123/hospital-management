@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use App\Models\Patient;
 use App\Models\Attendance;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -13,6 +14,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ZoomController;
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\SalaryController;
 use App\Http\Controllers\MedicalController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ServiceController;
@@ -25,7 +27,6 @@ use App\Http\Controllers\MedicalDeviceController;
 use App\Http\Controllers\RequestDeviceController;
 use App\Http\Controllers\BookAppointmentController;
 use App\Http\Controllers\DoctorDepartmentController;
-use App\Http\Controllers\SalaryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -354,6 +355,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('/user/appointments', 'storeAppointment')->name('user.appointments-store');
     Route::get('/get_doctor_list_for_user_site', 'getDoctorListForUserSite')->name('home.get-doctor-list-for-user-site');
     Route::get('/get_doctor_detail_for_user_site/{doctor}', 'getDoctorDetailForUserSite')->name('home.get-doctor-detail-for-user-site');
+    Route::get('/get_info_patient', 'getInfoPatient')->name('user.get-info-patient');
 });
 
 
@@ -371,7 +373,19 @@ Route::get('/auth/google/callback', function () {
         'google_token' => $googleUser->token,
         'google_refresh_token' => $googleUser->refreshToken,
     ]);
+    // if(!Patient::where('email', $googleUser->email)->first()) {
+    //     Patient::create([
+    //         'name' => $googleUser->name,
+    //         'email' => $googleUser->email,
+    //         'patient_code' => Patient::generateNextCode()
+    //     ]);
+    // }
+    
     Auth::login($user);
-
     return redirect('/');
 });
+
+// Route::get('/auth/google/logout', function () {
+//     Auth::logout(Auth::user()->id);
+//     return redirect('/');
+// })->name('home.logout-with-google');

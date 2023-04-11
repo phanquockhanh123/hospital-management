@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\News;
 use App\Models\User;
 use App\Models\Doctor;
+use App\Models\Patient;
+use App\Models\Service;
 use Illuminate\Http\Request;
 use App\Models\BookAppointment;
 use App\Models\DoctorDepartment;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -72,7 +75,20 @@ class HomeController extends Controller
         return view('user.getDoctorDetailForUserSite', compact('doctor', 'doctors'));
     }
 
-    
+    public function getInfoPatient() {
+        $patient = Patient::where('email', Auth::user()->email)->first();
+        $diagnosises = $patient?->diagnosises;
+        $diagnosisItems = [];
+        foreach ($diagnosises as $diagnosis) {
+            $diagnosisItems = $diagnosis?->diagnosisItems;
+        }
+
+        $diaPre = !empty($diagnosisItems) ? $diagnosisItems->toArray() : [];
+        $services = Service::all();
+        $diagnosisesList = !empty($diagnosises) ? $diagnosises->toArray() : [];
+        $doctors = Doctor::all();
+        return view('user.getInfoPatient', compact('patient', 'diaPre', 'services', 'diagnosisesList', 'doctors'));
+    }
 
 
 }

@@ -125,7 +125,7 @@
                                                         }}</td>
                                                         <td>{{ $val['main_diagnosis'] }}</td>
                                                         <td>{{ $val['side_diagnosis'] }}</td>
-                                                        <td>{{ $val['created_at'] }}</td>
+                                                        <td>{{ date('d/m/Y', strtotime($val['created_at'])) }}</td>
                                                     </tr>
                                                     @endforeach
                                                 </tbody>
@@ -160,7 +160,7 @@
                                                         <td>{{ $val['unit'] }}</td>
                                                         <td>{{ $val['method'] }}</td>
                                                         <td>{{ $val['diagnosis_note'] }}</td>
-                                                        <th>{{ $val['updated_at'] }}</th>
+                                                        <td>{{ date('d/m/Y', strtotime($val['created_at'])) }}</td>
                                                     </tr>
                                                     @endforeach
                                                 </tbody>

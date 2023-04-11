@@ -105,22 +105,25 @@
                                         style="margin-left: 10px;font-size: 16px;padding: 10px 40px;">{{ substr(Auth::user()->name, 0, 5) }}</button></a>
                             </li> --}}
                             <div class="dropdown show">
-                                <a class="btn btn-secondary dropdown-toggle"
-                                    style="background-color: green;
+                                <a class="btn btn-secondary dropdown-toggle" style="background-color: white; border: 0px "
+                                    {{-- style="background-color: #00D9A5;
                               display: inline-block;
                               border-radius: 50%;
                               width: 50px;
                               height: 50px;
-                              text-align: center;"
+                              text-align: center; margin-left:20px;color:black" --}}
                                     href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
                                     aria-haspopup="true" aria-expanded="false">
-                                    {{ substr(Auth::user()->name, 0, 5) }}
+                                    <img src="./imgUser/{{ Auth::user()->filename}}" style="background-color: #00D9A5;border-radius: 50%;vertical-align: middle;
+                                                                    width: 50px;
+                                                                    height: 50px;
+                                                                    border-radius: 50%;">
                                 </a>
-
+                                
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <a class="dropdown-item" href="#">Lịch sử bệnh án</a>
+                                    <a class="dropdown-item">{{ Auth::user()->name }}</a>
+                                    <a class="dropdown-item" href="{{ route('user.get-info-patient') }}">Lịch sử bệnh án</a>
                                     <a class="dropdown-item" href="#">Đăng xuất</a>
-                                    <a class="dropdown-item" href="#">Something else here</a>
                                 </div>
                             </div>
                         @else
