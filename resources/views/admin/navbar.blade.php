@@ -35,7 +35,13 @@
         </form>
       </div>
     </li> --}}
-
+    <style>
+      .fa-comments {
+        font-size: 25px;
+        align-items: center;
+        margin-top: 10px;
+      }
+    </style>
     <!-- Messages Dropdown Menu -->
     <li class="nav-item dropdown">
       <a class="nav-link" data-toggle="dropdown" href="#">

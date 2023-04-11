@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use App\Models\Attendance;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -17,12 +18,14 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\DiagnosisController;
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\PrescriptionController;
 use App\Http\Controllers\MedicalDeviceController;
 use App\Http\Controllers\RequestDeviceController;
 use App\Http\Controllers\BookAppointmentController;
 use App\Http\Controllers\DoctorDepartmentController;
+use App\Http\Controllers\SalaryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -218,7 +221,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::put('/bills/{bill}', 'update')->name('bills.update');
             Route::delete('/bills/{bill}', 'destroy')->name('bills.destroy');
 
-            Route::get('/bills/{bill}', 'payment')->name('bills.payment');
+            Route::get('/bills/{bill}/payment', 'payment')->name('bills.payment');
         });
     });
 
@@ -269,6 +272,21 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/documents/{document}/edit', 'edit')->name('documents.edit');
             Route::put('/documents/{document}', 'update')->name('documents.update');
             Route::delete('/documents/{document}', 'destroy')->name('documents.destroy');
+        });
+    });
+
+    //-----------------------------------Chấm công ----------------------------------------------------------------
+    Route::controller(AttendanceController::class)->group(function () {
+        Route::middleware([config('const.auth.high')])->group(function () {
+            Route::get('/attendances', 'index')->name('attendances.index');
+        });
+    });
+
+    //-----------------------------------Tính lương ----------------------------------------------------------------
+    Route::controller(SalaryController::class)->group(function () {
+        Route::middleware([config('const.auth.high')])->group(function () {
+            Route::get('/salaries', 'index')->name('salaries.index');
+            Route::get('/salaries/{salary}/payment', 'payment')->name('salaries.payment');
         });
     });
 
@@ -353,7 +371,6 @@ Route::get('/auth/google/callback', function () {
         'google_token' => $googleUser->token,
         'google_refresh_token' => $googleUser->refreshToken,
     ]);
-
     Auth::login($user);
 
     return redirect('/');

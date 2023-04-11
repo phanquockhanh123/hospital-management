@@ -106,7 +106,7 @@
                             <li class="nav-item">
                                 <a href="{{ route('medical_devices.index') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Quản lý thiết bị</p>
+                                    <p>Thiết bị y tế</p>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -144,10 +144,18 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{{ route('attendances.index') }}" class="nav-link">
                             <i class="nav-icon far fa-image"></i>
                             <p>
-                                Thanh toán lương
+                                Điểm danh
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('salaries.index') }}" class="nav-link">
+                            <i class="nav-icon far fa-image"></i>
+                            <p>
+                                Lương
                             </p>
                         </a>
                     </li>

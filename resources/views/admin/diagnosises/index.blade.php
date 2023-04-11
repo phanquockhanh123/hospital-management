@@ -115,7 +115,7 @@
                                                                 </button>
                                                                 <a  href="{{ route('diagnosises.create-prescription', $diagnosis->id) }}"
                                                                     class="btn btn-warning @if ($diagnosis->status == 1) disabled @endif">
-                                                                    <i class="fas fa-edit"></i> Tạo đơn thuốc
+                                                                    <i class="fas fa-edit"></i> Đơn thuốc
                                                                 </a>
                                                             </div>
                                                         </td>

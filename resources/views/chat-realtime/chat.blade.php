@@ -338,7 +338,7 @@
                             @foreach ($users as $user)
                             <li class="user" id="{{ $user->id }}">
                                 @if ($user->unread)
-                                <span class="pending" style="color:red;">{{ $user->unread }}</span>
+                                <span class="pending" style="color:blue;">{{ $user->unread }}</span>
                                 @endif
                                 <div class="d-flex bd-highlight">
                                     <div class="img_cont">
@@ -349,7 +349,7 @@
                                         <span class="online_icon"></span>
                                     </div>
                                     <div class="user_info">
-                                        <span>{{ $user->name }} {{ $user->id == Auth::id() }}</span>
+                                        <span style="font-size: 18px">{{ $user->name }} {{ $user->id == Auth::id() }}</span>
                                         <p>{{ $user->email }}</p>
                                     </div>
                                 </div>
