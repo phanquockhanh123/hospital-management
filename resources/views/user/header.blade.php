@@ -114,7 +114,7 @@
                               text-align: center; margin-left:20px;color:black" --}}
                                     href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
                                     aria-haspopup="true" aria-expanded="false">
-                                    <img src="./imgUser/{{ Auth::user()->filename}}" style="background-color: #00D9A5;border-radius: 50%;vertical-align: middle;
+                                    <img src="@if (!empty(Auth::user()->filename)) ./imgUser/{{ Auth::user()->filename}}@else https://cdn.iconscout.com/icon/premium/png-256-thumb/patient-2460481-2128797.png @endif" style="background-color: #00D9A5;border-radius: 50%;vertical-align: middle;
                                                                     width: 50px;
                                                                     height: 50px;
                                                                     border-radius: 50%;">
@@ -122,8 +122,8 @@
                                 
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                     <a class="dropdown-item">{{ Auth::user()->name }}</a>
-                                    <a class="dropdown-item" href="{{ route('user.get-info-patient') }}">Lịch sử bệnh án</a>
-                                    <a class="dropdown-item" href="#">Đăng xuất</a>
+                                    <a class="dropdown-item" href="{{ route('user.get-info-patient') }}">Thông tin bệnh nhân</a>
+                                    <a class="dropdown-item" href="{{ route('home.logout-with-google') }}">Đăng xuất</a>
                                 </div>
                             </div>
                         @else

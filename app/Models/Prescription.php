@@ -27,6 +27,7 @@ class Prescription extends BaseModel
     {
         return $this->belongsTo(Diagnosis::class);
     }
+
     /**
      * Get the prescriptionItems
      */

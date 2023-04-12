@@ -356,6 +356,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/get_doctor_list_for_user_site', 'getDoctorListForUserSite')->name('home.get-doctor-list-for-user-site');
     Route::get('/get_doctor_detail_for_user_site/{doctor}', 'getDoctorDetailForUserSite')->name('home.get-doctor-detail-for-user-site');
     Route::get('/get_info_patient', 'getInfoPatient')->name('user.get-info-patient');
+    Route::put('/patients/{patient}', 'updateUserPatient')->name('home.update-patient');
 });
 
 
@@ -385,7 +386,7 @@ Route::get('/auth/google/callback', function () {
     return redirect('/');
 });
 
-// Route::get('/auth/google/logout', function () {
-//     Auth::logout(Auth::user()->id);
-//     return redirect('/');
-// })->name('home.logout-with-google');
+Route::get('/auth/google/logout', function () {
+    Auth::logout();
+    return redirect('/');
+})->name('home.logout-with-google');

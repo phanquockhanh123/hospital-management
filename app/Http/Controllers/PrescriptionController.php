@@ -92,6 +92,8 @@ class PrescriptionController extends Controller
         }
         $prescriptionItemData = array_map(function ($preItem) use ($prescription) {
             $preItem['prescription_id'] = $prescription->id;
+            $preItem['created_at'] = now();
+            $preItem['updated_at'] = now();
             return $preItem;
         }, $newArrays);
 
@@ -289,6 +291,8 @@ class PrescriptionController extends Controller
         }
         $prescriptionItemData = array_map(function ($preItem) use ($prescription) {
             $preItem['prescription_id'] = $prescription->id;
+            $preItem['created_at'] = now();
+            $preItem['updated_at'] = now();
             return $preItem;
         }, $newArrays);
 

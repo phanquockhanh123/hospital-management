@@ -1,9 +1,7 @@
   @include('user.header')
   @include('user.banner')
-  
   @include('user.about')
   
-
   <script>
       @if (Session::has('success'))
         showToastMessage("Guest added successfully test2")
