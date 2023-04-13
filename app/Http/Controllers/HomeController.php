@@ -39,7 +39,8 @@ class HomeController extends Controller
 
     public function blog()
     {
-        return view('user.blog');
+        $news = News::where('status', News::STATUS_SUBMITTED)->orderByDesc('priority_level')->orderByDesc('created_at')->take(5)->get();
+        return view('user.blog', compact('news'));
     }
 
     public function contact()
@@ -94,7 +95,7 @@ class HomeController extends Controller
         $prescriptionItemList = [];
         $billList = [];
         $diagnosisItems = [];
-        foreach ($diagnosises as $diagnosis) {
+        foreach ($diagnosises ?? [] as $diagnosis) {
             $billList[] = $diagnosis->bill->toArray();
             $prescriptionItemList[] = $diagnosis->prescription?->prescriptionItems;
             foreach ($diagnosis?->diagnosisItems as $diagnosisItem) {
@@ -188,7 +189,7 @@ class HomeController extends Controller
             'identity_number' => $patient->identity_number,
             'identity_card_date' => $patient->identity_card_date,
             'identity_card_place' => $patient->identity_card_place,
-            
+            'filename' => $patient->filename
         ]);
 
         return redirect()->route('user.get-info-patient')

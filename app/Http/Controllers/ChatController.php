@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Auth;
 
 class ChatController extends Controller
 {
+    public function getChatUserUI() {
+        return view('chat-realtime.chat-user-ui'); 
+    }
     public function index() {
         
         // count how many message are unread from the selected user

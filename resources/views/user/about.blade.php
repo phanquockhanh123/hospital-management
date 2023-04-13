@@ -2,7 +2,7 @@
     <div class="page-section py-3 mt-md-n5 custom-index">
         <div class="container">
             <div class="row justify-content-center">
-                <a href="{{ route('chats.index') }}" style="text-decoration: none">
+                <a href="{{ route('chats.chat-user-ui') }}" style="text-decoration: none">
                     <div class="col-md-4 py-3 py-md-0">
                         <div class="card-service wow fadeInUp">
                             <div class="circle-shape bg-secondary text-white">

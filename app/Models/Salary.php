@@ -26,7 +26,6 @@ class Salary extends BaseModel
         'day_worked',
         'salary',
         'allowance',
-        'total_salary',
         'status'
     ];
 

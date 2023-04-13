@@ -41,7 +41,8 @@
                 </div>
             </div>
             <div class="col-sm-4" style="border:1px solid orange">
-                <h3 style="text-align: center;">TIN TỨC MỚI</h3>
+                <h3 style="text-align: center;margin-top:20px;color:#00D9A5">TIN TỨC MỚI</h3>
+                <hr>
                 <div class="list-news">
                     <ul>
                         @foreach ($news as $new)

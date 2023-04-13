@@ -310,8 +310,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     //--------------------------------Chats ------------------------------------------------------------------------------------------------
     Route::controller(ChatController::class)->group(function () {
-        Route::middleware([config('const.auth.low')])->group(function () {
+        Route::middleware([config('const.auth.patient')])->group(function () {
             Route::get('/chats', 'index')->name('chats.index');
+            Route::get('/chats/user', 'getChatUserUI')->name('chats.chat-user-ui');
             Route::get('/message/{id}', 'getMessage')->name('message');
             Route::get('/infor/{id}', 'getInfor')->name('getInfor');
             Route::post('/message', 'sendMessage')->name('sendMessage');
@@ -356,7 +357,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/get_doctor_list_for_user_site', 'getDoctorListForUserSite')->name('home.get-doctor-list-for-user-site');
     Route::get('/get_doctor_detail_for_user_site/{doctor}', 'getDoctorDetailForUserSite')->name('home.get-doctor-detail-for-user-site');
     Route::get('/get_info_patient', 'getInfoPatient')->name('user.get-info-patient');
-    Route::put('/patients/{patient}', 'updateUserPatient')->name('home.update-patient');
+    Route::put('/patients/{patient}/user', 'updateUserPatient')->name('home.update-patient');
 });
 
 
@@ -366,6 +367,13 @@ Route::get('/auth/google', function () {
 
 Route::get('/auth/google/callback', function () {
     $googleUser = Socialite::driver('google')->user();
+    if(!Patient::where('email', $googleUser->email)->first()) {
+        Patient::create([
+            'name' => $googleUser->name,
+            'email' => $googleUser->email,
+            'patient_code' => Patient::generateNextCode()
+        ]);
+    }
     $user = User::updateOrCreate([
         'google_id' => $googleUser->id,
     ], [
@@ -374,14 +382,7 @@ Route::get('/auth/google/callback', function () {
         'google_token' => $googleUser->token,
         'google_refresh_token' => $googleUser->refreshToken,
     ]);
-    // if(!Patient::where('email', $googleUser->email)->first()) {
-    //     Patient::create([
-    //         'name' => $googleUser->name,
-    //         'email' => $googleUser->email,
-    //         'patient_code' => Patient::generateNextCode()
-    //     ]);
-    // }
-    
+   
     Auth::login($user);
     return redirect('/');
 });

@@ -66,7 +66,7 @@
                                                         <td>{{ $salary->user->email }}</td>
                                                         <td>{{ $salary->day_worked }}</td>
                                                         <td>{{ $salary->allowance }}</td>
-                                                        <td>{{ $salary->total_salary }}</td>
+                                                        <td>{{ $salary->allowance + $salary->salary }}</td>
                                                         <td>{{ $salary->created_at }}</td>
                                                         <td>
                                                             <th>

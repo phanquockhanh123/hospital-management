@@ -26,6 +26,57 @@
             background-size: cover;
             position: relative;
         }
+
+        .btnMessage {
+            position: fixed;
+            bottom: 20px;
+            right: 100px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(221, 221, 221, 0.7);
+            visibility: visible;
+            cursor: pointer;
+            transition: all .2s ease;
+            z-index: 1100;
+        }
+
+        #chatModal {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 10px;
+            width: 300px;
+        }
+
+        #chatBody {
+            height: 200px;
+            overflow-y: auto;
+        }
+
+        #chatForm {
+            display: flex;
+            margin-top: 10px;
+        }
+
+        #chatInput {
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+
+        #chatBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+        }
     </style>
 
 </head>
@@ -34,6 +85,22 @@
 
     <!-- Back to top button -->
     <div class="back-to-top"></div>
+
+    
+    <div class="btnMessage" id="chatBtn">
+        <div class="circle-shape bg-secondary text-white">
+            <span class="mai-chatbubbles-outline"></span>
+        </div>
+    </div>
+    <div id="chatModal" style="display:none;">
+        <div id="chatBody">
+            <!-- Chat messages go here -->
+        </div>
+        <form id="chatForm">
+            <input type="text" id="chatInput" placeholder="Type your message here...">
+            <button type="submit">Send</button>
+        </form>
+    </div>
 
     <header>
         <div class="topbar">
@@ -63,14 +130,14 @@
                 <a class="navbar-brand" href="{{ route('home.index') }}"><span class="text-primary">An</span>-Khang</a>
 
                 {{-- <form action="#">
-          <div class="input-group input-navbar">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="icon-addon1"><span class="mai-search"></span></span>
-            </div>
-            <input type="text" class="form-control" placeholder="Enter keyword.." aria-label="Username"
-              aria-describedby="icon-addon1">
-          </div>
-        </form> --}}
+                    <div class="input-group input-navbar">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="icon-addon1"><span class="mai-search"></span></span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Enter keyword.." aria-label="Username"
+                            aria-describedby="icon-addon1">
+                    </div>
+                </form> --}}
 
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupport"
                     aria-controls="navbarSupport" aria-expanded="false" aria-label="Toggle navigation">
@@ -85,7 +152,8 @@
                         <li class="nav-item @if (Request::route()->getName() == 'home.about') active @endif">
                             <a class="nav-link" href="{{ route('home.about') }}">Giới thiệu</a>
                         </li>
-                        <li class="nav-item @if (Request::route()->getName() == 'home.get-doctor-list-for-user-site') active @endif">
+                        <li
+                            class="nav-item @if (Request::route()->getName() == 'home.get-doctor-list-for-user-site') active @endif">
                             <a class="nav-link" href="{{ route('home.get-doctor-list-for-user-site') }}">Bác sĩ</a>
                         </li>
                         <li class="nav-item @if (Request::route()->getName() == 'home.blog') active @endif">
@@ -100,39 +168,40 @@
                         </li>
 
                         @if (isset(Auth::user()->id) && Auth::user()->role == 0)
-                            {{-- <li class="nav-item">
-                                <a href="#"><button class="btn btn-primary" type="submit"
-                                        style="margin-left: 10px;font-size: 16px;padding: 10px 40px;">{{ substr(Auth::user()->name, 0, 5) }}</button></a>
-                            </li> --}}
-                            <div class="dropdown show">
-                                <a class="btn btn-secondary dropdown-toggle" style="background-color: white; border: 0px "
-                                    {{-- style="background-color: #00D9A5;
+                        {{-- <li class="nav-item">
+                            <a href="#"><button class="btn btn-primary" type="submit"
+                                    style="margin-left: 10px;font-size: 16px;padding: 10px 40px;">{{
+                                    substr(Auth::user()->name, 0, 5) }}</button></a>
+                        </li> --}}
+                        <div class="dropdown show">
+                            <a class="btn btn-secondary dropdown-toggle" style="background-color: white; border: 0px "
+                                {{-- style="background-color: #00D9A5;
                               display: inline-block;
                               border-radius: 50%;
                               width: 50px;
                               height: 50px;
-                              text-align: center; margin-left:20px;color:black" --}}
-                                    href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">
-                                    <img src="@if (!empty(Auth::user()->filename)) ./imgUser/{{ Auth::user()->filename}}@else https://cdn.iconscout.com/icon/premium/png-256-thumb/patient-2460481-2128797.png @endif" style="background-color: #00D9A5;border-radius: 50%;vertical-align: middle;
+                              text-align: center; margin-left:20px;color:black" --}} href="#" role="button"
+                                id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="@if (!empty(Auth::user()->filename)) ./imgPatient/{{ Auth::user()->filename}}@else https://cdn.iconscout.com/icon/premium/png-256-thumb/patient-2460481-2128797.png @endif"
+                                    style="background-color: #00D9A5;border-radius: 50%;vertical-align: middle;
                                                                     width: 50px;
                                                                     height: 50px;
                                                                     border-radius: 50%;">
-                                </a>
-                                
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <a class="dropdown-item">{{ Auth::user()->name }}</a>
-                                    <a class="dropdown-item" href="{{ route('user.get-info-patient') }}">Thông tin bệnh nhân</a>
-                                    <a class="dropdown-item" href="{{ route('home.logout-with-google') }}">Đăng xuất</a>
-                                </div>
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item">{{ Auth::user()->name }}</a>
+                                <a class="dropdown-item" href="{{ route('user.get-info-patient') }}">Thông tin bệnh
+                                    nhân</a>
+                                <a class="dropdown-item" href="{{ route('home.logout-with-google') }}">Đăng xuất</a>
                             </div>
+                        </div>
                         @else
-                            <li class="nav-item">
-                                <a href="{{ route('home.login-with-google') }}"><button class="btn btn-primary"
-                                        type="submit"
-                                        style="margin-left: 10px;font-size: 16px;padding: 10px 40px;">Đăng
-                                        nhập</button></a>
-                            </li>
+                        <li class="nav-item">
+                            <a href="{{ route('home.login-with-google') }}"><button class="btn btn-primary"
+                                    type="submit" style="margin-left: 10px;font-size: 16px;padding: 10px 40px;">Đăng
+                                    nhập</button></a>
+                        </li>
                         @endif
 
 
@@ -141,3 +210,37 @@
             </div> <!-- .container -->
         </nav>
     </header>
+    <script>
+        var chatBtn = document.getElementById('chatBtn');
+var chatModal = document.getElementById('chatModal');
+var chatForm = document.getElementById('chatForm');
+var chatInput = document.getElementById('chatInput');
+var chatBody = document.getElementById('chatBody');
+
+chatBtn.addEventListener('click', function() {
+  chatModal.style.display = 'block';
+  chatInput.focus();
+});
+
+chatForm.addEventListener('submit', function(e) {
+  e.preventDefault();
+  var message = chatInput.value.trim();
+  if (message !== '') {
+    var messageElement = document.createElement('div');
+    messageElement.textContent = message;
+    chatBody.appendChild(messageElement);
+    chatInput.value = '';
+    chatInput.focus();
+  }
+});
+
+window.addEventListener('click', function(e) {
+  if (e.target == chatModal) {
+    chatModal.style.display = 'none';
+  }
+
+chatBtn.addEventListener('click', () => {
+  chatModal.style.display = 'none';
+});
+});
+    </script>

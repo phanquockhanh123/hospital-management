@@ -9,7 +9,7 @@
                 <div class="card card-primary card-outline">
                     <div class="card-body box-profile">
                         <div class="text-center">
-                            <img src="@if (!empty(Auth::user()->filename)) ./imgUser/{{ Auth::user()->filename}}@else https://cdn.iconscout.com/icon/premium/png-256-thumb/patient-2460481-2128797.png @endif" style="background-color: #00D9A5;border-radius: 50%;vertical-align: middle;
+                            <img src="@if (!empty(Auth::user()->filename)) ./imgPatient/{{ Auth::user()->filename}}@else https://cdn.iconscout.com/icon/premium/png-256-thumb/patient-2460481-2128797.png @endif" style="background-color: #00D9A5;border-radius: 50%;vertical-align: middle;
                                                                     width: 100px;
                                                                     height: 100px;
                                                                     border-radius: 50%;">
@@ -153,6 +153,8 @@
                     <div class="card-body">
                         <div class="tab-content">
                             <div class="tab-pane" id="activity">
+                                
+                                
                                 <table class="table">
                                     @if(!empty($diagnosisesList))
                                     <tr>
@@ -186,11 +188,14 @@
                                         </td>
                                     </tr>
                                     @else
-                                    Không có chẩn đoán nào !
+                                        Không có chẩn đoán nào !
                                     @endif
                                 </table>
+                                
+
+                                @if(!empty($diaPre))
                                 <table class="table">
-                                    @if(!empty($diaPre))
+                                   
                                     <tr>
                                         <th>Lịch sử bệnh án:</th>
                                         <td>
@@ -228,10 +233,11 @@
                                             </table>
                                         </td>
                                     </tr>
-                                    @else
-                                    Không có xét nghiệm nào nào !
-                                    @endif
+                                    
                                 </table>
+                                @else
+                                    Không có xét nghiệm nào !
+                                @endif
                             </div>
                             <!-- /.tab-pane -->
                             <div class="tab-pane" id="timeline">
@@ -287,6 +293,8 @@
                             <!-- /.tab-pane -->
 
                             <div class="tab-pane" id="settings">
+                                
+                                @if(!empty($billList))
                                 <table class="table">
                                     <thead>
                                         <tr>
@@ -321,6 +329,9 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                                @else
+                                    Không có hóa đơn nào !
+                                    @endif
                             </div>
 
                             <div class=" @if (session('success')) active @endif tab-pane" id="profile">
