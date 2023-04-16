@@ -54,6 +54,12 @@
                 @endif
                 @if (Auth::user()->role == 2)
                 <li class="nav-item">
+                    <a href="{{ route('request_devices.index') }}" class="nav-link">
+                        <i class="nav-icon far fa-image"></i>
+                        <p>Yêu cầu thiết bị</p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="{{route('prescriptions.index')}}" class="nav-link">
                         <i class="nav-icon far fa-image"></i>
                         <p>Đơn thuốc</p>
@@ -70,6 +76,7 @@
                     </a>
                 </li>
                 @endif
+                
                 @if (Auth::user()->role == 3)
                     
                     <li class="nav-item">
@@ -109,12 +116,7 @@
                                     <p>Thiết bị y tế</p>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="{{ route('request_devices.index') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Đơn yêu cầu thiết bị</p>
-                                </a>
-                            </li>
+                            
                             <li class="nav-item">
                                 <a href="{{ route('medicals.index') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>

@@ -13,7 +13,7 @@
 
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="admin2/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60"
+            <img class="animation__shake" src="https://media.licdn.com/dms/image/C4D03AQGB9X-aVyccoQ/profile-displayphoto-shrink_800_800/0/1517596403369?e=2147483647&v=beta&t=jJ0WBwNT7Uq1bc4KRRBHJM_cOmv3Yt544vbvRh3VwYE" alt="AdminLTELogo" height="60"
                 width="60">
         </div>
 
@@ -42,7 +42,7 @@
                                 </div>
                             </form>
                         </div>
-                        @if(Auth::user()->role == 1)
+                        @if(Auth::user()->role == 2)
                         <div class="col-sm-3" style="float: right;">
                             <a href="{{ route('request_devices.create') }}" class="btn btn-success">
                                 <i class="fas fa-plus"></i> Tạo mới
@@ -106,7 +106,7 @@
                                                             @endif
                                                         </td>
                                                         <td>{{ $request_device->description }}</td>
-                                                        @if(Auth::user()->role == 1)
+                                                        @if(Auth::user()->role == 2)
                                                         <td>
                                                             <div class="btn-group">
                                                                 <a href="{{ route('request_devices.edit', $request_device->id) }}"
