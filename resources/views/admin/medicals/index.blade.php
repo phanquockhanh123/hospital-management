@@ -78,7 +78,7 @@
                                                     <th>Đơn vị</th>
                                                     <th>Giá bán</th>
                                                     <th>Tồn kho</th>
-                                                    <th></th>
+                                                    <th>Hành động</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -94,17 +94,17 @@
                                                         <td>{{ $medical->quantity }}</td>
                                                         <td>
                                                             <div class="btn-group">
-                                                                <a href="{{ route('medicals.edit', $medical->id) }}"
-                                                                    class="btn btn-primary">
-                                                                    <i class="fas fa-edit"></i> Sửa
+                                                                <a href="{{ route('medicals.show', $medical) }}" style="margin-right: 10px;color:blue;font-size:22px">
+                                                                  <i class="fas fa-eye"></i>
                                                                 </a>
-                                                                <button type="button" class="btn btn-danger"
-                                                                    data-toggle="modal"
-                                                                    data-target="#deleteModal{{ $medical->id }}"
-                                                                    style="color: red;">
-                                                                    <i class="fas fa-trash-alt"></i> Xóa
+                                                                <a href="{{ route('medicals.edit', $medical->id) }}" style="margin-right: 10px;color:green;font-size:22px">
+                                                                  <i class="fas fa-edit"></i>
+                                                                </a>
+                                                                <button type="button" data-toggle="modal"
+                                                                  data-target="#deleteModal{{ $medical->id }}" style="color: red;font-size:22px">
+                                                                  <i class="fas fa-trash-alt"></i>
                                                                 </button>
-                                                            </div>
+                                                              </div>
                                                         </td>
 
                                                         <!-- Modal -->
@@ -125,7 +125,7 @@
                                                                     </div>
                                                                     <div class="modal-body">
                                                                         Bạn có chắc chắn muốn xóa thuốc
-                                                                        "{{ $medical->name }}" không? Hành động này
+                                                                        "{{ $medical->medical_name }}" không? Hành động này
                                                                         không
                                                                         thể hoàn tác!
                                                                     </div>
@@ -139,7 +139,7 @@
                                                                             @method('DELETE')
                                                                             <button type="submit" style="color:red;"
                                                                                 class="btn btn-danger"
-                                                                                onclick="return confirm('Bạn có chắc chắn muốn xóa thiết bị y tế này không?')">Xóa</button>
+                                                                                onclick="return confirm('Bạn có chắc chắn muốn xóa thuốc này không?')">Xóa</button>
                                                                         </form>
                                                                     </div>
                                                                 </div>

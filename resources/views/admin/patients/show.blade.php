@@ -30,7 +30,7 @@
                 <div class="col-md-9">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title"> <span class="text-primary">BỆNH NHÂN :  {{ $patient->name }}</span></h3>
+                            <h3 class="card-title">BỆNH NHÂN : <span class="text-primary">  {{ $patient->name }}</span></h3>
                         </div>
                         <div class="card-body">
                             <table class="table">
@@ -56,10 +56,10 @@
                                         <th>Giới tính:</th>
                                         <td>
                                             @if($patient->gender == 0)
-                                            <span class="text-primary">Nam</span>
+                                            <span>Nam</span>
                                             @endif
                                             @if($patient->gender == 1)
-                                            <span class="text-primary">Nữ</span>
+                                            <span>Nữ</span>
                                             @endif
                                         </td>
                                     </tr>
@@ -67,16 +67,16 @@
                                         <th>Nhóm máu:</th>
                                         <td>
                                             @if($patient->blood_group == 0)
-                                            <span class="text-primary">Group O</span>
+                                            <span>Group O</span>
                                             @endif
                                             @if($patient->blood_group == 1)
-                                            <span class="text-primary">Group A</span>
+                                            <span>Group A</span>
                                             @endif
                                             @if($patient->blood_group == 2)
-                                            <span class="text-primary">Group B</span>
+                                            <span>Group B</span>
                                             @endif
                                             @if($patient->blood_group == 3)
-                                            <span class="text-primary">Group AB</span>
+                                            <span>Group AB</span>
                                             @endif
                                         </td>
                                     </tr>

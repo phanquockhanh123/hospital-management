@@ -30,7 +30,7 @@
                 <div class="col-md-9">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title"> <span class="text-primary">NGƯỜI DÙNG :  {{ $user->name }}</span></h3>
+                            <h3 class="card-title">Người dùng :   <span class="text-primary">{{ $user->name }}</span></h3>
                         </div>
                         <div class="card-body">
                             <table class="table">
@@ -52,10 +52,10 @@
                                         <th>Giới tính:</th>
                                         <td>
                                             @if($user->gender == 0)
-                                            <span class="text-primary">Nam</span>
+                                            <span>Nam</span>
                                             @endif
                                             @if($user->gender == 1)
-                                            <span class="text-primary">Nữ</span>
+                                            <span>Nữ</span>
                                             @endif
                                         </td>
                                     </tr>

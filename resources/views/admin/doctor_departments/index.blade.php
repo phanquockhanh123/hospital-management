@@ -78,7 +78,7 @@
                                                     <th>Tên phòng ban</th>
                                                     <th>Trạng thái</th>
                                                     <th>Mô tả</th>
-                                                    <th></th>
+                                                    <th>Hành động</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -98,17 +98,17 @@
                                                         <td>{{ $doctorDepartment->description }}</td>
                                                         <td>
                                                             <div class="btn-group">
-                                                                <a href="{{ route('doctor_departments.edit', $doctorDepartment->id) }}"
-                                                                    class="btn btn-primary">
-                                                                    <i class="fas fa-edit"></i> Sửa
+                                                                <a href="{{ route('doctor_departments.show', $doctorDepartment) }}" style="margin-right: 10px;color:blue;font-size:22px">
+                                                                  <i class="fas fa-eye"></i>
                                                                 </a>
-                                                                <button type="button" class="btn btn-danger"
-                                                                    data-toggle="modal"
-                                                                    data-target="#deleteModal{{ $doctorDepartment->id }}"
-                                                                    style="color: red;">
-                                                                    <i class="fas fa-trash-alt"></i> Xóa
+                                                                <a href="{{ route('doctor_departments.edit', $doctorDepartment->id) }}" style="margin-right: 10px;color:green;font-size:22px">
+                                                                  <i class="fas fa-edit"></i>
+                                                                </a>
+                                                                <button type="button" data-toggle="modal"
+                                                                  data-target="#deleteModal{{ $doctorDepartment->id }}" style="color: red;font-size:22px">
+                                                                  <i class="fas fa-trash-alt"></i>
                                                                 </button>
-                                                            </div>
+                                                              </div>
                                                         </td>
 
                                                         <!-- Modal -->

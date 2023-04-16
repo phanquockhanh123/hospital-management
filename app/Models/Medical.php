@@ -49,12 +49,12 @@ class Medical extends BaseModel
         $maxIdentifierCode = self::withTrashed()->max('medical_code');
         if (empty($maxIdentifierCode)) {
             // Table bed no record
-            return sprintf('%s00001', config('const.prefix_code.medical_code'));
+            return sprintf('%s00001', config('const.prefix_code.medical'));
         }
         return sprintf(
             "%s%'.05s",
-            config('const.prefix_code.medical_code'),
-            substr($maxIdentifierCode, strlen(config('const.prefix_code.medical_code'))) + 1
+            config('const.prefix_code.medical'),
+            substr($maxIdentifierCode, strlen(config('const.prefix_code.medical'))) + 1
         );
     }
 

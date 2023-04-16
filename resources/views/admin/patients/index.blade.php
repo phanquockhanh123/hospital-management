@@ -81,8 +81,7 @@
                         <th style="width:300px">Địa chỉ</th>
                         <th>Ngày tạo</th>
                         <th>Nhóm máu</th>
-                        <th>Hồ sơ</th>
-                        <th></th>
+                        <th>Hành động</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -99,9 +98,9 @@
                         <td>{{ $patient->name }}</td>
                         <td>
                           @if($patient->gender == 1)
-                          <span class="text-primary">Nam</span>
+                          <span>Nam</span>
                           @else
-                          <span class="text-primary">Nữ</span>
+                          <span>Nữ</span>
                           @endif
                         </td>
                         <td>{{ $patient->phone }}</td>
@@ -109,32 +108,29 @@
                         <td>{{ $patient->created_at->format('d/m/Y') }}</td>
                         <td>
                           @if($patient->blood_group == 0)
-                          <span class="text-primary">Group O</span>
+                          <span>Group O</span>
                           @endif
                           @if($patient->blood_group == 1)
-                          <span class="text-primary">Group A</span>
+                          <span>Group A</span>
                           @endif
                           @if($patient->blood_group == 2)
-                          <span class="text-primary">Group B</span>
+                          <span>Group B</span>
                           @endif
                           @if($patient->blood_group == 3)
-                          <span class="text-primary">Group AB</span>
+                          <span>Group AB</span>
                           @endif
-                        </td>
-                        <td>
-                          <a href="{{ route('patients.show', $patient) }}" class="btn btn-warning">
-                            <i class="bi bi-file-earmark-text-fill"></i> Hồ sơ
-                          </a>
                         </td>
                         <td>
                           <div class="btn-group">
-                            
-                            <a href="{{ route('patients.edit', $patient->id) }}" class="btn btn-primary">
-                              <i class="fas fa-edit"></i> Sửa
+                            <a href="{{ route('patients.show', $patient) }}" style="margin-right: 10px;color:blue;font-size:22px">
+                              <i class="fas fa-eye"></i>
                             </a>
-                            <button type="button" class="btn btn-danger" data-toggle="modal"
-                              data-target="#deleteModal{{ $patient->id }}" style="color: red;">
-                              <i class="fas fa-trash-alt"></i> Xóa
+                            <a href="{{ route('patients.edit', $patient->id) }}" style="margin-right: 10px;color:green;font-size:22px">
+                              <i class="fas fa-edit"></i>
+                            </a>
+                            <button type="button" data-toggle="modal"
+                              data-target="#deleteModal{{ $patient->id }}" style="color: red;font-size:22px">
+                              <i class="fas fa-trash-alt"></i>
                             </button>
                           </div>
                         </td>

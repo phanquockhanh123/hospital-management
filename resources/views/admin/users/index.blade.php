@@ -113,12 +113,15 @@
                         </td>
                         <td>
                           <div class="btn-group">
-                            <a href="{{ route('users.edit', $user->id) }}" class="btn btn-primary">
-                              <i class="fas fa-edit"></i> Sửa
+                            <a href="{{ route('users.show', $user) }}" style="margin-right: 10px;color:blue;font-size:22px">
+                              <i class="fas fa-eye"></i>
                             </a>
-                            <button type="button" class="btn btn-danger" data-toggle="modal"
-                              data-target="#deleteModal{{ $user->id }}" style="color: red;">
-                              <i class="fas fa-trash-alt"></i> Xóa
+                            <a href="{{ route('users.edit', $user->id) }}" style="margin-right: 10px;color:green;font-size:22px">
+                              <i class="fas fa-edit"></i>
+                            </a>
+                            <button type="button" data-toggle="modal"
+                              data-target="#deleteModal{{ $user->id }}" style="color: red;font-size:22px">
+                              <i class="fas fa-trash-alt"></i>
                             </button>
                           </div>
                         </td>

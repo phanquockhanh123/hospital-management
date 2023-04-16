@@ -30,7 +30,7 @@
                 <div class="col-md-9">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">{{ $doctor->name }}</h3>
+                            <h3 class="card-title">Bác sĩ: <span class="text text-primary">{{ $doctor->name }}</span></h3>
                         </div>
                         <div class="card-body">
                             <table class="table">
@@ -48,10 +48,10 @@
                                         <th>Giới tính:</th>
                                         <td>
                                             @if($doctor->gender == 0)
-                                            <span class="text-primary">Nam</span>
+                                            <span>Nam</span>
                                             @endif
                                             @if($doctor->gender == 1)
-                                            <span class="text-primary">Nữ</span>
+                                            <span>Nữ</span>
                                             @endif
                                         </td>
                                     </tr>
@@ -67,16 +67,16 @@
                                         <th>Nhóm máu:</th>
                                         <td>
                                             @if($doctor->blood_group == 0)
-                                            <span class="text-primary">Group O</span>
+                                            <span>Group O</span>
                                             @endif
                                             @if($doctor->blood_group == 1)
-                                            <span class="text-primary">Group A</span>
+                                            <span>Group A</span>
                                             @endif
                                             @if($doctor->blood_group == 2)
-                                            <span class="text-primary">Group B</span>
+                                            <span>Group B</span>
                                             @endif
                                             @if($doctor->blood_group == 3)
-                                            <span class="text-primary">Group AB</span>
+                                            <span>Group AB</span>
                                             @endif
                                         </td>
                                     </tr>
@@ -95,7 +95,7 @@
                                     </tr>
                                     <tr>
                                         <th>Ngày sinh:</th>
-                                        <td>{{ $doctor->date_of_birth->format(config('const.format.date')) }}</td>
+                                        <td>{{ $doctor->date_of_birth?->format(config('const.format.date')) }}</td>
                                     </tr>
                                     <tr>
                                         <th>Số CMT/CCCD:</th>
@@ -103,7 +103,7 @@
                                     </tr>
                                     <tr>
                                         <th>Ngày cấp:</th>
-                                        <td>{{ $doctor->identity_card_date }}</td>
+                                        <td>{{ $doctor->identity_card_date?->format(config('const.format.date')) }}</td>
                                     </tr>
                                     <tr>
                                         <th>Nơi cấp:</th>
@@ -117,22 +117,22 @@
                                         <th>Trình độ  học vấn:</th>
                                         <td>
                                             @if($doctor->academic_level == 0)
-                                            <span class="text-primary">Cao đẳng</span>
+                                            <span>Cao đẳng</span>
                                             @endif
                                             @if($doctor->academic_level == 1)
-                                            <span class="text-primary">Đại học</span>
+                                            <span>Đại học</span>
                                             @endif
                                             @if($doctor->academic_level == 2)
-                                            <span class="text-primary">Thạc sỹ</span>
+                                            <span>Thạc sỹ</span>
                                             @endif
                                             @if($doctor->academic_level == 3)
-                                            <span class="text-primary">Giáo sư</span>
+                                            <span>Giáo sư</span>
                                             @endif
                                         </td>
                                     </tr>
                                     <tr>
                                         <th>Ngày bắt đầu vào làm việc:</th>
-                                        <td>{{ $doctor->start_work_date }}</td>
+                                        <td>{{ $doctor->start_work_date?->format(config('const.format.date')) }}</td>
                                     </tr>
                                     <tr>
                                         <th>Chuyên ngành:</th>

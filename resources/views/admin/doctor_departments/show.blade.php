@@ -63,7 +63,7 @@
                                         class="d-inline-block">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger"
+                                        <button type="submit" class="btn btn-danger" style="color: red"
                                             onclick="return confirm('Bạn có chắc chắn muốn xoá phòng ban này?')">
                                             <i class="fas fa-trash"></i> Xoá
                                         </button>

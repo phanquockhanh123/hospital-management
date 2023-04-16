@@ -79,8 +79,8 @@
                                                     <th>Phòng ban</th>
                                                     <th>Bắt đầu</th>
                                                     <th>Kết thúc</th>
-                                                    <th>Trạng thái</th>
-                                                    <th>Sửa/Xóa</th>
+                                                    <th style="min-width:100px">Trạng thái</th>
+                                                    <th>Hành động</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -109,17 +109,17 @@
                                                         </td>
                                                         <td>
                                                             <div class="btn-group">
-                                                                <a href="{{ route('appointments.edit', $appointment->id) }}"
-                                                                    class="btn btn-primary">
-                                                                    <i class="fas fa-edit"></i> Sửa
+                                                                <a href="{{ route('appointments.show', $appointment) }}" style="margin-right: 10px;color:blue;font-size:22px">
+                                                                  <i class="fas fa-eye"></i>
                                                                 </a>
-                                                                <button type="button" class="btn btn-danger"
-                                                                    data-toggle="modal"
-                                                                    data-target="#deleteModal{{ $appointment->id }}"
-                                                                    style="color: red;">
-                                                                    <i class="fas fa-trash-alt"></i> Xóa
+                                                                <a href="{{ route('appointments.edit', $appointment->id) }}" style="margin-right: 10px;color:green;font-size:22px">
+                                                                  <i class="fas fa-edit"></i>
+                                                                </a>
+                                                                <button type="button" data-toggle="modal"
+                                                                  data-target="#deleteModal{{ $appointment->id }}" style="color: red;font-size:22px">
+                                                                  <i class="fas fa-trash-alt"></i>
                                                                 </button>
-                                                            </div>
+                                                              </div>
                                                         </td>
 
                                                         <!-- Modal -->

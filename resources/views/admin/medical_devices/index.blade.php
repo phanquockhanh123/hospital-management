@@ -80,7 +80,7 @@
                                                     <th>Trạng thái</th>
                                                     <th>Số lượng còn</th>
                                                     <th>Hết hạn kiểm định</th>
-                                                    <th></th>
+                                                    <th>Hành động</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -105,16 +105,17 @@
                                                         <td>{{ $medical_device->expired_date->format(config('const.format.date')) }}</td>
                                                         <td>
                                                             <div class="btn-group">
-                                                                <a href="{{ route('medical_devices.edit', $medical_device->id) }}"
-                                                                    class="btn btn-primary">
-                                                                    <i class="fas fa-edit"></i> Sửa
+                                                                <a href="{{ route('medical_devices.show', $medical_device) }}" style="margin-right: 10px;color:blue;font-size:22px">
+                                                                  <i class="fas fa-eye"></i>
                                                                 </a>
-                                                                <button type="button" class="btn btn-danger"
-                                                                    data-toggle="modal"
-                                                                    data-target="#deleteModal{{ $medical_device->id }}"
-                                                                    style="color: red;">
-                                                                    <i class="fas fa-trash-alt"></i> Xóa
+                                                                <a href="{{ route('medical_devices.edit', $medical_device->id) }}" style="margin-right: 10px;color:green;font-size:22px">
+                                                                  <i class="fas fa-edit"></i>
+                                                                </a>
+                                                                <button type="button" data-toggle="modal"
+                                                                  data-target="#deleteModal{{ $medical_device->id }}" style="color: red;font-size:22px">
+                                                                  <i class="fas fa-trash-alt"></i>
                                                                 </button>
+                                                              </div>
                                                             </div>
                                                         </td>
 

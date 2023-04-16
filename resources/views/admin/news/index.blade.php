@@ -76,10 +76,10 @@
                                                     <th>Tiêu đề</th>
                                                     <th>Từ khóa</th>
                                                     <th>Nội dung</th>
-                                                    <th>Ngày đăng</th>
+                                                    <th style="min-width:100px;">Ngày đăng</th>
                                                     <th>Nguồn</th>
                                                     <th>Tác giả</th>
-                                                    <th></th>
+                                                    <th>Hành động</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -90,22 +90,22 @@
                                                         </td>
                                                         <td>{{ $new->key_words }}</td>
                                                         <td>{{ $new->content }}</td>
-                                                        <td>{{ $new->created_at->format(config('const.format.date')) }}</td>
+                                                        <td>{{ $new->created_at?->format(config('const.format.date')) }}</td>
                                                         <td>{{ $new->source_news }}</td>
                                                         <td>{{ $new->author }}</td>
                                                         <td>
                                                             <div class="btn-group">
-                                                                <a href="{{ route('news.edit', $new->id) }}"
-                                                                    class="btn btn-primary">
-                                                                    <i class="fas fa-edit"></i> Sửa
+                                                                <a href="{{ route('news.show', $new) }}" style="margin-right: 10px;color:blue;font-size:22px">
+                                                                  <i class="fas fa-eye"></i>
                                                                 </a>
-                                                                <button type="button" class="btn btn-danger"
-                                                                    data-toggle="modal"
-                                                                    data-target="#deleteModal{{ $new->id }}"
-                                                                    style="color: red;">
-                                                                    <i class="fas fa-trash-alt"></i> Xóa
+                                                                <a href="{{ route('news.edit', $new->id) }}" style="margin-right: 10px;color:green;font-size:22px">
+                                                                  <i class="fas fa-edit"></i>
+                                                                </a>
+                                                                <button type="button" data-toggle="modal"
+                                                                  data-target="#deleteModal{{ $new->id }}" style="color: red;font-size:22px">
+                                                                  <i class="fas fa-trash-alt"></i>
                                                                 </button>
-                                                            </div>
+                                                              </div>
                                                         </td>
 
                                                         <!-- Modal -->

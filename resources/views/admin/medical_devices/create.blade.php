@@ -37,7 +37,7 @@
                                 @csrf
 
                                 <div class="form-group">
-                                    <label for="name">Tên thiết bị y tế:</label>
+                                <label for="name">Tên thiết bị y tế:</label>
                                     <input type="text" name="name" id="name"
                                         class="form-control @error('name') is-invalid @enderror"
                                         value="{{ old('name') }}">

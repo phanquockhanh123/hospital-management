@@ -80,7 +80,8 @@
                                                     <th>Chẩn đoán bệnh phụ</th>
                                                     <th>Trạng thái</th>
                                                     <th>PDF</th>
-                                                    <th>Sửa/Xóa</th>
+                                                    <th>Tạo đơn thuốc</th>
+                                                    <th>Hành động</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -102,22 +103,24 @@
                                                         </td>
                                                         <td><button class="btn btn-primary"><a href="{{ route('diagnosises.pdf', $diagnosis->id) }}">In</a></button></td>
                                                         <td>
+                                                            <a  href="{{ route('diagnosises.create-prescription', $diagnosis->id) }}"
+                                                                class="btn btn-warning @if ($diagnosis->status == 1) disabled @endif">
+                                                                <i class="fas fa-edit"></i> Đơn thuốc
+                                                            </a>
+                                                        </td>
+                                                        <td>
                                                             <div class="btn-group">
-                                                                <a href="{{ route('diagnosises.edit', $diagnosis->id) }}"
-                                                                    class="btn btn-primary">
-                                                                    <i class="fas fa-edit"></i> Sửa
+                                                                <a href="{{ route('diagnosises.show', $diagnosis) }}" style="margin-right: 10px;color:blue;font-size:22px">
+                                                                  <i class="fas fa-eye"></i>
                                                                 </a>
-                                                                <button type="button" class="btn btn-danger"
-                                                                    data-toggle="modal"
-                                                                    data-target="#deleteModal{{ $diagnosis->id }}"
-                                                                    style="color: red;">
-                                                                    <i class="fas fa-trash-alt"></i> Xóa
+                                                                <a href="{{ route('diagnosises.edit', $diagnosis->id) }}" style="margin-right: 10px;color:green;font-size:22px">
+                                                                  <i class="fas fa-edit"></i>
+                                                                </a>
+                                                                <button type="button" data-toggle="modal"
+                                                                  data-target="#deleteModal{{ $diagnosis->id }}" style="color: red;font-size:22px">
+                                                                  <i class="fas fa-trash-alt"></i>
                                                                 </button>
-                                                                <a  href="{{ route('diagnosises.create-prescription', $diagnosis->id) }}"
-                                                                    class="btn btn-warning @if ($diagnosis->status == 1) disabled @endif">
-                                                                    <i class="fas fa-edit"></i> Đơn thuốc
-                                                                </a>
-                                                            </div>
+                                                              </div>
                                                         </td>
 
                                                         <!-- Modal -->

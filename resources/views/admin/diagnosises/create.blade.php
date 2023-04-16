@@ -84,8 +84,7 @@
                                 </div>
                                 <div class="card-header" style="display: flex!important">
                                     <label style="font-size: 20px;">Xét nghiệm</label>
-                                    <button style="margin-left: 80%;" class="btn btn-primary" id="btAddMedicine">Thêm
-                                        xét nghiệm</button>
+                                    <button style="margin-left: 80%;" class="btn btn-primary" id="btAddMedicine">Thêm XN</button>
                                 </div>
 
                                 <table class="table" id="table">

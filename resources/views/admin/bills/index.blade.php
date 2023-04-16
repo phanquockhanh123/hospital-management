@@ -113,20 +113,17 @@
                                                 @if(Auth::user()->role == 2)
                                                 <td>
                                                     <div class="btn-group">
-                                                        <a href="{{ route('bills.show', $bill->id) }}"
-                                                            class="btn btn-warning">
-                                                            <i class="fas fa-edit"></i> Xem chi tiết
+                                                        <a href="{{ route('bills.show', $bill) }}" style="margin-right: 10px;color:blue;font-size:22px">
+                                                          <i class="fas fa-eye"></i>
                                                         </a>
-                                                        <a href="{{ route('bills.edit', $bill->id) }}"
-                                                            class="btn btn-primary">
-                                                            <i class="fas fa-edit"></i> Sửa
+                                                        <a href="{{ route('bills.edit', $bill->id) }}" style="margin-right: 10px;color:green;font-size:22px">
+                                                          <i class="fas fa-edit"></i>
                                                         </a>
-                                                        <button type="button" class="btn btn-danger" data-toggle="modal"
-                                                            data-target="#deleteModal{{ $bill->id }}"
-                                                            style="color: red;">
-                                                            <i class="fas fa-trash-alt"></i> Xóa
+                                                        <button type="button" data-toggle="modal"
+                                                          data-target="#deleteModal{{ $bill->id }}" style="color: red;font-size:22px">
+                                                          <i class="fas fa-trash-alt"></i>
                                                         </button>
-                                                    </div>
+                                                      </div>
                                                 </td>
 
                                                 @endif

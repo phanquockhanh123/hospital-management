@@ -63,8 +63,8 @@
                                 <label for="patient_id">Chọn bệnh nhân:</label>
                                 <select name="patient_id" id="patient_id" class="form-control input-sm m-bot15">
                                     <option value="">----Chọn bệnh nhân----</option>
-                                    @foreach ($doctors as $doctor)
-                                    <option value="{{ $doctor->id }}">{{ $doctor->name }}</option>
+                                    @foreach ($patients as $patient)
+                                    <option value="{{ $patient->id }}">{{ $patient->name }}</option>
                                     @endforeach
                                 </select>
                                 @error('patient_id')
