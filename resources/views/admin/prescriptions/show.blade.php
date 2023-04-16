@@ -37,11 +37,11 @@
                                 <tbody>
                                     <tr>
                                         <th>Bệnh nhân:</th>
-                                        <td>{{ $prescription->patient->name }}</td>
+                                        <td>{{ $prescription->diagnosis->patient->name }}</td>
                                     </tr>
                                     <tr>
                                         <th>Bác sĩ:</th>
-                                        <td>{{ $prescription->doctor->name }}</td>
+                                        <td>{{ $prescription->diagnosis->doctor->name }}</td>
                                     </tr>
                                     <tr>
                                         <th>Bệnh chính:</th>

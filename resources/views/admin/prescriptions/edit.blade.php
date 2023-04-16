@@ -42,9 +42,8 @@
                                     <select name="patient_id" class="form-control input-sm m-bot15">
                                         <option value="">----Chọn bệnh nhân----</option>
                                         @foreach ($patients as $patient)
-                                        <option value="{{ $patient->id }}" {{ $prescription->patient_id == $patient->id
-                                            ?
-                                            'selected' : '' }}>{{ $patient->name }}</option>
+                                        <option value="{{ $patient->id }}" {{ $prescription->diagnosis->patient_id == $patient->id
+                                            ? 'selected' : '' }}>{{ $patient->name }}</option>
                                         @endforeach
                                     </select>
                                     @error('patient_id')
@@ -58,7 +57,7 @@
                                     <select name="doctor_id" class="form-control input-sm m-bot15">
                                         <option value="">----Chọn bác sĩ----</option>
                                         @foreach ($doctors as $doctor)
-                                        <option value="{{ $doctor->id }}" {{ $prescription->doctor_id == $doctor->id ?
+                                        <option value="{{ $doctor->id }}" {{ $prescription->diagnosis->doctor_id == $doctor->id ?
                                             'selected' : '' }}>{{ $doctor->name }}</option>
                                         @endforeach
                                     </select>
@@ -71,7 +70,7 @@
                                     <label for="main_disease">Bệnh chính:</label>
                                     <input type="text" name="main_disease" id="main_disease"
                                         class="form-control @error('main_disease') is-invalid @enderror"
-                                        value="{{ old('main_disease', $prescription->main_disease) }}">
+                                        value="{{ old('main_disease', $prescription->diagnosis->main_diagnosis) }}">
                                     @error('main_disease')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -81,7 +80,7 @@
                                     <label for="side_disease">Bệnh phụ:</label>
                                     <input type="text" name="side_disease" id="side_disease"
                                         class="form-control @error('side_disease') is-invalid @enderror"
-                                        value="{{ old('side_disease', $prescription->side_disease) }}">
+                                        value="{{ old('side_disease', $prescription->diagnosis->main_diagnosis) }}">
                                     @error('side_disease')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror

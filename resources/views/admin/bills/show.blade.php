@@ -83,7 +83,6 @@
                                                 </tbody>
                                             </table>
                                         </td>
-                                        
                                     </tr>
                                     <tr>
                                         <th>Lưu ý:</th>
@@ -144,9 +143,15 @@
                                 </a>
 
                                 <div>
-                                    <a href="{{ route('bills.edit', $bill->id) }}" class="btn btn-primary">
-                                        <i class="fas fa-edit"></i> Sửa
+                                    <a href="{{ route('diagnosises.edit', $bill->diagnosis->id) }}" class="btn btn-warning">
+                                        <i class="fas fa-edit"></i> Sửa chẩn đoán/xét nghiệm
                                     </a>
+                                    @if ($bill->prescription)
+                                        <a href="{{ route('prescriptions.edit', $bill->prescription->id) }}" class="btn btn-warning">
+                                            <i class="fas fa-edit"></i> Sửa đơn thuốc
+                                        </a>
+                                    @endif
+                                    
                                     <form action="{{ route('bills.destroy', $bill->id) }}" method="POST"
                                         class="d-inline-block">
                                         @csrf

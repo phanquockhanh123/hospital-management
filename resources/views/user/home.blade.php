@@ -1,6 +1,6 @@
   @include('user.header')
   @include('user.banner')
-  @include('user.about')
+  {{-- @include('user.about') --}}
   
   <script>
       @if (Session::has('success'))

@@ -146,4 +146,5 @@ class BillController extends Controller
         return redirect()->route('bills.index')
             ->with('success', 'Hóa đơn đã được thanh toán thành công.');
     }
+
 }
