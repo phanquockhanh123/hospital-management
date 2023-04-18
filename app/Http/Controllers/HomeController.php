@@ -118,8 +118,8 @@ class HomeController extends Controller
         $countBill = 1;
 
         // get appointment
-        $patient = Patient::where('user_id', Auth::user()->id)->first();
         $appointments = Appointment::where('patient_id', $patient->id)->get();
+
         $countAppointment = 1;
         return view('user.getInfoPatient', compact(
             'patient',
@@ -133,7 +133,8 @@ class HomeController extends Controller
             'countDiagnosis',
             'countDiagnosisItem',
             'countBill',
-            'appointments'
+            'appointments',
+            'countAppointment'
         ));
     }
 

@@ -212,16 +212,6 @@
                         </p>
                     </a>
                 </li>
-                @if (Auth::user()->role == 2)
-                <li class="nav-item">
-                    <a href="{{ route('documents.index') }}" class="nav-link @if (Request::route()->getName() == 'documents.index') active @endif">
-                        <i class="nav-icon far fa-image"></i>
-                        <p>
-                            Quản lý File
-                        </p>
-                    </a>
-                </li>
-                @endif
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

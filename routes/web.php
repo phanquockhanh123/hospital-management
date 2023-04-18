@@ -18,7 +18,6 @@ use App\Http\Controllers\SalaryController;
 use App\Http\Controllers\MedicalController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\DiagnosisController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AppointmentController;
@@ -278,20 +277,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/diagnosises/{diagnosis}/pdf', 'renderPdf')->name('diagnosises.pdf');
 
             
-        });
-    });
-
-
-    //-----------------------------------Files ----------------------------------------------------------------
-    Route::controller(DocumentController::class)->group(function () {
-        Route::middleware([config('const.auth.mid')])->group(function () {
-            Route::get('/documents', 'index')->name('documents.index');
-            Route::get('/documents/create', 'create')->name('documents.create');
-            Route::post('/documents', 'store')->name('documents.store');
-            Route::get('/documents/{document}', 'show')->name('documents.show');
-            Route::get('/documents/{document}/edit', 'edit')->name('documents.edit');
-            Route::put('/documents/{document}', 'update')->name('documents.update');
-            Route::delete('/documents/{document}', 'destroy')->name('documents.destroy');
         });
     });
 

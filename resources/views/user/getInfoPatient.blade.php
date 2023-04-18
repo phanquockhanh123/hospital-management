@@ -159,39 +159,47 @@
                     <div class="card-body">
                         <div class="tab-content">
                             <div class="tab-pane" id="appointment">
+                                @if($appointments->count() != 0)
                                 <table class="table">
-                                    @if(!empty($appointments))
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Tên bác sĩ</th>
-                                                <th>Thời gian bắt đầu</th>
-                                                <th>Thời gian kết thúc</th>
-                                                <th>Phòng ban</th>
-                                                <th>Trạng thái</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach($appointments ?? [] as $appointment)
-                                            <tr>
-                                                <td>{{ $appointment->doctor->name }}</td>
-                                                <td>{{ $appointment->doctorDepartment->name }}</td>
-                                                <td>{{ $appointment->start_time->format('d-m-Y H:m:i') }}</td>
-                                                <td>{{  $appointment->end_time->format('d-m-Y H:m:i') }}</td>
-                                                <td>{{ $appointment->status }}</td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                    @else
-                                    Không có đơn thuốc nào !
-                                    @endif
+                                    <thead>
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Tên bác sĩ</th>
+                                            <th>Phòng ban</th>
+                                            <th>Thời gian bắt đầu</th>
+                                            <th>Thời gian kết thúc</th>
+                                            <th>Trạng thái</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($appointments ?? [] as $appointment)
+                                        <tr>
+                                            <td>{{ $countAppointment++; }}</td>
+                                            <td>{{ $appointment->doctor->name }}</td>
+                                            <td>{{ $appointment->doctorDepartment->name }}</td>
+                                            <td>{{ $appointment->start_time->format('d-m-Y H:m:i') }}</td>
+                                            <td>{{ $appointment->end_time->format('d-m-Y H:m:i') }}</td>
+                                            <td>
+                                                @if($appointment->status == 0)
+                                                <span class="text text-danger">Từ chối</span>
+                                                @elseif ($appointment->status == 1)
+                                                <span class="text text-warning">Đang chờ</span>
+                                                @else
+                                                <span class="text text-primary">Chấp nhận</span>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                                @else
+                                Không có lịch hẹn nào !
+                                @endif
                             </div>
                             <div class="tab-pane" id="activity">
-
-
+                                @if($diagnosisesList->count() != 0 )
                                 <table class="table">
-                                    @if(!empty($diagnosisesList))
+
                                     <tr>
                                         <th>Lịch sử khám bệnh</th>
                                         <td>
@@ -222,12 +230,10 @@
                                             </table>
                                         </td>
                                     </tr>
-                                    @else
-                                    Không có chẩn đoán nào !
-                                    @endif
                                 </table>
-
-
+                                @else
+                                Không có chẩn đoán nào !
+                                @endif
                                 @if(!empty($diaPre))
                                 <table class="table">
 
