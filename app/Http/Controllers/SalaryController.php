@@ -16,12 +16,13 @@ class SalaryController extends Controller
 {
     public function index()
     {
-        $attendances = Attendance::select('user_id', DB::raw('YEAR(logout_time) as year'), DB::raw('MONTH(logout_time) as month'), DB::raw('COUNT(*) as days_worked'))
-            ->groupBy('user_id', DB::raw('YEAR(logout_time)'), DB::raw('MONTH(logout_time)'))
+        $countExamination =0;
+        $attendances = Attendance::select('user_id', DB::raw('sum(hour_worked)/8 as day_worked'))
+            ->whereMonth('logout_time', now()->month)
+            ->groupBy('user_id')
             ->paginate(config('const.perPage'));
-        
-        $dataSalaries = array_map(function ($attendance) {
-            $user = User::where('id', $attendance['user_id'])->first();
+        foreach ($attendances as $attendance) {
+            $user = User::where('id', $attendance->user_id)->first();
             $roleUser = $user->role;
             $doctor = Doctor::where('email', $user->email)->first();
             if ($doctor) {
@@ -31,20 +32,33 @@ class SalaryController extends Controller
                 })->count();
                 $countExamination =  $countDiagnosis * 20000 + $countPrescriptions * 10000;
             }
+            $salaryUser = ($roleUser == 2)
+            ? floor((8000000 * $attendance->day_worked / 30))
+            : floor((5000000 * $attendance->day_worked / 30));
 
-            return [
-                'user_id' => $attendance['user_id'],
-                'day_worked' => $attendance['days_worked'],
-                'salary' => ($roleUser == 2)
-                    ? (8000000 * $attendance['days_worked'] / 30)
-                    : (5000000 * $attendance['days_worked'] / 30),
-                'allowance' => $attendance['days_worked'] * 50000
-                    + (($roleUser == 2) ? 500000 : 300000)
-                    + (($roleUser == 2) ? $countExamination : 0)
-            ];
-        }, $attendances->toArray()['data']);
-        Salary::insert($dataSalaries);
+            $allowance = $attendance['days_worked'] * 50000
+            + (($roleUser == 2) ? 500000 : 300000)
+            + (($roleUser == 2) ? $countExamination : 0);
 
+            $salary = Salary::where('user_id',$attendance->user_id)->first();
+            if ($salary) {
+                $salary->update([
+                    'day_worked' => $attendance->day_worked ?? 0,
+                    'salary' => $salaryUser,
+                    'allowance' => $allowance
+                ]);
+            } else {
+                Salary::create([
+                    'user_id' => $attendance->user_id,
+                    'day_worked' => $attendance->day_worked ?? 0,
+                    'salary' => $salaryUser,
+                    'allowance' => $allowance,
+                    'status' => Salary::STATUS_NO_PAYMENT
+                ]);
+            }
+
+            
+        }
         $salaries = Salary::paginate(config('const.perPage'));
         $count = 1;
         return view('admin.salaries.index', compact('salaries', 'count'));

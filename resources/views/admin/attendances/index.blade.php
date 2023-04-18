@@ -57,6 +57,7 @@
                                                     <th>Email</th>
                                                     <th>Thời gian vào làm</th>
                                                     <th>Thời gian về</th>
+                                                    <th>Số giờ làm</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -67,6 +68,7 @@
                                                         <td>{{ $attendance->user->email }}</td>
                                                         <td>{{ $attendance->login_time }}</td>
                                                         <td>{{ $attendance->logout_time }}</td>
+                                                        <td>{{ $attendance->hour_worked }}</td>
                                                     </tr>
                                                 @endforeach
 

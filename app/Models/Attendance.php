@@ -13,6 +13,7 @@ class Attendance extends BaseModel
         'user_id',
         'login_time',
         'logout_time',
+        'hour_worked'
     ];
 
     protected $dates = [

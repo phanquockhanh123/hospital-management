@@ -18,6 +18,7 @@ class CreateAttendancesTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->dateTime('login_time');
             $table->dateTime('logout_time')->nullable();
+            $table->float('hour_worked')->default(0);
             $table->timestamps();
             $table->softDeletes();
 
