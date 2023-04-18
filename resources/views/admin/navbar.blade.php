@@ -7,9 +7,9 @@
     <li class="nav-item d-none d-sm-inline-block">
       <a href="{{ route('admin.home') }}" class="nav-link">Trang chủ</a>
     </li>
-    <li class="nav-item d-none d-sm-inline-block">
+    {{-- <li class="nav-item d-none d-sm-inline-block">
       <a href="#" class="nav-link">Liên hệ</a>
-    </li>
+    </li> --}}
   </ul>
 
   <!-- Right navbar links -->
@@ -34,13 +34,12 @@
         <a href="{{ route('chats.index') }}" class="dropdown-item">
           <!-- Message Start -->
           <div class="media">
-            <img src=" ./imgUser/{{ $message->user?->filename}}" alt="User Avatar" class="img-size-50 img-circle mr-3">
             <div class="media-body">
-              <h3 class="dropdown-item-title">
-                {{$message->user}}
+              <h3 class="dropdown-item-title" style="color:black">
+                {{ $users->where('id',$message->from)->first()->name }}
                 <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
               </h3>
-              <p class="text-sm"> {{$message->message}}</p>
+              <p class="text" style="color: blue"> {{$message->message}}</p>
               <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i>{{ $message->created_at->diffForHumans()}}</p>
             </div>
           </div>
