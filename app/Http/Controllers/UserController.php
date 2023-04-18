@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Doctor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -38,7 +39,8 @@ class UserController extends Controller
      */
     public function create(Request $request)
     {
-        return view('admin.users.create');
+        $users = Doctor::whereNull('user_id')->get();
+        return view('admin.users.create', compact('users'));
     }
 
     /**
@@ -51,22 +53,10 @@ class UserController extends Controller
     {
 
         $request->validate([
-            'name' => 'nullable|string|max:255',
-            'email' => 'required|string|max:255|unique:users,email|regex:'
-                . config('const.regex_email_admin'),
-            'phone' => 'nullable|size:10|regex:' . config('const.regex_telephone'),
-            'gender' => 'nullable|in:' . implode(',', array_keys(User::$gender)),
-            'address' => 'nullable|max:10|string',
-            'role' => 'nullable|in:' . implode(',', array_keys(User::$roles)),
-            'dob' => [
-                'nullable',
-                'date_format:' . config('const.format.date_form'),
-                'before_or_equal:' . Carbon::now()->format(config('const.format.date_form'))
-            ],
+            'user_id' => 'required',
             'password' => 'required|min:8|regex:#(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])#',
             'confirmPassword' => 'required_with:password|same:password|min:6',
-            'profile' => 'required',
-
+            
         ]);
         $validatedData = $request->all();
 
@@ -170,7 +160,6 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-
         return redirect()->route('users.index')
             ->with('success', 'Người dùng đã được xoá thành công.');
     }

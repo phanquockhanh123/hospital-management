@@ -10,8 +10,7 @@ class AttendanceController extends Controller
 {
     
     public function index() {
-        $attendances = Attendance::whereDay('login_time', now()->day)->paginate(config('const.perPage'));
-        
+        $attendances = Attendance::with('user')->whereDay('login_time', now()->day)->paginate(config('const.perPage'));
         $count =1;
         return view('admin.attendances.index', compact('attendances', 'count'));
     }

@@ -30,69 +30,91 @@
                 <div class="col-md-9">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Người dùng :   <span class="text-primary">{{ $user->name }}</span></h3>
+                            <h3 class="card-title">Lễ tân: <span class="text text-primary">{{ $receptionist->name }}</span></h3>
                         </div>
                         <div class="card-body">
                             <table class="table">
                                 <tbody>
                                     <tr>
-                                        <th>Họ tên người dùng:</th>
-                                        <td>{{ $user->name }}</td>
-                                    </tr>
-                                    <tr>
                                         <th>Avatar:</th>
-                                        <td><img src="{{ asset('./imgUser/'. $user->filename) }}" 
+                                        <td><img src="{{ asset('./imgReceptionist/'. $receptionist->filename) }}" 
                                                     style="vertical-align: middle;
                                                         width: 200px;
                                                         height: 300px;">
 
                                         </td>
                                     </tr>
-                                    {{-- <tr>
+                                    <tr>
                                         <th>Giới tính:</th>
                                         <td>
-                                            @if($user->gender == 0)
+                                            @if($receptionist->gender == 0)
                                             <span>Nam</span>
                                             @endif
-                                            @if($user->gender == 1)
+                                            @if($receptionist->gender == 1)
                                             <span>Nữ</span>
                                             @endif
                                         </td>
-                                    </tr> --}}
-                                        {{-- <th>Điện thoại:</th>
-                                        <td>{{ $user->phone }}</td>
-                                    </tr> --}}
-                                    {{-- <tr>
+                                    </tr>
+                                    <tr>
                                         <th>Địa chỉ:</th>
-                                        <td>{{ $user->address }}</td>
-                                    </tr> --}}
+                                        <td>{{ $receptionist->address }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Số điện thoại:</th>
+                                        <td>{{ $receptionist->phone }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>Địa chỉ:</th>
+                                        <td>{{ $receptionist->address }}</td>
+                                    </tr>
                                     <tr>
                                         <th>Email:</th>
-                                        <td>{{ $user->email }}</td>
+                                        <td>{{ $receptionist->email }}</td>
                                     </tr>
-                                    {{-- <tr>
+                                    <tr>
                                         <th>Ngày sinh:</th>
-                                        <td>{{ $user->dob }}</td>
-                                    </tr> --}}
+                                        <td>{{ $receptionist->date_of_birth?->format(config('const.format.date')) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Số CMT/CCCD:</th>
+                                        <td>{{ $receptionist->identity_number }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Ngày cấp:</th>
+                                        <td>{{ $receptionist->identity_card_date?->format(config('const.format.date')) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Nơi cấp:</th>
+                                        <td>{{ $receptionist->identity_card_place }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Giới thiệu bản thân:</th>
+                                        <td>{{ $receptionist->designation }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Ngày bắt đầu vào làm việc:</th>
+                                        <td>{{ $receptionist->start_work_date?->format(config('const.format.date')) }}</td>
+                                    </tr>
+                                    
                                 </tbody>
                             </table>
 
                             <div class="d-flex justify-content-between mt-4">
-                                <a href="{{ route('users.index') }}" class="btn btn-secondary">
+                                <a href="{{ route('receptionists.index') }}" class="btn btn-secondary">
                                     <i class="fas fa-arrow-left"></i> Quay lại
                                 </a>
 
                                 <div>
-                                    <a href="{{ route('users.edit', $user->id) }}"
-                                        class="btn btn-primary">
+                                    <a href="{{ route('receptionists.edit', $receptionist->id) }}" class="btn btn-primary">
                                         <i class="fas fa-edit"></i> Sửa
                                     </a>
-                                    <form action="{{ route('users.destroy', $user->id) }}" method="POST"
+                                    <form action="{{ route('receptionists.destroy', $receptionist->id) }}" method="POST"
                                         class="d-inline-block">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger" style="color: red"
-                                            onclick="return confirm('Bạn có chắc chắn muốn xoá tài khoản người dùng này?')">
+                                        <button type="submit" class="btn btn-danger" style="color:red;"
+                                            onclick="return confirm('Bạn có chắc chắn muốn xoá phòng ban này?')">
                                             <i class="fas fa-trash"></i> Xoá
                                         </button>
                                     </form>

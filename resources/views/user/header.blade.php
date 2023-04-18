@@ -86,22 +86,13 @@
     <!-- Back to top button -->
     <div class="back-to-top"></div>
 
-    
-    <div class="btnMessage" id="chatBtn">
+    @if (Auth::user()?->id)
+    <a class="btnMessage" href="{{ route('chats.index') }}" style="text-decoration: none;">
         <div class="circle-shape bg-secondary text-white">
             <span class="mai-chatbubbles-outline"></span>
         </div>
-    </div>
-    <div id="chatModal" style="display:none;">
-        <div id="chatBody">
-            <!-- Chat messages go here -->
-        </div>
-        <form id="chatForm">
-            <input type="text" id="chatInput" placeholder="Type your message here...">
-            <button type="submit">Send</button>
-        </form>
-    </div>
-
+    </a>
+    @endif
     <header>
         <div class="topbar">
             <div class="container">

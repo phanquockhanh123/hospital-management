@@ -27,6 +27,7 @@ use App\Http\Controllers\MedicalDeviceController;
 use App\Http\Controllers\RequestDeviceController;
 use App\Http\Controllers\BookAppointmentController;
 use App\Http\Controllers\DoctorDepartmentController;
+use App\Http\Controllers\ReceptionistController;
 
 /*
 |--------------------------------------------------------------------------
@@ -95,9 +96,27 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/doctors/{doctor}/edit', 'edit')->name('doctors.edit');
             Route::put('/doctors/{doctor}', 'update')->name('doctors.update');
             Route::delete('/doctors/{doctor}', 'destroy')->name('doctors.destroy');
+
+            Route::get('/create_account_doctor/{doctor}', 'addAccountDoctor')->name('doctors.add-account-doctor');
         });
     });
 
+    //-----------------------------------Receptionists ----------------------------------------------------------------
+    Route::controller(ReceptionistController::class)->group(function () {
+        Route::middleware([config('const.auth.low')])->group(function () {
+            Route::get('/receptionists', 'index')->name('receptionists.index');
+        });
+        Route::middleware([config('const.auth.high')])->group(function () {
+            Route::get('/receptionists/create', 'create')->name('receptionists.create');
+            Route::post('/receptionists', 'store')->name('receptionists.store');
+            Route::get('/receptionists/{receptionist}', 'show')->name('receptionists.show');
+            Route::get('/receptionists/{receptionist}/edit', 'edit')->name('receptionists.edit');
+            Route::put('/receptionists/{receptionist}', 'update')->name('receptionists.update');
+            Route::delete('/receptionists/{receptionist}', 'destroy')->name('receptionists.destroy');
+
+            Route::get('/create_account_receptionist/{receptionist}', 'addAccountReceptionist')->name('receptionists.add-account-receptionist');
+        });
+    });
 
     //-----------------------------------Patients ----------------------------------------------------------------
     Route::controller(PatientController::class)->group(function () {
@@ -367,6 +386,9 @@ Route::get('/auth/google', function () {
 
 Route::get('/auth/google/callback', function () {
     $googleUser = Socialite::driver('google')->user();
+    if (User::where('email', $googleUser->email)->whereNull('google_id')->first()) {
+        return redirect()->back() ->with('alert', 'Email đã tồn tại, vui lòng chọn email khác!');
+    }
     if(!Patient::where('email', $googleUser->email)->first()) {
         Patient::create([
             'name' => $googleUser->name,

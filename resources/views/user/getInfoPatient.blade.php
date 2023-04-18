@@ -9,7 +9,8 @@
                 <div class="card card-primary card-outline">
                     <div class="card-body box-profile">
                         <div class="text-center">
-                            <img src="@if (!empty(Auth::user()->filename)) ./imgPatient/{{ Auth::user()->filename}}@else https://cdn.iconscout.com/icon/premium/png-256-thumb/patient-2460481-2128797.png @endif" style="background-color: #00D9A5;border-radius: 50%;vertical-align: middle;
+                            <img src="@if (!empty(Auth::user()->filename)) ./imgPatient/{{ Auth::user()->filename}}@else https://cdn.iconscout.com/icon/premium/png-256-thumb/patient-2460481-2128797.png @endif"
+                                style="background-color: #00D9A5;border-radius: 50%;vertical-align: middle;
                                                                     width: 100px;
                                                                     height: 100px;
                                                                     border-radius: 50%;">
@@ -140,21 +141,55 @@
                 <div class="card">
                     <div class="card-header p-2">
                         <ul class="nav nav-pills">
+                            <li class="nav-item"><a class="nav-link" href="#appointment" data-toggle="tab">Lịch hẹn</a>
+                            </li>
                             <li class="nav-item"><a class="nav-link" href="#activity" data-toggle="tab">Chẩn
                                     đoán/ Xét nghiệm</a></li>
                             <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Đơn thuốc</a>
                             </li>
                             <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Hóa đơn</a>
                             </li>
-                            <li class="nav-item"><a class="nav-link @if (session('success')) active @endif" href="#profile" data-toggle="tab">Chỉnh sửa trang cá nhân</a>
+
+                            <li class="nav-item"><a class="nav-link @if (session('success')) active @endif"
+                                    href="#profile" data-toggle="tab">Chỉnh sửa trang cá nhân</a>
                             </li>
                         </ul>
                     </div><!-- /.card-header -->
+
                     <div class="card-body">
                         <div class="tab-content">
+                            <div class="tab-pane" id="appointment">
+                                <table class="table">
+                                    @if(!empty($appointments))
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Tên bác sĩ</th>
+                                                <th>Thời gian bắt đầu</th>
+                                                <th>Thời gian kết thúc</th>
+                                                <th>Phòng ban</th>
+                                                <th>Trạng thái</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($appointments ?? [] as $appointment)
+                                            <tr>
+                                                <td>{{ $appointment->doctor->name }}</td>
+                                                <td>{{ $appointment->doctorDepartment->name }}</td>
+                                                <td>{{ $appointment->start_time->format('d-m-Y H:m:i') }}</td>
+                                                <td>{{  $appointment->end_time->format('d-m-Y H:m:i') }}</td>
+                                                <td>{{ $appointment->status }}</td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                    @else
+                                    Không có đơn thuốc nào !
+                                    @endif
+                            </div>
                             <div class="tab-pane" id="activity">
-                                
-                                
+
+
                                 <table class="table">
                                     @if(!empty($diagnosisesList))
                                     <tr>
@@ -188,14 +223,14 @@
                                         </td>
                                     </tr>
                                     @else
-                                        Không có chẩn đoán nào !
+                                    Không có chẩn đoán nào !
                                     @endif
                                 </table>
-                                
+
 
                                 @if(!empty($diaPre))
                                 <table class="table">
-                                   
+
                                     <tr>
                                         <th>Lịch sử bệnh án:</th>
                                         <td>
@@ -233,10 +268,10 @@
                                             </table>
                                         </td>
                                     </tr>
-                                    
+
                                 </table>
                                 @else
-                                    Không có xét nghiệm nào !
+                                Không có xét nghiệm nào !
                                 @endif
                             </div>
                             <!-- /.tab-pane -->
@@ -293,7 +328,7 @@
                             <!-- /.tab-pane -->
 
                             <div class="tab-pane" id="settings">
-                                
+
                                 @if(!empty($billList))
                                 <table class="table">
                                     <thead>
@@ -330,8 +365,8 @@
                                     </tbody>
                                 </table>
                                 @else
-                                    Không có hóa đơn nào !
-                                    @endif
+                                Không có hóa đơn nào !
+                                @endif
                             </div>
 
                             <div class=" @if (session('success')) active @endif tab-pane" id="profile">
@@ -339,15 +374,16 @@
                                 <span>
                                     @if (session('success'))
                                     <div class="alert alert-success">
-                                      {{ session('success') }}
+                                        {{ session('success') }}
                                     </div>
                                     @endif
-                                  </span>
+                                </span>
                                 <div class="card-body">
-                                    <form action="{{ route('home.update-patient', $patient->id) }}" method="POST" enctype="multipart/form-data">
+                                    <form action="{{ route('home.update-patient', $patient->id) }}" method="POST"
+                                        enctype="multipart/form-data">
                                         @csrf
                                         @method('PUT')
-        
+
                                         <div class="form-group">
                                             <label for="name">Tên bệnh nhân:</label>
                                             <input type="text" name="name" id="name"
@@ -357,7 +393,7 @@
                                             <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
-        
+
                                         <div class="form-group">
                                             <label for="profile">Ảnh đại diện:</label>
                                             <img src="{{ asset('./imgPatient/'. $patient->filename) }}" style="vertical-align: middle;
@@ -371,7 +407,7 @@
                                             <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
-        
+
                                         <div class="form-group">
                                             <label for="date_of_birth">Ngày sinh:</label>
                                             <input type="date" name="date_of_birth" id="date_of_birth"
@@ -381,35 +417,41 @@
                                             <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
-        
+
                                         <div class="form-group">
                                             <label for="gender">Giới tính:</label>
                                             <select name="gender" class="form-control input-sm m-bot15">
-                                                <option value="0" {{ $patient->gender == 0 ? 'selected' : '' }}>Nữ</option>
-                                                <option value="1" {{ $patient->gender == 1 ? 'selected' : '' }}>Nam</option>
+                                                <option value="0" {{ $patient->gender == 0 ? 'selected' : '' }}>Nữ
+                                                </option>
+                                                <option value="1" {{ $patient->gender == 1 ? 'selected' : '' }}>Nam
+                                                </option>
                                             </select>
                                             @error('gender')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
-        
+
                                         <div class="form-group">
                                             <label for="blood_group">Nhóm máu:</label>
                                             <select name="blood_group" class="form-control input-sm m-bot15">
-                                                <option value="0" {{ $patient->blood_group == 0 ? 'selected' : '' }}>Nhóm máu O
+                                                <option value="0" {{ $patient->blood_group == 0 ? 'selected' : ''
+                                                    }}>Nhóm máu O
                                                 </option>
-                                                <option value="1" {{ $patient->blood_group == 1 ? 'selected' : '' }}>Nhóm máu A
+                                                <option value="1" {{ $patient->blood_group == 1 ? 'selected' : ''
+                                                    }}>Nhóm máu A
                                                 </option>
-                                                <option value="2" {{ $patient->blood_group == 2 ? 'selected' : '' }}>Nhóm máu B
+                                                <option value="2" {{ $patient->blood_group == 2 ? 'selected' : ''
+                                                    }}>Nhóm máu B
                                                 </option>
-                                                <option value="3" {{ $patient->blood_group == 3 ? 'selected' : '' }}>Nhóm máu
+                                                <option value="3" {{ $patient->blood_group == 3 ? 'selected' : ''
+                                                    }}>Nhóm máu
                                                     AB</option>
                                             </select>
                                             @error('blood_group')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
-        
+
                                         <div class="form-group">
                                             <label for="phone">Số điện thoại:</label>
                                             <input type="text" name="phone" id="phone"
@@ -419,7 +461,7 @@
                                             <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
-        
+
                                         <div class="form-group">
                                             <label for="address">Địa chỉ:</label>
                                             <input type="text" name="address" id="address"
@@ -429,7 +471,7 @@
                                             <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
-        
+
                                         <div class="form-group">
                                             <label for="identity_number">Số CMT/CCCD:</label>
                                             <input type="text" name="identity_number" id="identity_number"
@@ -439,7 +481,7 @@
                                             <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
-        
+
                                         <div class="form-group">
                                             <label for="identity_card_date">Ngày cấp:</label>
                                             <input type="date" name="identity_card_date" id="identity_card_date"
@@ -449,7 +491,7 @@
                                             <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
-        
+
                                         <div class="form-group">
                                             <label for="identity_card_place">Nơi cấp:</label>
                                             <input type="text" name="identity_card_place" id="identity_card_place"
@@ -459,9 +501,9 @@
                                             <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
-        
+
                                         <div class="d-flex justify-content-between mt-4">
-        
+
                                             <button type="submit" class="btn btn-primary">
                                                 <i class="fas fa-save"></i> Chỉnh sửa
                                             </button>

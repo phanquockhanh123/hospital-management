@@ -40,11 +40,11 @@
                 </div>
               </form>
             </div>
-            <div class="col-sm-3" style="float: right;">
+            {{-- <div class="col-sm-3" style="float: right;">
               <a href="{{ route('users.create') }}" class="btn btn-success">
                 <i class="fas fa-plus"></i> Tạo mới
               </a>
-            </div>
+            </div> --}}
           </div>
         </div><!-- /.container-fluid -->
       </section>
@@ -74,47 +74,43 @@
                   <table id="example2" class="table table-bordered table-hover">
                     <thead>
                       <tr>
-                        <th>Người dùng</th>
+                        <th>Tên người dùng</th>
                         <th>Quyền</th>
                         <th>Email</th>
                         <th>Trạng thái</th>
-                        <th>Sửa/Xóa</th>
                       </tr>
                     </thead>
                     <tbody>
                       @foreach ($users as $user)
                       <tr>
-                        <td>
-                          <a href="{{ route('users.show', $user) }}"><img src="{{ asset('imgUser/'. $user->filename) }}"
-                              style="border-radius: 50%;vertical-align: middle;
-                                          width: 50px;
-                                          height: 50px;
-                                          border-radius: 50%;" alt="" title="">{{ $user->name }}</a>
-                        </td>
+                        <td>{{ $user->name }}</td>
                         <td>
                           @if($user->role == 0)
-                          <span class="text-primary">Lễ tân</span>
+                          <span class="text-primary">Bệnh nhân</span>
                           @endif
                           @if($user->role == 1)
-                          <span class="text-primary">Bác sĩ</span>
+                          <span class="text-primary">Lễ tân</span>
                           @endif
                           @if($user->role == 2)
+                          <span class="text-primary">Bác sĩ</span>
+                          @endif
+                          @if($user->role == 3)
                           <span class="text-primary">Root</span>
                           @endif
                         </td>
                         <td>{{ $user->email }}</td>
                         <td>
-                          @if($user->status == 0)
+                        @if($user->status == 0)
                           <span class="text-danger">Đã vô hiệu</span>
                           @endif
                           @if($user->status == 1)
                           <span class="text-primary">Đang hoạt động</span>
                           @endif
                         </td>
-                        <td>
+                        {{-- <td>
                           <div class="btn-group">
                             <a href="{{ route('users.show', $user) }}" style="margin-right: 10px;color:blue;font-size:22px">
-                              <i class="fas fa-eye"></i>
+                            <i class="fas fa-eye"></i>
                             </a>
                             <a href="{{ route('users.edit', $user->id) }}" style="margin-right: 10px;color:green;font-size:22px">
                               <i class="fas fa-edit"></i>
@@ -124,7 +120,7 @@
                               <i class="fas fa-trash-alt"></i>
                             </button>
                           </div>
-                        </td>
+                        </td> --}}
 
                         <!-- Modal -->
                         <div class="modal fade" id="deleteModal{{ $user->id }}" tabindex="-1" role="dialog"

@@ -74,7 +74,7 @@
                   <table id="example2" class="table table-bordered table-hover">
                     <thead>
                       <tr>
-                        <th>Mã bệnh nhân</th>
+                        <th>Bệnh nhân</th>
                         <th>Họ tên</th>
                         <th>Giới tính</th>
                         <th>Số điện thoại</th>

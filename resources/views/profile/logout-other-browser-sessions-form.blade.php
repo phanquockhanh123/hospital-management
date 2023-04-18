@@ -1,15 +1,15 @@
-<x-jet-action-section>
+{{-- <x-jet-action-section>
     <x-slot name="title">
-        {{ __('Browser Sessions') }}
+        {{ __('Phiên đăng nhập') }}
     </x-slot>
 
     <x-slot name="description">
-        {{ __('Manage and log out your active sessions on other browsers and devices.') }}
+        {{ __('Quản lý và đăng xuất phiên hoạt động của bạn trên thiết bị hay trình duyệt khác.') }}
     </x-slot>
 
     <x-slot name="content">
         <div class="max-w-xl text-sm text-gray-600">
-            {{ __('If necessary, you may log out of all of your other browser sessions across all of your devices. Some of your recent sessions are listed below; however, this list may not be exhaustive. If you feel your account has been compromised, you should also update your password.') }}
+            {{ __('Nếu cần thiết, Nếu cần thiết, bạn có thể đăng xuất tất cả các phiên hoạt động trên tất cả các thiết bị. Nếu bạn cảm thấy tài khoản bị tổn hại, bạn có thể cập nhật lại mật khẩu') }}
         </div>
 
         @if (count($this->sessions) > 0)
@@ -94,4 +94,4 @@
             </x-slot>
         </x-jet-dialog-modal>
     </x-slot>
-</x-jet-action-section>
+</x-jet-action-section> --}}

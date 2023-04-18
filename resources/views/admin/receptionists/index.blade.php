@@ -37,10 +37,10 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <form action="{{ route('doctors.index') }}" method="GET">
+                            <form action="{{ route('receptionists.index') }}" method="GET">
                                 <div class="input-group mb-2">
                                     <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder="Tìm kiếm bác sĩ"
+                                        <input type="text" class="form-control" placeholder="Tìm kiếm lễ tân"
                                             name="search">
                                         <div class="input-group-append">
                                             <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
@@ -50,7 +50,7 @@
                             </form>
                         </div>
                         <div class="col-sm-3" style="float: right;">
-                            <a href="{{ route('doctors.create') }}" class="btn btn-success">
+                            <a href="{{ route('receptionists.create') }}" class="btn btn-success">
                                 <i class="fas fa-plus"></i> Tạo mới
                             </a>
                         </div>
@@ -75,57 +75,57 @@
 
                                 <!-- /.card-header -->
                                 <div class="card-body">
-                                    @if ($doctors->count() == 0)
+                                    @if ($receptionists->count() == 0)
                                     <div class="alert alert-danger" role="alert">
-                                        Không tìm thấy bác sĩ!.
+                                        Không tìm thấy lễ tân!.
                                     </div>
                                     @else
                                     <table id="example2" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
-                                                <th>Bác sĩ</th>
-                                                <th>Phòng ban</th>
-                                                <th>Chuyên ngành</th>
+                                                <th>Lễ tân</th>
+                                                <th>Email</th>
+                                                <th>Địa chỉ</th>
                                                 <th>Ngày vào làm</th>
                                                 <th>Trạng thái</th>
                                                 <th>Hành động</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($doctors as $doctor)
+                                            @foreach ($receptionists as $receptionist)
                                             <tr>
                                                 <td>
-                                                    <a href="{{ route('doctors.show', $doctor) }}" ><img
-                                                            src="./imgDoctor/{{ $doctor->filename}}" style="border-radius: 50%;vertical-align: middle;
+                                                    <a href="{{ route('receptionists.show', $receptionist) }}" ><img
+                                                            src="./imgReceptionist/{{ $receptionist->filename}}" style="border-radius: 50%;vertical-align: middle;
                                                                     width: 50px;
                                                                     height: 50px;
-                                                                    border-radius: 50%;" alt="" title="">{{ $doctor->name }}</a>
+                                                                    border-radius: 50%;" alt="" title="">{{ $receptionist->name }}</a>
                                                 </td>
-                                                <td>{{ $doctor->doctorDepartment->name }}</td>
-                                                <td>{{ $doctor->specialist }}</td>
-                                                <td>{{ $doctor->start_work_date->format(config('const.format.date')) }}
+                                                <td>{{ $receptionist->email }}</td>
+                                                <td>{{ $receptionist->address }}</td>
+                                                <td>{{ $receptionist->start_work_date->format(config('const.format.date')) }}
                                                 </td>
                                                 <td>
-                                                    @if ($doctor->status == 1)
+                                                    @if ($receptionist->status == 1)
                                                     <span class="text-primary">Đang làm việc</span>
-                                                    @elseif ($doctor->status == 0)
+                                                    @elseif ($receptionist->status == 0)
                                                     <span class="text-danger">Đã nghĩ việc</span>
                                                     @endif
                                                 </td>
                                                 <td>
                                                     <div class="btn-group">
-                                                        <a href="{{ route('doctors.show', $doctor) }}" style="margin-right: 10px;color:blue;font-size:22px">
+                                                        <a href="{{ route('receptionists.show', $receptionist) }}" style="margin-right: 10px;color:blue;font-size:22px">
                                                           <i class="fas fa-eye"></i>
                                                         </a>
-                                                        <a href="{{ route('doctors.edit', $doctor->id) }}" style="margin-right: 10px;color:green;font-size:22px">
+                                                        <a href="{{ route('receptionists.edit', $receptionist->id) }}" style="margin-right: 10px;color:green;font-size:22px">
                                                           <i class="fas fa-edit"></i>
                                                         </a>
                                                         <button type="button" data-toggle="modal"
-                                                          data-target="#deleteModal{{ $doctor->id }}" style="color: red;font-size:22px">
+                                                          data-target="#deleteModal{{ $receptionist->id }}" style="color: red;font-size:22px">
                                                           <i class="fas fa-trash-alt"></i>
                                                         </button>
-                                                        @if (Auth::user()->role == 3  && $doctor->user_id == null)
-                                                        <a  href="{{ route('doctors.add-account-doctor', $doctor->id) }}" style="margin-left : 10px;color:aqua;font-size:22px">
+                                                        @if (Auth::user()->role == 3  && $receptionist->user_id == null)
+                                                        <a  href="{{ route('receptionists.add-account-receptionist', $receptionist->id) }}" style="margin-left : 10px;color:aqua;font-size:22px">
                                                             <i class="fas fa-add"></i>
                                                         </a>
                                                         @endif
@@ -133,14 +133,14 @@
                                                 </td>
 
                                                 <!-- Modal -->
-                                                <div class="modal fade" id="deleteModal{{ $doctor->id }}" tabindex="-1"
-                                                    role="dialog" aria-labelledby="deleteModalLabel{{ $doctor->id }}"
+                                                <div class="modal fade" id="deleteModal{{ $receptionist->id }}" tabindex="-1"
+                                                    role="dialog" aria-labelledby="deleteModalLabel{{ $receptionist->id }}"
                                                     aria-hidden="true">
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title"
-                                                                    id="deleteModalLabel{{ $doctor->id }}">
+                                                                    id="deleteModalLabel{{ $receptionist->id }}">
                                                                     Xóa bác sĩ</h5>
                                                                 <button type="button" class="close" data-dismiss="modal"
                                                                     aria-label="Close">
@@ -148,8 +148,8 @@
                                                                 </button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                Bạn có chắc chắn muốn xóa bác sĩ
-                                                                "{{ $doctor->name }}" không? Hành động này
+                                                                Bạn có chắc chắn muốn xóa lễ tân 
+                                                                "{{ $receptionist->name }}" không? Hành động này
                                                                 không
                                                                 thể hoàn tác!
                                                             </div>
@@ -158,13 +158,13 @@
                                                                     data-dismiss="modal"
                                                                     style="color: black;">Hủy</button>
                                                                 <form
-                                                                    action="{{ route('doctors.destroy', $doctor->id) }}"
+                                                                    action="{{ route('receptionists.destroy', $receptionist->id) }}"
                                                                     method="POST">
                                                                     @csrf
                                                                     @method('DELETE')
                                                                     <button type="submit" class="btn btn-danger"
                                                                         style="color: red;"
-                                                                        onclick="return confirm('Bạn có chắc chắn muốn xóa bác sĩ này không?')">Xóa</button>
+                                                                        onclick="return confirm('Bạn có chắc chắn muốn xóa lễ tân này không?')">Xóa</button>
                                                                 </form>
                                                             </div>
                                                         </div>
@@ -174,7 +174,7 @@
                                             @endforeach
                                         </tbody>
                                     </table>
-                                    {{ $doctors->links() }}
+                                    {{ $receptionists->links() }}
                                     @endif
                                 </div>
                                 <!-- /.card-body -->

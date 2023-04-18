@@ -147,6 +147,32 @@
     <!-- ./wrapper -->
 
     @include('admin.script')
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+        <script>
+            CKEDITOR.replace('content', {
+                filebrowserUploadUrl: "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}",
+                filebrowserUploadMethod: 'form'
+            });
+
+            $(document).ready(function() { 
+                $('body').on('submit', '#submitform', function(e) {
+                    e.preventDefault();
+
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        data: new FormData(this),
+                        type: 'POST',
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        success: function(data) {
+                            alert('data.msg');
+                        }
+                    })
+                });
+            });
+
+        </script>
 </body>
 
 </html>

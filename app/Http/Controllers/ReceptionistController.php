@@ -3,18 +3,17 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
-use App\Models\Bed;
 use App\Models\User;
-use App\Models\Doctor;
 use App\Mail\MailLogin;
+use App\Models\Receptionist;
 use Illuminate\Http\Request;
-use App\Models\DoctorDepartment;
+use App\Mail\MailLoginReceptionist;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
-class DoctorController extends Controller
+class ReceptionistController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -26,13 +25,13 @@ class DoctorController extends Controller
         $search = $request->input('search');
 
         if ($search) {
-            $doctors = Doctor::where('name', 'LIKE', '%' . $search . '%')
+            $receptionists = Receptionist::where('name', 'LIKE', '%' . $search . '%')
                 ->orderByDesc('created_at')->paginate(config('const.perPage'));
         } else {
-            $doctors = Doctor::orderByDesc('created_at')->paginate(config('const.perPage'));
+            $receptionists = Receptionist::orderByDesc('created_at')->paginate(config('const.perPage'));
         }
 
-        return view('admin.doctors.index', compact('doctors'));
+        return view('admin.receptionists.index', compact('receptionists'));
     }
 
     /**
@@ -42,8 +41,7 @@ class DoctorController extends Controller
      */
     public function create(Request $request)
     {
-        $doctorDepartments = DoctorDepartment::all();
-        return view('admin.doctors.create', compact('doctorDepartments'));
+        return view('admin.receptionists.create');
     }
 
     /**
@@ -56,20 +54,17 @@ class DoctorController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'doctor_department_id' => 'required|integer|exists:doctor_departments,id,deleted_at,NULL',
-            'blood_group' => 'required|in:' . implode(',', array_keys(Doctor::$bloodGroups)),
             'email' => 'required|string|max:255|unique:doctors,email|regex:'
                 . config('const.regex_email_admin'),
             'designation' => 'nullable|string|max:255',
             'phone' => 'nullable|size:10|regex:' . config('const.regex_telephone'),
-            'profile' => 'required',
-            'academic_level' => 'required|in:' . implode(',', array_keys(Doctor::$academicLevels)),
+            'profile' => 'nullable',
             'date_of_birth' => [
                 'nullable',
                 'date_format:' . config('const.format.date_form'),
                 'before_or_equal:' . Carbon::now()->format(config('const.format.date_form'))
             ],
-            'gender' => 'required|in:' . implode(',', array_keys(Doctor::$genders)),
+            'gender' => 'required|in:' . implode(',', array_keys(Receptionist::$genders)),
             'address' => 'nullable|string|max:255',
             'identity_number' => [
                 'required',
@@ -87,7 +82,6 @@ class DoctorController extends Controller
                 'date_format:' . config('const.format.date_form'),
                 'before_or_equal:' . Carbon::now()->format(config('const.format.date_form'))
             ],
-            'specialist' => 'nullable|string|max:255',
         ]);
 
         // Lưu ảnh
@@ -96,17 +90,17 @@ class DoctorController extends Controller
 
             $filename = time() . '_' . $profile->getClientOriginalName();
 
-            $path = $profile->move('imgDoctor', $filename);
+            $path = $profile->move('imgReceptionist', $filename);
 
             $validatedData['profile'] = $path;
             $validatedData['filename'] = $filename;
         }
 
-        $validatedData['status'] = Doctor::STATUS_ACTIVE;
-        Doctor::create($validatedData);
+        $validatedData['status'] = Receptionist::STATUS_ACTIVE;
+        Receptionist::create($validatedData);
 
-        return redirect()->route('doctors.index')
-            ->with('success', 'Thêm mới bác sĩ đã được tạo thành công.');
+        return redirect()->route('receptionists.index')
+            ->with('success', 'Thêm mới lễ tân đã được tạo thành công.');
     }
 
     /**
@@ -115,9 +109,9 @@ class DoctorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Doctor $doctor)
+    public function show(Receptionist $receptionist)
     {
-        return view('admin.doctors.show', compact('doctor'));
+        return view('admin.receptionists.show', compact('receptionist'));
     }
 
     /**
@@ -126,10 +120,9 @@ class DoctorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Doctor $doctor)
+    public function edit(Receptionist $receptionist)
     {
-        $doctorDepartments = DoctorDepartment::all();
-        return view('admin.doctors.edit', compact('doctor', 'doctorDepartments'));
+        return view('admin.receptionists.edit', compact('receptionist'));
     }
 
     /**
@@ -139,29 +132,26 @@ class DoctorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Doctor $doctor)
+    public function update(Request $request, Receptionist $receptionist)
     {
-        $doctorId = $doctor->id;
+        $receptionistId = $receptionist->id;
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'doctor_department_id' => 'required|integer|exists:doctor_departments,id,deleted_at,NULL',
-            'blood_group' => 'required|in:' . implode(',', array_keys(Doctor::$bloodGroups)),
-            'email' => 'required|string|max:255|unique:doctors,email,' . $doctorId . '|regex:'
+            'email' => 'required|string|max:255|unique:doctors,email,' . $receptionistId . '|regex:'
                 . config('const.regex_email_admin'),
             'designation' => 'nullable|string|max:255',
             'phone' => 'nullable|size:10|regex:' . config('const.regex_telephone'),
             'profile' => 'nullable',
-            'academic_level' => 'required|in:' . implode(',', array_keys(Doctor::$academicLevels)),
             'date_of_birth' => [
                 'nullable',
                 'date_format:' . config('const.format.date_form'),
                 'before_or_equal:' . Carbon::now()->format(config('const.format.date_form'))
             ],
-            'gender' => 'required|in:' . implode(',', array_keys(Doctor::$genders)),
+            'gender' => 'required|in:' . implode(',', array_keys(Receptionist::$genders)),
             'address' => 'nullable|string|max:255',
             'identity_number' => [
                 'required',
-                'unique:doctors,identity_number,' . $doctorId . '',
+                'unique:doctors,identity_number,' . $receptionistId . '',
                 'regex:' . config('const.regex_identity_number'),
             ],
             'identity_card_date' => [
@@ -174,16 +164,15 @@ class DoctorController extends Controller
                 'nullable',
                 'date_format:' . config('const.format.date_form'),
                 'before_or_equal:' . Carbon::now()->format(config('const.format.date_form'))
-            ],
-            'specialist' => 'nullable|string|max:1000',
+            ]
         ]);
 
         // Handle the avatar file upload
         if ($request->profile) {
-            $imagePath = "./imgDoctor/" . $doctor->filename;
+            $imagePath = "./imgReceptionist/" . $receptionist->filename;
             // Delete the old profile file, if there is one
-            if ($doctor->profile) {
-                Storage::delete($doctor->profile);
+            if ($receptionist->profile) {
+                Storage::delete($receptionist->profile);
                 File::delete($imagePath);
             }
 
@@ -191,25 +180,25 @@ class DoctorController extends Controller
 
             $filename = time() . '_' . $profile->getClientOriginalName();
             // Store the new profile file
-            $profilePath = $request->file('profile')->move('imgDoctor', $filename);
+            $profilePath = $request->file('profile')->move('imgReceptionist', $filename);
             $validatedData['profile'] = $profilePath;
             $validatedData['filename'] = $filename;
         }
 
-        $validatedData['status'] = Doctor::STATUS_ACTIVE;
+        $validatedData['status'] = Receptionist::STATUS_ACTIVE;
 
-        $doctor->update($validatedData);
-        $user = $doctor?->user;
-        
+        $receptionist->update($validatedData);
+
+        $user = $receptionist?->user;
         if ($user) {
             $user->update([
-                'email' => $doctor->email,
-                'name' => $doctor->name,
+                'email' => $receptionist->email,
+                'name' => $receptionist->name,
             ]);
         }
-        
-        return redirect()->route('doctors.index')
-            ->with('success', 'Thông tin bác sĩ đã được cập nhật thành công.');
+
+        return redirect()->route('receptionists.index')
+            ->with('success', 'Thông tin lễ tân đã được cập nhật thành công.');
     }
 
     /**
@@ -218,36 +207,30 @@ class DoctorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Doctor $doctor)
+    public function destroy(Receptionist $receptionist)
     {
-        $doctor->delete();
-        $doctor->user->delete();
-        return redirect()->route('doctors.index')
-            ->with('success', 'Bác sĩ đã được xoá thành công.');
+        $receptionist->delete();
+        $receptionist->user->delete();
+        return redirect()->route('receptionists.index')
+            ->with('success', 'Lễ tân đã được xoá thành công.');
     }
 
-    public function addAccountDoctor(Request $request, Doctor $doctor) {
-
-        // $validatedData = $request->validate([
-        //     'name' => 'required|string|max:255',
-        //     'email' => 'required|string|max:255|unique:users,email|regex:'
-        //         . config('const.regex_email_admin'),
-        // ]);
-        if (User::where('email', $doctor->email)->first()) {
-            return redirect()->back()->with('alert', 'Email đã tồn tại, vui lòng chọn email khác!');
+    public function addAccountReceptionist(Request $request,Receptionist $receptionist) {
+        if (User::where('email', $receptionist->email)->first()) {
+            return redirect()->back() ->with('alert', 'Email đã tồn tại, vui lòng chọn email khác!');
         }
         $user = User::create([
-            'email' => $doctor->email,
-            'name' => $doctor->name,
-            'role' => User::ROLE_DOCTOR,
+            'email' => $receptionist->email,
+            'name' => $receptionist->name,
+            'role' => User::ROLE_RECEPTIONIST,
             'status' => User::STATUS_ACTIVE,
             'password' => Hash::make('Aa@123456')
         ]);
-        $doctor->update([
+        $receptionist->update([
             'user_id' => $user->id
         ]);
-        Mail::send(new MailLogin($user));
-        return redirect()->route('doctors.index')
+        Mail::send(new MailLoginReceptionist($user));
+        return redirect()->route('$receptionists.index')
             ->with('success', 'Thêm mới tài khoản cho bác sĩ thành công.');
     }
 }

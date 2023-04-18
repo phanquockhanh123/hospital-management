@@ -48,7 +48,7 @@
               <p>Bệnh nhân</p>
             </div>
             <div class="icon">
-              <i class="ion ion-stats-bars"></i>
+              <i class="fa-solid fa-user-doctor"></i>
             </div>
             <a href="{{ route('patients.index') }}" class="small-box-footer">Xem thêm <i
                 class="fas fa-arrow-circle-right"></i></a>

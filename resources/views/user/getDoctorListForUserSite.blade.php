@@ -2,7 +2,7 @@
 
 <div class="page-section">
     <div class="container">
-        <h1 class="text-center mb-5 wow fadeInUp">Đội ngũ chuyên gia</h1>
+        <h1 class="text-center mb-5 wow fadeInUp">Đội ngũ bác sĩ</h1>
         <div>
             @foreach ($departments as $department)
                 <h2>{{ $department->name }} ({{ $department->doctors_count }} doctors)</h2>

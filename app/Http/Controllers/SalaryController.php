@@ -19,7 +19,7 @@ class SalaryController extends Controller
         $attendances = Attendance::select('user_id', DB::raw('YEAR(logout_time) as year'), DB::raw('MONTH(logout_time) as month'), DB::raw('COUNT(*) as days_worked'))
             ->groupBy('user_id', DB::raw('YEAR(logout_time)'), DB::raw('MONTH(logout_time)'))
             ->paginate(config('const.perPage'));
-
+        
         $dataSalaries = array_map(function ($attendance) {
             $user = User::where('id', $attendance['user_id'])->first();
             $roleUser = $user->role;

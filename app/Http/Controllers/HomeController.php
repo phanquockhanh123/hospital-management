@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Appointment;
 use Carbon\Carbon;
 use App\Models\News;
 use App\Models\User;
@@ -66,7 +67,8 @@ class HomeController extends Controller
         ]);
         $validatedData['status'] = BookAppointment::STATUS_PENDING;
         BookAppointment::create($validatedData);
-        return redirect()->route('home.index')->with('success', 'Đã nhận lịch hẹn. Chúng tôi sẽ liên hệ với quý khách hàng sau !');
+
+        return redirect()->route('home.index')->with('alert', 'Đã nhận lịch hẹn. Chúng tôi sẽ liên hệ với quý khách hàng sau !');
     }
 
     public function getDoctorListForUserSite()
@@ -114,6 +116,11 @@ class HomeController extends Controller
         $countDiagnosis = 1;
         $countDiagnosisItem = 1;
         $countBill = 1;
+
+        // get appointment
+        $patient = Patient::where('user_id', Auth::user()->id)->first();
+        $appointments = Appointment::where('patient_id', $patient->id)->get();
+        $countAppointment = 1;
         return view('user.getInfoPatient', compact(
             'patient',
             'diaPre',
@@ -126,6 +133,7 @@ class HomeController extends Controller
             'countDiagnosis',
             'countDiagnosisItem',
             'countBill',
+            'appointments'
         ));
     }
 

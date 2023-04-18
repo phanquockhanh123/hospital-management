@@ -95,10 +95,18 @@
                             </p>
                         </a>
                     </li>
+
                     <li class="nav-item">
                         <a href="{{ route('doctors.index') }}" class="nav-link @if (Request::route()->getName() == 'doctors.index') active @endif">
                             <i class="nav-icon far fa-hospital"></i>
                             <p>Bác sĩ</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ route('receptionists.index') }}" class="nav-link @if (Request::route()->getName() == 'receptionists.index') active @endif">
+                            <i class="nav-icon far fa-user"></i>
+                            <p>Lễ tân</p>
                         </a>
                     </li>
                     <li class="nav-item">
