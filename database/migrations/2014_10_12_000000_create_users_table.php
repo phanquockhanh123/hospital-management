@@ -16,12 +16,8 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('phone')->nullable();
-            $table->string('address')->nullable();
             $table->integer('role')->default(0);
-            $table->integer('gender')->default(0);
             $table->string('email')->unique();
-            $table->date('dob')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
@@ -30,8 +26,6 @@ return new class extends Migration
             $table->string('google_id')->nullable();
             $table->rememberToken()->nullable();
             $table->foreignId('current_team_id')->nullable();
-            $table->string('profile')->nullable();
-            $table->string('filename')->nullable();
             $table->string('profile_photo_path')->nullable();
             $table->timestamps();
             $table->softDeletes();

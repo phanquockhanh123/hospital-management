@@ -15,6 +15,7 @@ class CreateDoctorsTable extends Migration
     {
         Schema::create('doctors', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('doctor_department_id');
             $table->string('blood_group');
             $table->string('name');
@@ -37,10 +38,17 @@ class CreateDoctorsTable extends Migration
             $table->softDeletes();
 
             // declare foreign key
+            
             $table->foreign('doctor_department_id', 'FK_doctors_1')
                 ->references('id')
                 ->on('doctor_departments')
                 ->onDelete('cascade');
+
+            $table->foreign('user_id', 'FK_doctors_2')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
+            
         });
     }
 

@@ -326,34 +326,61 @@
                 <div class="card mb-sm-3 mb-md-0 contacts_card">
                     <div class="card-header">
                         <div class="input-group">
-                            <input type="text" placeholder="Search..." name="search" id="search"
-                                class="form-control search">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text search_btn"><i class="fas fa-search"></i></span>
-                            </div>
+                            <h3 style="color:aqua; text-align:center;">Danh sách người dùng</h3>
                         </div>
                     </div>
                     <div class="card-body contacts_body">
                         <ul class="users" style="list-style:none">
                             @foreach ($users as $user)
-                            <li class="user" id="{{ $user->id }}">
+                            @if (Auth::user()->role == 0 && $user->role ==1 )
+                            <li class="user" id="{{ $user->id }}" >
                                 @if ($user->unread)
-                                <span class="pending" style="color:blue;">{{ $user->unread }}</span>
-                                @endif
+                                        <span class="pending" style="color:blue;">{{ $user->unread }}</span>
+                                    @endif
                                 <div class="d-flex bd-highlight">
-                                    <div class="img_cont">
-                                        <img src="{{ asset('imgUser/' . $user->filename) }}" style="border-radius: 50%;vertical-align: middle;
+                                    
+                                    <div class="img_cont">   
+                                        <img src="https://cdn0.iconfinder.com/data/icons/avatar-4/512/Receptionist-512.png" 
+                                         style="border-radius: 50%;vertical-align: middle;
                                             width: 50px;
                                             height: 50px;
                                             border-radius: 50%;" alt="" title="">
-                                        <span class="online_icon"></span>
                                     </div>
+                                    
                                     <div class="user_info">
-                                        <span style="font-size: 18px">{{ $user->name }} {{ $user->id == Auth::id() }}</span>
+                                        <span style="font-size: 18px">{{ $user->name }} {{ $user->id == Auth::id()
+                                            }}</span>
                                         <p>{{ $user->email }}</p>
                                     </div>
                                 </div>
                             </li>
+                            @else
+                            <li class="user" id="{{ $user->id }}" >
+                                @if ($user->unread)
+                                        <span class="pending" style="color:blue;">{{ $user->unread }}</span>
+                                    @endif
+                                <div class="d-flex bd-highlight">
+                                    
+                                    <div class="img_cont">   
+                                        <img src="@if ($user->role == 2) https://as2.ftcdn.net/v2/jpg/01/34/29/31/1000_F_134293169_ymHT6Lufl0i94WzyE0NNMyDkiMCH9HWx.jpg
+                                         @elseif ($user->role == 1) https://cdn0.iconfinder.com/data/icons/avatar-4/512/Receptionist-512.png
+                                         @elseif ($user->role == 0) https://cdn.w600.comps.canstockphoto.com/flu-face-mask-icon-vector-with-patient-vector-clipart_csp83448308.jpg
+                                         @else https://thumbs.dreamstime.com/z/admin-icon-vector-male-user-person-profile-avatar-gear-cogwheel-settings-configuration-flat-color-glyph-pictogram-150138136.jpg
+                                         @endif" 
+                                         style="border-radius: 50%;vertical-align: middle;
+                                            width: 50px;
+                                            height: 50px;
+                                            border-radius: 50%;" alt="" title="">
+                                    </div>
+                                    
+                                    <div class="user_info">
+                                        <span style="font-size: 18px">{{ $user->name }} {{ $user->id == Auth::id()
+                                            }}</span>
+                                        <p>{{ $user->email }}</p>
+                                    </div>
+                                </div>
+                            </li>
+                            @endif
                             @endforeach
                         </ul>
                     </div>

@@ -1,15 +1,13 @@
   @include('user.header')
   @include('user.banner')
+  {{-- @include('user.about') --}}
   
-  @include('user.about')
-  
-
   <script>
-      @if (Session::has('success'))
-        showToastMessage("Guest added successfully test2")
-          .delay(5000)
-          .fadeOut(4000);
-      @endif
+    var msg = '{{Session::get('alert')}}';
+    var exist = '{{Session::has('alert')}}';
+    if(exist){
+      alert(msg);
+    }
   </script>
   @include('user.appointment')
 

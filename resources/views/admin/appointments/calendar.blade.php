@@ -22,7 +22,7 @@
     <div class="wrapper">
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="admin2/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60"
+            <img class="animation__shake" src="https://media.licdn.com/dms/image/C4D03AQGB9X-aVyccoQ/profile-displayphoto-shrink_800_800/0/1517596403369?e=2147483647&v=beta&t=jJ0WBwNT7Uq1bc4KRRBHJM_cOmv3Yt544vbvRh3VwYE" alt="AdminLTELogo" height="60"
                 width="60">
         </div>
 
@@ -63,8 +63,8 @@
                                 <label for="patient_id">Chọn bệnh nhân:</label>
                                 <select name="patient_id" id="patient_id" class="form-control input-sm m-bot15">
                                     <option value="">----Chọn bệnh nhân----</option>
-                                    @foreach ($doctors as $doctor)
-                                    <option value="{{ $doctor->id }}">{{ $doctor->name }}</option>
+                                    @foreach ($patients as $patient)
+                                    <option value="{{ $patient->id }}">{{ $patient->name }}</option>
                                     @endforeach
                                 </select>
                                 @error('patient_id')

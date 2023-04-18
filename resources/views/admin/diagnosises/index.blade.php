@@ -13,7 +13,7 @@
 
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="admin2/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60"
+            <img class="animation__shake" src="https://media.licdn.com/dms/image/C4D03AQGB9X-aVyccoQ/profile-displayphoto-shrink_800_800/0/1517596403369?e=2147483647&v=beta&t=jJ0WBwNT7Uq1bc4KRRBHJM_cOmv3Yt544vbvRh3VwYE" alt="AdminLTELogo" height="60"
                 width="60">
         </div>
 
@@ -80,7 +80,8 @@
                                                     <th>Chẩn đoán bệnh phụ</th>
                                                     <th>Trạng thái</th>
                                                     <th>PDF</th>
-                                                    <th>Sửa/Xóa</th>
+                                                    <th>Tạo đơn thuốc</th>
+                                                    <th>Hành động</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -102,22 +103,24 @@
                                                         </td>
                                                         <td><button class="btn btn-primary"><a href="{{ route('diagnosises.pdf', $diagnosis->id) }}">In</a></button></td>
                                                         <td>
+                                                            <a  href="{{ route('diagnosises.create-prescription', $diagnosis->id) }}"
+                                                                class="btn btn-warning @if ($diagnosis->status == 1) disabled @endif">
+                                                                <i class="fas fa-edit"></i> Đơn thuốc
+                                                            </a>
+                                                        </td>
+                                                        <td>
                                                             <div class="btn-group">
-                                                                <a href="{{ route('diagnosises.edit', $diagnosis->id) }}"
-                                                                    class="btn btn-primary">
-                                                                    <i class="fas fa-edit"></i> Sửa
+                                                                <a href="{{ route('diagnosises.show', $diagnosis) }}" style="margin-right: 10px;color:blue;font-size:22px">
+                                                                  <i class="fas fa-eye"></i>
                                                                 </a>
-                                                                <button type="button" class="btn btn-danger"
-                                                                    data-toggle="modal"
-                                                                    data-target="#deleteModal{{ $diagnosis->id }}"
-                                                                    style="color: red;">
-                                                                    <i class="fas fa-trash-alt"></i> Xóa
+                                                                <a href="{{ route('diagnosises.edit', $diagnosis->id) }}" style="margin-right: 10px;color:green;font-size:22px">
+                                                                  <i class="fas fa-edit"></i>
+                                                                </a>
+                                                                <button type="button" data-toggle="modal"
+                                                                  data-target="#deleteModal{{ $diagnosis->id }}" style="color: red;font-size:22px">
+                                                                  <i class="fas fa-trash-alt"></i>
                                                                 </button>
-                                                                <a  href="{{ route('diagnosises.create-prescription', $diagnosis->id) }}"
-                                                                    class="btn btn-warning @if ($diagnosis->status == 1) disabled @endif">
-                                                                    <i class="fas fa-edit"></i> Đơn thuốc
-                                                                </a>
-                                                            </div>
+                                                              </div>
                                                         </td>
 
                                                         <!-- Modal -->
@@ -181,12 +184,12 @@
         <!-- /.content-wrapper -->
 
         <footer class="main-footer">
-            <strong>Copyright &copy; 2023 <a href="#">Khánh Engineer</a>.</strong>
-            All rights reserved.
+            <strong>Bản quyền &copy; 2023 <a href="#">Phan Quốc Khánh</a>.</strong>
+            Đã đăng ký Bản quyền.
             <div class="float-right d-none d-sm-inline-block">
-                <b>Laravel</b> 8.1.0
+              <b>Laravel</b> 8.1.0
             </div>
-        </footer>
+          </footer>
 
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">

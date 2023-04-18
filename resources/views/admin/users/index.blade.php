@@ -13,7 +13,7 @@
 
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
-      <img class="animation__shake" src="admin2/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+      <img class="animation__shake" src="https://media.licdn.com/dms/image/C4D03AQGB9X-aVyccoQ/profile-displayphoto-shrink_800_800/0/1517596403369?e=2147483647&v=beta&t=jJ0WBwNT7Uq1bc4KRRBHJM_cOmv3Yt544vbvRh3VwYE" alt="AdminLTELogo" height="60" width="60">
     </div>
 
     <!-- Navbar -->
@@ -40,11 +40,11 @@
                 </div>
               </form>
             </div>
-            <div class="col-sm-3" style="float: right;">
+            {{-- <div class="col-sm-3" style="float: right;">
               <a href="{{ route('users.create') }}" class="btn btn-success">
                 <i class="fas fa-plus"></i> Tạo mới
               </a>
-            </div>
+            </div> --}}
           </div>
         </div><!-- /.container-fluid -->
       </section>
@@ -74,54 +74,53 @@
                   <table id="example2" class="table table-bordered table-hover">
                     <thead>
                       <tr>
-                        <th>Người dùng</th>
+                        <th>Tên người dùng</th>
                         <th>Quyền</th>
                         <th>Email</th>
                         <th>Trạng thái</th>
-                        <th>Sửa/Xóa</th>
                       </tr>
                     </thead>
                     <tbody>
                       @foreach ($users as $user)
                       <tr>
-                        <td>
-                          <a href="{{ route('users.show', $user) }}"><img src="{{ asset('imgUser/'. $user->filename) }}"
-                              style="border-radius: 50%;vertical-align: middle;
-                                          width: 50px;
-                                          height: 50px;
-                                          border-radius: 50%;" alt="" title="">{{ $user->name }}</a>
-                        </td>
+                        <td>{{ $user->name }}</td>
                         <td>
                           @if($user->role == 0)
-                          <span class="text-primary">Lễ tân</span>
+                          <span class="text-primary">Bệnh nhân</span>
                           @endif
                           @if($user->role == 1)
-                          <span class="text-primary">Bác sĩ</span>
+                          <span class="text-primary">Lễ tân</span>
                           @endif
                           @if($user->role == 2)
+                          <span class="text-primary">Bác sĩ</span>
+                          @endif
+                          @if($user->role == 3)
                           <span class="text-primary">Root</span>
                           @endif
                         </td>
                         <td>{{ $user->email }}</td>
                         <td>
-                          @if($user->status == 0)
+                        @if($user->status == 0)
                           <span class="text-danger">Đã vô hiệu</span>
                           @endif
                           @if($user->status == 1)
                           <span class="text-primary">Đang hoạt động</span>
                           @endif
                         </td>
-                        <td>
+                        {{-- <td>
                           <div class="btn-group">
-                            <a href="{{ route('users.edit', $user->id) }}" class="btn btn-primary">
-                              <i class="fas fa-edit"></i> Sửa
+                            <a href="{{ route('users.show', $user) }}" style="margin-right: 10px;color:blue;font-size:22px">
+                            <i class="fas fa-eye"></i>
                             </a>
-                            <button type="button" class="btn btn-danger" data-toggle="modal"
-                              data-target="#deleteModal{{ $user->id }}" style="color: red;">
-                              <i class="fas fa-trash-alt"></i> Xóa
+                            <a href="{{ route('users.edit', $user->id) }}" style="margin-right: 10px;color:green;font-size:22px">
+                              <i class="fas fa-edit"></i>
+                            </a>
+                            <button type="button" data-toggle="modal"
+                              data-target="#deleteModal{{ $user->id }}" style="color: red;font-size:22px">
+                              <i class="fas fa-trash-alt"></i>
                             </button>
                           </div>
-                        </td>
+                        </td> --}}
 
                         <!-- Modal -->
                         <div class="modal fade" id="deleteModal{{ $user->id }}" tabindex="-1" role="dialog"
@@ -172,8 +171,8 @@
     <!-- /.content-wrapper -->
 
     <footer class="main-footer">
-      <strong>Copyright &copy; 2023 <a href="#">Khánh Engineer</a>.</strong>
-      All rights reserved.
+      <strong>Bản quyền &copy; 2023 <a href="#">Phan Quốc Khánh</a>.</strong>
+      Đã đăng ký Bản quyền.
       <div class="float-right d-none d-sm-inline-block">
         <b>Laravel</b> 8.1.0
       </div>

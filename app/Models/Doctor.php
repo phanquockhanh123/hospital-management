@@ -57,6 +57,7 @@ class Doctor extends BaseModel
     protected $fillable = [
         'name',
         'doctor_department_id',
+        'user_id',
         'blood_group',
         'email',
         'designation',
@@ -90,5 +91,13 @@ class Doctor extends BaseModel
     public function doctorDepartment()
     {
         return $this->belongsTo(DoctorDepartment::class);
+    }
+
+    /**
+     * Get the user
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

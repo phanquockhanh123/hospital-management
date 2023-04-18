@@ -77,7 +77,7 @@
                             </button>
                             @else
                             <span class="inline-flex rounded-md">
-                                <img src="{{ asset('imgUser/'. Auth::user()->filename) }}" style="border-radius: 50%;vertical-align: middle;
+                                <img src=" ./imgPatient/{{ Auth::user()->filename}} " style="border-radius: 50%;vertical-align: middle;
                                           width: 40px;
                                           height: 40px;
                                           border-radius: 50%;" alt="{{ Auth::user()->name }}" title="">

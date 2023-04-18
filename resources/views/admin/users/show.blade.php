@@ -13,7 +13,7 @@
 
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="admin2/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60"
+            <img class="animation__shake" src="https://media.licdn.com/dms/image/C4D03AQGB9X-aVyccoQ/profile-displayphoto-shrink_800_800/0/1517596403369?e=2147483647&v=beta&t=jJ0WBwNT7Uq1bc4KRRBHJM_cOmv3Yt544vbvRh3VwYE" alt="AdminLTELogo" height="60"
                 width="60">
         </div>
 
@@ -30,7 +30,7 @@
                 <div class="col-md-9">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title"> <span class="text-primary">NGƯỜI DÙNG :  {{ $user->name }}</span></h3>
+                            <h3 class="card-title">Người dùng :   <span class="text-primary">{{ $user->name }}</span></h3>
                         </div>
                         <div class="card-body">
                             <table class="table">
@@ -48,32 +48,32 @@
 
                                         </td>
                                     </tr>
-                                    <tr>
+                                    {{-- <tr>
                                         <th>Giới tính:</th>
                                         <td>
                                             @if($user->gender == 0)
-                                            <span class="text-primary">Nam</span>
+                                            <span>Nam</span>
                                             @endif
                                             @if($user->gender == 1)
-                                            <span class="text-primary">Nữ</span>
+                                            <span>Nữ</span>
                                             @endif
                                         </td>
-                                    </tr>
-                                        <th>Điện thoại:</th>
+                                    </tr> --}}
+                                        {{-- <th>Điện thoại:</th>
                                         <td>{{ $user->phone }}</td>
-                                    </tr>
-                                    <tr>
+                                    </tr> --}}
+                                    {{-- <tr>
                                         <th>Địa chỉ:</th>
                                         <td>{{ $user->address }}</td>
-                                    </tr>
+                                    </tr> --}}
                                     <tr>
                                         <th>Email:</th>
                                         <td>{{ $user->email }}</td>
                                     </tr>
-                                    <tr>
+                                    {{-- <tr>
                                         <th>Ngày sinh:</th>
                                         <td>{{ $user->dob }}</td>
-                                    </tr>
+                                    </tr> --}}
                                 </tbody>
                             </table>
 
@@ -105,12 +105,12 @@
         </div>
 
         <footer class="main-footer">
-            <strong>Copyright &copy; 2023 <a href="#">Khánh Engineer</a>.</strong>
-            All rights reserved.
+            <strong>Bản quyền &copy; 2023 <a href="#">Phan Quốc Khánh</a>.</strong>
+            Đã đăng ký Bản quyền.
             <div class="float-right d-none d-sm-inline-block">
-                <b>Laravel</b> 8.1.0
+              <b>Laravel</b> 8.1.0
             </div>
-        </footer>
+          </footer>
 
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">

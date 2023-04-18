@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use App\Models\Patient;
 use App\Models\Attendance;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -13,10 +14,10 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ZoomController;
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\SalaryController;
 use App\Http\Controllers\MedicalController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\DiagnosisController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AppointmentController;
@@ -25,7 +26,7 @@ use App\Http\Controllers\MedicalDeviceController;
 use App\Http\Controllers\RequestDeviceController;
 use App\Http\Controllers\BookAppointmentController;
 use App\Http\Controllers\DoctorDepartmentController;
-use App\Http\Controllers\SalaryController;
+use App\Http\Controllers\ReceptionistController;
 
 /*
 |--------------------------------------------------------------------------
@@ -94,9 +95,27 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/doctors/{doctor}/edit', 'edit')->name('doctors.edit');
             Route::put('/doctors/{doctor}', 'update')->name('doctors.update');
             Route::delete('/doctors/{doctor}', 'destroy')->name('doctors.destroy');
+
+            Route::get('/create_account_doctor/{doctor}', 'addAccountDoctor')->name('doctors.add-account-doctor');
         });
     });
 
+    //-----------------------------------Receptionists ----------------------------------------------------------------
+    Route::controller(ReceptionistController::class)->group(function () {
+        Route::middleware([config('const.auth.low')])->group(function () {
+            Route::get('/receptionists', 'index')->name('receptionists.index');
+        });
+        Route::middleware([config('const.auth.high')])->group(function () {
+            Route::get('/receptionists/create', 'create')->name('receptionists.create');
+            Route::post('/receptionists', 'store')->name('receptionists.store');
+            Route::get('/receptionists/{receptionist}', 'show')->name('receptionists.show');
+            Route::get('/receptionists/{receptionist}/edit', 'edit')->name('receptionists.edit');
+            Route::put('/receptionists/{receptionist}', 'update')->name('receptionists.update');
+            Route::delete('/receptionists/{receptionist}', 'destroy')->name('receptionists.destroy');
+
+            Route::get('/create_account_receptionist/{receptionist}', 'addAccountReceptionist')->name('receptionists.add-account-receptionist');
+        });
+    });
 
     //-----------------------------------Patients ----------------------------------------------------------------
     Route::controller(PatientController::class)->group(function () {
@@ -261,20 +280,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
         });
     });
 
-
-    //-----------------------------------Files ----------------------------------------------------------------
-    Route::controller(DocumentController::class)->group(function () {
-        Route::middleware([config('const.auth.mid')])->group(function () {
-            Route::get('/documents', 'index')->name('documents.index');
-            Route::get('/documents/create', 'create')->name('documents.create');
-            Route::post('/documents', 'store')->name('documents.store');
-            Route::get('/documents/{document}', 'show')->name('documents.show');
-            Route::get('/documents/{document}/edit', 'edit')->name('documents.edit');
-            Route::put('/documents/{document}', 'update')->name('documents.update');
-            Route::delete('/documents/{document}', 'destroy')->name('documents.destroy');
-        });
-    });
-
     //-----------------------------------Chấm công ----------------------------------------------------------------
     Route::controller(AttendanceController::class)->group(function () {
         Route::middleware([config('const.auth.high')])->group(function () {
@@ -309,8 +314,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     //--------------------------------Chats ------------------------------------------------------------------------------------------------
     Route::controller(ChatController::class)->group(function () {
-        Route::middleware([config('const.auth.low')])->group(function () {
+        Route::middleware([config('const.auth.patient')])->group(function () {
             Route::get('/chats', 'index')->name('chats.index');
+            Route::get('/chats/user', 'getChatUserUI')->name('chats.chat-user-ui');
             Route::get('/message/{id}', 'getMessage')->name('message');
             Route::get('/infor/{id}', 'getInfor')->name('getInfor');
             Route::post('/message', 'sendMessage')->name('sendMessage');
@@ -354,6 +360,8 @@ Route::controller(HomeController::class)->group(function () {
     Route::post('/user/appointments', 'storeAppointment')->name('user.appointments-store');
     Route::get('/get_doctor_list_for_user_site', 'getDoctorListForUserSite')->name('home.get-doctor-list-for-user-site');
     Route::get('/get_doctor_detail_for_user_site/{doctor}', 'getDoctorDetailForUserSite')->name('home.get-doctor-detail-for-user-site');
+    Route::get('/get_info_patient', 'getInfoPatient')->name('user.get-info-patient');
+    Route::put('/patients/{patient}/user', 'updateUserPatient')->name('home.update-patient');
 });
 
 
@@ -363,6 +371,16 @@ Route::get('/auth/google', function () {
 
 Route::get('/auth/google/callback', function () {
     $googleUser = Socialite::driver('google')->user();
+    if (User::where('email', $googleUser->email)->whereNull('google_id')->first()) {
+        return redirect()->back() ->with('alert', 'Email đã tồn tại, vui lòng chọn email khác!');
+    }
+    if(!Patient::where('email', $googleUser->email)->first()) {
+        Patient::create([
+            'name' => $googleUser->name,
+            'email' => $googleUser->email,
+            'patient_code' => Patient::generateNextCode()
+        ]);
+    }
     $user = User::updateOrCreate([
         'google_id' => $googleUser->id,
     ], [
@@ -371,7 +389,12 @@ Route::get('/auth/google/callback', function () {
         'google_token' => $googleUser->token,
         'google_refresh_token' => $googleUser->refreshToken,
     ]);
+   
     Auth::login($user);
-
     return redirect('/');
 });
+
+Route::get('/auth/google/logout', function () {
+    Auth::logout();
+    return redirect('/');
+})->name('home.logout-with-google');

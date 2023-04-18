@@ -119,13 +119,13 @@ class MedicalDeviceController extends Controller
     public function update(Request $request, MedicalDevice $medical_device)
     {
         $validatedData = $request->validate([
-            'department_id' => 'required|integer|exists:doctor_departments,id,deleted_at,NULL',
-            'name' => 'required|string|max:255',
+            'department_id' => 'nullable|integer|exists:doctor_departments,id,deleted_at,NULL',
+            'name' => 'nullable|string|max:255',
             'description'  => 'nullable|string|max:255',
-            'expired_date' => 'required',
-            'quantity' => 'required|integer',
-            'charge' => 'required|integer',
-            'profile' => 'required',
+            'expired_date' => 'nullable',
+            'quantity' => 'nullable|integer',
+            'charge' => 'nullable|integer',
+            'profile' => 'nullable',
         ]);
 
         // Handle the avatar file upload

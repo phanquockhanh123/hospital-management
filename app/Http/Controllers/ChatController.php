@@ -11,23 +11,25 @@ use Illuminate\Support\Facades\Auth;
 
 class ChatController extends Controller
 {
+    public function getChatUserUI() {
+        return view('chat-realtime.chat-user-ui'); 
+    }
     public function index() {
         
         // count how many message are unread from the selected user
-        $users = DB::select("select users.id, users.name, users.filename, users.email, count(is_read) as unread 
+        $users = DB::select("select users.id, users.role, users.name, users.email, count(is_read) as unread 
         from users LEFT  JOIN  messages ON users.id = messages.from and is_read = 0 and messages.to = " . Auth::id() . "
-        where users.id != " . Auth::id() . " 
-        group by users.id, users.name, users.filename, users.email");
-
+        where users.id != " . Auth::id() . "
+        group by users.id, users.name, users.email, users.role");
         return view('chat-realtime.chat', compact('users'));
     }
     public function getMessage($user_id) {
         $my_id = Auth::id();
 
-        $users = DB::select("select users.id, users.name, users.filename, users.email, count(is_read) as unread 
+        $users = DB::select("select users.id, users.name, users.email, count(is_read) as unread 
         from users LEFT  JOIN  messages ON users.id = messages.from and is_read = 0 and messages.to = " . Auth::id() . "
         where users.id != " . Auth::id() . " 
-        group by users.id, users.name, users.filename, users.email");
+        group by users.id, users.name, users.email");
 
         // Make read all unread message
         Message::where(['from' => $user_id, 'to' => $my_id])->update(['is_read' => 1]);

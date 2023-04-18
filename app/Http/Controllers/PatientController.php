@@ -141,21 +141,21 @@ class PatientController extends Controller
     public function update(Request $request, Patient $patient)
     {
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'blood_group' => 'required|in:' . implode(',', array_keys(Patient::$bloodGroups)),
-            'email' => 'required|string|max:255|unique:doctors,email|regex:'
+            'name' => 'nullable|string|max:255',
+            'blood_group' => 'nullable|in:' . implode(',', array_keys(Patient::$bloodGroups)),
+            'email' => 'nullable|string|max:255|unique:doctors,email|regex:'
             . config('const.regex_email_admin'),
             'phone' => 'nullable|size:10|regex:' . config('const.regex_telephone'),
             'date_of_birth'  => [
-                'required',
+                'nullable',
                 'date_format:' . config('const.format.date_form'),
                 'before_or_equal:' . Carbon::now()->format(config('const.format.date_form'))
             ],
-            'gender' => 'required|in:' . implode(',', array_keys(Patient::$genders)),
-            'profile'  => 'required',
-            'address' => 'required|string|max:255',
+            'gender' => 'nullable|in:' . implode(',', array_keys(Patient::$genders)),
+            'profile'  => 'nullable',
+            'address' => 'nullable|string|max:255',
             'identity_number' => [
-                'required',
+                'nullable',
                 'regex:' . config('const.regex_identity_number'),
             ],
             'identity_card_date' => [

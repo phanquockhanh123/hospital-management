@@ -73,7 +73,7 @@ class PrescriptionController extends Controller
             'side_disease' => $request->side_disease,
             'note' => $request->note,
         ]);
-        
+
         $data = [
             "medical_id" => array_values($validatedData['medical_id']),
             "dosage" => array_values($validatedData['dosage']),
@@ -92,6 +92,8 @@ class PrescriptionController extends Controller
         }
         $prescriptionItemData = array_map(function ($preItem) use ($prescription) {
             $preItem['prescription_id'] = $prescription->id;
+            $preItem['created_at'] = now();
+            $preItem['updated_at'] = now();
             return $preItem;
         }, $newArrays);
 
@@ -103,8 +105,7 @@ class PrescriptionController extends Controller
             $medicalUpdate = Medical::where('id', $dataItem['medical_id'])->first();
             $totalMoney += $medicalUpdate->export_price * $dataItem['amount'];
             // check quantity input with database
-            if($dataItem['amount'] > $medicalUpdate->quantity) {
-                
+            if ($dataItem['amount'] > $medicalUpdate->quantity) {
             }
             $medicalUpdate->update(['quantity' => $medicalUpdate->quantity - $dataItem['amount']]);
         }
@@ -176,7 +177,7 @@ class PrescriptionController extends Controller
             'side_disease' => $request->side_disease,
             'note' => $request->note,
         ]);
-        
+
         $data = [
             "medical_id" => array_values($validatedData['medical_id']),
             "dosage" => array_values($validatedData['dosage']),
@@ -198,7 +199,34 @@ class PrescriptionController extends Controller
             $preItem['prescription_id'] = $prescription->id;
             return $preItem;
         }, $newArrays);
+
         PrescriptionItem::insert($prescriptionItemData);
+
+        // Update Bills
+        $prescriptionPrice = 0;
+        $diagnosisPrice = 0;
+        foreach ($newArrays as $dataItem) {
+            $medicalUpdate = Medical::where('id', $dataItem['medical_id'])->first();
+            $prescriptionPrice += $medicalUpdate->export_price * $dataItem['amount'];
+            // check quantity input with database
+            if ($dataItem['amount'] > $medicalUpdate->quantity) {
+            }
+            $medicalUpdate->update(['quantity' => $medicalUpdate->quantity - $dataItem['amount']]);
+        }
+
+        foreach ($prescription->diagnosis->diagnosisItems as $diagPre) {
+            $diagnosisPrice += $diagPre->service->all_price;
+        }
+
+        $billData = [
+            'prescription_id' => $prescription->id,
+            'total_money' => $prescriptionPrice + $diagnosisPrice,
+        ];
+        if ($prescription->bill) {
+            Bill::where('id', $prescription->bill->id)->update($billData);
+        }
+
+
         return redirect()->route('prescriptions.index')
             ->with('success', 'Thông tin đơn thuốc đã được cập nhật thành công.');
     }
@@ -245,10 +273,10 @@ class PrescriptionController extends Controller
         $doctors = Doctor::all();
         $patients = Patient::all();
         $medicals = Medical::all();
-        return view('admin.prescriptions.create-prescription', compact('diagnosis', 'doctors', 'patients','medicals'));
+        return view('admin.prescriptions.create-prescription', compact('diagnosis', 'doctors', 'patients', 'medicals'));
     }
 
-     /**
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -270,7 +298,7 @@ class PrescriptionController extends Controller
             'diagnosis_id' => $diagnosis->id,
             'note' => $request->note,
         ]);
-        
+
         $data = [
             "medical_id" => array_values($validatedData['medical_id']),
             "dosage" => array_values($validatedData['dosage']),
@@ -289,6 +317,8 @@ class PrescriptionController extends Controller
         }
         $prescriptionItemData = array_map(function ($preItem) use ($prescription) {
             $preItem['prescription_id'] = $prescription->id;
+            $preItem['created_at'] = now();
+            $preItem['updated_at'] = now();
             return $preItem;
         }, $newArrays);
 
@@ -301,8 +331,7 @@ class PrescriptionController extends Controller
             $medicalUpdate = Medical::where('id', $dataItem['medical_id'])->first();
             $totalMoney += $medicalUpdate->export_price * $dataItem['amount'];
             // check quantity input with database
-            if($dataItem['amount'] > $medicalUpdate->quantity) {
-                
+            if ($dataItem['amount'] > $medicalUpdate->quantity) {
             }
 
             $medicalUpdate->update(['quantity' => $medicalUpdate->quantity - $dataItem['amount']]);
@@ -319,5 +348,4 @@ class PrescriptionController extends Controller
         return redirect()->route('bills.index')
             ->with('success', 'Đơn thuốc đã được tạo thành công.');
     }
-
 }

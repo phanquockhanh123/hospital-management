@@ -13,7 +13,7 @@
 
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="admin2/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60"
+            <img class="animation__shake" src="https://media.licdn.com/dms/image/C4D03AQGB9X-aVyccoQ/profile-displayphoto-shrink_800_800/0/1517596403369?e=2147483647&v=beta&t=jJ0WBwNT7Uq1bc4KRRBHJM_cOmv3Yt544vbvRh3VwYE" alt="AdminLTELogo" height="60"
                 width="60">
         </div>
 
@@ -30,7 +30,7 @@
                 <div class="col-md-9">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title"> <span class="text-primary">BỆNH NHÂN :  {{ $patient->name }}</span></h3>
+                            <h3 class="card-title">BỆNH NHÂN : <span class="text-primary">  {{ $patient->name }}</span></h3>
                         </div>
                         <div class="card-body">
                             <table class="table">
@@ -56,10 +56,10 @@
                                         <th>Giới tính:</th>
                                         <td>
                                             @if($patient->gender == 0)
-                                            <span class="text-primary">Nam</span>
+                                            <span>Nam</span>
                                             @endif
                                             @if($patient->gender == 1)
-                                            <span class="text-primary">Nữ</span>
+                                            <span>Nữ</span>
                                             @endif
                                         </td>
                                     </tr>
@@ -67,16 +67,16 @@
                                         <th>Nhóm máu:</th>
                                         <td>
                                             @if($patient->blood_group == 0)
-                                            <span class="text-primary">Group O</span>
+                                            <span>Group O</span>
                                             @endif
                                             @if($patient->blood_group == 1)
-                                            <span class="text-primary">Group A</span>
+                                            <span>Group A</span>
                                             @endif
                                             @if($patient->blood_group == 2)
-                                            <span class="text-primary">Group B</span>
+                                            <span>Group B</span>
                                             @endif
                                             @if($patient->blood_group == 3)
-                                            <span class="text-primary">Group AB</span>
+                                            <span>Group AB</span>
                                             @endif
                                         </td>
                                     </tr>
@@ -125,7 +125,7 @@
                                                         }}</td>
                                                         <td>{{ $val['main_diagnosis'] }}</td>
                                                         <td>{{ $val['side_diagnosis'] }}</td>
-                                                        <td>{{ $val['created_at'] }}</td>
+                                                        <td>{{ date('d/m/Y', strtotime($val['created_at'])) }}</td>
                                                     </tr>
                                                     @endforeach
                                                 </tbody>
@@ -160,7 +160,7 @@
                                                         <td>{{ $val['unit'] }}</td>
                                                         <td>{{ $val['method'] }}</td>
                                                         <td>{{ $val['diagnosis_note'] }}</td>
-                                                        <th>{{ $val['updated_at'] }}</th>
+                                                        <td>{{ date('d/m/Y', strtotime($val['created_at'])) }}</td>
                                                     </tr>
                                                     @endforeach
                                                 </tbody>
@@ -199,13 +199,12 @@
         </div>
 
         <footer class="main-footer">
-            <strong>Copyright &copy; 2023 <a href="#">Khánh Engineer</a>.</strong>
-            All rights reserved.
+            <strong>Bản quyền &copy; 2023 <a href="#">Phan Quốc Khánh</a>.</strong>
+            Đã đăng ký Bản quyền.
             <div class="float-right d-none d-sm-inline-block">
-                <b>Laravel</b> 8.1.0
+              <b>Laravel</b> 8.1.0
             </div>
-        </footer>
-
+          </footer>
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">
             <!-- Control sidebar content goes here -->

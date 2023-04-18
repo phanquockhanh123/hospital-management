@@ -13,7 +13,7 @@
 
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="admin2/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60"
+            <img class="animation__shake" src="https://media.licdn.com/dms/image/C4D03AQGB9X-aVyccoQ/profile-displayphoto-shrink_800_800/0/1517596403369?e=2147483647&v=beta&t=jJ0WBwNT7Uq1bc4KRRBHJM_cOmv3Yt544vbvRh3VwYE" alt="AdminLTELogo" height="60"
                 width="60">
         </div>
 
@@ -80,7 +80,7 @@
                                                     <th>Trạng thái</th>
                                                     <th>Số lượng còn</th>
                                                     <th>Hết hạn kiểm định</th>
-                                                    <th></th>
+                                                    <th>Hành động</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -105,16 +105,17 @@
                                                         <td>{{ $medical_device->expired_date->format(config('const.format.date')) }}</td>
                                                         <td>
                                                             <div class="btn-group">
-                                                                <a href="{{ route('medical_devices.edit', $medical_device->id) }}"
-                                                                    class="btn btn-primary">
-                                                                    <i class="fas fa-edit"></i> Sửa
+                                                                <a href="{{ route('medical_devices.show', $medical_device) }}" style="margin-right: 10px;color:blue;font-size:22px">
+                                                                  <i class="fas fa-eye"></i>
                                                                 </a>
-                                                                <button type="button" class="btn btn-danger"
-                                                                    data-toggle="modal"
-                                                                    data-target="#deleteModal{{ $medical_device->id }}"
-                                                                    style="color: red;">
-                                                                    <i class="fas fa-trash-alt"></i> Xóa
+                                                                <a href="{{ route('medical_devices.edit', $medical_device->id) }}" style="margin-right: 10px;color:green;font-size:22px">
+                                                                  <i class="fas fa-edit"></i>
+                                                                </a>
+                                                                <button type="button" data-toggle="modal"
+                                                                  data-target="#deleteModal{{ $medical_device->id }}" style="color: red;font-size:22px">
+                                                                  <i class="fas fa-trash-alt"></i>
                                                                 </button>
+                                                              </div>
                                                             </div>
                                                         </td>
 
@@ -178,12 +179,12 @@
         <!-- /.content-wrapper -->
 
         <footer class="main-footer">
-            <strong>Copyright &copy; 2023 <a href="#">Khánh Engineer</a>.</strong>
-            All rights reserved.
+            <strong>Bản quyền &copy; 2023 <a href="#">Phan Quốc Khánh</a>.</strong>
+            Đã đăng ký Bản quyền.
             <div class="float-right d-none d-sm-inline-block">
-                <b>Laravel</b> 8.1.0
+              <b>Laravel</b> 8.1.0
             </div>
-        </footer>
+          </footer>
 
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">

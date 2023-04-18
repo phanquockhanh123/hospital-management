@@ -13,7 +13,7 @@
 
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="admin2/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60"
+            <img class="animation__shake" src="https://media.licdn.com/dms/image/C4D03AQGB9X-aVyccoQ/profile-displayphoto-shrink_800_800/0/1517596403369?e=2147483647&v=beta&t=jJ0WBwNT7Uq1bc4KRRBHJM_cOmv3Yt544vbvRh3VwYE" alt="AdminLTELogo" height="60"
                 width="60">
         </div>
 
@@ -30,92 +30,21 @@
                     </div>
                     <div class="col-md-9">
                         <div class="card-header">
-                            <h3 class="card-title">Tạo mới người dùng</h3>
+                            <h3 class="card-title">Tạo mới tài khoản bác sĩ</h3>
                         </div>
                         <div class="card-body">
                             <form action="{{ route('users.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
 
                                 <div class="form-group">
-                                    <label for="name">Tên người dùng:</label>
-                                    <input type="text" name="name" id="name"
-                                        class="form-control @error('name') is-invalid @enderror"
-                                        value="{{ old('name') }}">
-                                    @error('name')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="profile">Ảnh đại diện:</label>
-                                    <input type="file" name="profile" id="profile"
-                                        class="form-control @error('profile') is-invalid @enderror"
-                                        value="{{ old('profile') }}">
-                                    @error('profile')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="dob">Ngày sinh:</label>
-                                    <input type="date" name="dob" id="dob"
-                                        class="form-control @error('dob') is-invalid @enderror"
-                                        value="{{ old('dob') }}">
-                                    @error('dob')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="gender">Giới tính:</label>
-                                    <select name="gender" class="form-control input-sm m-bot15">
-                                        <option value="">----Chọn giới tính----</option>
-                                        <option value="0">Nữ</option>
-                                        <option value="1">Nam</option>
+                                    <label for="user_id">Bác sĩ:</label>
+                                    <select name="user_id" class="form-control input-sm m-bot15">
+                                        <option value="">----Chọn bác sĩ----</option>
+                                        @foreach ($users as $user)
+                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                        @endforeach
                                     </select>
-                                    @error('gender')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="email">Email:</label>
-                                    <input type="email" name="email" id="email"
-                                        class="form-control @error('email') is-invalid @enderror"
-                                        value="{{ old('email') }}">
-                                    @error('email')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="phone">Số điện thoại:</label>
-                                    <input type="text" name="phone" id="phone"
-                                        class="form-control @error('phone') is-invalid @enderror"
-                                        value="{{ old('phone') }}">
-                                    @error('phone')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="address">Địa chỉ:</label>
-                                    <input type="text" name="address" id="address"
-                                        class="form-control @error('address') is-invalid @enderror"
-                                        value="{{ old('address') }}">
-                                    @error('address')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="identity_number">Quyền:</label>
-                                    <select name="role" class="form-control input-sm m-bot15">
-                                        <option value="">----Chọn quyền----</option>
-                                        <option value="0">Lễ tân</option>
-                                        <option value="1">Bác sĩ</option>
-                                    </select>
-                                    @error('identity_number')
+                                    @error('user_id')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>

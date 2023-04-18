@@ -19,7 +19,6 @@ class CreateSalariesTable extends Migration
             $table->integer('day_worked');
             $table->double('salary');
             $table->double('allowance');
-            $table->double('total_salary');
             $table->integer('status')->default(0);
             $table->timestamps();
             $table->softDeletes();

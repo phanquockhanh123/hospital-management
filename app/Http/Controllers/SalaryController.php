@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Doctor;
 use App\Models\Salary;
 use App\Models\Diagnosis;
@@ -18,26 +19,30 @@ class SalaryController extends Controller
         $attendances = Attendance::select('user_id', DB::raw('YEAR(logout_time) as year'), DB::raw('MONTH(logout_time) as month'), DB::raw('COUNT(*) as days_worked'))
             ->groupBy('user_id', DB::raw('YEAR(logout_time)'), DB::raw('MONTH(logout_time)'))
             ->paginate(config('const.perPage'));
-        $doctor = Doctor::where('email', Auth::user()->email)->first();
-        $countDiagnosis = Diagnosis::where('doctor_id', $doctor->id)->count();
-        $countPrescriptions = Prescription::where(function ($query) use ($doctor) {
-            $query->where('diagnosis_id',  Diagnosis::where('doctor_id', $doctor->id)->first()?->id);
-        })->count();
-        $countExamination =  $countDiagnosis * 20000 + $countPrescriptions * 10000;
-        $dataSalaries = array_map(function ($attendance) use ($countExamination) {
+        
+        $dataSalaries = array_map(function ($attendance) {
+            $user = User::where('id', $attendance['user_id'])->first();
+            $roleUser = $user->role;
+            $doctor = Doctor::where('email', $user->email)->first();
+            if ($doctor) {
+                $countDiagnosis = Diagnosis::where('doctor_id', $doctor->id)->count();
+                $countPrescriptions = Prescription::where(function ($query) use ($doctor) {
+                    $query->where('diagnosis_id',  Diagnosis::where('doctor_id', $doctor->id)->first()?->id);
+                })->count();
+                $countExamination =  $countDiagnosis * 20000 + $countPrescriptions * 10000;
+            }
+
             return [
-                'user_id' => Auth::user()->id,
+                'user_id' => $attendance['user_id'],
                 'day_worked' => $attendance['days_worked'],
-                'salary' => (Auth::user()->role == 2)
+                'salary' => ($roleUser == 2)
                     ? (8000000 * $attendance['days_worked'] / 30)
                     : (5000000 * $attendance['days_worked'] / 30),
                 'allowance' => $attendance['days_worked'] * 50000
-                    + ((Auth::user()->role == 2) ? 500000 : 300000)
-                    + ((Auth::user()->role == 2) ? $countExamination : 0),
-                'total_salary' => $attendance['days_worked'] * 50000 + (Auth::user()->role == 2) ? 6000000 : 3000000
+                    + (($roleUser == 2) ? 500000 : 300000)
+                    + (($roleUser == 2) ? $countExamination : 0)
             ];
         }, $attendances->toArray()['data']);
-
         Salary::insert($dataSalaries);
 
         $salaries = Salary::paginate(config('const.perPage'));

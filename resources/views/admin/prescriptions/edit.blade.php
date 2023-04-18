@@ -13,7 +13,7 @@
 
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="admin2/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60"
+            <img class="animation__shake" src="https://media.licdn.com/dms/image/C4D03AQGB9X-aVyccoQ/profile-displayphoto-shrink_800_800/0/1517596403369?e=2147483647&v=beta&t=jJ0WBwNT7Uq1bc4KRRBHJM_cOmv3Yt544vbvRh3VwYE" alt="AdminLTELogo" height="60"
                 width="60">
         </div>
 
@@ -42,9 +42,8 @@
                                     <select name="patient_id" class="form-control input-sm m-bot15">
                                         <option value="">----Chọn bệnh nhân----</option>
                                         @foreach ($patients as $patient)
-                                        <option value="{{ $patient->id }}" {{ $prescription->patient_id == $patient->id
-                                            ?
-                                            'selected' : '' }}>{{ $patient->name }}</option>
+                                        <option value="{{ $patient->id }}" {{ $prescription->diagnosis->patient_id == $patient->id
+                                            ? 'selected' : '' }}>{{ $patient->name }}</option>
                                         @endforeach
                                     </select>
                                     @error('patient_id')
@@ -58,7 +57,7 @@
                                     <select name="doctor_id" class="form-control input-sm m-bot15">
                                         <option value="">----Chọn bác sĩ----</option>
                                         @foreach ($doctors as $doctor)
-                                        <option value="{{ $doctor->id }}" {{ $prescription->doctor_id == $doctor->id ?
+                                        <option value="{{ $doctor->id }}" {{ $prescription->diagnosis->doctor_id == $doctor->id ?
                                             'selected' : '' }}>{{ $doctor->name }}</option>
                                         @endforeach
                                     </select>
@@ -71,7 +70,7 @@
                                     <label for="main_disease">Bệnh chính:</label>
                                     <input type="text" name="main_disease" id="main_disease"
                                         class="form-control @error('main_disease') is-invalid @enderror"
-                                        value="{{ old('main_disease', $prescription->main_disease) }}">
+                                        value="{{ old('main_disease', $prescription->diagnosis->main_diagnosis) }}">
                                     @error('main_disease')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -81,7 +80,7 @@
                                     <label for="side_disease">Bệnh phụ:</label>
                                     <input type="text" name="side_disease" id="side_disease"
                                         class="form-control @error('side_disease') is-invalid @enderror"
-                                        value="{{ old('side_disease', $prescription->side_disease) }}">
+                                        value="{{ old('side_disease', $prescription->diagnosis->main_diagnosis) }}">
                                     @error('side_disease')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -172,12 +171,12 @@
         </div>
 
         <footer class="main-footer">
-            <strong>Copyright &copy; 2023 <a href="#">Khánh Engineer</a>.</strong>
-            All rights reserved.
+            <strong>Bản quyền &copy; 2023 <a href="#">Phan Quốc Khánh</a>.</strong>
+            Đã đăng ký Bản quyền.
             <div class="float-right d-none d-sm-inline-block">
-                <b>Laravel</b> 8.1.0
+              <b>Laravel</b> 8.1.0
             </div>
-        </footer>
+          </footer>
 
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">

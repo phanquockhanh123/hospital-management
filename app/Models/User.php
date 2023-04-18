@@ -56,12 +56,8 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $fillable = [
         'name',
-        'email',
-        'phone',
-        'gender',
-        'address',
         'role',
-        'dob',
+        'email',
         'status',
         'password',
         'profile',
@@ -101,5 +97,15 @@ class User extends Authenticatable implements MustVerifyEmail
     public function messages()
     {
         return $this->hasMany(Message::class);
+    }
+
+    public function doctor()
+    {
+        return $this->hasOne(Doctor::class);
+    }
+
+    public function receptionist()
+    {
+        return $this->hasOne(Receptionist::class);
     }
 }

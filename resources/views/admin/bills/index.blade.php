@@ -13,7 +13,7 @@
 
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="admin2/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60"
+            <img class="animation__shake" src="https://media.licdn.com/dms/image/C4D03AQGB9X-aVyccoQ/profile-displayphoto-shrink_800_800/0/1517596403369?e=2147483647&v=beta&t=jJ0WBwNT7Uq1bc4KRRBHJM_cOmv3Yt544vbvRh3VwYE" alt="AdminLTELogo" height="60"
                 width="60">
         </div>
 
@@ -42,13 +42,13 @@
                                 </div>
                             </form>
                         </div>
-                        @if(Auth::user()->role == 2)
+                        {{-- @if(Auth::user()->role == 2)
                         <div class="col-sm-3" style="float: right;">
                             <a href="{{ route('bills.create') }}" class="btn btn-success">
                                 <i class="fas fa-plus"></i> Tạo mới
                             </a>
                         </div>
-                        @endif
+                        @endif --}}
                     </div>
                 </div><!-- /.container-fluid -->
             </section>
@@ -113,20 +113,17 @@
                                                 @if(Auth::user()->role == 2)
                                                 <td>
                                                     <div class="btn-group">
-                                                        <a href="{{ route('bills.show', $bill->id) }}"
-                                                            class="btn btn-warning">
-                                                            <i class="fas fa-edit"></i> Xem chi tiết
+                                                        <a onclick=" @if ($bill->status == 1) return false;"  @endif href="{{ route('bills.show', $bill) }}" style="margin-right: 10px;font-size:22px;color:blue @if($bill->status == 1) color:black; @endif"  >
+                                                          <i class="fas fa-eye"></i>
                                                         </a>
-                                                        <a href="{{ route('bills.edit', $bill->id) }}"
-                                                            class="btn btn-primary">
-                                                            <i class="fas fa-edit"></i> Sửa
-                                                        </a>
-                                                        <button type="button" class="btn btn-danger" data-toggle="modal"
-                                                            data-target="#deleteModal{{ $bill->id }}"
-                                                            style="color: red;">
-                                                            <i class="fas fa-trash-alt"></i> Xóa
+                                                        {{-- <a href="{{ route('bills.edit', $bill->id) }}" style="margin-right: 10px;color:green;font-size:22px">
+                                                          <i class="fas fa-edit"></i>
+                                                        </a> --}}
+                                                        <button type="button" data-toggle="modal"
+                                                          data-target="#deleteModal{{ $bill->id }}" style="color: red;font-size:22px">
+                                                          <i class="fas fa-trash-alt"></i>
                                                         </button>
-                                                    </div>
+                                                      </div>
                                                 </td>
 
                                                 @endif
@@ -202,12 +199,12 @@
         <!-- /.content-wrapper -->
 
         <footer class="main-footer">
-            <strong>Copyright &copy; 2023 <a href="#">Khánh Engineer</a>.</strong>
-            All rights reserved.
+            <strong>Bản quyền &copy; 2023 <a href="#">Phan Quốc Khánh</a>.</strong>
+            Đã đăng ký Bản quyền.
             <div class="float-right d-none d-sm-inline-block">
-                <b>Laravel</b> 8.1.0
+              <b>Laravel</b> 8.1.0
             </div>
-        </footer>
+          </footer>
 
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">

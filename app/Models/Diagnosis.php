@@ -66,4 +66,12 @@ class Diagnosis extends BaseModel
     {
         return $this->hasOne(Bill::class);
     }
+
+    /**
+     * Get the prescription
+     */
+    public function prescription()
+    {
+        return $this->hasOne(Prescription::class);
+    }
 }

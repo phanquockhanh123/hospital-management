@@ -57,14 +57,14 @@ class Handler extends ExceptionHandler
             //     return response()->json([
             //         'errors' => $exception->validator->getMessageBag()
             //     ], Response::HTTP_BAD_REQUEST);
-            case NotFoundHttpException::class:
-                return response()->json([
-                    'errors' => 'Page not found'
-                ], Response::HTTP_NOT_FOUND);
-            case AuthenticationException::class:
-                return response()->json(['
-                    error' => 'Unauthenticated'
-                ], Response::HTTP_UNAUTHORIZED);
+            // case NotFoundHttpException::class:
+            //     return response()->json([
+            //         'errors' => 'Page not found'
+            //     ], Response::HTTP_NOT_FOUND);
+            // case AuthenticationException::class:
+            //     return response()->json(['
+            //         error' => 'Unauthenticated'
+            //     ], Response::HTTP_UNAUTHORIZED);
             default:
                 return parent::render($request, $exception);
         }

@@ -183,7 +183,7 @@ class DiagnosisController extends Controller
             "method" => array_values($validatedData['method']),
             "diagnosis_note" => array_values($validatedData['diagnosis_note']),
         ];
-        $diagnosisItem = DiagnosisItem::where('diagnosis_id', $diagnosis->id)->delete();
+        DiagnosisItem::where('diagnosis_id', $diagnosis->id)->delete();
         $newArrays = array();
         foreach ($data as $key => $values) {
             $i = 0;
@@ -200,6 +200,22 @@ class DiagnosisController extends Controller
         }, $newArrays);
         DiagnosisItem::insert($diagnosisItemData);
 
+        // Update Bills
+        $prescriptionPrice = 0;
+        $totalDiagnosis = 0;
+
+        foreach ($newArrays as $dataItem) {
+            $service = Service::where('id', $dataItem['service_id'])->first();
+            $totalDiagnosis += $service->all_price;
+        }
+        foreach ($diagnosis->prescription->prescriptionItems as $preItem ) {
+            $prescriptionPrice += $preItem->amount * $preItem->medical->export_price;
+        }
+        $billData = [
+            'diagnosis_id' => $diagnosis->id,
+            'total_money' => $totalDiagnosis + $prescriptionPrice,
+        ];
+        Bill::where('id', $diagnosis->bill->id)->update($billData);
 
         return redirect()->route('diagnosises.index')
             ->with('success', 'Thông tin Xét nghiệm/Chẩn đoán đã được cập nhật thành công.');
