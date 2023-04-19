@@ -23,18 +23,27 @@ class AppointmentController extends Controller
      */
     public function index(Request $request)
     {
+        $doctors = Doctor::orderByDesc('created_at')->get();
+        $patients = Patient::orderByDesc('created_at')->get();
+        $doctorDepartments = DoctorDepartment::all();
+        $appointments = Appointment::with('patient', 'doctor', 'doctorDepartment');
 
-        $search = $request->input('search');
-
-        if ($search) {
-            $appointments = Appointment::where('id', 'LIKE', '%' . $search . '%')
-                ->orderByDesc('created_at')->paginate(config('const.perPage'));
-        } else {
-            $appointments = Appointment::orderByDesc('created_at')->paginate(config('const.perPage'));
+        if($request['doctor_id'] != null) {
+            $appointments->where('doctor_id', $request['doctor_id']);
         }
+        if($request['patient_id'] != null) {
+            $appointments->where('patient_id', $request['patient_id']);
+        }
+
+
+        if($request['doctor_department_id'] != null) {
+            $appointments->where('doctor_department_id', $request['doctor_department_id']);
+        }
+        
+        $appointments = $appointments->orderByDesc('updated_at')->orderByDesc('id')->paginate(config('const.perPage'));
         $count = 1;
         
-        return view('admin.appointments.index', compact('appointments', 'count'));
+        return view('admin.appointments.index', compact('appointments', 'count', 'doctors', 'patients', 'doctorDepartments'));
     }
 
     /**

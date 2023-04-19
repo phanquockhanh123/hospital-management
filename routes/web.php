@@ -275,8 +275,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::delete('/diagnosises/{diagnosis}', 'destroy')->name('diagnosises.destroy');
 
             Route::get('/diagnosises/{diagnosis}/pdf', 'renderPdf')->name('diagnosises.pdf');
-
-            
         });
     });
 
@@ -372,9 +370,9 @@ Route::get('/auth/google', function () {
 Route::get('/auth/google/callback', function () {
     $googleUser = Socialite::driver('google')->user();
     if (User::where('email', $googleUser->email)->whereNull('google_id')->first()) {
-        return redirect()->back() ->with('alert', 'Email đã tồn tại, vui lòng chọn email khác!');
+        return redirect()->back()->with('alert', 'Email đã tồn tại, vui lòng chọn email khác!');
     }
-    if(!Patient::where('email', $googleUser->email)->first()) {
+    if (!Patient::where('email', $googleUser->email)->first()) {
         Patient::create([
             'name' => $googleUser->name,
             'email' => $googleUser->email,
@@ -389,7 +387,7 @@ Route::get('/auth/google/callback', function () {
         'google_token' => $googleUser->token,
         'google_refresh_token' => $googleUser->refreshToken,
     ]);
-   
+
     Auth::login($user);
     return redirect('/');
 });
