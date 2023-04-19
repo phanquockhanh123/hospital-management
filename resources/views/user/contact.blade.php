@@ -8,7 +8,7 @@
 
                 <div class="title">
                     <p style="color: black;">Với mong muốn mang những dịch vụ y tế chất lượng cao tới gần hơn tới người dân thủ đô và các tỉnh lân cận, 
-                    3 cơ sở của Hệ thống Y tế Thu Cúc TCI  được đặt tại những vị trí đắc địa và thuận lợi giao thông,
+                    3 cơ sở của Hệ thống Phòng Khám An Khang  được đặt tại những vị trí đắc địa và thuận lợi giao thông,
                      không chỉ đối với khách hàng tại Hà Nội mà ngay cả khách hàng từ các tỉnh cũng rất dễ dàng đi lại và tìm kiếm.</p>
                      <br>
                      <p style="color: black">Vị trí nằm bên cạnh Hồ Tây thoáng mát, các không gian của bệnh viện đều có view Hồ sang chảnh, giúp người bệnh có trải nghiệm thăm khám và điều trị như đi nghỉ dưỡng.</p>

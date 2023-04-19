@@ -50,7 +50,7 @@ class AppointmentController extends Controller
         }, $appointments->toArray());
 
         $doctors = Doctor::whereIn('id', $doctorIds)->get();
-        $patients = Patient::all();
+        $patients = Patient::orderByDesc('created_at')->get();
         $doctorDepartments = DoctorDepartment::all();
         return view('admin.appointments.create', compact('doctors', 'patients', 'doctorDepartments'));
     }
@@ -69,13 +69,13 @@ class AppointmentController extends Controller
             'doctor_department_id' => 'nullable|integer|exists:doctor_departments,id,deleted_at,NULL',
             'start_time' => [
                 'required',
-                'before_or_equal:end_time',
-                'date_format:' . config('const.format.date_form')
+                // 'before_or_equal:end_time',
+                // 'date_format:' . config('const.format.date_appointment')
             ],
             'end_time' => [
                 'nullable',
-                'after_or_equal:start_date',
-                'date_format:' . config('const.format.date_form')
+                // 'after_or_equal:start_date',
+                // 'date_format:' . config('const.format.date_appointment')
             ],
             'description' => 'nullable|string|max:1000',
         ]);
@@ -127,13 +127,13 @@ class AppointmentController extends Controller
             'doctor_department_id' => 'nullable|integer|exists:doctor_departments,id,deleted_at,NULL',
             'start_time' => [
                 'required',
-                'before_or_equal:end_time',
-                'date_format:' . config('const.format.date_form')
+                // 'before_or_equal:end_time',
+                // 'date_format:' . config('const.format.datetime')
             ],
             'end_time' => [
                 'nullable',
-                'after_or_equal:start_date',
-                'date_format:' . config('const.format.date_form')
+                // 'after_or_equal:start_date',
+                // 'date_format:' . config('const.format.datetime')
             ],
             'description' => 'nullable|string|max:1000',
         ]);

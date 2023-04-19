@@ -23,13 +23,14 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-
+                        @if (Auth::user()->role == 1)
                         <li class="nav-item">
                             <a href="{{ route('book_appointments.index') }}" class="nav-link  @if (Request::route()->getName() == 'book_appointments.index') active @endif">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Lịch hẹn yêu cầu</p>
                             </a>
                         </li>
+                        @endif
                         <li class="nav-item">
                             <a href="{{ route('appointments.index') }}" class="nav-link @if (Request::route()->getName() == 'appointments.index') active @endif">
                                 <i class="far fa-circle nav-icon"></i>
@@ -42,13 +43,14 @@
                                 <p>Lịch</p>
                             </a>
                         </li>
-
+                        @if (Auth::user()->role == 2)
                         <li class="nav-item">
                             <a href="{{ route('appointments.get-appointment-by-doctor') }}" class="nav-link @if (Request::route()->getName() == 'appointments.get-appointment-by-doctor') active @endif">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Lịch trình</p>
                             </a>
                         </li>
+                        @endif
                     </ul>
                 </li>
                 @endif

@@ -30,7 +30,7 @@
                 <div class="col-md-9">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">{{ $appointment->id }}</h3>
+                            <h3 class="card-title">Chi tiết cuộc hẹn của bệnh nhân: {{ $appointment->patient->name }}</h3>
                         </div>
                         <div class="card-body">
                             <table class="table">

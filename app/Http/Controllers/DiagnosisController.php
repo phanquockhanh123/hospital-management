@@ -44,7 +44,7 @@ class DiagnosisController extends Controller
     public function create(Request $request)
     {
         $doctor = Doctor::where('email', Auth::user()->email)->first();
-        $patients = Patient::all();
+        $patients = Patient::orderByDesc('created_at')->get();
         $services = Service::all();
         return view('admin.diagnosises.create', compact('doctor', 'patients', 'services'));
     }
