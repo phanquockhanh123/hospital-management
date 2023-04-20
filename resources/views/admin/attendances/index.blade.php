@@ -46,7 +46,7 @@
                                 <div class="card-body">
                                     @if ($attendances->count() == 0)
                                         <div class="alert alert-danger" role="alert">
-                                            Không tìm thấy bảng chấm công tháng nay.
+                                            Không tìm thấy bảng chấm công hôm nay.
                                         </div>
                                     @else
                                         <table id="example2" class="table table-bordered table-hover">

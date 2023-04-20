@@ -66,4 +66,6 @@ class MedicalDevice extends BaseModel
     {
         return $this->belongsTo(DoctorDepartment::class);
     }
+
+
 }

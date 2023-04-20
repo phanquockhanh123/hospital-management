@@ -350,6 +350,7 @@
                               <th>Email</th>
                               <th>Nguyên nhân</th>
                               <th>Thời gian mong muốn</th>
+                              <td>Ngày đặt lịch</td>
                               <td>Hành động</td>
                           </tr>
                       </thead>
@@ -361,6 +362,7 @@
                                   <td>{{ $bookAppointment->email }}</td>
                                   <td>{{ $bookAppointment->reason }}</td>
                                   <td>{{ $bookAppointment->experted_time }}</td>
+                                  <td>{{ $bookAppointment->created_at }}</td>
                                   <td>
                                     @if($bookAppointment->status == 2) 
                                         <i class="fa-solid fa-calendar-check" style="color:green;"></i>

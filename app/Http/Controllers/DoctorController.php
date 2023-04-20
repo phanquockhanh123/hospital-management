@@ -23,16 +23,28 @@ class DoctorController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->input('search');
+        $academicLevels = Doctor::$academicLevels;
+        $doctorDepartments = DoctorDepartment::all();
 
-        if ($search) {
-            $doctors = Doctor::where('name', 'LIKE', '%' . $search . '%')
-                ->orderByDesc('created_at')->paginate(config('const.perPage'));
-        } else {
-            $doctors = Doctor::orderByDesc('created_at')->paginate(config('const.perPage'));
+        $doctors = Doctor::with('doctorDepartment');
+        if($request['fullname'] != null) {
+            $doctors->where('name', 'LIKE', '%' . $request['fullname'] . '%');
         }
 
-        return view('admin.doctors.index', compact('doctors'));
+        if($request['status'] != null) {
+            $doctors->where('status', 'LIKE', '%' . $request['status'] . '%');
+        }
+        if($request['doctor_department_id'] != null) {
+            $doctors->where('doctor_department_id', $request['doctor_department_id']);
+        }
+
+        if($request['academic_level'] != null) {
+            $doctors->where('academic_level', $request['academic_level']);
+        }
+
+        $doctors = $doctors->orderByDesc('updated_at')->orderByDesc('id')->paginate(config('const.perPage'));
+        $count = 1;
+        return view('admin.doctors.index', compact('doctors','academicLevels', 'doctorDepartments'));
     }
 
     /**

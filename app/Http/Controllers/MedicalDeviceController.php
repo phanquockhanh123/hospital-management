@@ -27,15 +27,33 @@ class MedicalDeviceController extends Controller
         }
 
 
-        if ($search) {
-            $medical_devices = MedicalDevice::where('medical_device_code', 'LIKE', '%' . $search . '%')
-                ->orderByDesc('created_at')->paginate(config('const.perPage'));
-        } else {
-            $medical_devices = MedicalDevice::orderByDesc('created_at')->paginate(config('const.perPage'));
+        // if ($search) {
+        //     $medical_devices = MedicalDevice::where('medical_device_code', 'LIKE', '%' . $search . '%')
+        //         ->orderByDesc('created_at')->paginate(config('const.perPage'));
+        // } else {
+        //     $medical_devices = MedicalDevice::orderByDesc('created_at')->paginate(config('const.perPage'));
+        // }
+
+        $doctorDepartments = DoctorDepartment::all();
+
+        $medical_devices = MedicalDevice::with('doctorDepartment');
+
+        if($request['name'] != null) {
+            $medical_devices->where('name', 'LIKE', '%' . $request['name'] . '%');
         }
 
+        if($request['status'] != null) {
+            $medical_devices->where('status', 'LIKE', '%' . $request['status'] . '%');
+        }
+        if($request['department_id'] != null) {
+            $medical_devices->where('department_id', $request['department_id']);
+        }
 
-        return view('admin.medical_devices.index', compact('medical_devices'));
+        $medical_devices = $medical_devices->orderByDesc('updated_at')->orderByDesc('id')->paginate(config('const.perPage'));
+        $count = 1;
+
+
+        return view('admin.medical_devices.index', compact('medical_devices',  'doctorDepartments'));
     }
 
     /**

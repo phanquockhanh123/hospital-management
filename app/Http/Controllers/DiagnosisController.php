@@ -24,16 +24,31 @@ class DiagnosisController extends Controller
     public function index(Request $request)
     {
 
-        $search = $request->input('search');
+        // $search = $request->input('search');
 
-        if ($search) {
-            $diagnosises = Diagnosis::where('id', 'LIKE', '%' . $search . '%')
-                ->orderByDesc('created_at')->paginate(config('const.perPage'));
-        } else {
-            $diagnosises = Diagnosis::orderByDesc('created_at')->paginate(config('const.perPage'));
+        // if ($search) {
+        //     $diagnosises = Diagnosis::where('id', 'LIKE', '%' . $search . '%')
+        //         ->orderByDesc('created_at')->paginate(config('const.perPage'));
+        // } else {
+        //     $diagnosises = Diagnosis::orderByDesc('created_at')->paginate(config('const.perPage'));
+        // }
+        $patients = Patient::orderByDesc('created_at')->get();
+        $diagnosises = Diagnosis::with('patient');
+
+        if($request['patient_id'] != null) {
+            $diagnosises->where('patient_id', $request['patient_id']);
         }
+
+        if($request['created_at'] != null) {
+            $diagnosises->whereDate('created_at', $request['created_at']);
+        }
+
+        if($request['status'] != null) {
+            $diagnosises->where('status', $request['status']);
+        }
+        $diagnosises = $diagnosises->orderByDesc('updated_at')->orderByDesc('id')->paginate(config('const.perPage'));
         $count = 1;
-        return view('admin.diagnosises.index', compact('diagnosises', 'count'));
+        return view('admin.diagnosises.index', compact('diagnosises', 'count', 'patients'));
     }
 
     /**

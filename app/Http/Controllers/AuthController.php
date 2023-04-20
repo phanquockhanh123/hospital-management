@@ -64,8 +64,9 @@ class AuthController extends Controller
             $messages = Message::where(function ($query) {
                 $query->where('to', Auth::user()->id)->where('is_read', 0)->orderByDesc('created_at');
             })->get();
-            $appointmentTodays = Appointment::WhereDate('end_time', $today)->get();
-            $bookAppointmentTodays = BookAppointment::WhereBetWeen('experted_time',[now()->subDay(), now()->addDays(10)])->get();
+            $appointmentTodays = Appointment::WhereDate('end_time', $today)->orderByDesc('created_at')->get();
+            $bookAppointmentTodays = BookAppointment::WhereBetWeen('experted_time',[now()->subDay(), now()->addDays(10)])
+                ->orderByDesc('created_at')->get();
             
             return view('admin.home', compact(
                 'messages',

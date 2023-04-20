@@ -29,18 +29,59 @@
             <section class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
-                        <div class="col-sm-6">
+                        <div class="col-md-10 offset-md-1">
                             <form action="{{ route('diagnosises.index') }}" method="GET">
-                                <div class="input-group mb-2">
-                                    <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder="Tìm kiếm xét nghiệm/chẩn đoán"
-                                            name="search">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
+                                @csrf
+                               
+                                <div class="row">
+                                    <div class="col-4">
+                                        <div class="form-group">
+                                            <label for="patient_id">Bệnh nhân:</label>
+                                            <select name="patient_id" class="form-control input-sm m-bot15">
+                                                <option value="">----Chọn bệnh nhân----</option>
+                                                @foreach ($patients as $patient)
+                                                <option value="{{ $patient->id }}">{{ $patient->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('patient_id')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
+
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label for="created_at">Ngày tạo:</label><br>
+                                            <input type="date" name="created_at" class="form-control input-sm m-bot15">
+                                            @error('created_at')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label for="status">Trạng thái:</label>
+                                            <select name="status" class="form-control input-sm m-bot15">
+                                                <option value="">----Chọn trạng thái----</option>
+                                                <option value="0">Chưa tạo đơn thuốc</option>
+                                                <option value="1">Đã tạo đơn thuốc</option>
+                                            </select>
+                                            @error('doctor_department_id')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-2" style="margin-top: 32px;">
+                                            <button class="btn btn-outline-secondary" type="submit">Tìm
+                                                kiếm</button>
+                                    </div>
                                 </div>
+
                             </form>
+
                         </div>
                         <div class="col-sm-3" style="float: right;">
                             <a href="{{ route('diagnosises.create') }}" class="btn btn-success">
@@ -78,6 +119,7 @@
                                                     <th>Bác sĩ</th>
                                                     <th>Chẩn đoán bệnh chính</th>
                                                     <th>Chẩn đoán bệnh phụ</th>
+                                                    <th>Ngày tạo</th>
                                                     <th>Trạng thái</th>
                                                     <th>PDF</th>
                                                     <th>Tạo đơn thuốc</th>
@@ -94,6 +136,7 @@
                                                         <td>{{ $diagnosis->doctor->name }}</td>
                                                         <td>{{ $diagnosis->main_diagnosis }}</td>
                                                         <td>{{ $diagnosis->side_diagnosis }}</td>
+                                                        <td>{{ $diagnosis->created_at->format('d-m-Y') }}</td>
                                                         <td>
                                                             @if($diagnosis->status == 1) 
                                                                 <span style="color:green;">Đã tạo đơn thuốc</span>
