@@ -81,7 +81,6 @@ class MedicalDeviceController extends Controller
             'description'  => 'nullable|string|max:255',
             'expired_date' => 'required',
             'quantity' => 'required|integer',
-            'charge' => 'required|integer',
             'profile' => 'required',
         ]);
         $validatedData['medical_device_code'] = MedicalDevice::generateNextCode();
@@ -142,7 +141,6 @@ class MedicalDeviceController extends Controller
             'description'  => 'nullable|string|max:255',
             'expired_date' => 'nullable',
             'quantity' => 'nullable|integer',
-            'charge' => 'nullable|integer',
             'profile' => 'nullable',
         ]);
 

@@ -45,7 +45,7 @@
                                     <div class="col-2">
                                         <div class="form-group">
                                             <label for="fullname">Họ tên:</label>
-                                            <input type="text" name="fullname" class="form-control input-sm m-bot15">
+                                            <input type="text" name="fullname" class="form-control input-sm m-bot15" placeholder="Nhập họ tên">
                                             @error('fullname')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror

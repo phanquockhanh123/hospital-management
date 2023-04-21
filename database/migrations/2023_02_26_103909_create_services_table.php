@@ -18,8 +18,8 @@ class CreateServicesTable extends Migration
             $table->string('service_code');
             $table->string('service_name');
             $table->bigInteger('all_price');
-            $table->float('discount');
-            $table->string('description');
+            $table->float('discount')->nullale();
+            $table->text('description')->nullable;
             $table->timestamps();
             $table->softDeletes();
         });

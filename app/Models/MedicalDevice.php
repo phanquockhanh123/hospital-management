@@ -27,7 +27,6 @@ class MedicalDevice extends BaseModel
         'description',
         'expired_date',
         'quantity',
-        'charge',
         'status',
         'filename',
         'profile'

@@ -56,10 +56,6 @@
                                         <td>{{ $medical_device->department_id }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Giá thiết bị:</th>
-                                        <td>{{ $medical_device->charge }}</td>
-                                    </tr>
-                                    <tr>
                                         <th>Số lượng:</th>
                                         <td>{{ $medical_device->quantity }}</td>
                                     </tr>

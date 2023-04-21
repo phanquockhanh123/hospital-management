@@ -20,7 +20,6 @@ class CreateMedicalDevicesTable extends Migration
             $table->string('name');
             $table->string('profile')->nullable();
             $table->string('filename')->nullable();
-            $table->float('charge');
             $table->integer('status')->default(1);
             $table->date('expired_date');
             $table->integer('quantity')->default(2);

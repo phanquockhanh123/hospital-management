@@ -421,7 +421,6 @@
                             <th>Mã thiết bị</th>
                             <th>Tên thiết bị</th>
                             <th>Phòng ban</th>
-                            <th>Giá</th>
                             <th>Trạng thái</th>
                             <th>Số lượng còn</th>
                             <th>Hết hạn kiểm định</th>
@@ -436,7 +435,6 @@
                                 </td>
                                 <td>{{ $medical_device->name }}</td>
                                 <td>{{ $medical_device->department_id }}</td>
-                                <td>{{ $medical_device->charge }}</td>
                                 <td>
                                     @if ($medical_device->status == 0)
                                         <span class="text-danger">Chưa được kiểm duyệt</span>

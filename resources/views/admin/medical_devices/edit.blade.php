@@ -77,16 +77,6 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="charge">Giá:</label>
-                                    <input type="text" name="charge" id="charge"
-                                        class="form-control @error('charge') is-invalid @enderror"
-                                        value="{{ old('charge', $medical_device->charge) }}">
-                                    @error('charge')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="form-group">
                                     <label for="quantity">Số lượng:</label>
                                     <input type="text" name="quantity" id="quantity"
                                         class="form-control @error('quantity') is-invalid @enderror"
