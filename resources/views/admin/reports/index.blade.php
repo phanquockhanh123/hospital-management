@@ -14,6 +14,26 @@
         }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load("current", {packages:["corechart"]});
+        google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Phòng ban', 'Số lượng'],
+          <?php echo $pie3DChartData; ?>
+        ]);
+
+        var options = {
+          title: 'Số lượt khám theo phòng ban',
+          is3D: true,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+        chart.draw(data, options);
+      }
+      
+    </script>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -35,42 +55,42 @@
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
-            {{-- <section class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <form action="{{ route('receptionists.index') }}" method="GET">
-                                <div class="input-group mb-2">
-                                    <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder="Tìm kiếm lễ tân"
-                                            name="search">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col-sm-3" style="float: right;">
-                            <a href="{{ route('receptionists.create') }}" class="btn btn-success">
-                                <i class="fas fa-plus"></i> Tạo mới
-                            </a>
-                        </div>
-                    </div>
-                </div><!-- /.container-fluid -->
-            </section> --}}
 
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-sm">
+                        <div class="col-sm-4" style="height: 500px;">
                             <canvas id="myChart"></canvas>
+                            <div style="text-align: center;">Thống kê tình trạng trang thiết bị</div>
+
                         </div>
-                        <div class="col-sm">
-                            <canvas id="myChart"></canvas>
+                        <div class="col-sm-8">
+                            <div id="piechart_3d" style="width: 900px; height: 500px;"></div>
+                            <div style="text-align: center;">Thống kê số lượt khám bệnh theo phòng ban trong tháng {{
+                                $now->month }} / {{ $now->year }} </div>
                         </div>
                     </div>
+                    <h1 style="text-align:center;margin-top: 120px;font-size:28px;font-weight:600">Bảng thống kê thu nhập theo phòng ban</h1>
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Tên phòng ban</th>
+                                <th style="width:500px">Tổng thu nhập</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($billByDeparments as $billByDeparment)
+                            <tr>
+                                <td>{{ $count++; }}</td>
+                                <td>{{ $billByDeparment->department_name; }}</td>
+                                <td>{{ $billByDeparment->total_money; }} đồng</td>
+                            </tr>
+                            @endforeach
+                           
+                        </tbody>
+                    </table>
                 </div>
                 <!-- /.container-fluid -->
             </section>
@@ -118,6 +138,8 @@
                 }
             }
         });
+
+       
     </script>
     @include('admin.script')
 </body>

@@ -21,12 +21,10 @@ class ScenarioSeeder extends Seeder
         \App\Models\Appointment::truncate();
         \App\Models\News::truncate();
         \App\Models\Message::truncate();
-        \App\Models\User::truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         // call seeder class
         $this->call([
-            DoctorDepartmentSeeder::class,
             DoctorSeeder::class,
             PatientSeeder::class,
             AppointmentSeeder::class,
