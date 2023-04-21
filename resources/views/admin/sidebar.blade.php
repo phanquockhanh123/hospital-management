@@ -192,8 +192,8 @@
 
                 @if (Auth::user()->role == 3)
                 <li class="nav-item">
-                    <a href="#"
-                        class="nav-link @if (Request::route()->getName() == 'appointments.get-appointment-by-doctor') active @endif">
+                    <a href="{{route('reports.index')}}"
+                        class="nav-link @if (Request::route()->getName() == 'reports.index') active @endif">
                         <i class="nav-icon far fa-chart-bar"></i>
                         <p>
                             Báo cáo thống kê

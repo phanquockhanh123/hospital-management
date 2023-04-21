@@ -74,7 +74,7 @@ class DoctorController extends Controller
                 . config('const.regex_email_admin'),
             'designation' => 'nullable|string|max:255',
             'phone' => 'nullable|size:10|regex:' . config('const.regex_telephone'),
-            'profile' => 'required',
+            'profile' => 'nullable',
             'academic_level' => 'required|in:' . implode(',', array_keys(Doctor::$academicLevels)),
             'date_of_birth' => [
                 'nullable',

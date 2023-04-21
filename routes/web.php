@@ -27,6 +27,7 @@ use App\Http\Controllers\RequestDeviceController;
 use App\Http\Controllers\BookAppointmentController;
 use App\Http\Controllers\DoctorDepartmentController;
 use App\Http\Controllers\ReceptionistController;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -321,6 +322,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
         });
     });
 
+    //--------------------------------Report ------------------------------------------------------------------------------------------------
+    Route::controller(ReportController::class)->group(function () {
+        Route::middleware([config('const.auth.high')])->group(function () {
+            Route::get('/reports', 'index')->name('reports.index');
+        });
+    });
+
     //--------------------------------Meeting ------------------------------------------------------------------------------------------------
     Route::controller(ZoomController::class)->group(function () {
         Route::middleware([config('const.auth.low')])->group(function () {
@@ -344,6 +352,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/denied_book_appointment/{book_appointment}', 'deniedBookAppointment')->name('book_appointments.denied');
         });
     });
+
+
 });
 
 
