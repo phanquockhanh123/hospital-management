@@ -27,6 +27,7 @@ use App\Http\Controllers\RequestDeviceController;
 use App\Http\Controllers\BookAppointmentController;
 use App\Http\Controllers\DoctorDepartmentController;
 use App\Http\Controllers\ReceptionistController;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -122,15 +123,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::middleware([config('const.auth.low')])->group(function () {
             Route::get('/patients', [PatientController::class, 'index'])->name('patients.index');
             Route::get('/patients/create', [PatientController::class, 'create'])->name('patients.create')
-                ->withoutMiddleware(['const.auth.mid']);
+                ->withoutMiddleware(['const.auth.mid', 'const.auth.high']);
             Route::post('/patients', [PatientController::class, 'store'])->name('patients.store')
-                ->withoutMiddleware(['const.auth.mid']);
+                ->withoutMiddleware(['const.auth.mid', 'const.auth.high']);
             Route::get('/patients/{patient}', [PatientController::class, 'show'])->name('patients.show')
-                ->withoutMiddleware(['const.auth.mid']);
+                ->withoutMiddleware(['const.auth.mid', 'const.auth.high']);
             Route::get('/patients/{patient}/edit', [PatientController::class, 'edit'])->name('patients.edit')
-                ->withoutMiddleware(['const.auth.mid']);
+                ->withoutMiddleware(['const.auth.mid', 'const.auth.high']);
             Route::put('/patients/{patient}', [PatientController::class, 'update'])->name('patients.update')
-                ->withoutMiddleware(['const.auth.mid']);
+                ->withoutMiddleware(['const.auth.mid', 'const.auth.high']);
         });
 
         Route::middleware([config('const.auth.high')])->group(function () {
@@ -276,7 +277,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
             Route::get('/diagnosises/{diagnosis}/pdf', 'renderPdf')->name('diagnosises.pdf');
 
-            
+            Route::get('/appointments/{appointment}/create/diagnosis', 'createDiagnosis')->name('appointments.create-diagnosis');
+            Route::post('/appointments/{appointment}/diagnosis', 'storeDiagnosis')->name('appointments.store-diagnosis');
         });
     });
 
@@ -323,6 +325,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
         });
     });
 
+    //--------------------------------Report ------------------------------------------------------------------------------------------------
+    Route::controller(ReportController::class)->group(function () {
+        Route::middleware([config('const.auth.high')])->group(function () {
+            Route::get('/reports', 'index')->name('reports.index');
+        });
+    });
+
     //--------------------------------Meeting ------------------------------------------------------------------------------------------------
     Route::controller(ZoomController::class)->group(function () {
         Route::middleware([config('const.auth.low')])->group(function () {
@@ -346,6 +355,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/denied_book_appointment/{book_appointment}', 'deniedBookAppointment')->name('book_appointments.denied');
         });
     });
+
+
 });
 
 
@@ -372,9 +383,9 @@ Route::get('/auth/google', function () {
 Route::get('/auth/google/callback', function () {
     $googleUser = Socialite::driver('google')->user();
     if (User::where('email', $googleUser->email)->whereNull('google_id')->first()) {
-        return redirect()->back() ->with('alert', 'Email đã tồn tại, vui lòng chọn email khác!');
+        return redirect()->back()->with('alert', 'Email đã tồn tại, vui lòng chọn email khác!');
     }
-    if(!Patient::where('email', $googleUser->email)->first()) {
+    if (!Patient::where('email', $googleUser->email)->first()) {
         Patient::create([
             'name' => $googleUser->name,
             'email' => $googleUser->email,
@@ -389,7 +400,7 @@ Route::get('/auth/google/callback', function () {
         'google_token' => $googleUser->token,
         'google_refresh_token' => $googleUser->refreshToken,
     ]);
-   
+
     Auth::login($user);
     return redirect('/');
 });

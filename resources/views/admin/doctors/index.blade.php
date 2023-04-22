@@ -12,7 +12,7 @@
         if(exist){
           alert(msg);
         }
-      </script>
+    </script>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -20,8 +20,9 @@
 
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="https://media.licdn.com/dms/image/C4D03AQGB9X-aVyccoQ/profile-displayphoto-shrink_800_800/0/1517596403369?e=2147483647&v=beta&t=jJ0WBwNT7Uq1bc4KRRBHJM_cOmv3Yt544vbvRh3VwYE" alt="AdminLTELogo" height="60"
-                width="60">
+            <img class="animation__shake"
+                src="https://media.licdn.com/dms/image/C4D03AQGB9X-aVyccoQ/profile-displayphoto-shrink_800_800/0/1517596403369?e=2147483647&v=beta&t=jJ0WBwNT7Uq1bc4KRRBHJM_cOmv3Yt544vbvRh3VwYE"
+                alt="AdminLTELogo" height="60" width="60">
         </div>
 
         <!-- Navbar -->
@@ -36,18 +37,75 @@
             <section class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
-                        <div class="col-sm-6">
+                        <div class="col-md-10 offset-md-1">
                             <form action="{{ route('doctors.index') }}" method="GET">
-                                <div class="input-group mb-2">
-                                    <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder="Tìm kiếm bác sĩ"
-                                            name="search">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
+                                @csrf
+
+                                <div class="row">
+                                    <div class="col-2">
+                                        <div class="form-group">
+                                            <label for="fullname">Họ tên:</label>
+                                            <input type="text" name="fullname" class="form-control input-sm m-bot15" placeholder="Nhập họ tên">
+                                            @error('fullname')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
+
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label for="doctor_department_id">Phòng ban:</label>
+                                            <select name="doctor_department_id" class="form-control input-sm m-bot15">
+                                                <option value="">----Chọn phòng ban----</option>
+                                                @foreach ($doctorDepartments as $doctorDepartment)
+                                                <option value="{{ $doctorDepartment->id }}">{{ $doctorDepartment->name
+                                                    }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('doctor_department_id')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label for="academic_level">Trình độ học vấn:</label>
+                                            <select name="academic_level" class="form-control input-sm m-bot15">
+                                                <option value="">----Chọn trình độ học vấn----</option>
+                                                @foreach ($academicLevels as $key => $academicLevel)
+                                                <option value="{{ $key }}">{{ $academicLevel }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('academic_level')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-2">
+                                        <div class="form-group">
+                                            <label for="status">Trạng thái:</label>
+                                            <select name="status" class="form-control input-sm m-bot15">
+                                                <option value="">----Chọn trạng thái----</option>
+                                                <option value="0">Đã nghỉ việc</option>
+                                                <option value="1">Đang làm việc</option>
+                                            </select>
+                                            @error('doctor_department_id')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-2" style="margin-top: 32px;">
+                                        <button class="btn btn-outline-secondary" type="submit">Tìm
+                                            kiếm</button>
+                                    </div>
                                 </div>
+
                             </form>
+
                         </div>
                         <div class="col-sm-3" style="float: right;">
                             <a href="{{ route('doctors.create') }}" class="btn btn-success">
@@ -95,11 +153,12 @@
                                             @foreach ($doctors as $doctor)
                                             <tr>
                                                 <td>
-                                                    <a href="{{ route('doctors.show', $doctor) }}" ><img
-                                                            src="./imgDoctor/{{ $doctor->filename}}" style="border-radius: 50%;vertical-align: middle;
+                                                    <a href="{{ route('doctors.show', $doctor) }}"><img
+                                                            src="@if(empty($doctor->filename))  https://th.bing.com/th/id/OIP.IkXgNyoITfT5LmWWROUoMwHaHa?pid=ImgDet&rs=1  @else {{ asset('./imgDoctor/'. $doctor->filename) }} @endif" style="border-radius: 50%;vertical-align: middle;
                                                                     width: 50px;
                                                                     height: 50px;
-                                                                    border-radius: 50%;" alt="" title="">{{ $doctor->name }}</a>
+                                                                    border-radius: 50%;" alt="" title="">{{
+                                                        $doctor->name }}</a>
                                                 </td>
                                                 <td>{{ $doctor->doctorDepartment->name }}</td>
                                                 <td>{{ $doctor->specialist }}</td>
@@ -114,22 +173,26 @@
                                                 </td>
                                                 <td>
                                                     <div class="btn-group">
-                                                        <a href="{{ route('doctors.show', $doctor) }}" style="margin-right: 10px;color:blue;font-size:22px">
-                                                          <i class="fas fa-eye"></i>
+                                                        <a href="{{ route('doctors.show', $doctor) }}"
+                                                            style="margin-right: 10px;color:blue;font-size:22px">
+                                                            <i class="fas fa-eye"></i>
                                                         </a>
-                                                        <a href="{{ route('doctors.edit', $doctor->id) }}" style="margin-right: 10px;color:green;font-size:22px">
-                                                          <i class="fas fa-edit"></i>
+                                                        <a href="{{ route('doctors.edit', $doctor->id) }}"
+                                                            style="margin-right: 10px;color:green;font-size:22px">
+                                                            <i class="fas fa-edit"></i>
                                                         </a>
                                                         <button type="button" data-toggle="modal"
-                                                          data-target="#deleteModal{{ $doctor->id }}" style="color: red;font-size:22px">
-                                                          <i class="fas fa-trash-alt"></i>
+                                                            data-target="#deleteModal{{ $doctor->id }}"
+                                                            style="color: red;font-size:22px">
+                                                            <i class="fas fa-trash-alt"></i>
                                                         </button>
-                                                        @if (Auth::user()->role == 3  && $doctor->user_id == null)
-                                                        <a  href="{{ route('doctors.add-account-doctor', $doctor->id) }}" style="margin-left : 10px;color:aqua;font-size:22px">
+                                                        @if (Auth::user()->role == 3 && $doctor->user_id == null)
+                                                        <a href="{{ route('doctors.add-account-doctor', $doctor->id) }}"
+                                                            style="margin-left : 10px;color:aqua;font-size:22px">
                                                             <i class="fas fa-add"></i>
                                                         </a>
                                                         @endif
-                                                      </div>
+                                                    </div>
                                                 </td>
 
                                                 <!-- Modal -->
@@ -194,9 +257,9 @@
             <strong>Bản quyền &copy; 2023 <a href="#">Phan Quốc Khánh</a>.</strong>
             Đã đăng ký Bản quyền.
             <div class="float-right d-none d-sm-inline-block">
-              <b>Laravel</b> 8.1.0
+                <b>Laravel</b> 8.1.0
             </div>
-          </footer>
+        </footer>
 
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">

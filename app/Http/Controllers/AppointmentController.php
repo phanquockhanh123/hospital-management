@@ -23,18 +23,27 @@ class AppointmentController extends Controller
      */
     public function index(Request $request)
     {
+        $doctors = Doctor::orderByDesc('created_at')->get();
+        $patients = Patient::orderByDesc('created_at')->get();
+        $doctorDepartments = DoctorDepartment::all();
+        $appointments = Appointment::with('patient', 'doctor', 'doctorDepartment');
 
-        $search = $request->input('search');
-
-        if ($search) {
-            $appointments = Appointment::where('id', 'LIKE', '%' . $search . '%')
-                ->orderByDesc('created_at')->paginate(config('const.perPage'));
-        } else {
-            $appointments = Appointment::orderByDesc('created_at')->paginate(config('const.perPage'));
+        if($request['doctor_id'] != null) {
+            $appointments->where('doctor_id', $request['doctor_id']);
         }
+        if($request['patient_id'] != null) {
+            $appointments->where('patient_id', $request['patient_id']);
+        }
+
+
+        if($request['doctor_department_id'] != null) {
+            $appointments->where('doctor_department_id', $request['doctor_department_id']);
+        }
+        
+        $appointments = $appointments->orderByDesc('updated_at')->orderByDesc('id')->paginate(config('const.perPage'));
         $count = 1;
         
-        return view('admin.appointments.index', compact('appointments', 'count'));
+        return view('admin.appointments.index', compact('appointments', 'count', 'doctors', 'patients', 'doctorDepartments'));
     }
 
     /**
@@ -50,7 +59,7 @@ class AppointmentController extends Controller
         }, $appointments->toArray());
 
         $doctors = Doctor::whereIn('id', $doctorIds)->get();
-        $patients = Patient::all();
+        $patients = Patient::orderByDesc('created_at')->get();
         $doctorDepartments = DoctorDepartment::all();
         return view('admin.appointments.create', compact('doctors', 'patients', 'doctorDepartments'));
     }
@@ -69,13 +78,13 @@ class AppointmentController extends Controller
             'doctor_department_id' => 'nullable|integer|exists:doctor_departments,id,deleted_at,NULL',
             'start_time' => [
                 'required',
-                'before_or_equal:end_time',
-                'date_format:' . config('const.format.date_form')
+                // 'before_or_equal:end_time',
+                // 'date_format:' . config('const.format.date_appointment')
             ],
             'end_time' => [
                 'nullable',
-                'after_or_equal:start_date',
-                'date_format:' . config('const.format.date_form')
+                // 'after_or_equal:start_date',
+                // 'date_format:' . config('const.format.date_appointment')
             ],
             'description' => 'nullable|string|max:1000',
         ]);
@@ -127,13 +136,13 @@ class AppointmentController extends Controller
             'doctor_department_id' => 'nullable|integer|exists:doctor_departments,id,deleted_at,NULL',
             'start_time' => [
                 'required',
-                'before_or_equal:end_time',
-                'date_format:' . config('const.format.date_form')
+                // 'before_or_equal:end_time',
+                // 'date_format:' . config('const.format.datetime')
             ],
             'end_time' => [
                 'nullable',
-                'after_or_equal:start_date',
-                'date_format:' . config('const.format.date_form')
+                // 'after_or_equal:start_date',
+                // 'date_format:' . config('const.format.datetime')
             ],
             'description' => 'nullable|string|max:1000',
         ]);
@@ -270,16 +279,25 @@ class AppointmentController extends Controller
             ->with('success', 'Từ chối cuộc hẹn thành công !');
     }
 
-    public function getAppointmentByDoctor()
+    public function getAppointmentByDoctor(Request $request)
     {
-        $doctor = Doctor::where('email', Auth::user()->email)->first();
-        if($doctor) {
-            $appointments = Appointment::where('doctor_id', $doctor->id)
-            ->orderByDesc('created_at')->paginate(config('const.perPage'));
-        }else {
-            $appointments = [];
-        }
+        $doctor = Doctor::where('user_id', Auth::user()->id)->first();
+        $appointments = Appointment::where('doctor_id', $doctor->id);
         $count=1;
-        return view('admin.appointments.index', compact('appointments', 'count'));
+
+        $patients = Patient::orderByDesc('created_at')->get();
+        $doctorDepartments = DoctorDepartment::all();
+
+        if($request['patient_id'] != null) {
+            $appointments->where('patient_id', $request['patient_id']);
+        }
+
+        if($request['doctor_department_id'] != null) {
+            $appointments->where('doctor_department_id', $request['doctor_department_id']);
+        }
+        
+        $appointments = $appointments->orderByDesc('updated_at')->orderByDesc('id')->paginate(config('const.perPage'));
+        
+        return view('admin.appointments.appointment_by_doctor', compact('appointments', 'count', 'patients', 'doctorDepartments'));
     }
 }

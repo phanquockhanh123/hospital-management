@@ -49,7 +49,7 @@
 
                                 <div class="form-group">
                                     <label for="profile">Ảnh đại diện:</label>
-                                    <img src="{{ asset('./imgPatient/'. $patient->filename) }}" style="vertical-align: middle;
+                                    <img src="@if(empty($patinet->filename))  https://th.bing.com/th/id/OIP.1t1Aoq3mF7U2Cr3rWO1x6AAAAA?pid=ImgDet&rs=1  @else {{ asset('./imgPatient/'. $patinet->filename) }} @endif" style="vertical-align: middle;
                                                         width: 200px;
                                                         height: 300px;
                                                         margin-bottom:20px;">

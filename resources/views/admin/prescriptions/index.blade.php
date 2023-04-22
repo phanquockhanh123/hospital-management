@@ -42,11 +42,11 @@
                                 </div>
                             </form>
                         </div>
-                        <div class="col-sm-3" style="float: right;">
+                        {{-- <div class="col-sm-3" style="float: right;">
                             <a href="{{ route('prescriptions.create') }}" class="btn btn-success">
                                 <i class="fas fa-plus"></i> Tạo mới
                             </a>
-                        </div>
+                        </div> --}}
                     </div>
                 </div><!-- /.container-fluid -->
             </section>

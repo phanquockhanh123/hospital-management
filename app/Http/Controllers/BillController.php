@@ -19,18 +19,33 @@ class BillController extends Controller
     public function index(Request $request)
     {
 
-        $search = $request->input('search');
+        // $search = $request->input('search');
 
-        $bills = Bill::all();
+        // $bills = Bill::all();
 
-        if ($search) {
-            $bills = Bill::where('id', 'LIKE', '%' . $search . '%')
-                ->orderByDesc('created_at')->paginate(config('const.perPage'));
-        } else {
-            $bills = Bill::orderByDesc('created_at')->paginate(config('const.perPage'));
+        // if ($search) {
+        //     $bills = Bill::where('id', 'LIKE', '%' . $search . '%')
+        //         ->orderByDesc('created_at')->paginate(config('const.perPage'));
+        // } else {
+        //     $bills = Bill::orderByDesc('created_at')->paginate(config('const.perPage'));
+        // }
+        $patients = Patient::orderByDesc('created_at')->get();
+
+        $bills = Bill::with('diagnosis', 'diagnosis.patient');
+
+        if ($request['patient_id'] != null) {
+            $bills->whereHas('diagnosis', function ($bills) use ($request) {
+                $bills->where('patient_id', $request['patient_id']);
+            });
         }
+
+        if($request['created_at'] != null) {
+            $bills->whereDate('created_at', $request['created_at']);
+        }
+
+        $bills = $bills->orderByDesc('updated_at')->orderByDesc('id')->paginate(config('const.perPage'));
         $count = 1;
-        return view('admin.bills.index', compact('bills', 'count'));
+        return view('admin.bills.index', compact('bills', 'count', 'patients'));
     }
 
     /**
@@ -146,5 +161,4 @@ class BillController extends Controller
         return redirect()->route('bills.index')
             ->with('success', 'Hóa đơn đã được thanh toán thành công.');
     }
-
 }

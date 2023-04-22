@@ -34,7 +34,8 @@ return [
         'date' => 'd-m-Y',
         'date_form' => 'Y-m-d',
         'date_with_slash' => 'd/m/Y',
-        'date_folder_s3' => 'Ymd'
+        'date_folder_s3' => 'Ymd',
+        'date_appointment' => 'd/m/Y H:i',
     ],
     'application_cv_file_extension' => ['png, jpeg, pdf, jpg, gif'],
     'retry_time' => 3,

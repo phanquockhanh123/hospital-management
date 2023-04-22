@@ -9,7 +9,7 @@
                 <div class="card card-primary card-outline">
                     <div class="card-body box-profile">
                         <div class="text-center">
-                            <img src="@if (!empty(Auth::user()->filename)) ./imgPatient/{{ Auth::user()->filename}}@else https://cdn.iconscout.com/icon/premium/png-256-thumb/patient-2460481-2128797.png @endif"
+                            <img src="@if (!empty($patient->filename)) ./imgPatient/{{ $patient->filename}} @else https://cdn.iconscout.com/icon/premium/png-256-thumb/patient-2460481-2128797.png @endif"
                                 style="background-color: #00D9A5;border-radius: 50%;vertical-align: middle;
                                                                     width: 100px;
                                                                     height: 100px;

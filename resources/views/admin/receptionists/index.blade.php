@@ -96,7 +96,7 @@
                                             <tr>
                                                 <td>
                                                     <a href="{{ route('receptionists.show', $receptionist) }}" ><img
-                                                            src="./imgReceptionist/{{ $receptionist->filename}}" style="border-radius: 50%;vertical-align: middle;
+                                                            src="@if(empty($receptionist->filename))  https://th.bing.com/th/id/OIP.hnb_3pbpEzEEIK1lbteF-wHaH0?pid=ImgDet&rs=1  @else {{ asset('./imgReceptionist/'. $receptionist->filename) }} @endif" style="border-radius: 50%;vertical-align: middle;
                                                                     width: 50px;
                                                                     height: 50px;
                                                                     border-radius: 50%;" alt="" title="">{{ $receptionist->name }}</a>

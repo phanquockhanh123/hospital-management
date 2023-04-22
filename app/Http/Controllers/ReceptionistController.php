@@ -230,7 +230,7 @@ class ReceptionistController extends Controller
             'user_id' => $user->id
         ]);
         Mail::send(new MailLoginReceptionist($user));
-        return redirect()->route('$receptionists.index')
+        return redirect()->route('receptionists.index')
             ->with('success', 'Thêm mới tài khoản cho bác sĩ thành công.');
     }
 }

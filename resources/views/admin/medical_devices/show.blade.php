@@ -44,8 +44,8 @@
                                         <td>{{ $medical_device->name }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Avatar:</th>
-                                        <td><img src="{{ asset('./imgDevices/'. $medical_device->filename) }}" 
+                                        <th>Ảnh thiết bị :</th>
+                                        <td><img src="@if(empty($medical_device->filename))  https://th.bing.com/th/id/OIP.57offJgp5AUv4YNrVWC9_wHaHa?pid=ImgDet&rs=1  @else {{ asset('./imgDevices/'. $medical_device->filename) }} @endif" 
                                                     style="vertical-align: middle;
                                                         width: 200px;
                                                         height: 300px;">
@@ -54,10 +54,6 @@
                                     <tr>
                                         <th>Phòng ban:</th>
                                         <td>{{ $medical_device->department_id }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Giá thiết bị:</th>
-                                        <td>{{ $medical_device->charge }}</td>
                                     </tr>
                                     <tr>
                                         <th>Số lượng:</th>

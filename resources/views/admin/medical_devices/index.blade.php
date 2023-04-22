@@ -29,18 +29,59 @@
             <section class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
-                        <div class="col-sm-6">
+                        <div class="col-md-10 offset-md-1">
                             <form action="{{ route('medical_devices.index') }}" method="GET">
-                                <div class="input-group mb-2">
-                                    <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder="Tìm kiếm thiết bị y tế"
-                                            name="search">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
+                                @csrf
+
+                                <div class="row">
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label for="name">Tên thiết bị:</label>
+                                            <input type="text" name="name" class="form-control input-sm m-bot15">
+                                            @error('name')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
+
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label for="department_id">Phòng ban:</label>
+                                            <select name="department_id" class="form-control input-sm m-bot15">
+                                                <option value="">----Chọn phòng ban----</option>
+                                                @foreach ($doctorDepartments as $doctorDepartment)
+                                                <option value="{{ $doctorDepartment->id }}">{{ $doctorDepartment->name
+                                                    }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('department_id')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label for="status">Trạng thái:</label>
+                                            <select name="status" class="form-control input-sm m-bot15">
+                                                <option value="">----Chọn trạng thái----</option>
+                                                <option value="1">Đang chờ kiểm duyệt</option>
+                                                <option value="2">Đã được kiểm duyệt</option>
+                                            </select>
+                                            @error('doctor_department_id')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-2" style="margin-top: 32px;">
+                                        <button class="btn btn-outline-secondary" type="submit">Tìm
+                                            kiếm</button>
+                                    </div>
                                 </div>
+
                             </form>
+
                         </div>
                         <div class="col-sm-3" style="float: right;">
                             <a href="{{ route('medical_devices.create') }}" class="btn btn-success">
@@ -76,7 +117,6 @@
                                                     <th>Mã thiết bị</th>
                                                     <th>Tên thiết bị</th>
                                                     <th>Phòng ban</th>
-                                                    <th>Giá</th>
                                                     <th>Trạng thái</th>
                                                     <th>Số lượng còn</th>
                                                     <th>Hết hạn kiểm định</th>
@@ -90,8 +130,7 @@
                                                                 href="{{ route('medical_devices.show', $medical_device->id) }}">{{ $medical_device->medical_device_code }}</a>
                                                         </td>
                                                         <td>{{ $medical_device->name }}</td>
-                                                        <td>{{ $medical_device->department_id }}</td>
-                                                        <td>{{ $medical_device->charge }}</td>
+                                                        <td>{{ $doctorDepartments->where('id', $medical_device->department_id)->first()->name }}</td>
                                                         <td>
                                                             @if ($medical_device->status == 0)
                                                                 <span class="text-danger">Chưa được kiểm duyệt</span>

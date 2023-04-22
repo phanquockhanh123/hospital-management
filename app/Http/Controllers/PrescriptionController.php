@@ -253,7 +253,7 @@ class PrescriptionController extends Controller
      */
     public function renderPdf(Request $request, Prescription $prescription)
     {
-        $prescription = Prescription::with('patient', 'doctor')->first();
+        $prescription = Prescription::with('diagnosis')->first();
         $preItem = PrescriptionItem::where('prescription_id', $prescription->id)->get()->toArray();
         $medicals = Medical::all();
         $pdf = \PDF::loadView('pdf.prescription', compact('prescription', 'preItem', 'medicals'), []);

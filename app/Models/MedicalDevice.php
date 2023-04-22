@@ -5,12 +5,10 @@ namespace App\Models;
 class MedicalDevice extends BaseModel
 {
     //status
-    public const STATUS_UNCENSORED = 0;
     public const STATUS_WAITING = 1;
     public const STATUS_CENSORED = 2;
 
     public static $status = [
-        self::STATUS_UNCENSORED => 'Chưa được kiểm duyệt',
         self::STATUS_WAITING => 'Đang chờ kiểm duyệt',
         self::STATUS_CENSORED => 'Đã được kiểm duyệt',
     ];
@@ -27,7 +25,6 @@ class MedicalDevice extends BaseModel
         'description',
         'expired_date',
         'quantity',
-        'charge',
         'status',
         'filename',
         'profile'
@@ -66,4 +63,6 @@ class MedicalDevice extends BaseModel
     {
         return $this->belongsTo(DoctorDepartment::class);
     }
+
+
 }

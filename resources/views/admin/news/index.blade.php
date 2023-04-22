@@ -67,7 +67,7 @@
                                 <div class="card-body">
                                     @if ($news->count() == 0)
                                         <div class="alert alert-danger" role="alert">
-                                            Không tìm thấy bào viết nào.
+                                            Không tìm thấy bài viết nào.
                                         </div>
                                     @else
                                         <table id="example2" class="table table-bordered table-hover">

@@ -37,7 +37,7 @@
                                 <tbody>
                                     <tr>
                                         <th>Avatar:</th>
-                                        <td><img src="{{ asset('./imgDoctor/'. $doctor->filename) }}" 
+                                        <td><img src="@if(empty($doctor->filename))  https://th.bing.com/th/id/OIP.IkXgNyoITfT5LmWWROUoMwHaHa?pid=ImgDet&rs=1  @else {{ asset('./imgDoctor/'. $doctor->filename) }} @endif" 
                                                     style="vertical-align: middle;
                                                         width: 200px;
                                                         height: 300px;">

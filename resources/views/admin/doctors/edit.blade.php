@@ -49,7 +49,7 @@
 
                                 <div class="form-group">
                                     <label for="profile">Ảnh đại diện:</label>
-                                    <img src="{{ asset('./imgDoctor/'. $doctor->filename) }}" style="vertical-align: middle;
+                                    <img src="@if(empty($doctor->filename))  https://th.bing.com/th/id/OIP.IkXgNyoITfT5LmWWROUoMwHaHa?pid=ImgDet&rs=1  @else {{ asset('./imgDoctor/'. $doctor->filename) }} @endif"" style="vertical-align: middle;
                                                         width: 200px;
                                                         height: 300px;
                                                         margin-bottom:20px;">
@@ -243,7 +243,7 @@
             <div class="float-right d-none d-sm-inline-block">
               <b>Laravel</b> 8.1.0
             </div>
-          </footer>
+        </footer>
 
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">

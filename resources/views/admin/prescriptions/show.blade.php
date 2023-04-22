@@ -100,7 +100,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger" style="color: red;"
-                                            onclick="return confirm('Bạn có chắc chắn muốn xoá lịch hẹn này?')">
+                                            onclick="return confirm('Bạn có chắc chắn muốn xoá đơn thuốc này?')">
                                             <i class="fas fa-trash"></i> Xoá
                                         </button>
                                     </form>

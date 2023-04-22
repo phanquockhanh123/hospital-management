@@ -89,26 +89,26 @@
 		<div class="title1">PHÒNG KHÁM ĐA KHOA AN KHÁNH</div>
 		<div class="title2">ĐC: 216 Đ. Trần Duy Hưng, Trung Hoà, Cầu Giấy, Hà Nội</div>
 		<div class="phone">Điện thoại: 0327018337</div>
-		<div class="title3">{{ $prescription->doctor->doctorDepartment->name }}</div>
+		<div class="title3">{{ $prescription->diagnosis->doctor->doctorDepartment->name }}</div>
 	</div>
 	<h1>ĐƠN THUỐC</h1>
 	<div class="patient-info">
         <div>
 			<label>Mã bệnh nhân:</label>
-			<span>{{ $prescription->patient->patient_code }}</span>
+			<span>{{ $prescription->diagnosis->patient->patient_code }}</span>
 		</div>
 		<div>
 			<label>Họ tên:</label>
-			<span>{{ $prescription->patient->name }}</span>
+			<span>{{ $prescription->diagnosis->patient->name }}</span>
 		</div>
 		<div>
 			<label>Ngày sinh:</label>
-			<span>{{ $prescription->patient->date_of_birth->format(config('const.format.date')) }}</span>
+			<span>{{ $prescription->diagnosis->patient->date_of_birth->format(config('const.format.date')) }}</span>
 		</div>
 		<div>
 			<label>Giới tính:</label>
 			<span>
-                @if($prescription->patient->gender == 0)
+                @if($prescription->diagnosis->patient->gender == 0)
                     Nam
                 @else 
                     Nữ
@@ -117,19 +117,19 @@
 		</div>
 		<div>
 			<label>Số điện thoại:</label>
-			<span>{{ $prescription->patient->phone }}</span>
+			<span>{{ $prescription->diagnosis->patient->phone }}</span>
 		</div>
 		<div>
 			<label>Địa chỉ:</label>
-            <span>{{ $prescription->patient->address }}</span>
+            <span>{{ $prescription->diagnosis->patient->address }}</span>
 		</div>
         <div>
 			<label>Bệnh chính:</label>
-            <span>{{ $prescription->main_disease }}</span>
+            <span>{{ $prescription->diagnosis->main_disease }}</span>
 		</div>
         <div>
 			<label>Bệnh phụ:</label>
-            <span>{{ $prescription->side_disease }}</span>
+            <span>{{ $prescription->diagnosis->side_disease }}</span>
 		</div>
 	</div>
 	<table>
@@ -161,7 +161,7 @@
 		<div class="created_at">Ngày {{ $prescription->updated_at->day }} tháng {{ $prescription->updated_at->month }} năm {{ $prescription->updated_at->year }}</div>
 		<h3>BÁC SĨ KHÁM, CHỮA BệNH</h3>
 		<div class="sign">(Kỹ, ghi rõ họ tên)</div>
-		<h2>{{ $prescription->doctor->name }}</h2>
+		<h2>{{ $prescription->diagnosis->doctor->name }}</h2>
 	</div>
 	<h4>Vui lòng mang theo toa khi tái khám</h4>
 </body>

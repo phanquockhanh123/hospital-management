@@ -173,7 +173,7 @@
                               height: 50px;
                               text-align: center; margin-left:20px;color:black" --}} href="#" role="button"
                                 id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="@if (!empty(Auth::user()->filename)) ./imgPatient/{{ Auth::user()->filename}}@else https://cdn.iconscout.com/icon/premium/png-256-thumb/patient-2460481-2128797.png @endif"
+                                <img src="@if (!empty($patient->filename)) ./imgPatient/{{ $patient->filename}}@else https://cdn.iconscout.com/icon/premium/png-256-thumb/patient-2460481-2128797.png @endif"
                                     style="background-color: #00D9A5;border-radius: 50%;vertical-align: middle;
                                                                     width: 50px;
                                                                     height: 50px;

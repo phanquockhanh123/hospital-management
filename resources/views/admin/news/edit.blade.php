@@ -60,7 +60,7 @@
 
                                 <div class="form-group">
                                     <label for="image">Ảnh đại diện:</label>
-                                    <img src="{{ asset('./imgNews/'. $new->filename) }}" style="vertical-align: middle;
+                                    <img src="@if(empty($new->filename))  https://th.bing.com/th/id/OIP.iU0kNkfIbXt09phj1GGuXAHaGH?pid=ImgDet&rs=1  @else {{ asset('./imgNews/'. $new->filename) }} @endif" style="vertical-align: middle;
                                                         width: 200px;
                                                         height: 300px;
                                                         margin-bottom:20px;">

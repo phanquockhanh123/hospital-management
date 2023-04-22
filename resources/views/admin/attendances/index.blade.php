@@ -46,7 +46,7 @@
                                 <div class="card-body">
                                     @if ($attendances->count() == 0)
                                         <div class="alert alert-danger" role="alert">
-                                            Không tìm thấy bảng chấm công tháng nay.
+                                            Không tìm thấy bảng chấm công hôm nay.
                                         </div>
                                     @else
                                         <table id="example2" class="table table-bordered table-hover">
@@ -57,6 +57,7 @@
                                                     <th>Email</th>
                                                     <th>Thời gian vào làm</th>
                                                     <th>Thời gian về</th>
+                                                    <th>Số giờ làm</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -67,6 +68,7 @@
                                                         <td>{{ $attendance->user->email }}</td>
                                                         <td>{{ $attendance->login_time }}</td>
                                                         <td>{{ $attendance->logout_time }}</td>
+                                                        <td>{{ $attendance->hour_worked }}</td>
                                                     </tr>
                                                 @endforeach
 

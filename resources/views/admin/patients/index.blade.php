@@ -89,7 +89,7 @@
                       <tr>
                         <td>
                           <a href="{{ route('patients.show', $patient) }}"><img
-                              src="./imgPatient/{{ $patient->filename}}" style="border-radius: 50%;vertical-align: middle;
+                              src="@if(empty($patinet->filename))  https://th.bing.com/th/id/OIP.1t1Aoq3mF7U2Cr3rWO1x6AAAAA?pid=ImgDet&rs=1  @else {{ asset('./imgPatient/'. $patinet->filename) }} @endif" style="border-radius: 50%;vertical-align: middle;
                                           width: 50px;
                                           height: 50px;
                                           border-radius: 50%;" alt="" title="">{{ $patient->patient_code }}</a>

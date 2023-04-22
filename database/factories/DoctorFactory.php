@@ -15,7 +15,6 @@ class DoctorFactory extends Factory
     public function definition()
     {
         $doctorDepartmentIds = \App\Models\DoctorDepartment::pluck('id');
-        $files = config('const.application_cv_file_extension');
         return [
             'name' => $this->faker->name(),
             'doctor_department_id' => $doctorDepartmentIds->random(),
@@ -27,8 +26,6 @@ class DoctorFactory extends Factory
             'date_of_birth' => $this->faker->date(),
             'gender' => $this->faker->randomElement(array_keys(\App\Models\Doctor::$genders)),
             'status' => $this->faker->randomElement(array_keys(\App\Models\Doctor::$status)),
-            'profile'  => sprintf('images/', $this->faker->uuid(), $this->faker->randomElement($files)),
-            'filename'  => sprintf('images/', $this->faker->uuid(), $this->faker->randomElement($files)),
             'address' => $this->faker->address(),
             'identity_number' => $this->faker->unique()->numberBetween(1000000000, 9999999999),
             'identity_card_date'  => $this->faker->date(),
