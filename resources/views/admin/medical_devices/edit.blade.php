@@ -49,8 +49,8 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="profile">Ảnh đại diện:</label>
-                                    <img src="{{ asset('./imgDevices/'. $medical_device->filename) }}" style="vertical-align: middle;
+                                    <label for="profile">Ảnh thiết bị:</label>
+                                    <img src="@if(empty($medical_device->filename))  https://th.bing.com/th/id/OIP.57offJgp5AUv4YNrVWC9_wHaHa?pid=ImgDet&rs=1  @else {{ asset('./imgDevices/'. $medical_device->filename) }} @endif" style="vertical-align: middle;
                                                         width: 200px;
                                                         height: 300px;
                                                         margin-bottom:20px;">

@@ -190,7 +190,7 @@
                         <li class="nav-item">
                             <a href="{{ route('doctor_departments.index') }}"
                                 class="nav-link @if (Request::route()->getName() == 'doctor_departments.index') active @endif">
-                                <i class="nav-icon far fa-image"></i>
+                                <i class="far fa-circle nav-icon"></i>
                                 <p>Phòng ban</p>
                             </a>
                         </li>

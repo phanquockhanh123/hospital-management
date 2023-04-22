@@ -27,24 +27,24 @@ class DoctorController extends Controller
         $doctorDepartments = DoctorDepartment::all();
 
         $doctors = Doctor::with('doctorDepartment');
-        if($request['fullname'] != null) {
+        if ($request['fullname'] != null) {
             $doctors->where('name', 'LIKE', '%' . $request['fullname'] . '%');
         }
 
-        if($request['status'] != null) {
+        if ($request['status'] != null) {
             $doctors->where('status', 'LIKE', '%' . $request['status'] . '%');
         }
-        if($request['doctor_department_id'] != null) {
+        if ($request['doctor_department_id'] != null) {
             $doctors->where('doctor_department_id', $request['doctor_department_id']);
         }
 
-        if($request['academic_level'] != null) {
+        if ($request['academic_level'] != null) {
             $doctors->where('academic_level', $request['academic_level']);
         }
 
         $doctors = $doctors->orderByDesc('updated_at')->orderByDesc('id')->paginate(config('const.perPage'));
         $count = 1;
-        return view('admin.doctors.index', compact('doctors','academicLevels', 'doctorDepartments'));
+        return view('admin.doctors.index', compact('doctors', 'academicLevels', 'doctorDepartments'));
     }
 
     /**
@@ -212,14 +212,14 @@ class DoctorController extends Controller
 
         $doctor->update($validatedData);
         $user = $doctor?->user;
-        
+
         if ($user) {
             $user->update([
                 'email' => $doctor->email,
                 'name' => $doctor->name,
             ]);
         }
-        
+
         return redirect()->route('doctors.index')
             ->with('success', 'Thông tin bác sĩ đã được cập nhật thành công.');
     }
@@ -238,7 +238,8 @@ class DoctorController extends Controller
             ->with('success', 'Bác sĩ đã được xoá thành công.');
     }
 
-    public function addAccountDoctor(Request $request, Doctor $doctor) {
+    public function addAccountDoctor(Request $request, Doctor $doctor)
+    {
 
         // $validatedData = $request->validate([
         //     'name' => 'required|string|max:255',

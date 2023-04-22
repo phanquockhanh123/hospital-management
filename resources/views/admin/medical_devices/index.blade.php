@@ -65,7 +65,6 @@
                                             <label for="status">Trạng thái:</label>
                                             <select name="status" class="form-control input-sm m-bot15">
                                                 <option value="">----Chọn trạng thái----</option>
-                                                <option value="0">Chưa được kiểm duyệt</option>
                                                 <option value="1">Đang chờ kiểm duyệt</option>
                                                 <option value="2">Đã được kiểm duyệt</option>
                                             </select>
@@ -118,7 +117,6 @@
                                                     <th>Mã thiết bị</th>
                                                     <th>Tên thiết bị</th>
                                                     <th>Phòng ban</th>
-                                                    <th>Giá</th>
                                                     <th>Trạng thái</th>
                                                     <th>Số lượng còn</th>
                                                     <th>Hết hạn kiểm định</th>

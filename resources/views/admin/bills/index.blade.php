@@ -117,12 +117,12 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($bills as $bill)
+                                            @foreach ($bills ?? [] as $bill)
                                             <tr>
                                                 <td><a href="{{ route('bills.show', $bill->id) }}">{{ $count++ }}</a>
                                                 </td>
-                                                <td>{{ $bill->diagnosis->patient->name }}</td>
-                                                <td>{{ $bill->diagnosis->doctor->name }}</td>
+                                                <td>{{ $bill->diagnosis?->patient?->name }}</td>
+                                                <td>{{ $bill->diagnosis?->doctor?->name }}</td>
                                                 <td>{{ $bill->created_at }}</td>
                                                 <td>{{ $bill->total_money }}</td>
                                                 <td>@if(empty($bill->paid_money)) 0 @else {{ $bill->total_money }} @endif</td>

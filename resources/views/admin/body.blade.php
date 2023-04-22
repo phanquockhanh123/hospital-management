@@ -43,7 +43,7 @@
           <!-- small box -->
           <div class="small-box bg-info">
             <div class="inner">
-            <h3>{{ $countBillMoney[0]->total_money }} đồng</h3>
+            <h3>{{ $countBillMoney[0]->total_money ?? 0 }} đồng</h3>
 
               <p>Tổng hóa đơn</p>
             </div>
@@ -480,7 +480,6 @@
                             <th>Trạng thái</th>
                             <th>Số lượng còn</th>
                             <th>Hết hạn kiểm định</th>
-                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
