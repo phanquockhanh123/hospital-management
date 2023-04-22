@@ -112,8 +112,10 @@
                                                 <th>Hành động</th>
                                                 @endif
                                                 @if(Auth::user()->role == 1)
+                                                
                                                 <th>Thanh toán</th>
                                                 @endif
+                                                <th>PDF</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -151,6 +153,7 @@
                                                 </td>
 
                                                 @endif
+                                                
                                                 @if(Auth::user()->role == 1)
                                                 <td>
                                                     <div class="btn-group">
@@ -162,6 +165,7 @@
                                                 </td>
 
                                                 @endif
+                                                <td><a href="{{ route('bills.pdf', $bill->id) }}" style="font-size: 22px;color:black"><i class="fas fa-print"></i></a></td>
                                                 <!-- Modal -->
                                                 <div class="modal fade" id="deleteModal{{ $bill->id }}" tabindex="-1"
                                                     role="dialog" aria-labelledby="deleteModalLabel{{ $bill->id }}"

@@ -161,4 +161,22 @@ class BillController extends Controller
         return redirect()->route('bills.index')
             ->with('success', 'Hóa đơn đã được thanh toán thành công.');
     }
+
+    /**
+     * render pdf a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function renderPdf(Request $request, Bill $bill)
+    {
+        $services = Service::all();
+        $medicals = Medical::all();
+        $diaPre = $bill->diagnosis->diagnosisItems->toArray();
+        $preItem = $bill?->prescription?->prescriptionItems->toArray();
+
+        $pdf = \PDF::loadView('pdf.bills', compact('bill', 'diaPre', 'preItem', 'services', 'medicals'), []);
+        $pdf->setPaper('a4', 'portrait', 'UTF-8');
+        return $pdf->stream('Bills.pdf');
+    }
 }

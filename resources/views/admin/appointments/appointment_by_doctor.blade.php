@@ -169,10 +169,12 @@
                                                             style="margin-right: 10px;color:blue;font-size:22px">
                                                             <i class="fas fa-eye"></i>
                                                         </a>
+                                                        @if($appointment->status == 2)
                                                         <a href="{{ route('appointments.create-diagnosis', $appointment) }}"  title="Tạo chẩn đoán/xét nghiệm"
                                                             style="margin-right: 10px;color:blue;font-size:22px">
                                                             <i class="fas fa-add"></i>
                                                         </a>
+                                                        @endif
                                                         @if(Auth::user()->role == 1)
                                                         <a href="{{ route('appointments.edit', $appointment->id) }}"
                                                             style="margin-right: 10px;color:green;font-size:22px">

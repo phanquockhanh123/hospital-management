@@ -144,7 +144,8 @@
                                                                 <span style="color:red;">Chưa tạo đơn thuốc</span>
                                                             @endif
                                                         </td>
-                                                        <td><button class="btn btn-primary"><a href="{{ route('diagnosises.pdf', $diagnosis->id) }}">In</a></button></td>
+                                                        <td><a href="{{ route('diagnosises.pdf', $diagnosis->id) }}" style="font-size: 22px;color:black"><i class="fas fa-print"></i></a></td>
+
                                                         <td>
                                                             <a  href="{{ route('diagnosises.create-prescription', $diagnosis->id) }}"
                                                                 class="btn btn-warning @if ($diagnosis->status == 1) disabled @endif">

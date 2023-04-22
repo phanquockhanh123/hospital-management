@@ -94,7 +94,7 @@
                                                         <td>{{ $prescription->diagnosis->main_diagnosis }}</td>
                                                         <td>{{ $prescription->diagnosis->side_diagnosis }}</td>
                                                         <td>{{ $prescription->note }}</td>
-                                                        <td><button class="btn btn-primary"><a href="{{ route('prescriptions.pdf', $prescription->id) }}">In</a></button></td>
+                                                        <td><a href="{{ route('prescriptions.pdf', $prescription->id) }}" style="font-size: 22px;color:black"><i class="fas fa-print"></i></a></td>
                                                         <td>
                                                             <div class="btn-group">
                                                                 <a href="{{ route('prescriptions.edit', $prescription->id) }}"

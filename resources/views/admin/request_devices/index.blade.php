@@ -69,7 +69,7 @@
                                 <div class="card-body">
                                     @if ($request_devices->count() == 0)
                                         <div class="alert alert-danger" role="alert">
-                                            Không tìm thấy đơn yêu cầu thiệt bị nào.
+                                            Không tìm thấy đơn yêu cầu thiết bị nào.
                                         </div>
                                     @else
                                         <table id="example2" class="table table-bordered table-hover">

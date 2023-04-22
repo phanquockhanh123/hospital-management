@@ -242,6 +242,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::delete('/bills/{bill}', 'destroy')->name('bills.destroy');
 
             Route::get('/bills/{bill}/payment', 'payment')->name('bills.payment');
+
+            Route::get('/bills/{bill}/pdf', 'renderPdf')->name('bills.pdf');
         });
     });
 
@@ -317,8 +319,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     //--------------------------------Chats ------------------------------------------------------------------------------------------------
     Route::controller(ChatController::class)->group(function () {
         Route::middleware([config('const.auth.patient')])->group(function () {
-            Route::get('/chats', 'index')->name('chats.index');
             Route::get('/chats/user', 'getChatUserUI')->name('chats.chat-user-ui');
+        });
+        Route::middleware([config('const.auth.low')])->group(function () {
+            Route::get('/chats', 'index')->name('chats.index');
+            
             Route::get('/message/{id}', 'getMessage')->name('message');
             Route::get('/infor/{id}', 'getInfor')->name('getInfor');
             Route::post('/message', 'sendMessage')->name('sendMessage');

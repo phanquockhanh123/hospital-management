@@ -87,7 +87,7 @@
     <div class="back-to-top"></div>
 
     @if (Auth::user()?->id)
-    <a class="btnMessage" href="{{ route('chats.index') }}" style="text-decoration: none;">
+    <a class="btnMessage" href="{{ route('chats.chat-user-ui') }}" style="text-decoration: none;">
         <div class="circle-shape bg-secondary text-white">
             <span class="mai-chatbubbles-outline"></span>
         </div>
