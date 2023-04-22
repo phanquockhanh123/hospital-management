@@ -189,16 +189,9 @@ class HomeController extends Controller
 
         $patient->update($validatedData);
         $user = User::where('email', $patient->email)->first();
+
         $user->update([
             'name' => $patient->name,
-            'phone' => $patient->phone,
-            'address' => $patient->address,
-            'gender' => $patient->gender,
-            'dob' => $patient->date_of_birth,
-            'identity_number' => $patient->identity_number,
-            'identity_card_date' => $patient->identity_card_date,
-            'identity_card_place' => $patient->identity_card_place,
-            'filename' => $patient->filename
         ]);
 
         return redirect()->route('user.get-info-patient')

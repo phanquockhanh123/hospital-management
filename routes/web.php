@@ -123,15 +123,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::middleware([config('const.auth.low')])->group(function () {
             Route::get('/patients', [PatientController::class, 'index'])->name('patients.index');
             Route::get('/patients/create', [PatientController::class, 'create'])->name('patients.create')
-                ->withoutMiddleware(['const.auth.mid']);
+                ->withoutMiddleware(['const.auth.mid', 'const.auth.high']);
             Route::post('/patients', [PatientController::class, 'store'])->name('patients.store')
-                ->withoutMiddleware(['const.auth.mid']);
+                ->withoutMiddleware(['const.auth.mid', 'const.auth.high']);
             Route::get('/patients/{patient}', [PatientController::class, 'show'])->name('patients.show')
-                ->withoutMiddleware(['const.auth.mid']);
+                ->withoutMiddleware(['const.auth.mid', 'const.auth.high']);
             Route::get('/patients/{patient}/edit', [PatientController::class, 'edit'])->name('patients.edit')
-                ->withoutMiddleware(['const.auth.mid']);
+                ->withoutMiddleware(['const.auth.mid', 'const.auth.high']);
             Route::put('/patients/{patient}', [PatientController::class, 'update'])->name('patients.update')
-                ->withoutMiddleware(['const.auth.mid']);
+                ->withoutMiddleware(['const.auth.mid', 'const.auth.high']);
         });
 
         Route::middleware([config('const.auth.high')])->group(function () {
@@ -276,6 +276,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::delete('/diagnosises/{diagnosis}', 'destroy')->name('diagnosises.destroy');
 
             Route::get('/diagnosises/{diagnosis}/pdf', 'renderPdf')->name('diagnosises.pdf');
+
+            Route::get('/appointments/{appointment}/create/diagnosis', 'createDiagnosis')->name('appointments.create-diagnosis');
+            Route::post('/appointments/{appointment}/diagnosis', 'storeDiagnosis')->name('appointments.store-diagnosis');
         });
     });
 

@@ -2,9 +2,9 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="{{ route('admin.home') }}" class="brand-link">
-        <img src="https://scontent.fhan3-1.fna.fbcdn.net/v/t39.30808-6/302494543_501115628684397_602739320082206623_n.png?_nc_cat=105&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=yhfa36KHgVQAX-bAGH5&_nc_ht=scontent.fhan3-1.fna&oh=00_AfAp04zG0ZmBS-jRqj4q2QVG2PTCrWuKq0D3s20mer75oA&oe=643FE132"
+        <img src="https://th.bing.com/th/id/R.7341cd8295fecb9385f968b1f56715a7?rik=mSAa%2bJFXDvBT7Q&pid=ImgRaw&r=0"
             alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">An Khánh</span>
+        <span class="brand-text font-weight-light">An Khang</span>
     </a>
 
     <!-- Sidebar -->
@@ -13,6 +13,57 @@
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                @if ( Auth::user()->role == 1 )
+                <li class="nav-item">
+                    <a href="{{ route('patients.index') }}"
+                        class="nav-link @if (Request::route()->getName() == 'patients.index') active @endif">
+                        <i class="nav-icon far fa-user"></i>
+                        <p>
+                            Bệnh nhân
+                        </p>
+                    </a>
+                </li>
+                @endif
+                @if ( Auth::user()->role == 3)
+                <li class="nav-item">
+                    <a href="{{ route('doctors.index') }}"
+                        class="nav-link @if (Request::route()->getName() == 'doctors.index') active @endif">
+                        <i class="nav-icon far fa-hospital"></i>
+                        <p>Bác sĩ</p>
+                    </a>
+                </li>
+                @endif
+                @if (Auth::user()->role == 3)
+                <li class="nav-item">
+                    <a href="{{route('reports.index')}}"
+                        class="nav-link @if (Request::route()->getName() == 'reports.index') active @endif">
+                        <i class="nav-icon far fa-chart-bar"></i>
+                        <p>
+                            Báo cáo thống kê
+                        </p>
+                    </a>
+                </li>
+                @endif
+                @if (Auth::user()->role == 2)
+                <li class="nav-item">
+                    <a href="{{ route('diagnosises.index') }}"
+                        class="nav-link @if (Request::route()->getName() == 'diagnosises.index') active @endif">
+                        <i class="nav-icon far fa-heart"></i>
+                        <p>
+                            Chẩn đoán/Xét nghiệm
+                        </p>
+                    </a>
+                </li>
+                @endif
+                <li class="nav-item">
+                    <a href="{{ route('bills.index') }}"
+                        class="nav-link @if (Request::route()->getName() == 'bills.index') active @endif">
+                        <i class="nav-icon far fa-dollar-sign"></i>
+                        <p>
+                            Hóa đơn
+                        </p>
+                    </a>
+                </li>
                 @if (Auth::user()->role == 1 || Auth::user()->role == 2)
                 <li class="nav-item">
                     <a href="{{ route('appointments.index') }}" class="nav-link">
@@ -74,17 +125,7 @@
                     </a>
                 </li>
                 @endif
-                @if ( Auth::user()->role == 1 )
-                <li class="nav-item">
-                    <a href="{{ route('patients.index') }}"
-                        class="nav-link @if (Request::route()->getName() == 'patients.index') active @endif">
-                        <i class="nav-icon far fa-user"></i>
-                        <p>
-                            Bệnh nhân
-                        </p>
-                    </a>
-                </li>
-                @endif
+                
 
                 @if (Auth::user()->role == 3)
                 <li class="nav-item">
@@ -106,13 +147,7 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a href="{{ route('doctors.index') }}"
-                        class="nav-link @if (Request::route()->getName() == 'doctors.index') active @endif">
-                        <i class="nav-icon far fa-hospital"></i>
-                        <p>Bác sĩ</p>
-                    </a>
-                </li>
+                
 
                 <li class="nav-item">
                     <a href="{{ route('receptionists.index') }}"
@@ -189,42 +224,6 @@
                     </a>
                 </li>
                 @endif
-
-                @if (Auth::user()->role == 3)
-                <li class="nav-item">
-                    <a href="{{route('reports.index')}}"
-                        class="nav-link @if (Request::route()->getName() == 'reports.index') active @endif">
-                        <i class="nav-icon far fa-chart-bar"></i>
-                        <p>
-                            Báo cáo thống kê
-                        </p>
-                    </a>
-                </li>
-                @endif
-
-                @if (Auth::user()->role == 2)
-                <li class="nav-item">
-                    <a href="{{ route('diagnosises.index') }}"
-                        class="nav-link @if (Request::route()->getName() == 'diagnosises.index') active @endif">
-                        <i class="nav-icon far fa-heart"></i>
-                        <p>
-                            Chẩn đoán/Xét nghiệm
-                        </p>
-                    </a>
-                </li>
-                @endif
-
-
-                <li class="nav-item">
-                    <a href="{{ route('bills.index') }}"
-                        class="nav-link @if (Request::route()->getName() == 'bills.index') active @endif">
-                        <i class="nav-icon far fa-dollar-sign"></i>
-                        <p>
-                            Hóa đơn
-                        </p>
-                    </a>
-                </li>
-
 
                 <li class="nav-item">
                     <a href="{{ route('chats.index') }}"

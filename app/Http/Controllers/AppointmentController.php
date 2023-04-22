@@ -279,16 +279,25 @@ class AppointmentController extends Controller
             ->with('success', 'Từ chối cuộc hẹn thành công !');
     }
 
-    public function getAppointmentByDoctor()
+    public function getAppointmentByDoctor(Request $request)
     {
-        $doctor = Doctor::where('email', Auth::user()->email)->first();
-        if($doctor) {
-            $appointments = Appointment::where('doctor_id', $doctor->id)
-            ->orderByDesc('created_at')->paginate(config('const.perPage'));
-        }else {
-            $appointments = [];
-        }
+        $doctor = Doctor::where('user_id', Auth::user()->id)->first();
+        $appointments = Appointment::where('doctor_id', $doctor->id);
         $count=1;
-        return view('admin.appointments.index', compact('appointments', 'count'));
+
+        $patients = Patient::orderByDesc('created_at')->get();
+        $doctorDepartments = DoctorDepartment::all();
+
+        if($request['patient_id'] != null) {
+            $appointments->where('patient_id', $request['patient_id']);
+        }
+
+        if($request['doctor_department_id'] != null) {
+            $appointments->where('doctor_department_id', $request['doctor_department_id']);
+        }
+        
+        $appointments = $appointments->orderByDesc('updated_at')->orderByDesc('id')->paginate(config('const.perPage'));
+        
+        return view('admin.appointments.appointment_by_doctor', compact('appointments', 'count', 'patients', 'doctorDepartments'));
     }
 }

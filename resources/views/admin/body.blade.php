@@ -24,17 +24,34 @@
       <div class="row">
         <div class="col-lg-3 col-6">
           <!-- small box -->
-          <div class="small-box bg-info">
+          <div class="small-box bg-danger">
             <div class="inner">
               <h3>{{ $countDoctors }}</h3>
 
               <p>Bác sĩ</p>
             </div>
             <div class="icon">
-              <i class="fa-solid fa-user-doctor"></i>
+              <i class="fa-solid fa-user-doctor" style="font-size:60px;"></i>
             </div>
-            <a href="{{ route('doctors.index') }}" class="small-box-footer">Xem thêm <i
-                class="fas fa-arrow-circle-right"></i></a>
+            {{-- <a href="{{ route('doctors.index') }}" class="small-box-footer">Xem thêm <i
+                class="fas fa-arrow-circle-right"></i></a> --}}
+          </div>
+        </div>
+
+        <!-- ./col -->
+        <div class="col-lg-3 col-6">
+          <!-- small box -->
+          <div class="small-box bg-info">
+            <div class="inner">
+            <h3>{{ $countBillMoney[0]->total_money }} đồng</h3>
+
+              <p>Tổng hóa đơn</p>
+            </div>
+            <div class="icon">
+              <i class="fas fa-file-invoice" style="font-size:60px;"></i>
+            </div>
+            {{-- <a href="{{ route('bills.index') }}" class="small-box-footer">Xem thêm <i
+                class="fas fa-arrow-circle-right"></i></a> --}}
           </div>
         </div>
         <!-- ./col -->
@@ -47,10 +64,10 @@
               <p>Bệnh nhân</p>
             </div>
             <div class="icon">
-              <i class="fa-solid fa-user-doctor"></i>
+              <i class="fa-solid fa-user-injured" style="font-size:60px;"></i>
             </div>
-            <a href="{{ route('patients.index') }}" class="small-box-footer">Xem thêm <i
-                class="fas fa-arrow-circle-right"></i></a>
+            {{-- <a href="{{ route('patients.index') }}" class="small-box-footer">Xem thêm <i
+                class="fas fa-arrow-circle-right"></i></a> --}}
           </div>
         </div>
 
@@ -65,10 +82,10 @@
               <p>Tài khoản người dùng</p>
             </div>
             <div class="icon">
-              <i class="ion ion-person-add"></i>
+              <i class="fa-solid fa-user-circle" style="font-size:60px;"></i>
             </div>
-            <a href="{{ route('users.index') }}" class="small-box-footer">Xem thêm <i
-                class="fas fa-arrow-circle-right"></i></a>
+            {{-- <a href="{{ route('users.index') }}" class="small-box-footer">Xem thêm <i
+                class="fas fa-arrow-circle-right"></i></a> --}}
           </div>
         </div>
         <!-- ./col -->
@@ -81,10 +98,10 @@
               <p>Lịch hẹn </p>
             </div>
             <div class="icon">
-              <i class="far fa-calendar-alt"></i>
+              <i class="far fa-calendar-alt" style="font-size:60px;"></i>
             </div>
-            <a href="{{ route('appointments.index') }}" class="small-box-footer">Xem thêm <i
-                class="fas fa-arrow-circle-right"></i></a>
+            {{-- <a href="{{ route('appointments.index') }}" class="small-box-footer">Xem thêm <i
+                class="fas fa-arrow-circle-right"></i></a> --}}
           </div>
         </div>
 
@@ -97,10 +114,10 @@
               <p>Hóa đơn</p>
             </div>
             <div class="icon">
-              <i class="ion ion-pie-graph"></i>
+              <i class="fa-solid fa-file-invoice" style="font-size:60px;"></i>
             </div>
-            <a href="{{ route('prescriptions.index') }}" class="small-box-footer">Xem thêm <i
-                class="fas fa-arrow-circle-right"></i></a>
+            {{-- <a href="{{ route('prescriptions.index') }}" class="small-box-footer">Xem thêm <i
+                class="fas fa-arrow-circle-right"></i></a> --}}
           </div>
         </div>
 
@@ -113,10 +130,10 @@
               <p>Đơn thuốc</p>
             </div>
             <div class="icon">
-              <i class="ion ion-pie-graph"></i>
+              <i class="fas fa-prescription-bottle-alt" style="font-size:60px;"></i>
             </div>
-            <a href="{{ route('prescriptions.index') }}" class="small-box-footer">Xem thêm <i
-                class="fas fa-arrow-circle-right"></i></a>
+            {{-- <a href="{{ route('prescriptions.index') }}" class="small-box-footer">Xem thêm <i
+                class="fas fa-arrow-circle-right"></i></a> --}}
           </div>
         </div>
 
@@ -130,10 +147,10 @@
               <p>Thiết bị vật tư</p>
             </div>
             <div class="icon">
-              <i class="ion ion-pie-graph"></i>
+              <i class="fa-solid fa-medkit" style="font-size:60px;"></i>
             </div>
-            <a href="{{ route('medical_devices.index') }}" class="small-box-footer">Xem thêm <i
-                class="fas fa-arrow-circle-right"></i></a>
+            {{-- <a href="{{ route('medical_devices.index') }}" class="small-box-footer">Xem thêm <i
+                class="fas fa-arrow-circle-right"></i></a> --}}
           </div>
 
 
@@ -148,10 +165,10 @@
               <p>Chẩn đoán / Xét nghiệm</p>
             </div>
             <div class="icon">
-              <i class="ion ion-pie-graph"></i>
+              <i class="fas-solid fa-microscope" style="font-size:60px;"></i>
             </div>
-            <a href="{{ route('diagnosises.index') }}" class="small-box-footer">Xem thêm <i
-                class="fas fa-arrow-circle-right"></i></a>
+            {{-- <a href="{{ route('diagnosises.index') }}" class="small-box-footer">Xem thêm <i
+                class="fas fa-arrow-circle-right"></i></a> --}}
           </div>
         </div>
         <div class="col-lg-3 col-6">
@@ -163,10 +180,10 @@
               <p>Lương</p>
             </div>
             <div class="icon">
-              <i class="ion ion-pie-graph"></i>
+              <i class="fas fa-money-bill" style="font-size:60px;"></i>
             </div>
-            <a href="{{ route('appointments.index') }}" class="small-box-footer">Xem thêm <i
-                class="fas fa-arrow-circle-right"></i></a>
+            {{-- <a href="{{ route('appointments.index') }}" class="small-box-footer">Xem thêm <i
+                class="fas fa-arrow-circle-right"></i></a> --}}
           </div>
         </div>
 
@@ -179,10 +196,10 @@
               <p>Phòng ban</p>
             </div>
             <div class="icon">
-              <i class="ion ion-pie-graph"></i>
+              <i class="fas fa-building" style="font-size:60px;"></i>
             </div>
-            <a href="{{ route('doctor_departments.index') }}" class="small-box-footer">Xem thêm <i
-                class="fas fa-arrow-circle-right"></i></a>
+            {{-- <a href="{{ route('doctor_departments.index') }}" class="small-box-footer">Xem thêm <i
+                class="fas fa-arrow-circle-right"></i></a> --}}
           </div>
         </div>
 
@@ -195,10 +212,10 @@
               <p>Bài viết</p>
             </div>
             <div class="icon">
-              <i class="ion ion-pie-graph"></i>
+              <i class="ion ion-pie-graph" style="font-size:60px;"></i>
             </div>
-            <a href="{{ route('news.index') }}" class="small-box-footer">Xem thêm <i
-                class="fas fa-arrow-circle-right"></i></a>
+            {{-- <a href="{{ route('news.index') }}" class="small-box-footer">Xem thêm <i
+                class="fas fa-arrow-circle-right"></i></a> --}}
           </div>
         </div>
 
@@ -211,10 +228,10 @@
               <p>Cuộc họp</p>
             </div>
             <div class="icon">
-              <i class="ion ion-pie-graph"></i>
+              <i class="ion ion-pie-graph" style="font-size:60px;"></i>
             </div>
-            <a href="{{ route('news.index') }}" class="small-box-footer">Xem thêm <i
-                class="fas fa-arrow-circle-right"></i></a>
+            {{-- <a href="{{ route('news.index') }}" class="small-box-footer">Xem thêm <i
+                class="fas fa-arrow-circle-right"></i></a> --}}
           </div>
         </div>
         <!-- ./col -->
@@ -227,12 +244,51 @@
               <p>Lễ tân</p>
             </div>
             <div class="icon">
-              <i class="fa-solid fa-user-doctor"></i>
+              <i class="fa-solid fa-user-doctor" style="font-size:60px;"></i>
             </div>
-            <a href="{{ route('patients.index') }}" class="small-box-footer">Xem thêm <i
-                class="fas fa-arrow-circle-right"></i></a>
+            {{-- <a href="{{ route('patients.index') }}" class="small-box-footer">Xem thêm <i
+                class="fas fa-arrow-circle-right"></i></a> --}}
           </div>
         </div>
+        <!-- ./col -->
+
+         <!-- ./col -->
+         <div class="col-lg-3 col-6">
+          <!-- small box -->
+          <div class="small-box bg-success">
+            <div class="inner">
+              <h3>{{ $countMedicals }}</h3>
+
+              <p>Thuốc</p>
+            </div>
+            <div class="icon">
+              <i class="fa-solid fa-user-doctor" style="font-size:60px;"></i>
+            </div>
+            {{-- <a href="{{ route('patients.index') }}" class="small-box-footer">Xem thêm <i
+                class="fas fa-arrow-circle-right"></i></a> --}}
+          </div>
+        </div>
+        <!-- ./col -->
+
+         <!-- ./col -->
+         <div class="col-lg-3 col-6">
+          <!-- small box -->
+          <div class="small-box bg-warning">
+            <div class="inner">
+              <h3>{{ $countServices }}</h3>
+
+              <p>Dịch vụ</p>
+            </div>
+            <div class="icon">
+              <i class="fa-solid fa-user-doctor" style="font-size:60px;"></i>
+            </div>
+            {{-- <a href="{{ route('patients.index') }}" class="small-box-footer">Xem thêm <i
+                class="fas fa-arrow-circle-right"></i></a> --}}
+          </div>
+        </div>
+        <!-- ./col -->
+
+        
         <!-- ./col -->
       </div>
       <!-- /.row -->

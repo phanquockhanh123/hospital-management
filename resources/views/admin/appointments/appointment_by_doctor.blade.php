@@ -44,7 +44,7 @@
                             </form> --}}
 
                             <div class="col-md-10 offset-md-1">
-                                <form action="{{ route('appointments.index') }}" method="GET">
+                                <form action="{{ route('appointments.get-appointment-by-doctor') }}" method="GET">
                                     @csrf
                                    
                                     <div class="row">
@@ -58,20 +58,6 @@
                                                     @endforeach
                                                 </select>
                                                 @error('patient_id')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-3">
-                                            <div class="form-group">
-                                                <label for="doctor_id">Bác sĩ:</label>
-                                                <select name="doctor_id" class="form-control input-sm m-bot15">
-                                                    <option value="">----Chọn bác sĩ----</option>
-                                                    @foreach ($doctors as $doctor)
-                                                    <option value="{{ $doctor->id }}">{{ $doctor->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                                @error('doctor_id')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
@@ -164,10 +150,10 @@
                                                     <i class="fa-solid fa-calendar-check" style="color:green;"></i>
 
                                                     @elseif ($appointment->status == 1)
-                                                    <a href="{{ route('appointments.denied', $appointment->id) }}"><i
+                                                    <a href="{{ route('appointments.denied', $appointment->id) }}" title="Từ chối"><i
                                                             class="fa-solid fa-calendar-xmark"
                                                             style="color:red;"></i></a>
-                                                    <a href="{{ route('appointments.accepted', $appointment->id) }}"><i
+                                                    <a href="{{ route('appointments.accepted', $appointment->id) }}" title="Chấp nhận"><i
                                                             class="fa-solid fa-calendar-check"
                                                             style="color:blue;"></i></a>
 
@@ -179,9 +165,13 @@
                                                 @endif
                                                 <td>
                                                     <div class="btn-group">
-                                                        <a href="{{ route('appointments.show', $appointment) }}"
+                                                        <a href="{{ route('appointments.show', $appointment) }}" title="Xem chi tiết"
                                                             style="margin-right: 10px;color:blue;font-size:22px">
                                                             <i class="fas fa-eye"></i>
+                                                        </a>
+                                                        <a href="{{ route('appointments.create-diagnosis', $appointment) }}"  title="Tạo chẩn đoán/xét nghiệm"
+                                                            style="margin-right: 10px;color:blue;font-size:22px">
+                                                            <i class="fas fa-add"></i>
                                                         </a>
                                                         @if(Auth::user()->role == 1)
                                                         <a href="{{ route('appointments.edit', $appointment->id) }}"

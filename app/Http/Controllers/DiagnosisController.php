@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Appointment;
 use PDF;
 use App\Models\Bill;
 use App\Models\Doctor;
@@ -265,4 +266,86 @@ class DiagnosisController extends Controller
         $pdf->setPaper('a4', 'portrait', 'UTF-8');
         return $pdf->stream('Diagnosis.pdf');
     }
+
+     /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function createDiagnosis(Appointment $appointment)
+    {
+        $doctor = Doctor::where('email', Auth::user()->email)->first();
+        $patients = Patient::orderByDesc('created_at')->get();
+        $services = Service::all();
+        return view('admin.diagnosises.create-diagnosis', compact('doctor', 'patients', 'services', 'appointment'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeDiagnosis(Request $request)
+    {
+        $validatedData = $request->validate([
+            'doctor_id' => 'nullable|integer|exists:doctors,id,deleted_at,NULL',
+            'patient_id' => 'nullable|integer|exists:patients,id,deleted_at,NULL',
+            'main_diagnosis' => 'required|string|max:255',
+            'side_diagnosis' => 'nullable|string|max:255',
+            'service_id' => 'required|array',
+            'result' => 'required|array',
+            'references_range' => 'nullable|array',
+            'unit' => 'required|array',
+            'method' => 'required|array',
+            'diagnosis_note' => 'nullable|array|max:1000',
+            'note' => 'nullable|string|max:255',
+        ]);
+        $validatedData['status'] = Diagnosis::STATUS_PENDING;
+
+        $diagnosis = Diagnosis::create($validatedData);
+
+        $data = [
+            "service_id" => array_values($validatedData['service_id']),
+            "result" => array_values($validatedData['result']),
+            "references_range" => array_values($validatedData['references_range']),
+            "unit" => array_values($validatedData['unit']),
+            "method" => array_values($validatedData['method']),
+            "diagnosis_note" => array_values($validatedData['diagnosis_note']),
+        ];
+
+        $newArrays = array();
+        foreach ($data as $key => $values) {
+            $i = 0;
+            foreach ($values as $value) {
+                $newArrays[$i][$key] = $value;
+                $i++;
+            }
+        }
+
+        $diagnosisItemData = array_map(function ($diaPre) use ($diagnosis) {
+            $diaPre['diagnosis_id'] = $diagnosis->id;
+            $diaPre['created_at'] = now();
+            $diaPre['updated_at'] = now();
+            return $diaPre;
+        }, $newArrays);
+        DiagnosisItem::insert($diagnosisItemData);
+
+        // Create Bills
+        $totalMoney = 0;
+        foreach ($newArrays as $dataItem) {
+            $service = Service::where('id', $dataItem['service_id'])->first();
+            $totalMoney += $service->all_price;
+        }
+
+        $billData = [
+            'diagnosis_id' => $diagnosis->id,
+            'total_money' => $totalMoney,
+        ];
+        Bill::create($billData);
+
+        return redirect()->route('diagnosises.index')
+            ->with('success', 'Xét nghiệm/Chẩn đoán đã được tạo thành công.');
+    }
+
 }

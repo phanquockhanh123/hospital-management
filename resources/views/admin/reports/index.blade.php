@@ -32,6 +32,48 @@
         var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
         chart.draw(data, options);
       }
+
+      google.charts.setOnLoadCallback(drawChart2);
+      function drawChart2() {
+        var data = google.visualization.arrayToDataTable(@json($dataTable));
+
+        var options = {
+            title: 'Thống kê số lượt khám trong năm',
+            legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('line_chart'));
+
+        chart.draw(data, options);
+    }
+
+    google.charts.setOnLoadCallback(drawChart3);
+      function drawChart3() {
+        var data = google.visualization.arrayToDataTable(@json($dataDeviceTable));
+
+        var options = {
+            title: 'Thống kê số lượng thiết bị trong phòng khám',
+            legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('column_chart'));
+
+        chart.draw(data, options);
+      }
+
+      google.charts.setOnLoadCallback(drawChart4);
+      function drawChart4() {
+        var data = google.visualization.arrayToDataTable(@json($dataBill));
+
+        var options = {
+            title: 'Thống kê tổng tiền thu được từ hóa đơn theo phòng ban',
+            legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('column_chart_bill'));
+
+        chart.draw(data, options);
+      }
       
     </script>
 </head>
@@ -61,7 +103,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm-4" style="height: 500px;">
-                            <canvas id="myChart"></canvas>
+                            <div id="column_chart" style="width: 500px; height: 500px;"></div>
                             <div style="text-align: center;">Thống kê tình trạng trang thiết bị</div>
 
                         </div>
@@ -71,26 +113,12 @@
                                 $now->month }} / {{ $now->year }} </div>
                         </div>
                     </div>
-                    <h1 style="text-align:center;margin-top: 120px;font-size:28px;font-weight:600">Bảng thống kê thu nhập theo phòng ban</h1>
-                    <table class="table table-bordered table-hover">
-                        <thead>
-                            <tr>
-                                <th>STT</th>
-                                <th>Tên phòng ban</th>
-                                <th style="width:500px">Tổng thu nhập</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($billByDeparments as $billByDeparment)
-                            <tr>
-                                <td>{{ $count++; }}</td>
-                                <td>{{ $billByDeparment->department_name; }}</td>
-                                <td>{{ $billByDeparment->total_money; }} đồng</td>
-                            </tr>
-                            @endforeach
-                           
-                        </tbody>
-                    </table>
+                    <div id="line_chart" style="width: 1400px; height: 500px; align-items: center;"></div>
+                    <h1 style="text-align:center;margin-bottom: 120px;font-size:28px;font-weight:600">Biểu đồ thống kê số lượt khám theo từng tháng</h1>
+                    
+                    <div id="column_chart_bill" style="width: 1400px; height: 500px; align-items: center;"></div>
+                    <h1 style="text-align:center;margin-bottom: 120px;font-size:28px;font-weight:600">Bảng thống kê thu nhập theo phòng ban</h1>
+                    
                 </div>
                 <!-- /.container-fluid -->
             </section>
@@ -115,32 +143,7 @@
     <!-- ./wrapper -->
 
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <script>
-        const ctx = document.getElementById('myChart');
-
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Đang chờ kiểm định', 'Đã được kiểm định'],
-                datasets: [{
-                    label: '# of Votes',
-                    data: [(`<?php echo $devices_kiemdinh; ?>`),(`<?php echo $devices_chuakiemdinh; ?>`)],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    },
-                }
-            }
-        });
-
-       
-    </script>
+    
     @include('admin.script')
 </body>
 
