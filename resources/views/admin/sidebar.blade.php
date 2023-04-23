@@ -125,9 +125,6 @@
                     </a>
                 </li>
                 @endif
-                
-
-                @if (Auth::user()->role == 3)
                 <li class="nav-item">
                     <a href="{{ route('meetings.index') }}"
                         class="nav-link @if (Request::route()->getName() == 'meetings.index') active @endif">
@@ -137,6 +134,9 @@
                         </p>
                     </a>
                 </li>
+
+                @if (Auth::user()->role == 3)
+                
                 <li class="nav-item">
                     <a href="{{ route('users.index') }}"
                         class="nav-link @if (Request::route()->getName() == 'users.index') active @endif">

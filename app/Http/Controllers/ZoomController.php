@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Meeting;
+use App\Models\User;
 use \Firebase\JWT\JWT;
 use GuzzleHttp\Client;
+use App\Models\Meeting;
 use Illuminate\Http\Request;
+use App\Mail\MailJoinMeeting;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
 use GuzzleHttp\Exception\ClientException;
 use App\Http\Requests\Web\Zoom\CreateZoomCredentialsRequest;
-use Illuminate\Support\Facades\Auth;
-
 
 class ZoomController extends Controller
 {
@@ -99,14 +102,21 @@ class ZoomController extends Controller
 
     public function start_meeting($meeting)
     {
-        $meeting = Meeting::where('meeting_id', $meeting)->first();
+        $meeting = Meeting::where('meeting_id', $meeting)->orderByDesc('created_at')->first();
         $role = 1;
         if (!$meeting->is_active) {
             $meeting->update([
                 'is_active' => true
             ]);
         }
-        return view('zoom.start', compact('meeting', 'role'));
+        // dd($meeting);
+        $users = User::where('role', '!=', 0)->get();
+        foreach ($users as $user) {
+            Mail::to($user->email)->send(new MailJoinMeeting($user, $meeting));
+        }
+        
+        return Redirect::to($meeting->start_url);
+        // return view('zoom.start', compact('meeting', 'role'));
     }
 
     public function join_meeting($meeting)

@@ -207,7 +207,7 @@
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title"
                                                                     id="deleteModalLabel{{ $appointment->id }}">
-                                                                    Xóa loại giường</h5>
+                                                                    Xóa loại lịch hẹn</h5>
                                                                 <button type="button" class="close" data-dismiss="modal"
                                                                     aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>

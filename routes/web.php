@@ -318,10 +318,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     //--------------------------------Chats ------------------------------------------------------------------------------------------------
     Route::controller(ChatController::class)->group(function () {
+        // Route::middleware([config('const.auth.patient')])->group(function () {
+        //     Route::get('/chats/user', 'getChatUserUI')->name('chats.chat-user-ui');
+        // });
         Route::middleware([config('const.auth.patient')])->group(function () {
-            Route::get('/chats/user', 'getChatUserUI')->name('chats.chat-user-ui');
-        });
-        Route::middleware([config('const.auth.low')])->group(function () {
             Route::get('/chats', 'index')->name('chats.index');
             
             Route::get('/message/{id}', 'getMessage')->name('message');

@@ -11,16 +11,6 @@ use Illuminate\Support\Facades\Auth;
 
 class ChatController extends Controller
 {
-    public function getChatUserUI()
-    {
-        // count how many message are unread from the selected user
-        $users = DB::select("select users.id, users.role, users.name, users.email, count(is_read) as unread 
-        from users LEFT  JOIN  messages ON users.id = messages.from and is_read = 0 and messages.to = " . Auth::id() . "
-        where users.id != " . Auth::id() . " and users.role = 1  or users.role = 2
-        group by users.id, users.name, users.email, users.role");
-
-        return view('chat-realtime.chat', compact('users'));
-    }
     public function index()
     {
         $users = DB::select("select users.id, users.role, users.name, users.email, count(is_read) as unread 
@@ -29,7 +19,7 @@ class ChatController extends Controller
         group by users.id, users.name, users.email, users.role");
 
         // count how many message are unread from the selected user
-        if (Auth::user()->role == User::ROLE_ADMIN_ROOT) {
+        if (Auth::user()->role == User::ROLE_ADMIN_ROOT || Auth::user()->role == User::ROLE_PATIENT) {
             $users = DB::select("select users.id, users.role, users.name, users.email, count(is_read) as unread 
             from users LEFT  JOIN  messages ON users.id = messages.from and is_read = 0 and messages.to = " . Auth::id() . "
             where users.id != " . Auth::id() . " and users.role = 1  or users.role = 2
