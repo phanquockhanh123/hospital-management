@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRequestDevicesTable extends Migration
+class CreateRequestDeviceItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,27 +13,24 @@ class CreateRequestDevicesTable extends Migration
      */
     public function up()
     {
-        Schema::create('request_devices', function (Blueprint $table) {
+        Schema::create('request_device_items', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('doctor_id');
-            $table->unsignedBigInteger('patient_id');
-            $table->dateTime('borrow_time');
-            $table->dateTime('return_time');
-            $table->string('status')->default(0);
+            $table->unsignedBigInteger('request_device_id');
+            $table->unsignedBigInteger('medical_device_id');
+            $table->integer('quantity');
+            $table->string('description');
             $table->timestamps();
             $table->softDeletes();
 
             // declare foreign key
-            $table->foreign('doctor_id', 'FK_request_devices_1')
+            $table->foreign('request_device_id', 'FK_request_device_items_1')
                 ->references('id')
-                ->on('doctors')
+                ->on('request_devices')
                 ->onDelete('cascade');
-
-            $table->foreign('patient_id', 'FK_request_devices_2')
+            $table->foreign('medical_device_id', 'FK_request_device_items_2')
                 ->references('id')
-                ->on('patients')
+                ->on('medical_devices')
                 ->onDelete('cascade');
-
         });
     }
 
@@ -44,6 +41,6 @@ class CreateRequestDevicesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('request_devices');
+        Schema::dropIfExists('request_device_items');
     }
 }

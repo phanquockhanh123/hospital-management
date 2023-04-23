@@ -7,6 +7,7 @@ use App\Models\Patient;
 use Illuminate\Http\Request;
 use App\Models\RequestDevice;
 use App\Models\MedicalDevice;
+use App\Models\RequestDeviceItem;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpKernel\DataCollector\RequestDataCollector;
 
@@ -19,15 +20,22 @@ class RequestDeviceController extends Controller
      */
     public function index(Request $request)
     {
+        $doctors = Doctor::orderByDesc('created_at')->get();
+        $patients = Patient::orderByDesc('created_at')->get();
+       
+        // Search
+        $request_devices = RequestDevice::with('patient', 'doctor');
 
-        $search = $request->input('search');
-
-        if ($search) {
-            $request_devices = RequestDevice::where('id', 'LIKE', '%' . $search . '%')
-                ->orderByDesc('created_at')->paginate(config('const.perPage'));
-        } else {
-            $request_devices = RequestDevice::orderByDesc('created_at')->paginate(config('const.perPage'));
+        if($request['patient_id'] != null) {
+            $request_devices->where('patient_id', $request['patient_id']);
         }
+
+        if($request['status'] != null) {
+            $request_devices->where('status', $request['status']);
+        }
+
+        $request_devices = $request_devices->orderByDesc('updated_at')->orderByDesc('id')->paginate(config('const.perPage'));
+        // Update status borrow medical devices
         $requestDeviceReturns = RequestDevice::where('return_time' , '<=', now())->get();
 
         foreach($requestDeviceReturns as $requestDeviceReturn)
@@ -38,8 +46,8 @@ class RequestDeviceController extends Controller
             ]);
 
         }
-        
-        return view('admin.request_devices.index', compact('request_devices'));
+        $count =1;
+        return view('admin.request_devices.index', compact('request_devices', 'count', 'doctors', 'patients'));
     }
 
     /**
@@ -65,26 +73,42 @@ class RequestDeviceController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'medical_device_id' => 'required|exists:medical_devices,id,deleted_at,NULL',
-            'patient_id'  => 'required|exists:patients,id,deleted_at,NULL',
-            'quantity' => 'required|integer',
-            'borrow_time' => 'required',
-            'return_time'=> 'required',
-            'description' => 'nullable|string|max:255',
+            'patient_id' => 'nullable|integer|exists:patients,id,deleted_at,NULL',
+            'borrow_time' => 'nullable',
+            'return_time' => 'nullable',
+            'medical_device_id' => 'required|array',
+            'quantity' => 'required|array',
+            'description' => 'nullable|array',
         ]);
-
-        $doctor =  Doctor::where('email', Auth::user()->email)->first();
         $validatedData['status'] = RequestDevice::STATUS_BORROWING;
-        $validatedData['doctor_id'] =$doctor->id;
-        $requestDevice = RequestDevice::create($validatedData);
-        $medicalDevice = $requestDevice->medicalDevice;
-        // Catch error quantity in db less than $params 
-        // if($medicalDevice->quantity < $validatedData['quantity']) {
+        $validatedData['doctor_id'] = Auth::user()->doctor->id;
 
-        // }
-        $medicalDevice->update([
-            'quantity' => $medicalDevice->quantity - $validatedData['quantity'],
-        ]);
+        $requestDevice = RequestDevice::create($validatedData);
+
+        $data = [
+            "medical_device_id" => array_values($validatedData['medical_device_id']),
+            "quantity" => array_values($validatedData['quantity']),
+            "description" => array_values($validatedData['description']),
+        ];
+
+        $newArrays = array();
+        foreach ($data as $key => $values) {
+            $i = 0;
+            foreach ($values as $value) {
+                $newArrays[$i][$key] = $value;
+                $i++;
+            }
+        }
+
+        $requestDeviceItemData = array_map(function ($requestItem) use ($requestDevice) {
+            $requestItem['request_device_id'] = $requestDevice->id;
+            $requestItem['created_at'] = now();
+            $requestItem['updated_at'] = now();
+            return $requestItem;
+        }, $newArrays);
+        RequestDeviceItem::insert($requestDeviceItemData);
+
+        
 
         return redirect()->route('request_devices.index')
             ->with('success', 'Yêu câu mượn y tế đã được tạo thành công.');
@@ -98,8 +122,10 @@ class RequestDeviceController extends Controller
      */
     public function show(RequestDevice $request_device)
     {
-
-        return view('admin.request_devices.show', compact('request_device'));
+        $medicalDevices = MedicalDevice::where('quantity', '>', 0)
+            ->where('status', MedicalDevice::STATUS_CENSORED)->orderByDesc('id')->get();
+        $requestDeviceItem = RequestDeviceItem::where('request_device_id', $request_device->id)->get()->toArray();
+        return view('admin.request_devices.show', compact('request_device', 'medicalDevices', 'requestDeviceItem'));
     }
 
     /**
@@ -113,7 +139,8 @@ class RequestDeviceController extends Controller
         $patients = Patient::orderByDesc('id')->get();
         $medicalDevices = MedicalDevice::where('quantity', '>', 0)
             ->where('status', MedicalDevice::STATUS_CENSORED)->orderByDesc('id')->get();
-        return view('admin.request_devices.edit', compact('request_device', 'patients', 'medicalDevices'));
+        $requestDeviceItem = RequestDeviceItem::where('request_device_id', $request_device->id)->get()->toArray();
+        return view('admin.request_devices.edit', compact('request_device', 'patients', 'medicalDevices', 'requestDeviceItem'));
     }
 
     /**
@@ -126,16 +153,46 @@ class RequestDeviceController extends Controller
     public function update(Request $request, RequestDevice $request_device)
     {
         $validatedData = $request->validate([
-            'medical_device_id' => 'required|exists:medical_devices,id,deleted_at,NULL',
-            'patient_id'  => 'required|exists:patients,id,deleted_at,NULL',
-            'quantity' => 'required|integer',
-            'borrow_time' => 'required',
-            'return_time'=> 'required',
-            'description' => 'nullable|string|max:255',
+            'patient_id' => 'nullable|integer|exists:patients,id,deleted_at,NULL',
+            'borrow_time' => 'nullable',
+            'return_time' => 'nullable',
+            'medical_device_id' => 'required|array',
+            'quantity' => 'required|array',
+            'description' => 'nullable|array',
         ]);
-        $validatedData['status'] = RequestDevice::STATUS_BORROWING;
-        $validatedData['doctor_id'] = Doctor::where('email', Auth::user()->email)->first()->id;
-        $request_device->update($validatedData);
+        $validatedData['doctor_id'] = Auth::user()->doctor->id;
+
+        $request_device->update([
+            'doctor_id' => $validatedData['doctor_id'],
+            'patient_id' => $validatedData['patient_id'],
+            'borrow_time' => $validatedData['borrow_time'],
+            'return_time' => $validatedData['return_time'],
+        ]);
+
+        $data = [
+            "medical_device_id" => array_values($validatedData['medical_device_id']),
+            "quantity" => array_values($validatedData['quantity']),
+            "description" => array_values($validatedData['description']),
+        ];
+
+        RequestDeviceItem::where('request_device_id', $request_device->id)->delete();
+        $newArrays = array();
+        foreach ($data as $key => $values) {
+            $i = 0;
+            foreach ($values as $value) {
+                $newArrays[$i][$key] = $value;
+                $i++;
+            }
+        }
+
+        $requestDeviceItemData = array_map(function ($requestItem) use ($request_device) {
+            $requestItem['request_device_id'] = $request_device->id;
+            $requestItem['created_at'] = now();
+            $requestItem['updated_at'] = now();
+            return $requestItem;
+        }, $newArrays);
+
+        RequestDeviceItem::insert($requestDeviceItemData);
 
         return redirect()->route('request_devices.index')
             ->with('success', 'Yêu cầu mượn thiết bị đã được cập nhật thành công.');

@@ -18,11 +18,8 @@ class RequestDevice extends BaseModel
     protected $fillable =[
         'patient_id',
         'doctor_id',
-        'medical_device_id',
-        'quantity',
         'borrow_time',
         'return_time',
-        'description',
         'status'
     ];
 
@@ -50,11 +47,4 @@ class RequestDevice extends BaseModel
         return $this->belongsTo(Doctor::class);
     }
 
-    /**
-     * Get the medicalDevice
-     */
-    public function medicalDevice()
-    {
-        return $this->belongsTo(MedicalDevice::class);
-    }
 }

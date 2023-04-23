@@ -29,18 +29,48 @@
             <section class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
-                        <div class="col-sm-6">
+                        <div class="col-md-10 offset-md-1">
                             <form action="{{ route('request_devices.index') }}" method="GET">
-                                <div class="input-group mb-2">
-                                    <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder="Tìm kiếm yêu cầu thiết bị"
-                                            name="search">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
+                                @csrf
+                               
+                                <div class="row">
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label for="patient_id">Bệnh nhân:</label>
+                                            <select name="patient_id" class="form-control input-sm m-bot15">
+                                                <option value="">----Chọn bệnh nhân----</option>
+                                                @foreach ($patients as $patient)
+                                                <option value="{{ $patient->id }}">{{ $patient->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('patient_id')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
+
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label for="status">Trạng thái:</label>
+                                            <select name="status" class="form-control input-sm m-bot15">
+                                                <option value="">----Chọn trạng thái----</option>
+                                                <option value="0">Đang mượn</option>
+                                                <option value="1">Đã trả</option>
+                                            </select>
+                                            @error('status')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-3" style="margin-top: 32px;">
+                                            <button class="btn btn-outline-secondary" type="submit">Tìm
+                                                kiếm</button>
+                                    </div>
                                 </div>
+
                             </form>
+
                         </div>
                         @if(Auth::user()->role == 2)
                         <div class="col-sm-3" style="float: right;">
@@ -75,28 +105,25 @@
                                         <table id="example2" class="table table-bordered table-hover">
                                             <thead>
                                                 <tr>
+                                                    <th>STT</th>
                                                     <th>Bác sĩ</th>
                                                     <th>Bệnh nhân</th>
-                                                    <th>Tên thiết bị</th>
-                                                    <th>Số lượng mượn</th>
                                                     <th>Thời gian mượn</th>
                                                     <th>Thời gian trả</th>
                                                     <th>Trạng thái</th>
-                                                    <th>Mô tả</th>
-                                                    @if(Auth::user()->role == 1)
-                                                    <th>Sửa/Xóa</th>
+                                                    @if(Auth::user()->role == 2)
+                                                    <th>Hành động</th>
                                                     @endif
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach ($request_devices as $request_device)
                                                     <tr>
+                                                        <td>{{ $count++; }}</td>
                                                         <td>{{ $request_device->doctor->name }}</td>
                                                         <td>{{ $request_device->patient->name }}</td>
-                                                        <td>{{ $request_device->medicalDevice->name }}</td>
-                                                        <td>{{ $request_device->quantity }}</td>
-                                                        <td>{{ $request_device->borrow_time->format(config('const.format.datetime')) }}</td>
-                                                        <td>{{ $request_device->return_time->format(config('const.format.datetime')) }}</td>
+                                                        <td>{{ $request_device->borrow_time->format(config('const.format.date')) }}</td>
+                                                        <td>{{ $request_device->return_time->format(config('const.format.date')) }}</td>
                                                         <td>
                                                             @if($request_device->status == 0)
                                                             <span class="text-warning">Đang mượn</span>
@@ -105,23 +132,20 @@
                                                             <span class="text-primary">Đã trả</span>
                                                             @endif
                                                         </td>
-                                                        <td>{{ $request_device->description }}</td>
-                                                        @if(Auth::user()->role == 2)
                                                         <td>
                                                             <div class="btn-group">
-                                                                <a href="{{ route('request_devices.edit', $request_device->id) }}"
-                                                                    class="btn btn-primary">
-                                                                    <i class="fas fa-edit"></i> Sửa
+                                                                <a href="{{ route('request_devices.show', $request_device) }}" style="margin-right: 10px;color:blue;font-size:22px">
+                                                                  <i class="fas fa-eye"></i>
                                                                 </a>
-                                                                <button type="button" class="btn btn-danger"
-                                                                    data-toggle="modal"
-                                                                    data-target="#deleteModal{{ $request_device->id }}"
-                                                                    style="color: red;">
-                                                                    <i class="fas fa-trash-alt"></i> Xóa
+                                                                <a href="{{ route('request_devices.edit', $request_device->id) }}" style="margin-right: 10px;color:green;font-size:22px">
+                                                                  <i class="fas fa-edit"></i>
+                                                                </a>
+                                                                <button type="button" data-toggle="modal"
+                                                                  data-target="#deleteModal{{ $request_device->id }}" style="color: red;font-size:22px">
+                                                                  <i class="fas fa-trash-alt"></i>
                                                                 </button>
-                                                            </div>
+                                                              </div>
                                                         </td>
-                                                        @endif
                                                         <!-- Modal -->
                                                         <div class="modal fade" id="deleteModal{{ $request_device->id }}"
                                                             tabindex="-1" role="dialog"
@@ -139,8 +163,8 @@
                                                                         </button>
                                                                     </div>
                                                                     <div class="modal-body">
-                                                                        Bạn có chắc chắn muốn xóa yêu cầu thiết bị
-                                                                        "{{ $request_device->id }}" không? Hành động này
+                                                                        Bạn có chắc chắn muốn xóa yêu cầu thiết bị cho bệnh nhân
+                                                                        "{{ $request_device->patient->name }}" không? Hành động này
                                                                         không
                                                                         thể hoàn tác!
                                                                     </div>
@@ -154,7 +178,7 @@
                                                                             @method('DELETE')
                                                                             <button type="submit" style="color:red;"
                                                                                 class="btn btn-danger"
-                                                                                onclick="return confirm('Bạn có chắc chắn muốn xóa thiết bị y tế này không?')">Xóa</button>
+                                                                                onclick="return confirm('Bạn có chắc chắn muốn xóa yêu cầu thiết bị y tế này không?')">Xóa</button>
                                                                         </form>
                                                                     </div>
                                                                 </div>
