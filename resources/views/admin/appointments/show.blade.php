@@ -70,6 +70,7 @@
                                 </a>
 
                                 <div>
+                                    @if (Auth::user()->role == 1)
                                     <a href="{{ route('appointments.edit', $appointment->id) }}" class="btn btn-primary">
                                         <i class="fas fa-edit"></i> Sửa
                                     </a>
@@ -82,6 +83,7 @@
                                             <i class="fas fa-trash"></i> Xoá
                                         </button>
                                     </form>
+                                    @endif
                                 </div>
                             </div>
                         </div>

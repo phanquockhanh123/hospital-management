@@ -13,7 +13,7 @@
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                @if ( Auth::user()->role == 1 )
+                @if ( Auth::user()->role == 1 || Auth::user()->role == 2 )
                 <li class="nav-item">
                     <a href="{{ route('patients.index') }}"
                         class="nav-link @if (Request::route()->getName() == 'patients.index') active @endif">
@@ -147,7 +147,13 @@
                     </a>
                 </li>
 
-                
+                <li class="nav-item">
+                    <a href="{{ route('services.index') }}"
+                        class="nav-link @if (Request::route()->getName() == 'services.index') active @endif">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Dịch vụ</p>
+                    </a>
+                </li>
 
                 <li class="nav-item">
                     <a href="{{ route('receptionists.index') }}"
@@ -180,13 +186,7 @@
                                 <p>Thuốc</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="{{ route('services.index') }}"
-                                class="nav-link @if (Request::route()->getName() == 'services.index') active @endif">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Dịch vụ</p>
-                            </a>
-                        </li>
+                        
                         <li class="nav-item">
                             <a href="{{ route('doctor_departments.index') }}"
                                 class="nav-link @if (Request::route()->getName() == 'doctor_departments.index') active @endif">

@@ -122,8 +122,8 @@
                                                         <td>{{ $count++; }}</td>
                                                         <td>{{ $request_device->doctor->name }}</td>
                                                         <td>{{ $request_device->patient->name }}</td>
-                                                        <td>{{ $request_device->borrow_time->format(config('const.format.date')) }}</td>
-                                                        <td>{{ $request_device->return_time->format(config('const.format.date')) }}</td>
+                                                        <td>{{ $request_device->borrow_time->format(config('const.format.datetime')) }}</td>
+                                                        <td>{{ $request_device->return_time->format(config('const.format.datetime')) }}</td>
                                                         <td>
                                                             @if($request_device->status == 0)
                                                             <span class="text-warning">Đang mượn</span>

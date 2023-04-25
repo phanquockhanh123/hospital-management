@@ -109,13 +109,19 @@ class ZoomController extends Controller
                 'is_active' => true
             ]);
         }
-        // dd($meeting);
+
         $users = User::where('role', '!=', 0)->get();
         foreach ($users as $user) {
             Mail::to($user->email)->send(new MailJoinMeeting($user, $meeting));
         }
+
+        // authenticate role user
+        if (Auth::user()->role == 3) {
+            return Redirect::to($meeting->start_url);
+        } else {
+            return Redirect::to($meeting->join_url);
+        }
         
-        return Redirect::to($meeting->start_url);
         // return view('zoom.start', compact('meeting', 'role'));
     }
 

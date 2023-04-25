@@ -36,16 +36,17 @@ class RequestDeviceController extends Controller
 
         $request_devices = $request_devices->orderByDesc('updated_at')->orderByDesc('id')->paginate(config('const.perPage'));
         // Update status borrow medical devices
-        $requestDeviceReturns = RequestDevice::where('return_time' , '<=', now())->get();
+        // $requestDeviceReturns = RequestDevice::where('doctor_id', Auth::user()->doctor->id)->where('return_time' , '<=', now())->get();
 
-        foreach($requestDeviceReturns as $requestDeviceReturn)
-        {
-            $requestDeviceReturn->medicalDevice->update([
-                'quantity' =>$requestDeviceReturn->medicalDevice->quantity + $requestDeviceReturn->quantity,
-                'status' => RequestDevice::STATUS_RETURNED
-            ]);
+        // foreach($requestDeviceReturns ?? [] as $requestDeviceReturn)
+        // {
 
-        }
+        //     $requestDeviceReturn->update([
+        //         'quantity' =>$requestDeviceReturn->medicalDevice->quantity + $requestDeviceReturn->quantity,
+        //         'status' => RequestDevice::STATUS_RETURNED
+        //     ]);
+
+        // }
         $count =1;
         return view('admin.request_devices.index', compact('request_devices', 'count', 'doctors', 'patients'));
     }

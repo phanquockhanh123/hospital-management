@@ -30,7 +30,7 @@
             <section class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
-                        <div class="col-sm-6">
+                        {{-- <div class="col-sm-6">
                             <form action="{{ route('meetings.index') }}" method="GET">
                                 <div class="input-group mb-2">
                                     <div class="input-group mb-3">
@@ -42,12 +42,14 @@
                                     </div>
                                 </div>
                             </form>
-                        </div>
+                        </div> --}}
+                        @if (Auth::user()->role == 3)
                         <div class="col-sm-3" style="float: right;">
                             <a href="{{ route('meeting.create') }}" class="btn btn-success">
                                 <i class="fas fa-plus"></i> Tạo mới
                             </a>
                         </div>
+                        @endif
                     </div>
                 </div><!-- /.container-fluid -->
             </section>
@@ -74,6 +76,7 @@
                                     <th>Tên cuộc họp</th>
                                     <th>Mật khẩu</th>
                                     <th>Người tạo</th>
+                                    <th>Ngày tạo</th>
                                     <th>Hành động</th>
                                 </tr>
                             </thead>
@@ -84,16 +87,18 @@
                                     <td>{{ $meeting->meeting_name}}</td>
                                     <td>{{ $meeting->meeting_password}}</td>
                                     <td>{{ $meeting->user->name }}</td>
+                                    <td>{{ $meeting->created_at}}</td>
                                     <td>
                                         <a href="{{ route('meeting.start', $meeting->meeting_id)}}"
                                             style="margin-right:20px;"><i style="font-size: 22px; color:blue;"
                                                 class="fas fa-solid fa-handshake"></i></a>
-
+                                        @if (Auth::user()->role == 3)
                                         <button type="button" data-toggle="modal"
                                             data-target="#deleteModal{{ $meeting->meeting_id }}"
                                             style="color: red;font-size:22px">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
+                                        @endif
                                     </td>
 
                                     <!-- Modal -->

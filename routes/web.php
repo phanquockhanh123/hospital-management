@@ -343,9 +343,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('meetings', 'index')->name('meetings.index');
             Route::get('join-meeting/{meeting}', 'join_meeting')->name('meeting.join');
             Route::get('leave-meeting', 'leave_meeting')->name('meeting.leave');
+            Route::get('start-meeting/{meeting}', 'start_meeting')->name('meeting.start');
         });
         Route::middleware([config('const.auth.high')])->group(function () {
-            Route::get('start-meeting/{meeting}', 'start_meeting')->name('meeting.start');
             Route::get('create-new-meeting', 'create')->name('meeting.create');
             Route::post('create-new-meeting', 'store')->name('meeting.store');
             Route::delete('delete-meeting/{meeting}', 'destroy')->name('meeting.destroy');
