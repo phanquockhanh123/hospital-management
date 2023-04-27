@@ -421,11 +421,11 @@
                                   <td>{{ $bookAppointment->created_at }}</td>
                                   <td>
                                     @if($bookAppointment->status == 2) 
-                                        <i class="fa-solid fa-calendar-check" style="color:green;"></i>
+                                        <i class="fa-solid fa-calendar-check" title="Đã tạo cuộc hẹn" style="color:green;" ></i>
                                         
                                     @elseif ($bookAppointment->status == 1)
-                                        <a href="{{ route('book_appointments.denied', $bookAppointment->id) }}" title="Từ chối"><i class="fa-solid fa-calendar-xmark"  style="color:red;"></i></a>
-                                        <a href="{{ route('book_appointments.accepted', $bookAppointment->id) }}" title="Chấp nhận"><i class="fa-solid fa-calendar-check"  style="color:blue;"></i></a>
+                                        {{-- <a href="{{ route('book_appointments.denied', $bookAppointment->id) }}" title="Từ chối"><i class="fa-solid fa-calendar-xmark"  style="color:red;"></i></a> --}}
+                                        <a href="{{ route('book_appointments.accepted', $bookAppointment->id) }}" title="Tạo cuộc hẹn"><i class="fa-solid fa-calendar-check"  style="color:blue;"></i></a>
                                         
                                     @else
                                         <i class="fa-solid fa-calendar-xmark" style="color:red;"></i>

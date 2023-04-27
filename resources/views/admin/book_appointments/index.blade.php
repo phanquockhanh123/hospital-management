@@ -88,11 +88,11 @@
                                                         <td>{{ $book_appointment->reason }}</td>
                                                         <td>
                                                             @if($book_appointment->status == 2) 
-                                                                <i class="fa-solid fa-calendar-check" style="color:green;"></i>
+                                                                <i class="fa-solid fa-calendar-check" style="color:green;" title="Đã tạo cuộc hẹn"></i>
                                                                 
                                                             @elseif ($book_appointment->status == 1)
-                                                                <a href="{{ route('book_appointments.denied', $book_appointment->id) }}" title="Từ chối"><i class="fa-solid fa-calendar-xmark"  style="color:red;"></i></a>
-                                                                <a href="{{ route('book_appointments.accepted', $book_appointment->id) }}" title="Chấp nhận"><i class="fa-solid fa-calendar-check"  style="color:blue;"></i></a>
+                                                                {{-- <a href="{{ route('book_appointments.denied', $book_appointment->id) }}" title="Từ chối"><i class="fa-solid fa-calendar-xmark"  style="color:red;"></i></a> --}}
+                                                                <a href="{{ route('book_appointments.accepted', $book_appointment->id) }}" title="Tạo cuộc hẹn"><i class="fa-solid fa-calendar-check"  style="color:blue;"></i></a>
                                                                 
                                                             @else
                                                                 <i class="fa-solid fa-calendar-xmark" style="color:red;"></i>

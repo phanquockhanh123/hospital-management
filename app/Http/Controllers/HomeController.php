@@ -60,7 +60,7 @@ class HomeController extends Controller
 
         $validatedData = $request->validate([
             'fullname' => 'required|string|max:255',
-            'email' => 'required|string|max:255|unique:patients,email|regex:'
+            'email' => 'required|string|max:255|regex:'
             . config('const.regex_email_admin'),
             'phone' => 'nullable|size:10|regex:' . config('const.regex_telephone'),
             'reason' => 'nullable|string|max:255',

@@ -124,7 +124,7 @@
                                                           data-target="#deleteModal{{ $receptionist->id }}" style="color: red;font-size:22px">
                                                           <i class="fas fa-trash-alt"></i>
                                                         </button>
-                                                        @if (Auth::user()->role == 3  && $receptionist->user_id == null)
+                                                        @if (Auth::user()->role == 3  && $receptionist->user_id == null  && $receptionist->status == 1)
                                                         <a  href="{{ route('receptionists.add-account-receptionist', $receptionist->id) }}" style="margin-left : 10px;color:aqua;font-size:22px">
                                                             <i class="fas fa-add"></i>
                                                         </a>

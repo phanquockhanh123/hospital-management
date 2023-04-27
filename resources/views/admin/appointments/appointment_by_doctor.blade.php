@@ -127,9 +127,9 @@
                                                 <th>Phòng ban</th>
                                                 <th>Bắt đầu</th>
                                                 <th>Kết thúc</th>
-                                                @if(Auth::user()->role == 2)
+                                                {{-- @if(Auth::user()->role == 2)
                                                 <th style="min-width:100px">Trạng thái</th>
-                                                @endif
+                                                @endif --}}
                                                 <th>Hành động</th>
                                             </tr>
                                         </thead>
@@ -144,7 +144,7 @@
                                                 <td>{{ $appointment->doctorDepartment->name }}</td>
                                                 <td>{{ $appointment->start_time }}</td>
                                                 <td>{{ $appointment->end_time }}</td>
-                                                @if(Auth::user()->role == 2)
+                                                {{-- @if(Auth::user()->role == 2)
                                                 <td>
                                                     @if($appointment->status == 2)
                                                     <i class="fa-solid fa-calendar-check" style="color:green;"></i>
@@ -162,7 +162,7 @@
                                                     @endif
 
                                                 </td>
-                                                @endif
+                                                @endif --}}
                                                 <td>
                                                     <div class="btn-group">
                                                         <a href="{{ route('appointments.show', $appointment) }}" title="Xem chi tiết"

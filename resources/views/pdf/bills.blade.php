@@ -91,7 +91,7 @@
 		<div class="phone">Điện thoại: 0327018337</div>
 		<div class="title3">{{ $bill->diagnosis->doctor->doctorDepartment->name }}</div>
 	</div>
-	<h1>ĐƠN XÉT NGHIỆM</h1>
+	<h1>CHẨN ĐOÁN/XÉT NGHIỆM</h1>
 	<div class="patient-info">
         <div>
 			<label>Mã bệnh nhân:</label>
@@ -103,7 +103,7 @@
 		</div>
 		<div>
 			<label>Ngày sinh:</label>
-			<span>{{ $bill->diagnosis->patient->date_of_birth->format(config('const.format.date')) }}</span>
+			<span>{{ $bill->diagnosis->patient->date_of_birth }}</span>
 		</div>
 		<div>
 			<label>Giới tính:</label>
@@ -195,10 +195,6 @@
 	<div>
 		<label>Đã thanh toán :</label>
 		<span>{{ $bill->paid_money ?? 0 }} đồng</span>
-	</div>
-	<div>
-		<label>Còn nợ : </label>
-		<span>{{ $bill->total_money - $bill->paid_money }} đồng</span>
 	</div>
 	<div class="footer">
 		<div class="created_at">Ngày {{ $bill->diagnosis->updated_at->day }} tháng {{ $bill->diagnosis->updated_at->month }} năm {{ $bill->diagnosis->updated_at->year }}</div>

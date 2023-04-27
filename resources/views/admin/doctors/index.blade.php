@@ -186,7 +186,7 @@
                                                             style="color: red;font-size:22px">
                                                             <i class="fas fa-trash-alt"></i>
                                                         </button>
-                                                        @if (Auth::user()->role == 3 && $doctor->user_id == null)
+                                                        @if (Auth::user()->role == 3 && $doctor->user_id == null && $doctor->status == 1)
                                                         <a href="{{ route('doctors.add-account-doctor', $doctor->id) }}"
                                                             style="margin-left : 10px;color:aqua;font-size:22px">
                                                             <i class="fas fa-add"></i>

@@ -105,8 +105,6 @@
                                                 <th>Người lập</th>
                                                 <th>Ngày tạo</th>
                                                 <th>Tổng tiền</th>
-                                                <th>Đã thanh toán</th>
-                                                <th>Còn nợ</th>
                                                 <th>Trạng thái</th>
                                                 @if(Auth::user()->role == 2)
                                                 <th>Hành động</th>
@@ -127,8 +125,6 @@
                                                 <td>{{ $bill->diagnosis?->doctor?->name }}</td>
                                                 <td>{{ $bill->created_at }}</td>
                                                 <td>{{ $bill->total_money }}</td>
-                                                <td>@if(empty($bill->paid_money)) 0 @else {{ $bill->total_money }} @endif</td>
-                                                <td>{{ $bill->total_money - $bill->paid_money }}</td>
                                                 <th>
                                                     @if ($bill->status == 0)
                                                     <span class="text-warning">Chưa thanh toán</span>

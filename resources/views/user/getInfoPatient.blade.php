@@ -343,7 +343,6 @@
                                             <th>Ngày tạo hóa đơn</th>
                                             <th>Tổng hóa đơn</th>
                                             <th>Đã thanh toán</th>
-                                            <th>Còn nợ</th>
                                             <th>Trạng thái</th>
                                             <th>Lưu ý</th>
                                         </tr>
@@ -356,7 +355,6 @@
                                             <td>{{ $val['total_money'] }}</td>
                                             <td>@if(empty($val['paid_money'])) 0 @else {{ $val['paid_money'] }} @endif
                                             </td>
-                                            <td>{{$val['total_money'] - $val['paid_money'] }}</td>
                                             <td>
                                                 @if($val['status'] == 0)
                                                 <span class="text-warning">Chưa thanh toán</span>

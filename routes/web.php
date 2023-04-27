@@ -156,10 +156,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/schedules', [AppointmentController::class, 'getAppointmentByDoctor'])->name('appointments.get-appointment-by-doctor');
         });
 
-        Route::middleware([config('const.auth.mid')])->group(function () {
-            Route::get('/accepted_appointment/{appointment}', [AppointmentController::class, 'acceptedAppointment'])->name('appointments.accepted');
-            Route::get('/denied_appointment/{appointment}', [AppointmentController::class, 'deniedAppointment'])->name('appointments.denied');
-        });
+        // Route::middleware([config('const.auth.mid')])->group(function () {
+        //     Route::get('/accepted_appointment/{appointment}', [AppointmentController::class, 'acceptedAppointment'])->name('appointments.accepted');
+        //     Route::get('/denied_appointment/{appointment}', [AppointmentController::class, 'deniedAppointment'])->name('appointments.denied');
+        // });
     });
 
 
@@ -357,7 +357,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::middleware([config('const.auth.low')])->group(function () {
             Route::get('/book_appointments', 'index')->name('book_appointments.index');
             Route::get('/accepted_book_appointment/{book_appointment}', 'acceptedBookAppointment')->name('book_appointments.accepted');
-            Route::get('/denied_book_appointment/{book_appointment}', 'deniedBookAppointment')->name('book_appointments.denied');
+            //Route::get('/denied_book_appointment/{book_appointment}', 'deniedBookAppointment')->name('book_appointments.denied');
         });
     });
 

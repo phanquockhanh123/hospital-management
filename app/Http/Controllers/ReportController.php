@@ -59,7 +59,7 @@ class ReportController extends Controller
         foreach ($departments as $department) {
             // Tìm hóa đơn thuộc phòng ban hiện tại và tính tổng số tiền
             $totalRevenue = Bill::join('diagnosis', 'bills.diagnosis_id', '=', 'diagnosis.id')
-                        ->join('doctors', 'diagnosis.patient_id', '=', 'doctors.id')
+                        ->join('doctors', 'diagnosis.doctor_id', '=', 'doctors.id')
                         ->join('doctor_departments', 'doctors.doctor_department_id', '=', 'doctor_departments.id')
                         ->where('doctor_departments.id', $department->id)
                         ->sum('bills.total_money');
