@@ -73,9 +73,9 @@ class AppointmentController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'doctor_id' => 'nullable|integer|exists:doctors,id,deleted_at,NULL',
-            'patient_id' => 'nullable|integer|exists:patients,id,deleted_at,NULL',
-            'doctor_department_id' => 'nullable|integer|exists:doctor_departments,id,deleted_at,NULL',
+            'doctor_id' => 'required|integer|exists:doctors,id,deleted_at,NULL',
+            'patient_id' => 'required|integer|exists:patients,id,deleted_at,NULL',
+            'doctor_department_id' => 'required|integer|exists:doctor_departments,id,deleted_at,NULL',
             'start_time' => [
                 'required',
                 // 'before_or_equal:end_time',

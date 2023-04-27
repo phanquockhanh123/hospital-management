@@ -92,7 +92,7 @@
                                         <tr>
                                             <th scope="col">TÊN XÉT NGHIỆM</th>
                                             <th scope="col">KẾT QUẢ</th>
-                                            <th scope="col">TRỊ SÓ THAM CHIẾU</th>
+                                            <th scope="col">TRỊ SỐ THAM CHIẾU</th>
                                             <th scope="col">ĐƠN VỊ</th>
                                             <th scope="col">PHƯƠNG THỨC</th>
                                             <th scope="col">LƯU Ý</th>

@@ -35,7 +35,6 @@
                         <div class="card-body">
                             <form action="{{ route('appointments.store') }}" method="POST">
                                 @csrf
-
                                 <div class="form-group">
                                     <label for="patient_id">Bệnh nhân:</label>
                                     <select name="patient_id" class="form-control input-sm m-bot15">
