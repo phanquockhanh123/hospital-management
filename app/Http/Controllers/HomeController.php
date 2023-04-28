@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Appointment;
 use Carbon\Carbon;
 use App\Models\News;
 use App\Models\User;
@@ -10,9 +9,13 @@ use App\Models\Doctor;
 use App\Models\Medical;
 use App\Models\Patient;
 use App\Models\Service;
+use App\Models\Appointment;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Models\BookAppointment;
 use App\Models\DoctorDepartment;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -67,7 +70,16 @@ class HomeController extends Controller
             'experted_time' => 'nullable'
         ]);
         $validatedData['status'] = BookAppointment::STATUS_PENDING;
-        BookAppointment::create($validatedData);
+
+        DB::beginTransaction();
+        try {
+            BookAppointment::create($validatedData);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
         return redirect()->route('home.index')->with('alert', 'Đã nhận lịch hẹn. Chúng tôi sẽ liên hệ với quý khách hàng sau !');
     }
@@ -81,7 +93,6 @@ class HomeController extends Controller
             $department->doctors = Doctor::where('doctor_department_id', $department->id)
                 ->take(3)->get();
         }
-        // dd($doctors);
         return view('user.getDoctorListForUserSite', compact('departments'));
     }
 
@@ -105,7 +116,6 @@ class HomeController extends Controller
                 $diagnosisItems[] = $diagnosisItem;
             }
         }
-        //dd($prescriptionItemList);
         $diaPre = $diagnosisItems;
 
         $services = Service::all();
@@ -188,13 +198,21 @@ class HomeController extends Controller
             $validatedData['profile'] = $profilePath;
             $validatedData['filename'] = $filename;
         }
+        DB::beginTransaction();
+        try {
+            $patient->update($validatedData);
+            $user = User::where('email', $patient->email)->first();
 
-        $patient->update($validatedData);
-        $user = User::where('email', $patient->email)->first();
+            $user->update([
+                'name' => $patient->name,
+            ]);
 
-        $user->update([
-            'name' => $patient->name,
-        ]);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
         return redirect()->route('user.get-info-patient')
             ->with('success', 'Thông tin cá nhân đã được cập nhật thành công.');

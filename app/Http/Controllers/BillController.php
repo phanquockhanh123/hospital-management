@@ -8,6 +8,9 @@ use App\Models\Medical;
 use App\Models\Patient;
 use App\Models\Service;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class BillController extends Controller
 {
@@ -19,16 +22,6 @@ class BillController extends Controller
     public function index(Request $request)
     {
 
-        // $search = $request->input('search');
-
-        // $bills = Bill::all();
-
-        // if ($search) {
-        //     $bills = Bill::where('id', 'LIKE', '%' . $search . '%')
-        //         ->orderByDesc('created_at')->paginate(config('const.perPage'));
-        // } else {
-        //     $bills = Bill::orderByDesc('created_at')->paginate(config('const.perPage'));
-        // }
         $patients = Patient::orderByDesc('created_at')->get();
 
         $bills = Bill::with('diagnosis', 'diagnosis.patient');
@@ -39,7 +32,7 @@ class BillController extends Controller
             });
         }
 
-        if($request['created_at'] != null) {
+        if ($request['created_at'] != null) {
             $bills->whereDate('created_at', $request['created_at']);
         }
 
@@ -75,7 +68,15 @@ class BillController extends Controller
             'paid_money'  => 'nullable|float',
             'note' => 'nullable|string|max:255',
         ]);
-        Bill::create($validatedData);
+        DB::beginTransaction();
+        try {
+            Bill::create($validatedData);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
         return redirect()->route('bills.index')
             ->with('success', 'Hóa đơn đã được tạo thành công.');
@@ -116,7 +117,7 @@ class BillController extends Controller
      * @param  Bill $Bill
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Bill $Bill)
+    public function update(Request $request, Bill $bill)
     {
         $validatedData = $request->validate([
             'patient_id' => 'required|integer|exists:patients,id,deleted_at,NULL',
@@ -125,8 +126,15 @@ class BillController extends Controller
             'paid_money'  => 'nullable|float',
             'note' => 'nullable|string|max:255',
         ]);
-
-        $Bill->update($validatedData);
+        DB::beginTransaction();
+        try {   
+            $bill->update($validatedData);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
         return redirect()->route('bills.index')
             ->with('success', 'Thông tin hóa đơn đã được cập nhật thành công.');
@@ -140,7 +148,15 @@ class BillController extends Controller
      */
     public function destroy(Bill $bill)
     {
-        $bill->delete();
+        DB::beginTransaction();
+        try {    
+            $bill->delete();
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
         return redirect()->route('bills.index')
             ->with('success', 'Hóa đơn đã được xoá thành công.');

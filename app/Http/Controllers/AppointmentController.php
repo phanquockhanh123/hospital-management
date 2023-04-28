@@ -3,16 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
-use App\Models\User;
 use App\Models\Doctor;
 use App\Models\Patient;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Mail\MailBookAppoiment;
 use App\Models\DoctorDepartment;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\MailDeniedBookAppoiment;
 
 class AppointmentController extends Controller
 {
@@ -84,7 +85,16 @@ class AppointmentController extends Controller
         $validatedData['doctor_department_id'] = Doctor::where('id', $validatedData['doctor_id'])->first()->doctor_department_id;
 
         $validatedData['status'] = Appointment::STATUS_ACCEPTED;
-        $appointment = Appointment::create($validatedData);
+        DB::beginTransaction();
+        try {
+            $appointment = Appointment::create($validatedData);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
+
         $patient = $appointment->patient;
         $doctor = $appointment->doctor;
         $doctorDepartment = $appointment->doctorDepartment;
@@ -142,7 +152,16 @@ class AppointmentController extends Controller
         ]);
         $validateData['doctor_department_id'] = Doctor::where('id', $validatedData['doctor_id'])->first()->doctor_department_id;
         $validatedData['status'] = Appointment::STATUS_ACCEPTED;
-        $appointment->update($validatedData);
+        
+        DB::beginTransaction();
+        try {
+            $appointment->update($validatedData);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
         return redirect()->route('appointments.index')
             ->with('success', 'Thông tin lịch hẹn đã được cập nhật thành công.');
@@ -156,7 +175,17 @@ class AppointmentController extends Controller
      */
     public function destroy(Appointment $appointment)
     {
-        $appointment->delete();
+        DB::beginTransaction();
+        try {
+            $appointment->delete();
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
+
+
 
         return redirect()->route('appointments.index')
             ->with('success', 'Lịch hẹn đã được xoá thành công.');
@@ -194,8 +223,16 @@ class AppointmentController extends Controller
             'description' => 'nullable|string|max:1000',
         ]);
         $validateData['status'] = Appointment::STATUS_ACCEPTED;
+        DB::beginTransaction();
+        try {
+            $booking = Appointment::create($validateData);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
-        $booking = Appointment::create($validateData);
         return response()->json([
             'id' => $booking->id,
             'title' => $booking->title,
@@ -234,7 +271,7 @@ class AppointmentController extends Controller
         return $id;
     }
 
-    
+
 
     public function getAppointmentByDoctor(Request $request)
     {

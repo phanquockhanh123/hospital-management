@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\News;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -81,7 +84,16 @@ class NewsController extends Controller
             $validatedData['image'] = $path;
             $validatedData['filename'] = $filename;
         }
-        News::create($validatedData);
+        DB::beginTransaction();
+        try {    
+            News::create($validatedData);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
+        
 
         return redirect()->route('news.index')
             ->with('success', 'Bài viết đã được tạo thành công.');
@@ -147,7 +159,16 @@ class NewsController extends Controller
         }
         $validatedData['submitted_date'] = now()->format(config('const.format.date'));
         $validatedData['status'] = News::STATUS_SUBMITTED;
-        $new->update($validatedData);
+        DB::beginTransaction();
+        try {    
+            $new->update($validatedData);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
+        
 
         return redirect()->route('news.index')
             ->with('success', 'Thông tin bài viết đã được cập nhật thành công.');
@@ -161,7 +182,16 @@ class NewsController extends Controller
      */
     public function destroy(News $new)
     {
-        $new->delete();
+        
+        DB::beginTransaction();
+        try {    
+            $new->delete();
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
         return redirect()->route('news.index')
             ->with('success', 'Bài viết đã được xoá thành công.');

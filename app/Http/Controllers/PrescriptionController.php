@@ -11,7 +11,10 @@ use App\Models\Service;
 use App\Models\Diagnosis;
 use App\Models\Prescription;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Models\PrescriptionItem;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 
 class PrescriptionController extends Controller
@@ -23,7 +26,6 @@ class PrescriptionController extends Controller
      */
     public function index(Request $request)
     {
-
         $search = $request->input('search');
 
         if ($search) {
@@ -67,55 +69,63 @@ class PrescriptionController extends Controller
             'amount' => 'required|array',
             'note' => 'nullable|string|max:1000',
         ]);
-        // Create prescriptions
-        $prescription = Prescription::create([
-            'main_disease' => $request->main_disease,
-            'side_disease' => $request->side_disease,
-            'note' => $request->note,
-        ]);
+        DB::beginTransaction();
+        try {
+            // Create prescriptions
+            $prescription = Prescription::create([
+                'main_disease' => $request->main_disease,
+                'side_disease' => $request->side_disease,
+                'note' => $request->note,
+            ]);
 
-        $data = [
-            "medical_id" => array_values($validatedData['medical_id']),
-            "dosage" => array_values($validatedData['dosage']),
-            "dosage_note" => array_values($validatedData['dosage_note']),
-            "unit" => array_values($validatedData['unit']),
-            "amount" => array_values($validatedData['amount']),
-        ];
+            $data = [
+                "medical_id" => array_values($validatedData['medical_id']),
+                "dosage" => array_values($validatedData['dosage']),
+                "dosage_note" => array_values($validatedData['dosage_note']),
+                "unit" => array_values($validatedData['unit']),
+                "amount" => array_values($validatedData['amount']),
+            ];
 
-        $newArrays = array();
-        foreach ($data as $key => $values) {
-            $i = 0;
-            foreach ($values as $value) {
-                $newArrays[$i][$key] = $value;
-                $i++;
+            $newArrays = array();
+            foreach ($data as $key => $values) {
+                $i = 0;
+                foreach ($values as $value) {
+                    $newArrays[$i][$key] = $value;
+                    $i++;
+                }
             }
-        }
-        $prescriptionItemData = array_map(function ($preItem) use ($prescription) {
-            $preItem['prescription_id'] = $prescription->id;
-            $preItem['created_at'] = now();
-            $preItem['updated_at'] = now();
-            return $preItem;
-        }, $newArrays);
+            $prescriptionItemData = array_map(function ($preItem) use ($prescription) {
+                $preItem['prescription_id'] = $prescription->id;
+                $preItem['created_at'] = now();
+                $preItem['updated_at'] = now();
+                return $preItem;
+            }, $newArrays);
 
-        PrescriptionItem::insert($prescriptionItemData);
+            PrescriptionItem::insert($prescriptionItemData);
 
-        // Create Bills
-        $totalMoney = 0;
-        foreach ($newArrays as $dataItem) {
-            $medicalUpdate = Medical::where('id', $dataItem['medical_id'])->first();
-            $totalMoney += $medicalUpdate->export_price * $dataItem['amount'];
-            // check quantity input with database
-            if ($dataItem['amount'] > $medicalUpdate->quantity) {
-                redirect()->back()->with('alert', 'Thuốc trong kho không đủ để cung cấp!'); 
+            // Create Bills
+            $totalMoney = 0;
+            foreach ($newArrays as $dataItem) {
+                $medicalUpdate = Medical::where('id', $dataItem['medical_id'])->first();
+                $totalMoney += $medicalUpdate->export_price * $dataItem['amount'];
+                // check quantity input with database
+                if ($dataItem['amount'] > $medicalUpdate->quantity) {
+                    redirect()->back()->with('alert', 'Thuốc trong kho không đủ để cung cấp!');
+                }
+                $medicalUpdate->update(['quantity' => $medicalUpdate->quantity - $dataItem['amount']]);
             }
-            $medicalUpdate->update(['quantity' => $medicalUpdate->quantity - $dataItem['amount']]);
-        }
 
-        $billData = [
-            'prescription_id' => $prescription->id,
-            'total_money' => $totalMoney,
-        ];
-        Bill::create($billData);
+            $billData = [
+                'prescription_id' => $prescription->id,
+                'total_money' => $totalMoney,
+            ];
+            Bill::create($billData);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
         return redirect()->route('prescriptions.index')
             ->with('success', 'Đơn thuốc đã được tạo thành công.');
@@ -171,62 +181,69 @@ class PrescriptionController extends Controller
             'amount' => 'required|array',
             'note' => 'nullable|string|max:1000',
         ]);
-        $prescription->update([
-            'doctor_id' => $request->doctor_id,
-            'patient_id' => $request->patient_id,
-            'main_disease' => $request->main_disease,
-            'side_disease' => $request->side_disease,
-            'note' => $request->note,
-        ]);
+        DB::beginTransaction();
+        try {
+            $prescription->update([
+                'doctor_id' => $request->doctor_id,
+                'patient_id' => $request->patient_id,
+                'main_disease' => $request->main_disease,
+                'side_disease' => $request->side_disease,
+                'note' => $request->note,
+            ]);
 
-        $data = [
-            "medical_id" => array_values($validatedData['medical_id']),
-            "dosage" => array_values($validatedData['dosage']),
-            "dosage_note" => array_values($validatedData['dosage_note']),
-            "unit" => array_values($validatedData['unit']),
-            "amount" => array_values($validatedData['amount']),
-        ];
-        $prescriptionItem = PrescriptionItem::where('prescription_id', $prescription->id)->delete();
+            $data = [
+                "medical_id" => array_values($validatedData['medical_id']),
+                "dosage" => array_values($validatedData['dosage']),
+                "dosage_note" => array_values($validatedData['dosage_note']),
+                "unit" => array_values($validatedData['unit']),
+                "amount" => array_values($validatedData['amount']),
+            ];
+            $prescriptionItem = PrescriptionItem::where('prescription_id', $prescription->id)->delete();
 
-        $newArrays = array();
-        foreach ($data as $key => $values) {
-            $i = 0;
-            foreach ($values as $value) {
-                $newArrays[$i][$key] = $value;
-                $i++;
+            $newArrays = array();
+            foreach ($data as $key => $values) {
+                $i = 0;
+                foreach ($values as $value) {
+                    $newArrays[$i][$key] = $value;
+                    $i++;
+                }
             }
-        }
-        $prescriptionItemData = array_map(function ($preItem) use ($prescription) {
-            $preItem['prescription_id'] = $prescription->id;
-            return $preItem;
-        }, $newArrays);
+            $prescriptionItemData = array_map(function ($preItem) use ($prescription) {
+                $preItem['prescription_id'] = $prescription->id;
+                return $preItem;
+            }, $newArrays);
 
-        PrescriptionItem::insert($prescriptionItemData);
+            PrescriptionItem::insert($prescriptionItemData);
 
-        // Update Bills
-        $prescriptionPrice = 0;
-        $diagnosisPrice = 0;
-        foreach ($newArrays as $dataItem) {
-            $medicalUpdate = Medical::where('id', $dataItem['medical_id'])->first();
-            $prescriptionPrice += $medicalUpdate->export_price * $dataItem['amount'];
-            // check quantity input with database
-            if ($dataItem['amount'] > $medicalUpdate->quantity) {
+            // Update Bills
+            $prescriptionPrice = 0;
+            $diagnosisPrice = 0;
+            foreach ($newArrays as $dataItem) {
+                $medicalUpdate = Medical::where('id', $dataItem['medical_id'])->first();
+                $prescriptionPrice += $medicalUpdate->export_price * $dataItem['amount'];
+                // check quantity input with database
+                if ($dataItem['amount'] > $medicalUpdate->quantity) {
+                }
+                $medicalUpdate->update(['quantity' => $medicalUpdate->quantity - $dataItem['amount']]);
             }
-            $medicalUpdate->update(['quantity' => $medicalUpdate->quantity - $dataItem['amount']]);
-        }
 
-        foreach ($prescription->diagnosis->diagnosisItems as $diagPre) {
-            $diagnosisPrice += $diagPre->service->all_price;
-        }
+            foreach ($prescription->diagnosis->diagnosisItems as $diagPre) {
+                $diagnosisPrice += $diagPre->service->all_price;
+            }
 
-        $billData = [
-            'prescription_id' => $prescription->id,
-            'total_money' => $prescriptionPrice + $diagnosisPrice,
-        ];
-        if ($prescription->bill) {
-            Bill::where('id', $prescription->bill->id)->update($billData);
+            $billData = [
+                'prescription_id' => $prescription->id,
+                'total_money' => $prescriptionPrice + $diagnosisPrice,
+            ];
+            if ($prescription->bill) {
+                Bill::where('id', $prescription->bill->id)->update($billData);
+            }
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
         }
-
 
         return redirect()->route('prescriptions.index')
             ->with('success', 'Thông tin đơn thuốc đã được cập nhật thành công.');
@@ -240,7 +257,15 @@ class PrescriptionController extends Controller
      */
     public function destroy(Prescription $prescription)
     {
-        $prescription->delete();
+        DB::beginTransaction();
+        try {
+            $prescription->delete();
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
         return redirect()->route('prescriptions.index')
             ->with('success', 'Đơn thuốc đã được xoá thành công.');
@@ -333,7 +358,7 @@ class PrescriptionController extends Controller
             $totalMoney += $medicalUpdate->export_price * $dataItem['amount'];
             // check quantity input with database
             if ($dataItem['amount'] > $medicalUpdate->quantity) {
-               return redirect()->back()->with('alert', 'Thuốc trong kho không đủ để cung cấp!'); 
+                return redirect()->back()->with('alert', 'Thuốc trong kho không đủ để cung cấp!');
             }
 
             $medicalUpdate->update(['quantity' => $medicalUpdate->quantity - $dataItem['amount']]);

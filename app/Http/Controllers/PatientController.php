@@ -6,9 +6,10 @@ use Carbon\Carbon;
 use App\Models\Doctor;
 use App\Models\Patient;
 use App\Models\Service;
-use App\Models\Diagnosis;
 use Illuminate\Http\Request;
-use App\Models\DiagnosisItem;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -56,7 +57,7 @@ class PatientController extends Controller
             'name' => 'required|string|max:255',
             'blood_group' => 'required|in:' . implode(',', array_keys(Patient::$bloodGroups)),
             'email' => 'required|string|max:255|unique:doctors,email|regex:'
-            . config('const.regex_email_admin'),
+                . config('const.regex_email_admin'),
             'phone' => 'nullable|size:10|regex:' . config('const.regex_telephone'),
             'date_of_birth'  => [
                 'required',
@@ -91,7 +92,15 @@ class PatientController extends Controller
         }
         $validatedData['patient_code'] = Patient::generateNextCode();
         $validatedData['profile'] = $path;
-        Patient::create($validatedData);
+        DB::beginTransaction();
+        try {
+            Patient::create($validatedData);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
         return redirect()->route('patients.index')
             ->with('success', 'Thêm mới bệnh nhân đã được tạo thành công.');
@@ -144,7 +153,7 @@ class PatientController extends Controller
             'name' => 'nullable|string|max:255',
             'blood_group' => 'nullable|in:' . implode(',', array_keys(Patient::$bloodGroups)),
             'email' => 'nullable|string|max:255|unique:doctors,email|regex:'
-            . config('const.regex_email_admin'),
+                . config('const.regex_email_admin'),
             'phone' => 'nullable|size:10|regex:' . config('const.regex_telephone'),
             'date_of_birth'  => [
                 'nullable',
@@ -182,8 +191,15 @@ class PatientController extends Controller
             $validatedData['profile'] = $profilePath;
             $validatedData['filename'] = $filename;
         }
-
-        $patient->update($validatedData);
+        DB::beginTransaction();
+        try {
+            $patient->update($validatedData);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
         return redirect()->route('patients.index')
             ->with('success', 'Thông tin bệnh nhân đã được cập nhật thành công.');
@@ -197,7 +213,15 @@ class PatientController extends Controller
      */
     public function destroy(Patient $patient)
     {
-        $patient->delete();
+        DB::beginTransaction();
+        try {
+            $patient->delete();
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
         return redirect()->route('patients.index')
             ->with('success', 'Bệnh nhân đã được xoá thành công.');

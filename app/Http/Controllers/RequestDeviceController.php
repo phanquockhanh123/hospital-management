@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Doctor;
 use App\Models\Patient;
+use Clockwork\Request\Log;
 use Illuminate\Http\Request;
-use App\Models\RequestDevice;
 use App\Models\MedicalDevice;
+use App\Models\RequestDevice;
+use Illuminate\Http\Response;
 use App\Models\RequestDeviceItem;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpKernel\DataCollector\RequestDataCollector;
 
@@ -22,15 +25,15 @@ class RequestDeviceController extends Controller
     {
         $doctors = Doctor::orderByDesc('created_at')->get();
         $patients = Patient::orderByDesc('created_at')->get();
-       
+
         // Search
         $request_devices = RequestDevice::with('patient', 'doctor');
 
-        if($request['patient_id'] != null) {
+        if ($request['patient_id'] != null) {
             $request_devices->where('patient_id', $request['patient_id']);
         }
 
-        if($request['status'] != null) {
+        if ($request['status'] != null) {
             $request_devices->where('status', $request['status']);
         }
 
@@ -47,7 +50,7 @@ class RequestDeviceController extends Controller
         //     ]);
 
         // }
-        $count =1;
+        $count = 1;
         return view('admin.request_devices.index', compact('request_devices', 'count', 'doctors', 'patients'));
     }
 
@@ -87,37 +90,44 @@ class RequestDeviceController extends Controller
             'quantity' => 'required|array',
             'description' => 'nullable|array',
         ]);
-        
+
         $validatedData['status'] = RequestDevice::STATUS_BORROWING;
         $validatedData['doctor_id'] = Auth::user()->doctor->id;
 
-        $requestDevice = RequestDevice::create($validatedData);
+        DB::beginTransaction();
+        try {
 
-        $data = [
-            "medical_device_id" => array_values($validatedData['medical_device_id']),
-            "quantity" => array_values($validatedData['quantity']),
-            "description" => array_values($validatedData['description']),
-        ];
+            $requestDevice = RequestDevice::create($validatedData);
 
-        $newArrays = array();
-        foreach ($data as $key => $values) {
-            $i = 0;
-            foreach ($values as $value) {
-                $newArrays[$i][$key] = $value;
-                $i++;
+            $data = [
+                "medical_device_id" => array_values($validatedData['medical_device_id']),
+                "quantity" => array_values($validatedData['quantity']),
+                "description" => array_values($validatedData['description']),
+            ];
+
+            $newArrays = array();
+            foreach ($data as $key => $values) {
+                $i = 0;
+                foreach ($values as $value) {
+                    $newArrays[$i][$key] = $value;
+                    $i++;
+                }
             }
+
+            $requestDeviceItemData = array_map(function ($requestItem) use ($requestDevice) {
+                $requestItem['request_device_id'] = $requestDevice->id;
+                $requestItem['created_at'] = now();
+                $requestItem['updated_at'] = now();
+                return $requestItem;
+            }, $newArrays);
+            RequestDeviceItem::insert($requestDeviceItemData);
+
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
         }
-
-        $requestDeviceItemData = array_map(function ($requestItem) use ($requestDevice) {
-            $requestItem['request_device_id'] = $requestDevice->id;
-            $requestItem['created_at'] = now();
-            $requestItem['updated_at'] = now();
-            return $requestItem;
-        }, $newArrays);
-        RequestDeviceItem::insert($requestDeviceItemData);
-
-        
-
         return redirect()->route('request_devices.index')
             ->with('success', 'Yêu câu mượn y tế đã được tạo thành công.');
     }
@@ -176,37 +186,46 @@ class RequestDeviceController extends Controller
         ]);
         $validatedData['doctor_id'] = Auth::user()->doctor->id;
 
-        $request_device->update([
-            'doctor_id' => $validatedData['doctor_id'],
-            'patient_id' => $validatedData['patient_id'],
-            'borrow_time' => $validatedData['borrow_time'],
-            'return_time' => $validatedData['return_time'],
-        ]);
+        DB::beginTransaction();
+        try {
 
-        $data = [
-            "medical_device_id" => array_values($validatedData['medical_device_id']),
-            "quantity" => array_values($validatedData['quantity']),
-            "description" => array_values($validatedData['description']),
-        ];
+            $request_device->update([
+                'doctor_id' => $validatedData['doctor_id'],
+                'patient_id' => $validatedData['patient_id'],
+                'borrow_time' => $validatedData['borrow_time'],
+                'return_time' => $validatedData['return_time'],
+            ]);
 
-        RequestDeviceItem::where('request_device_id', $request_device->id)->delete();
-        $newArrays = array();
-        foreach ($data as $key => $values) {
-            $i = 0;
-            foreach ($values as $value) {
-                $newArrays[$i][$key] = $value;
-                $i++;
+            $data = [
+                "medical_device_id" => array_values($validatedData['medical_device_id']),
+                "quantity" => array_values($validatedData['quantity']),
+                "description" => array_values($validatedData['description']),
+            ];
+
+            RequestDeviceItem::where('request_device_id', $request_device->id)->delete();
+            $newArrays = array();
+            foreach ($data as $key => $values) {
+                $i = 0;
+                foreach ($values as $value) {
+                    $newArrays[$i][$key] = $value;
+                    $i++;
+                }
             }
+
+            $requestDeviceItemData = array_map(function ($requestItem) use ($request_device) {
+                $requestItem['request_device_id'] = $request_device->id;
+                $requestItem['created_at'] = now();
+                $requestItem['updated_at'] = now();
+                return $requestItem;
+            }, $newArrays);
+
+            RequestDeviceItem::insert($requestDeviceItemData);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
         }
-
-        $requestDeviceItemData = array_map(function ($requestItem) use ($request_device) {
-            $requestItem['request_device_id'] = $request_device->id;
-            $requestItem['created_at'] = now();
-            $requestItem['updated_at'] = now();
-            return $requestItem;
-        }, $newArrays);
-
-        RequestDeviceItem::insert($requestDeviceItemData);
 
         return redirect()->route('request_devices.index')
             ->with('success', 'Yêu cầu mượn thiết bị đã được cập nhật thành công.');
@@ -220,10 +239,17 @@ class RequestDeviceController extends Controller
      */
     public function destroy(RequestDevice $request_device)
     {
-        $request_device->delete();
+        DB::beginTransaction();
+        try {
+            $request_device->delete();
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
         return redirect()->route('request_devices.index')
             ->with('success', 'Yêu cầu mượn thiết bị đã được xoá thành công.');
     }
-
 }

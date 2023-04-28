@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\MedicalDevice;
+use Illuminate\Http\Response;
 use App\Models\DoctorDepartment;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -87,7 +90,15 @@ class MedicalDeviceController extends Controller
             $validatedData['profile'] = $path;
             $validatedData['filename'] = $filename;
         }
-        MedicalDevice::create($validatedData);
+        DB::beginTransaction();
+        try {
+            MedicalDevice::create($validatedData);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
         return redirect()->route('medical_devices.index')
             ->with('success', 'Thiết bị y tế đã được tạo thành công.');
@@ -153,7 +164,15 @@ class MedicalDeviceController extends Controller
             $validatedData['filename'] = $filename;
         }
         $validatedData['status'] = MedicalDevice::STATUS_CENSORED;
-        $medical_device->update($validatedData);
+        DB::beginTransaction();
+        try {
+            $medical_device->update($validatedData);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
         return redirect()->route('medical_devices.index')
             ->with('success', 'Thông tin thiết bị y tế đã được cập nhật thành công.');
@@ -167,8 +186,15 @@ class MedicalDeviceController extends Controller
      */
     public function destroy(MedicalDevice $medical_device)
     {
-        $medical_device->delete();
-
+        DB::beginTransaction();
+        try {
+            $medical_device->delete();
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
         return redirect()->route('medical_devices.index')
             ->with('success', 'Giường bệnh đã được xoá thành công.');
     }

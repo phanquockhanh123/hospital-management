@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Appointment;
 use PDF;
 use App\Models\Bill;
 use App\Models\Doctor;
@@ -10,8 +9,12 @@ use App\Models\Medical;
 use App\Models\Patient;
 use App\Models\Service;
 use App\Models\Diagnosis;
+use App\Models\Appointment;
 use Illuminate\Http\Request;
 use App\Models\DiagnosisItem;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -24,27 +27,18 @@ class DiagnosisController extends Controller
      */
     public function index(Request $request)
     {
-
-        // $search = $request->input('search');
-
-        // if ($search) {
-        //     $diagnosises = Diagnosis::where('id', 'LIKE', '%' . $search . '%')
-        //         ->orderByDesc('created_at')->paginate(config('const.perPage'));
-        // } else {
-        //     $diagnosises = Diagnosis::orderByDesc('created_at')->paginate(config('const.perPage'));
-        // }
         $patients = Patient::orderByDesc('created_at')->get();
         $diagnosises = Diagnosis::with('patient');
 
-        if($request['patient_id'] != null) {
+        if ($request['patient_id'] != null) {
             $diagnosises->where('patient_id', $request['patient_id']);
         }
 
-        if($request['created_at'] != null) {
+        if ($request['created_at'] != null) {
             $diagnosises->whereDate('created_at', $request['created_at']);
         }
 
-        if($request['status'] != null) {
+        if ($request['status'] != null) {
             $diagnosises->where('status', $request['status']);
         }
         $diagnosises = $diagnosises->orderByDesc('updated_at')->orderByDesc('id')->paginate(config('const.perPage'));
@@ -88,46 +82,53 @@ class DiagnosisController extends Controller
         ]);
         $validatedData['status'] = Diagnosis::STATUS_PENDING;
 
-        $diagnosis = Diagnosis::create($validatedData);
+        DB::beginTransaction();
+        try {
+            $diagnosis = Diagnosis::create($validatedData);
+            $data = [
+                "service_id" => array_values($validatedData['service_id']),
+                "result" => array_values($validatedData['result']),
+                "references_range" => array_values($validatedData['references_range']),
+                "unit" => array_values($validatedData['unit']),
+                "method" => array_values($validatedData['method']),
+                "diagnosis_note" => array_values($validatedData['diagnosis_note']),
+            ];
 
-        $data = [
-            "service_id" => array_values($validatedData['service_id']),
-            "result" => array_values($validatedData['result']),
-            "references_range" => array_values($validatedData['references_range']),
-            "unit" => array_values($validatedData['unit']),
-            "method" => array_values($validatedData['method']),
-            "diagnosis_note" => array_values($validatedData['diagnosis_note']),
-        ];
-
-        $newArrays = array();
-        foreach ($data as $key => $values) {
-            $i = 0;
-            foreach ($values as $value) {
-                $newArrays[$i][$key] = $value;
-                $i++;
+            $newArrays = array();
+            foreach ($data as $key => $values) {
+                $i = 0;
+                foreach ($values as $value) {
+                    $newArrays[$i][$key] = $value;
+                    $i++;
+                }
             }
+
+            $diagnosisItemData = array_map(function ($diaPre) use ($diagnosis) {
+                $diaPre['diagnosis_id'] = $diagnosis->id;
+                $diaPre['created_at'] = now();
+                $diaPre['updated_at'] = now();
+                return $diaPre;
+            }, $newArrays);
+            DiagnosisItem::insert($diagnosisItemData);
+
+            // Create Bills
+            $totalMoney = 0;
+            foreach ($newArrays as $dataItem) {
+                $service = Service::where('id', $dataItem['service_id'])->first();
+                $totalMoney += $service->all_price;
+            }
+
+            $billData = [
+                'diagnosis_id' => $diagnosis->id,
+                'total_money' => $totalMoney,
+            ];
+            Bill::create($billData);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
         }
-
-        $diagnosisItemData = array_map(function ($diaPre) use ($diagnosis) {
-            $diaPre['diagnosis_id'] = $diagnosis->id;
-            $diaPre['created_at'] = now();
-            $diaPre['updated_at'] = now();
-            return $diaPre;
-        }, $newArrays);
-        DiagnosisItem::insert($diagnosisItemData);
-
-        // Create Bills
-        $totalMoney = 0;
-        foreach ($newArrays as $dataItem) {
-            $service = Service::where('id', $dataItem['service_id'])->first();
-            $totalMoney += $service->all_price;
-        }
-
-        $billData = [
-            'diagnosis_id' => $diagnosis->id,
-            'total_money' => $totalMoney,
-        ];
-        Bill::create($billData);
 
         return redirect()->route('diagnosises.index')
             ->with('success', 'Xét nghiệm/Chẩn đoán đã được tạo thành công.');
@@ -183,55 +184,66 @@ class DiagnosisController extends Controller
             'diagnosis_note' => 'nullable|array|max:1000',
             'note ' => 'nullable|string|max:255',
         ]);
-        $diagnosis->update([
-            'doctor_id' => $request->doctor_id,
-            'patient_id' => $request->patient_id,
-            'main_diagnosis' => $request->main_diagnosis,
-            'side_diagnosis' => $request->side_diagnosis,
-            'note' => $request->note,
-        ]);
+        DB::beginTransaction();
+        try {
+            $diagnosis->update([
+                'doctor_id' => $request->doctor_id,
+                'patient_id' => $request->patient_id,
+                'main_diagnosis' => $request->main_diagnosis,
+                'side_diagnosis' => $request->side_diagnosis,
+                'note' => $request->note,
+            ]);
 
-        $data = [
-            "service_id" => array_values($validatedData['service_id']),
-            "result" => array_values($validatedData['result']),
-            "references_range" => array_values($validatedData['references_range']),
-            "unit" => array_values($validatedData['unit']),
-            "method" => array_values($validatedData['method']),
-            "diagnosis_note" => array_values($validatedData['diagnosis_note']),
-        ];
-        DiagnosisItem::where('diagnosis_id', $diagnosis->id)->delete();
-        $newArrays = array();
-        foreach ($data as $key => $values) {
-            $i = 0;
-            foreach ($values as $value) {
-                $newArrays[$i][$key] = $value;
-                $i++;
+            $data = [
+                "service_id" => array_values($validatedData['service_id']),
+                "result" => array_values($validatedData['result']),
+                "references_range" => array_values($validatedData['references_range']),
+                "unit" => array_values($validatedData['unit']),
+                "method" => array_values($validatedData['method']),
+                "diagnosis_note" => array_values($validatedData['diagnosis_note']),
+            ];
+            DiagnosisItem::where('diagnosis_id', $diagnosis->id)->delete();
+            $newArrays = array();
+            foreach ($data as $key => $values) {
+                $i = 0;
+                foreach ($values as $value) {
+                    $newArrays[$i][$key] = $value;
+                    $i++;
+                }
             }
-        }
-        $diagnosisItemData = array_map(function ($diaPre) use ($diagnosis) {
-            $diaPre['diagnosis_id'] = $diagnosis->id;
-            $diaPre['created_at'] = now();
-            $diaPre['updated_at'] = now();
-            return $diaPre;
-        }, $newArrays);
-        DiagnosisItem::insert($diagnosisItemData);
+            $diagnosisItemData = array_map(function ($diaPre) use ($diagnosis) {
+                $diaPre['diagnosis_id'] = $diagnosis->id;
+                $diaPre['created_at'] = now();
+                $diaPre['updated_at'] = now();
+                return $diaPre;
+            }, $newArrays);
+            DiagnosisItem::insert($diagnosisItemData);
 
-        // Update Bills
-        $prescriptionPrice = 0;
-        $totalDiagnosis = 0;
+            // Update Bills
+            $prescriptionPrice = 0;
+            $totalDiagnosis = 0;
 
-        foreach ($newArrays as $dataItem) {
-            $service = Service::where('id', $dataItem['service_id'])->first();
-            $totalDiagnosis += $service->all_price;
+            foreach ($newArrays as $dataItem) {
+                $service = Service::where('id', $dataItem['service_id'])->first();
+                $totalDiagnosis += $service->all_price;
+            }
+            foreach ($diagnosis->prescription->prescriptionItems as $preItem) {
+                $prescriptionPrice += $preItem->amount * $preItem->medical->export_price;
+            }
+            $billData = [
+                'diagnosis_id' => $diagnosis->id,
+                'total_money' => $totalDiagnosis + $prescriptionPrice,
+            ];
+            Bill::where('id', $diagnosis->bill->id)->update($billData);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
         }
-        foreach ($diagnosis->prescription->prescriptionItems as $preItem ) {
-            $prescriptionPrice += $preItem->amount * $preItem->medical->export_price;
-        }
-        $billData = [
-            'diagnosis_id' => $diagnosis->id,
-            'total_money' => $totalDiagnosis + $prescriptionPrice,
-        ];
-        Bill::where('id', $diagnosis->bill->id)->update($billData);
+
+
+
 
         return redirect()->route('diagnosises.index')
             ->with('success', 'Thông tin Xét nghiệm/Chẩn đoán đã được cập nhật thành công.');
@@ -245,7 +257,15 @@ class DiagnosisController extends Controller
      */
     public function destroy(Diagnosis $diagnosis)
     {
-        $diagnosis->delete();
+        DB::beginTransaction();
+        try {
+            $diagnosis->delete();
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
         return redirect()->route('diagnosises.index')
             ->with('success', 'Xét nghiệm/Chẩn đoán đã được xoá thành công.');
@@ -267,7 +287,7 @@ class DiagnosisController extends Controller
         return $pdf->stream('Diagnosis.pdf');
     }
 
-     /**
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -303,49 +323,56 @@ class DiagnosisController extends Controller
         ]);
         $validatedData['status'] = Diagnosis::STATUS_PENDING;
 
-        $diagnosis = Diagnosis::create($validatedData);
+        DB::beginTransaction();
+        try {
+            $diagnosis = Diagnosis::create($validatedData);
 
-        $data = [
-            "service_id" => array_values($validatedData['service_id']),
-            "result" => array_values($validatedData['result']),
-            "references_range" => array_values($validatedData['references_range']),
-            "unit" => array_values($validatedData['unit']),
-            "method" => array_values($validatedData['method']),
-            "diagnosis_note" => array_values($validatedData['diagnosis_note']),
-        ];
+            $data = [
+                "service_id" => array_values($validatedData['service_id']),
+                "result" => array_values($validatedData['result']),
+                "references_range" => array_values($validatedData['references_range']),
+                "unit" => array_values($validatedData['unit']),
+                "method" => array_values($validatedData['method']),
+                "diagnosis_note" => array_values($validatedData['diagnosis_note']),
+            ];
 
-        $newArrays = array();
-        foreach ($data as $key => $values) {
-            $i = 0;
-            foreach ($values as $value) {
-                $newArrays[$i][$key] = $value;
-                $i++;
+            $newArrays = array();
+            foreach ($data as $key => $values) {
+                $i = 0;
+                foreach ($values as $value) {
+                    $newArrays[$i][$key] = $value;
+                    $i++;
+                }
             }
+
+            $diagnosisItemData = array_map(function ($diaPre) use ($diagnosis) {
+                $diaPre['diagnosis_id'] = $diagnosis->id;
+                $diaPre['created_at'] = now();
+                $diaPre['updated_at'] = now();
+                return $diaPre;
+            }, $newArrays);
+            DiagnosisItem::insert($diagnosisItemData);
+
+            // Create Bills
+            $totalMoney = 0;
+            foreach ($newArrays as $dataItem) {
+                $service = Service::where('id', $dataItem['service_id'])->first();
+                $totalMoney += $service->all_price;
+            }
+
+            $billData = [
+                'diagnosis_id' => $diagnosis->id,
+                'total_money' => $totalMoney,
+            ];
+            Bill::create($billData);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
         }
-
-        $diagnosisItemData = array_map(function ($diaPre) use ($diagnosis) {
-            $diaPre['diagnosis_id'] = $diagnosis->id;
-            $diaPre['created_at'] = now();
-            $diaPre['updated_at'] = now();
-            return $diaPre;
-        }, $newArrays);
-        DiagnosisItem::insert($diagnosisItemData);
-
-        // Create Bills
-        $totalMoney = 0;
-        foreach ($newArrays as $dataItem) {
-            $service = Service::where('id', $dataItem['service_id'])->first();
-            $totalMoney += $service->all_price;
-        }
-
-        $billData = [
-            'diagnosis_id' => $diagnosis->id,
-            'total_money' => $totalMoney,
-        ];
-        Bill::create($billData);
 
         return redirect()->route('diagnosises.index')
             ->with('success', 'Xét nghiệm/Chẩn đoán đã được tạo thành công.');
     }
-
 }
