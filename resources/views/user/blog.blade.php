@@ -37,7 +37,7 @@
                 <hr>
                   <ul>
                       @foreach ($news as $new)
-                          <li style="text-decoration: none; list-style:none; margin-bottom: 20px;">
+                          <li style="text-decoration: none; list-style:none; margin-bottom: 30px;">
                               <a href="#" >
                                   <div class="row">
                                       <div class="col-sm" >
@@ -49,9 +49,9 @@
                                       </div>
                                   </div>
                               </a>
-                              <div class="content">
+                              {{-- <div class="content">
                                   {{ substr($new->content,0, 100) . '....' }}
-                              </div>
+                              </div> --}}
                               
                           </li>
                       @endforeach

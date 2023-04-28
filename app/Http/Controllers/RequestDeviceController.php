@@ -75,12 +75,19 @@ class RequestDeviceController extends Controller
     {
         $validatedData = $request->validate([
             'patient_id' => 'nullable|integer|exists:patients,id,deleted_at,NULL',
-            'borrow_time' => 'nullable',
-            'return_time' => 'nullable',
+            'borrow_time' => [
+                'required',
+                'before_or_equal:return_time',
+            ],
+            'return_time' => [
+                'nullable',
+                'after_or_equal:borrow_time',
+            ],
             'medical_device_id' => 'required|array',
             'quantity' => 'required|array',
             'description' => 'nullable|array',
         ]);
+        
         $validatedData['status'] = RequestDevice::STATUS_BORROWING;
         $validatedData['doctor_id'] = Auth::user()->doctor->id;
 
@@ -155,8 +162,14 @@ class RequestDeviceController extends Controller
     {
         $validatedData = $request->validate([
             'patient_id' => 'nullable|integer|exists:patients,id,deleted_at,NULL',
-            'borrow_time' => 'nullable',
-            'return_time' => 'nullable',
+            'borrow_time' => [
+                'required',
+                'before_or_equal:return_time',
+            ],
+            'return_time' => [
+                'nullable',
+                'after_or_equal:borrow_time',
+            ],
             'medical_device_id' => 'required|array',
             'quantity' => 'required|array',
             'description' => 'nullable|array',

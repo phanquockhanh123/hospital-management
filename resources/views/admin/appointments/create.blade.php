@@ -54,7 +54,8 @@
                                     <select name="doctor_id" class="form-control input-sm m-bot15">
                                         <option value="">----Chọn bác sĩ----</option>
                                         @foreach ($doctors as $doctor)
-                                        <option value="{{ $doctor->id }}">{{ $doctor->name }}</option>
+                                        <option value="{{ $doctor->id }}">{{ $doctor->name }}
+                                             <span style="margin-left: 100px;">------------------{{ $doctorDepartments->where('id', $doctor->doctor_department_id)->first()->name }}</span></option>
                                         @endforeach
                                     </select>
                                     @error('doctor_id')
@@ -62,7 +63,7 @@
                                     @enderror
                                 </div>
 
-                                <div class="form-group">
+                                {{-- <div class="form-group">
                                     <label for="doctor_department_id">Phòng ban:</label>
                                     <select name="doctor_department_id" class="form-control input-sm m-bot15">
                                         <option value="">----Chọn phòng ban----</option>
@@ -73,7 +74,7 @@
                                     @error('doctor_department_id')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
-                                </div>
+                                </div> --}}
 
                                 <div class="form-group">
                                     <label for="start_time">Thời gian bắt đầu:</label>

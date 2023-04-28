@@ -61,7 +61,7 @@ class HomeController extends Controller
         $validatedData = $request->validate([
             'fullname' => 'required|string|max:255',
             'email' => 'required|string|max:255|regex:'
-            . config('const.regex_email_admin'),
+                . config('const.regex_email_admin'),
             'phone' => 'nullable|size:10|regex:' . config('const.regex_telephone'),
             'reason' => 'nullable|string|max:255',
             'experted_time' => 'nullable'
@@ -107,7 +107,7 @@ class HomeController extends Controller
         }
         //dd($prescriptionItemList);
         $diaPre = $diagnosisItems;
-        
+
         $services = Service::all();
         // get list diagnosis
         $diagnosisesList = $diagnosises;
@@ -146,7 +146,8 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function updateUserPatient(Request $request,Patient $patient) {
+    public function updateUserPatient(Request $request, Patient $patient)
+    {
         $validatedData = $request->validate([
             'name' => 'nullable|string|max:255',
             'blood_group' => 'nullable|in:' . implode(',', array_keys(Patient::$bloodGroups)),

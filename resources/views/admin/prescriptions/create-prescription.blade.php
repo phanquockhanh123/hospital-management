@@ -6,6 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Hospital Management</title>
     @include('admin.css')
+    <script>
+        var msg = '{{Session::get('alert')}}';
+        var exist = '{{Session::has('alert')}}';
+        if(exist){
+          alert(msg);
+        }
+    </script>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">

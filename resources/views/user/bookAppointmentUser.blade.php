@@ -27,13 +27,11 @@
             <form method="POST" action="{{ route('user.appointments-store') }}">
                 @csrf
                 <div class="col-md-12">
-                    {{-- <label for="validationDefault01" class="form-label">Họ và tên</label> --}}
                     <input type="text" name="fullname" class="form-control" placeholder="Họ và tên"
                         id="validationDefault01" value="" required>
 
                 </div>
                 <div class="col-md-12" style="margin-top: 20px;">
-                    {{-- <label for="validationDefaultUsername" class="form-label">Email</label> --}}
                     <div class="input-group">
                         <span class="input-group-text" id="inputGroupPrepend2">@</span>
                         <input type="email" name="email" class="form-control @error('phone') is-invalid @enderror" placeholder="Email"
@@ -44,7 +42,6 @@
                     @enderror
                 </div>
                 <div class="col-md-12" style="margin-top: 20px;">
-                    {{-- <label for="validationDefault03" class="form-label">Số điện thoại</label> --}}
                     <input type="text" name="phone" class="form-control" placeholder="Số điện thoại"
                         id="validationDefault03" required>
                     @error('phone')
@@ -52,12 +49,10 @@
                     @enderror
                 </div>
                 <div class="col-md-12" style="margin-top: 20px;">
-                    {{-- <label for="validationDefault05" class="form-label">Thời gian mong muốn</label> --}}
                     <input type="datetime-local" name="experted_time" class="form-control"
                         placeholder="Thời gian mong muốn" id="validationDefault05" required>
                 </div>
                 <div class="col-md-12" style="margin-top: 20px;">
-                    {{-- <label for="validationDefault05" class="form-label">Mô tả triệu chứng</label> --}}
                     <textarea class="form-control" name="reason" id="exampleFormControlTextarea1" placeholder="Mô tả triệu chứng"
                         rows="5"></textarea>
                 </div>

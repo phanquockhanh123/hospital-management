@@ -35,6 +35,7 @@ class News extends BaseModel
         'image',
         'filename',
         'content',
+        'submitted_date',
         'source_news',
         'author',
         'priority_level',

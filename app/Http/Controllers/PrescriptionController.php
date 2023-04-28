@@ -106,6 +106,7 @@ class PrescriptionController extends Controller
             $totalMoney += $medicalUpdate->export_price * $dataItem['amount'];
             // check quantity input with database
             if ($dataItem['amount'] > $medicalUpdate->quantity) {
+                redirect()->back()->with('alert', 'Thuốc trong kho không đủ để cung cấp!'); 
             }
             $medicalUpdate->update(['quantity' => $medicalUpdate->quantity - $dataItem['amount']]);
         }
@@ -332,6 +333,7 @@ class PrescriptionController extends Controller
             $totalMoney += $medicalUpdate->export_price * $dataItem['amount'];
             // check quantity input with database
             if ($dataItem['amount'] > $medicalUpdate->quantity) {
+               return redirect()->back()->with('alert', 'Thuốc trong kho không đủ để cung cấp!'); 
             }
 
             $medicalUpdate->update(['quantity' => $medicalUpdate->quantity - $dataItem['amount']]);

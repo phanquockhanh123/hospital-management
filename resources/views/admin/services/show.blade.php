@@ -30,17 +30,17 @@
                 <div class="col-md-9">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">{{ $service->name }}</h3>
+                            <h3 class="card-title">{{ $service->service_name }}</h3>
                         </div>
                         <div class="card-body">
                             <table class="table">
                                 <tbody>
                                     <tr>
-                                        <th>Mã dịch vụ khám bệng:</th>
+                                        <th>Mã dịch vụ khám bệnh:</th>
                                         <td>{{ $service->service_code }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Tên dịch vụ khám bệng:</th>
+                                        <th>Tên dịch vụ khám bệnh:</th>
                                         <td>{{ $service->service_name }}</td>
                                     </tr>
                                     <tr>
@@ -51,7 +51,7 @@
                                         <th>Giảm giá(%):</th>
                                         <td>{{ $service->discount }}</td>
                                     </tr>
-                                    <tr>thuốc
+                                    <tr>
                                         <th>Mô tả:</th>
                                         <td>{{ $service->description }}</td>
                                     </tr>

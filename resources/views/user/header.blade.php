@@ -7,7 +7,7 @@
 
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <meta name="copyright" content="MACode ID, https://macodeid.com/">
+    {{-- <meta name="copyright" content="MACode ID, https://macodeid.com/"> --}}
 
     <title>Phòng Khám Đa Khoa Quốc Tế HÀ NỘI</title>
 
@@ -118,7 +118,7 @@
 
         <nav class="navbar navbar-expand-lg navbar-light shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ route('home.index') }}"><span class="text-primary">An</span>-Khang</a>
+                <a class="navbar-brand" href="{{ route('home.index') }}" style="font-size: 30px;"><span class="text-primary">An</span>-Khang</a>
 
                 {{-- <form action="#">
                     <div class="input-group input-navbar">

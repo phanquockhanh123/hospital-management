@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\News;
 use Illuminate\Http\Request;
-use Intervention\Image\Image;
-use App\Models\DoctorDepartment;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -69,7 +67,9 @@ class NewsController extends Controller
             'key_words' => 'nullable|string|max:255',
             'priority_level' => 'required|in:' . implode(',', array_keys(News::$priorityLevels)),
         ]);
+        $validatedData['submitted_date'] = now()->format(config('const.format.date'));
         $validatedData['status'] = News::STATUS_SUBMITTED;
+
         // Lưu ảnh
         if ($request->hasFile('image')) {
             $image = $request->file('image');
@@ -80,13 +80,6 @@ class NewsController extends Controller
 
             $validatedData['image'] = $path;
             $validatedData['filename'] = $filename;
-
-            // resize image here
-            // $thumbnailpath = public_path('/uploads/thumbnail/'.$filename);
-            // $img = Image::make($thumbnailpath)->resize(500, 150, function ($constraint) {
-            //     $constraint->aspectRatio();
-            // });
-            // $img->save($thumbnailpath);
         }
         News::create($validatedData);
 
@@ -152,6 +145,7 @@ class NewsController extends Controller
             $validatedData['image'] = $imagePath;
             $validatedData['filename'] = $filename;
         }
+        $validatedData['submitted_date'] = now()->format(config('const.format.date'));
         $validatedData['status'] = News::STATUS_SUBMITTED;
         $new->update($validatedData);
 
