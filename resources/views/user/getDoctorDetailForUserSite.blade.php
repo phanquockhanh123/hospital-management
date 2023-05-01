@@ -6,12 +6,10 @@
             <img src="{{ asset('./imgDoctor/'. $doctor->filename) }}" style="weight:350px; height:370px;margin-right: 100px;" alt="">
             <div class="body" >
                 <h3 style="color: #006632;margin-bottom: 35px;"><b>Họ tên bác sĩ: </b>{{ $doctor->name}}</h3>
-                <span style="display: inline-block; padding: 12px; border-radius: 5px;
-                background-color: #f1f1f1;
-                color: orange;
-                font-weight: 500;margin-bottom: 35px;"><b>Phòng ban: </b>{{ $doctor->doctorDepartment->name }}</span>
+                
+                 <h5 style="margin-bottom: 35px;"><b>Phòng ban:</b> {{ $doctor->doctorDepartment->name }}</h5>
                 <h5 style="margin-bottom: 35px;"><b>Chuyên ngành:</b> {{ $doctor->specialist }}</h5>
-                <div style="border: 1px solid orange; padding: 5px 15px;font-size:25px;margin-bottom: 35px;">Liên hệ: {{ $doctor->phone }}</div>
+                <h5 style="margin-bottom: 35px;"><b>Liên hệ:</b> {{ $doctor->phone }}</h5>
                 <div class="info-doctor">
                   <p style="margin-bottom: 35px;"><b>Tiểu sử:</b> {{ $doctor->designation }}</p>
                   <p style="margin-bottom: 35px;"><b>Trình độ học vấn:</b> {{ $doctor->academic_level }}</p>
