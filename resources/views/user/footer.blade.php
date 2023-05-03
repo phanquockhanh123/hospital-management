@@ -29,7 +29,7 @@
         </div>
         <div class="col-sm-6 col-lg-3 py-3">
           <h5>Liên hệ</h5>
-          <p class="footer-link mt-2">216 Đ. Trần Duy Hưng, Trung Hoà, Cầu Giấy, Hà Nội</p>
+          <p class="footer-link mt-2">QL45, Xuân Khang, Như Thanh, Thanh Hoá</p>
           <a href="#" class="footer-link">0327-018-337</a>
           <a href="#" class="footer-link">khanhphanquoc68@gmail.com</a>
 

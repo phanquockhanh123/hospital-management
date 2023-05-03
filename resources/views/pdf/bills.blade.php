@@ -87,7 +87,7 @@
 <body>
 	<div class="title">
 		<div class="title1">PHÒNG KHÁM ĐA KHOA AN KHÁNH</div>
-		<div class="title2">ĐC: 216 Đ. Trần Duy Hưng, Trung Hoà, Cầu Giấy, Hà Nội</div>
+		<div class="title2">ĐC: QL45, Xuân Khang, Như Thanh, Thanh Hoá</div>
 		<div class="phone">Điện thoại: 0327018337</div>
 		<div class="title3">{{ $bill->diagnosis->doctor->doctorDepartment->name }}</div>
 	</div>

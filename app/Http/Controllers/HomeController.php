@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\BookAppointment;
 use App\Models\DoctorDepartment;
+use App\Models\MedicalDevice;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -24,9 +25,10 @@ class HomeController extends Controller
 {
     public function index()
     {
+        $devices = MedicalDevice::all();
         $doctors = Doctor::where('status', 1)->get();
         $news = News::where('status', News::STATUS_SUBMITTED)->orderByDesc('priority_level')->orderByDesc('created_at')->take(3)->get();
-        return view('user.home', compact('doctors', 'news'));
+        return view('user.home', compact('doctors', 'news', 'devices'));
     }
 
     public function getDoctor()

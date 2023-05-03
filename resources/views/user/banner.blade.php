@@ -3,7 +3,7 @@
     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" style="margin-top:-50px;">
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img class="d-block w-100"
+                <img class="d-block w-100" width="100%"
                     src="https://th.bing.com/th/id/R.bff0cf117e3635c8081f7f7d99964f29?rik=bRT614ium3EU7g&pid=ImgRaw&r=0"
                     height="500px" alt="First slide">
             </div>

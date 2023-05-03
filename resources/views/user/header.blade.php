@@ -9,7 +9,7 @@
 
     {{-- <meta name="copyright" content="MACode ID, https://macodeid.com/"> --}}
 
-    <title>Phòng Khám Đa Khoa Quốc Tế HÀ NỘI</title>
+    <title>PHÒNG KHÁM ĐA KHOA AN KHANG</title>
 
     <link rel="stylesheet" href="{{ asset('../assets/css/maicons.css') }}">
 
