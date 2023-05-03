@@ -15,7 +15,7 @@ class Appointment extends BaseModel
 
     public static $status = [
         self::STATUS_PENDING => 'Đang chờ',
-        self::STATUS_ACCEPTED => 'Chấp nhận ',
+        self::STATUS_ACCEPTED => 'Chấp nhận',
         self::STATUS_DENIED => 'Từ chối',
     ];
 

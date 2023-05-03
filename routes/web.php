@@ -333,7 +333,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     //--------------------------------Report ------------------------------------------------------------------------------------------------
     Route::controller(ReportController::class)->group(function () {
         Route::middleware([config('const.auth.high')])->group(function () {
-            Route::get('/reports', 'index')->name('reports.index');
+            Route::get('/report-services', 'reportServices')->name('reports.report-services');
+            Route::get('/report-medicals', 'reportMedicals')->name('reports.report-medicals');
         });
     });
 

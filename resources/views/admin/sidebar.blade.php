@@ -35,6 +35,31 @@
                 @endif
                 @if (Auth::user()->role == 3)
                 <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon far fa-calendar-alt"></i>
+                        <p>
+                            Báo cáo thống kê
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('reports.report-services') }}"
+                                class="nav-link  @if (Request::route()->getName() == 'reports.report-services') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Thống kê dịch vụ</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('reports.report-medicals') }}"
+                                class="nav-link @if (Request::route()->getName() == 'reports.report-medicals') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Thống kê thuốc</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                {{-- <li class="nav-item">
                     <a href="{{route('reports.index')}}"
                         class="nav-link @if (Request::route()->getName() == 'reports.index') active @endif">
                         <i class="nav-icon far fa-chart-bar"></i>
@@ -42,7 +67,7 @@
                             Báo cáo thống kê
                         </p>
                     </a>
-                </li>
+                </li> --}}
                 @endif
                 @if (Auth::user()->role == 2)
                 <li class="nav-item">

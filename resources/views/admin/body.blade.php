@@ -303,7 +303,7 @@
   <!-- Content Wrapper. Contains page content -->
 
   <!-- Content Header (Page header) -->
-
+@if(Auth::user()->role == 3)
   <!-- Main content -->
   <section class="content">
     <div class="container-fluid">
@@ -332,7 +332,7 @@
   </section>
   <!-- /.content-wrapper -->
   <!-- ./wrapper -->
-
+@endif
   <!-- /.row -->
   <div class="row">
     <div class="col-12">
