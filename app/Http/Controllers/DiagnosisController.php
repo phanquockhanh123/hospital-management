@@ -68,8 +68,8 @@ class DiagnosisController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'doctor_id' => 'nullable|integer|exists:doctors,id,deleted_at,NULL',
-            'patient_id' => 'nullable|integer|exists:patients,id,deleted_at,NULL',
+            'doctor_id' => 'required|integer|exists:doctors,id,deleted_at,NULL',
+            'patient_id' => 'required|integer|exists:patients,id,deleted_at,NULL',
             'main_diagnosis' => 'required|string|max:255',
             'side_diagnosis' => 'nullable|string|max:255',
             'service_id' => 'required|array',
@@ -172,8 +172,8 @@ class DiagnosisController extends Controller
     public function update(Request $request, Diagnosis $diagnosis)
     {
         $validatedData = $request->validate([
-            'doctor_id' => 'nullable|integer|exists:doctors,id,deleted_at,NULL',
-            'patient_id' => 'nullable|integer|exists:patients,id,deleted_at,NULL',
+            'doctor_id' => 'required|integer|exists:doctors,id,deleted_at,NULL',
+            'patient_id' => 'required|integer|exists:patients,id,deleted_at,NULL',
             'main_diagnosis' => 'required|string|max:255',
             'side_diagnosis' => 'nullable|string|max:255',
             'service_id' => 'required|array',

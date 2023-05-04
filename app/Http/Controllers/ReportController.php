@@ -12,6 +12,7 @@ use App\Models\DiagnosisItem;
 use App\Models\MedicalDevice;
 use App\Models\DoctorDepartment;
 use App\Models\PrescriptionItem;
+use App\Models\RequestDeviceItem;
 use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
@@ -58,5 +59,19 @@ class ReportController extends Controller
         }
         $now = now();
         return view('admin.reports.report_medicals', compact('medicals','prescriptionItems', 'countMoney', 'now'));
+    }
+    public function reportDevices(Request $request) {
+        $deviceItems = RequestDeviceItem::all();
+
+        if ($request['start_date'] != null && $request['end_date'] != null) {
+            $deviceItems = RequestDeviceItem::whereBetween('created_at', [$request['start_date'], $request['end_date']])->get();
+        } else if($request['start_date'] != null) {
+            $deviceItems = RequestDeviceItem::whereDate('created_at', '>=' ,$request['start_date'])->get();
+        } else if($request['end_date'] != null) {
+            $deviceItems = RequestDeviceItem::whereDate('created_at', '<=' ,$request['end_date'])->get();
+        }
+
+        $devices = MedicalDevice::all();
+        return view('admin.reports.report_devices', compact('devices','deviceItems'));
     }
 }

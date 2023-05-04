@@ -86,7 +86,7 @@
 </head>
 <body>
 	<div class="title">
-		<div class="title1">PHÒNG KHÁM ĐA KHOA AN KHÁNH</div>
+		<div class="title1">PHÒNG KHÁM ĐA KHOA AN KHANG</div>
 		<div class="title2">ĐC: QL45, Xuân Khang, Như Thanh, Thanh Hoá</div>
 		<div class="phone">Điện thoại: 0327018337</div>
 		<div class="title3">{{ $bill->diagnosis->doctor->doctorDepartment->name }}</div>
@@ -141,10 +141,11 @@
                 <th scope="col">ĐƠN VỊ</th>
                 <th scope="col">PHƯƠNG THỨC</th>
                 <th scope="col">LƯU Ý</th>
+				<th>Giá dịch vụ</th>
 			</tr>
 		</thead>
 		<tbody>
-            @foreach($diaPre as $val)
+            @foreach($diaPre ?? [] as $val)
 			<tr>
 				<td>{{ $services->where('id', $val['service_id'])->first()->service_name }}</td>
 				<td>{{ $val['result'] }}</td>
@@ -152,6 +153,7 @@
                 <td>{{ $val['unit'] }}</td>
                 <td>{{ $val['method'] }}</td>
                 <td>{{ $val['diagnosis_note'] }}</td>
+				<td>{{ $services->where('id', $val['service_id'])->first()->all_price }}</td>
 			</tr>
             @endforeach
 		</tbody>
@@ -159,7 +161,7 @@
 	<div class="note">
 		Lời dặn: {{ $bill->diagnosis->note }}
 	</div>
-
+	@if(!empty($preItem))
 	<h1 >ĐƠN THUỐC</h1>
 
 	<table>
@@ -173,20 +175,22 @@
 			</tr>
 		</thead>
 		<tbody>
-            @foreach($preItem as $val)
+            @foreach($preItem ?? [] as $val)
 			<tr>
 				<td>{{ $medicals->where('id', $val['medical_id'])->first()->medical_name }}</td>
 				<td>{{ $val['dosage'] }}</td>
 				<td>{{ $val['dosage_note'] }}</td>
                 <td>{{ $val['unit'] }}</td>
                 <td>{{ $val['amount'] }}</td>
+				
 			</tr>
             @endforeach
 		</tbody>
 	</table>
-	<div class="note">
-		Lời dặn: {{ $bill->diagnosis->prescription->note }}
-	</div>
+	@endif
+	{{-- <div class="note">
+		Lời dặn: {{ $bill->diagnosis->prescription->note ?? '' }}
+	</div> --}}
 
 	<div>
 		<label>Tổng thanh toán :</label>

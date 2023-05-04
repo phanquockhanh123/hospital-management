@@ -86,7 +86,7 @@
 </head>
 <body>
 	<div class="title">
-		<div class="title1">PHÒNG KHÁM ĐA KHOA AN KHÁNH</div>
+		<div class="title1">PHÒNG KHÁM ĐA KHOA AN KHANG</div>
 		<div class="title2">ĐC: QL45, Xuân Khang, Như Thanh, Thanh Hoá</div>
 		<div class="phone">Điện thoại: 0327018337</div>
 		<div class="title3">{{ $prescription->diagnosis->doctor->doctorDepartment->name }}</div>

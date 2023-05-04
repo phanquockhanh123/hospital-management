@@ -111,7 +111,7 @@
                                             <td>
                                                 <input type="text" name="result[]" id="result"
                                                     class="form-control @error('result') is-invalid @enderror"
-                                                    value="{{ old('result') }}">
+                                                    value="{{ old('result')  }}">
                                             </td>
                                             <td>
                                                 <input type="text" name="references_range[]" id="references_range"

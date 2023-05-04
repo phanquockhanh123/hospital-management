@@ -57,6 +57,13 @@
                                 <p>Thống kê thuốc</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('reports.report-devices') }}"
+                                class="nav-link @if (Request::route()->getName() == 'reports.report-devices') active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Thống kê thiết bị y tế</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 {{-- <li class="nav-item">

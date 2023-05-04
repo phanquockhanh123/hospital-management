@@ -312,15 +312,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
             // Route::get('/bills', [NewsController::class, 'index2'])->name('admin.get-bill-list');
 
-            Route::post('/upload', [NewsController::class, 'upload'])->name('ckeditor.upload');
+            // Route::post('/upload', [NewsController::class, 'upload'])->name('ckeditor.upload');
         });
     });
 
     //--------------------------------Chats ------------------------------------------------------------------------------------------------
     Route::controller(ChatController::class)->group(function () {
-        // Route::middleware([config('const.auth.patient')])->group(function () {
-        //     Route::get('/chats/user', 'getChatUserUI')->name('chats.chat-user-ui');
-        // });
         Route::middleware([config('const.auth.patient')])->group(function () {
             Route::get('/chats', 'index')->name('chats.index');
             
@@ -335,6 +332,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::middleware([config('const.auth.high')])->group(function () {
             Route::get('/report-services', 'reportServices')->name('reports.report-services');
             Route::get('/report-medicals', 'reportMedicals')->name('reports.report-medicals');
+            Route::get('/report-devices', 'reportDevices')->name('reports.report-devices');
         });
     });
 
