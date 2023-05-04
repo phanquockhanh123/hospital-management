@@ -21,7 +21,7 @@
                                 <div class="col-sm">
                                     <h3><a href="#">{{ $new->title }}</a></h3>
 
-                                    <p>{{ $new->content }}</p>
+                                    <p>{{ substr($new->content, 0, 50) }}...</p>
                                     <p>Ngày cập nhật: {{ $new->updated_at->format('d/m/Y') }}</p>
                                 </div>
                             </li>

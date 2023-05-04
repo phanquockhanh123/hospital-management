@@ -42,7 +42,7 @@
                 <div class="list-news">
                     <ul>
                         @foreach ($news as $new)
-                            <li style="text-decoration: none; list-style:none">
+                            <li style="text-decoration: none; list-style:none;margin-bottom: 30px;">
                                 <a href="#" >
                                     <div class="row">
                                         <div class="col-sm" >
@@ -54,9 +54,9 @@
                                         </div>
                                     </div>
                                 </a>
-                                <div class="content">
+                                {{-- <div class="content">
                                     {{ $new->content }}
-                                </div>
+                                </div> --}}
                                 
                             </li>
                         @endforeach

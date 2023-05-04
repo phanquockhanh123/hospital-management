@@ -64,7 +64,7 @@ class NewsController extends Controller
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'image' => 'required',
-            'content' => 'required|string|max:1000',
+            'content' => 'required',
             'source_news' => 'nullable|string|max:255',
             'author' => 'nullable|string|max:255',
             'key_words' => 'nullable|string|max:255',
@@ -134,7 +134,7 @@ class NewsController extends Controller
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'image' => 'required',
-            'content' => 'required|string|max:1000',
+            'content' => 'required',
             'source_news' => 'nullable|string|max:255',
             'author' => 'nullable|string|max:255',
             'key_words' => 'nullable|string|max:255',

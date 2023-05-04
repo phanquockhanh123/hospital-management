@@ -53,36 +53,42 @@
                 <div class="section-desc">Phòng khám đa khoa An Khang được thành lập dựa trên ý tưởng xây dựng một phòng
                     khám với phong cách hiện đại, dịch vụ chất lượng cao. Khám và điều trị tại đây, bệnh nhân luôn được
                     đảm bảo về quyền lợi, hưởng dịch vụ y tế an toàn, tiện ích, chi phí hợp lý. Hiện phòng khám hoạt
-                    động với 4 chuyên khoa nổi bật:</div>
+                    động với các chuyên khoa nổi bật:</div>
             </div>
             <div class="section-detail">
                 <ul class="list-item clearfix">
                     <li>
                         <div class="icon"></div>
-                        <div class="title">Nam khoa</div>
-                        <div class="desc">Khám và điều trị các bệnh viêm nhiễm đường sinh dục nam, viêm đường tiết niệu,
-                            rối loạn chức năng tình dục như xuất tinh sớm, liệt dương, cắt bao quy đầu,...</div>
+                        <div class="title">Nội tổng hợp</div>
+                        <div class="desc">Điều trị và quản lý các bệnh lý trong cơ thể con người, bao gồm các bệnh liên quan
+                             đến đường hô hấp, tiêu hóa, tim mạch, thần kinh, thận, huyết áp và chuyển hóa.</div>
 
                     </li>
                     <li>
                         <div class="icon"></div>
-                        <div class="title">Phụ khoa</div>
-                        <div class="desc">Khám và điều trị các bệnh viêm phụ khoa như viêm âm đạo, viêm lộ tuyến cổ tử
-                            cung, viêm vòi trứng, u xơ tử cung, tư vấn và thực hiện kế hoạch hóa gia đình.</div>
+                        <div class="title">Chuyên khoa ngoại</div>
+                        <div class="desc">Chẩn đoán, điều trị và phẫu thuật các bệnh lý liên quan đến bên ngoài cơ thể, 
+                            bao gồm da, tóc, móng, xương, khớp, cơ, mạch máu và thần kinh ngoại vi.</div>
 
                     </li>
                     <li>
                         <div class="icon"></div>
-                        <div class="title">Bệnh xã hội</div>
-                        <div class="desc">Kiểm tra, xét nghiệm, phát hiện các bệnh xã hội như sùi mào gà, bệnh lậu,
-                            giang mai, mụn rộp sinh dục.</div>
+                        <div class="title">Chuyên khoa nội</div>
+                        <div class="desc">Chẩn đoán, điều trị và quản lý các bệnh lý trong cơ thể con người,
+                             bao gồm các bệnh liên quan đến đường hô hấp, tiêu hóa, tim mạch, thần kinh, thận, huyết áp và chuyển hóa.</div>
 
                     </li>
                     <li>
                         <div class="icon"></div>
-                        <div class="title">Hậu môn trực tràng</div>
-                        <div class="desc">Kiểm tra và điều trị bệnh hậu môn như trĩ nội, trĩ ngoại, trĩ hỗn hợp, apxe
-                            hậu môn, Polyp hậu môn,...</div>
+                        <div class="title">Chuyên khoa răng-hàm-mặt</div>
+                        <div class="desc">Chẩn đoán, điều trị và phục hồi các vấn đề liên quan đến răng, hàm, cắn và mặt
+                            .</div>
+
+                    </li>
+                    <li>
+                        <div class="icon"></div>
+                        <div class="title">Chuyên khoa tai-mũi-họng</div>
+                        <div class="desc">Chẩn đoán, điều trị và quản lý các bệnh lý trong vùng tai, mũi và họng, bao gồm các vấn đề về viêm họng, viêm mũi, viêm tai giữa, polyp mũi, u cổ họng, hắt hơi liên tục, hôi miệng, khó thở và nhiều vấn đề khác liên quan đến hệ thống hô hấp trên.</div>
 
                     </li>
                 </ul>
@@ -108,29 +114,30 @@
                     <li>
                         <div class="thumb"></div>
                         <div class="info">
-                            <div class="title">Điều trị bằng xâm lấn tối thiểu</div>
-                            <div class="detail">Những cuộc tiểu phẫu nhỏ ít xâm lấn, thời gian tiểu phẫu ngắn như cắt
-                                bao quy đầu công nghệ Hàn Quốc, kỹ thuật dao Leep trị viêm lộ tuyến cổ tử cung,... là
-                                phương pháp mang lại hiệu quả cao hiện nay.</div>
+                            <div class="title">Chẩn đoán hình ảnh</div>
+                            <div class="detail">Phương pháp này sử dụng các kỹ thuật hình ảnh như tia X, siêu âm, CT và MRI để xem bên trong cơ thể và chẩn đoán các vấn đề sức khỏe.</div>
                         </div>
                     </li>
                     <li>
                         <div class="thumb"></div>
                         <div class="info">
-                            <div class="title">Điều trị bằng liệu pháp miễn dịch</div>
-                            <div class="detail">Với các bệnh xã hội có nguyên nhân do vi khuẩn, virus khó tiêu diệt,
-                                phòng khám An Khang áp dụng liệu pháp tự miễn dịch. Một lượng thuốc nhỏ truyền vào cơ
-                                thể, được các máy quang dẫn kích hoạt giúp cơ thể ức chế sự hoạt động của vi khuẩn.
+                            <div class="title">Điều trị bằng laser</div>
+                            <div class="detail">Điều trị bằng laser được sử dụng trong nhiều lĩnh vực khác nhau, bao gồm phẫu thuật, thẩm mỹ và điều trị bệnh lý. Các ứng dụng phổ biến của điều trị bằng laser bao gồm xử lý tóc, trị mụn, trị sẹo và xóa bỏ nốt ruồi.
                             </div>
                         </div>
                     </li>
                     <li>
                         <div class="thumb"></div>
                         <div class="info">
-                            <div class="title">Điều trị bằng quang sinh học</div>
-                            <div class="detail">Các tia bức xạ được chiếu vào các vị trí bệnh như nốt sùi, vết lở
-                                loét,... với thông số cho phép có tác dụng làm rụng các nốt sùi, tiêu diệt vi khuẩn tại
-                                chỗ, giúp tổn thương nhanh lành.</div>
+                            <div class="title">Điều trị bằng tia X</div>
+                            <div class="detail">Phương pháp này được sử dụng để chẩn đoán và điều trị các vấn đề về hệ thống xương khớp, bao gồm các chấn thương và bệnh lý về xương, khớp và cột sống.</div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="thumb"></div>
+                        <div class="info">
+                            <div class="title">Điều trị bằng dịch vụ tâm lý</div>
+                            <div class="detail">Điều trị bằng dịch vụ tâm lý được sử dụng để giúp bệnh nhân giảm stress, lo âu và trầm cảm. Các phương pháp bao gồm tư vấn, hướng dẫn tâm lý và teraphy.</div>
                         </div>
                     </li>
                 </ul>

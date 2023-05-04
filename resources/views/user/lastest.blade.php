@@ -35,7 +35,7 @@
        
 
         <div class="col-12 text-center mt-4 wow zoomIn">
-          <a href="blog.html" class="btn btn-primary">Xem thêm</a>
+          <a href="{{ route('home.blog') }}" class="btn btn-primary">Xem thêm</a>
         </div>
 
       </div>
