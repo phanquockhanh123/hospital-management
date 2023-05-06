@@ -5,10 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Patient;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use App\Mail\MailBookAppoiment;
 use App\Models\BookAppointment;
 use App\Models\DoctorDepartment;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\MailDeniedBookAppoiment;
 
 class BookAppointmentController extends Controller
 {
@@ -40,9 +44,6 @@ class BookAppointmentController extends Controller
      */
     public function acceptedBookAppointment(BookAppointment $book_appointment)
     {
-        $book_appointment->update([
-            'status' => 2
-        ]);
         $data = [
             'name' => $book_appointment->fullname,
             'phone' => $book_appointment->phone,
@@ -51,67 +52,23 @@ class BookAppointmentController extends Controller
             'identity_number' => Patient::max('identity_number') + 1,
         ];
         $data['patient_code'] = Patient::generateNextCode();
-        $patient =Patient::where('email', $book_appointment->email)->first();
-        if(!$patient){
-            $patient = Patient::create($data);
-        }
-        $appointments = Appointment::whereBetWeen('end_time', [$book_appointment->experted_time, $book_appointment->experted_time->addHour()])->get();
-        $dataAppointment = array_map(function ($appointment) use ($patient, $book_appointment) {
-            return [
-                'patient_id' => $patient->id,
-                'start_time' => $book_appointment->experted_time,
-                'end_time' => $book_appointment->experted_time->addHour(),
-                'doctor_id' => $appointment['doctor_id'],
-                'doctor_department_id' => DoctorDepartment::pluck('id')->random()
-            ];
-        }, $appointments->toArray());
-        Appointment::insert($dataAppointment);
-        return redirect()->route('appointments.index')
-            ->with('success', 'Chấp nhận cuộc hẹn thành công !');
-    }
-
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  BookAppointment $book_appointment
-     * @return \Illuminate\Http\Response
-     */
-    public function deniedBookAppointment(BookAppointment $book_appointment)
-    {
-        $book_appointment->update([
-            'status' => 0
-        ]);
-        $data = [
-            'name' => $book_appointment->fullname,
-            'phone' => $book_appointment->phone,
-            'email' => $book_appointment->email,
-            'blood_group' => Patient::BLOOD_GROUP_O,
-            'identity_number' => Patient::max('identity_number') + 1,
-        ];
-        $data['patient_code'] = Patient::generateNextCode();
+        $patient = Patient::where('email', $book_appointment->email)->first();
         DB::beginTransaction();
         try {
-            $patient =Patient::where('email', $book_appointment->email)->first();
-            if(!$patient){
+            $book_appointment->update([
+                'status' => 2
+            ]);
+            if (!$patient) {
                 $patient = Patient::create($data);
-            }
-            $appointments = Appointment::where('end_time', $book_appointment->experted_time->addHours(3))->get();
-            $dataAppointment = array_map(function ($appointment) use ($patient, $book_appointment) {
-                return [
-                    'patient_id' => $patient->id,
-                    'start_time' => $book_appointment->experted_time,
-                    'end_time' => $book_appointment->experted_time->addHours(3),
-                    'doctor_id' => $appointment['doctor_id'],
-                    'doctor_department_id' => DoctorDepartment::pluck('id')->random()
-                ];
-            }, $appointments->toArray());
-            Appointment::insert($dataAppointment);
+            }   
+            DB::commit();
         } catch (\Exception $error) {
             DB::rollback();
             Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
         }
+
         return redirect()->route('appointments.index')
-            ->with('success', 'Từ chối cuộc hẹn thành công !');
+            ->with('success', 'Chấp nhận cuộc hẹn thành công !');
     }
 }

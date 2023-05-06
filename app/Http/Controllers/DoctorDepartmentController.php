@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Appointment;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Models\DoctorDepartment;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class DoctorDepartmentController extends Controller
 {
@@ -25,10 +28,10 @@ class DoctorDepartmentController extends Controller
         }
 
         $appointment = Appointment::whereBetween('end_time', [now(), now()->addHours(1)])->first();
-        if($appointment) {
+        if ($appointment) {
             DoctorDepartment::where('id', $appointment->doctor_department_id)->update([
                 'status' => DoctorDepartment::STATUS_BUSY,
-                'description' => 'Phòng sẽ kết thúc trong '. $appointment->end_time->diffForHumans()
+                'description' => 'Phòng sẽ kết thúc trong ' . $appointment->end_time->diffForHumans()
             ]);
         }
         return view('admin.doctor_departments.index', compact('doctorDepartments'));
@@ -57,7 +60,16 @@ class DoctorDepartmentController extends Controller
             'description' => 'nullable|string|max:255',
         ]);
         $validatedData['status'] = DoctorDepartment::STATUS_FREE;
-        DoctorDepartment::create($validatedData);
+
+        DB::beginTransaction();
+        try {
+            DoctorDepartment::create($validatedData);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
         return redirect()->route('doctor_departments.index')
             ->with('success', 'Phòng ban đã được tạo thành công.');
@@ -100,7 +112,16 @@ class DoctorDepartmentController extends Controller
         ]);
         $validatedData['status'] = DoctorDepartment::STATUS_FREE;
 
-        $doctorDepartment->update($validatedData);
+        DB::beginTransaction();
+        try {
+            $doctorDepartment->update($validatedData);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
+
 
         return redirect()->route('doctor_departments.index')
             ->with('success', 'Thông tin phòng ban đã được cập nhật thành công.');
@@ -112,9 +133,17 @@ class DoctorDepartmentController extends Controller
      * @param  DoctorDepartment $doctorDepartment
      * @return \Illuminate\Http\Response
      */
-    public function destroy( DoctorDepartment $doctorDepartment)
+    public function destroy(DoctorDepartment $doctorDepartment)
     {
-        $doctorDepartment->delete();
+        DB::beginTransaction();
+        try {
+            $doctorDepartment->delete();
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
         return redirect()->route('doctor_departments.index')
             ->with('success', 'Phòng ban đã được xoá thành công.');

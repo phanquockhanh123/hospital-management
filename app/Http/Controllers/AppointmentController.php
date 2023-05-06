@@ -3,16 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
-use App\Models\User;
 use App\Models\Doctor;
 use App\Models\Patient;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Mail\MailBookAppoiment;
 use App\Models\DoctorDepartment;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\MailDeniedBookAppoiment;
 
 class AppointmentController extends Controller
 {
@@ -28,21 +29,21 @@ class AppointmentController extends Controller
         $doctorDepartments = DoctorDepartment::all();
         $appointments = Appointment::with('patient', 'doctor', 'doctorDepartment');
 
-        if($request['doctor_id'] != null) {
+        if ($request['doctor_id'] != null) {
             $appointments->where('doctor_id', $request['doctor_id']);
         }
-        if($request['patient_id'] != null) {
+        if ($request['patient_id'] != null) {
             $appointments->where('patient_id', $request['patient_id']);
         }
 
 
-        if($request['doctor_department_id'] != null) {
+        if ($request['doctor_department_id'] != null) {
             $appointments->where('doctor_department_id', $request['doctor_department_id']);
         }
-        
+
         $appointments = $appointments->orderByDesc('updated_at')->orderByDesc('id')->paginate(config('const.perPage'));
         $count = 1;
-        
+
         return view('admin.appointments.index', compact('appointments', 'count', 'doctors', 'patients', 'doctorDepartments'));
     }
 
@@ -53,12 +54,7 @@ class AppointmentController extends Controller
      */
     public function create(Request $request)
     {
-        $appointments = Appointment::where('end_time', '<=' , now())->get();
-        $doctorIds = array_map(function ($appointment) { 
-            return $appointment['doctor_id'];
-        }, $appointments->toArray());
-
-        $doctors = Doctor::whereIn('id', $doctorIds)->get();
+        $doctors  = Doctor::all();
         $patients = Patient::orderByDesc('created_at')->get();
         $doctorDepartments = DoctorDepartment::all();
         return view('admin.appointments.create', compact('doctors', 'patients', 'doctorDepartments'));
@@ -73,25 +69,39 @@ class AppointmentController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'doctor_id' => 'nullable|integer|exists:doctors,id,deleted_at,NULL',
-            'patient_id' => 'nullable|integer|exists:patients,id,deleted_at,NULL',
-            'doctor_department_id' => 'nullable|integer|exists:doctor_departments,id,deleted_at,NULL',
+            'doctor_id' => 'required|integer|exists:doctors,id,deleted_at,NULL',
+            'patient_id' => 'required|integer|exists:patients,id,deleted_at,NULL',
+            //'doctor_department_id' => 'required|integer|exists:doctor_departments,id,deleted_at,NULL',
             'start_time' => [
                 'required',
-                // 'before_or_equal:end_time',
-                // 'date_format:' . config('const.format.date_appointment')
+                'before_or_equal:end_time',
             ],
             'end_time' => [
                 'nullable',
-                // 'after_or_equal:start_date',
-                // 'date_format:' . config('const.format.date_appointment')
+                'after_or_equal:start_time',
             ],
             'description' => 'nullable|string|max:1000',
+        ],[
+            'start_time.before_or_equal' => 'Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc',
+            'end_time.after_or_equal' => 'Thời gian kết thúc phải lớn hơn thời gian bắt đầu',
         ]);
+        $validatedData['doctor_department_id'] = Doctor::where('id', $validatedData['doctor_id'])->first()->doctor_department_id;
 
-        $validatedData['status'] = Appointment::STATUS_PENDING;
-        Appointment::create($validatedData);
+        $validatedData['status'] = Appointment::STATUS_ACCEPTED;
+        DB::beginTransaction();
+        try {
+            $appointment = Appointment::create($validatedData);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
+        $patient = $appointment->patient;
+        $doctor = $appointment->doctor;
+        $doctorDepartment = $appointment->doctorDepartment;
+        Mail::send(new MailBookAppoiment($appointment, $patient, $doctor, $doctorDepartment));
         return redirect()->route('appointments.index')
             ->with('success', 'Lịch hẹn đã được tạo thành công.');
     }
@@ -133,22 +143,28 @@ class AppointmentController extends Controller
         $validatedData = $request->validate([
             'doctor_id' => 'nullable|integer|exists:doctors,id,deleted_at,NULL',
             'patient_id' => 'nullable|integer|exists:patients,id,deleted_at,NULL',
-            'doctor_department_id' => 'nullable|integer|exists:doctor_departments,id,deleted_at,NULL',
             'start_time' => [
                 'required',
-                // 'before_or_equal:end_time',
-                // 'date_format:' . config('const.format.datetime')
+                'before_or_equal:end_time',
             ],
             'end_time' => [
                 'nullable',
-                // 'after_or_equal:start_date',
-                // 'date_format:' . config('const.format.datetime')
+                'after_or_equal:start_date',
             ],
             'description' => 'nullable|string|max:1000',
         ]);
-
-        $validatedData['status'] = Appointment::STATUS_PENDING;
-        $appointment->update($validatedData);
+        $validateData['doctor_department_id'] = Doctor::where('id', $validatedData['doctor_id'])->first()->doctor_department_id;
+        $validatedData['status'] = Appointment::STATUS_ACCEPTED;
+        
+        DB::beginTransaction();
+        try {
+            $appointment->update($validatedData);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
         return redirect()->route('appointments.index')
             ->with('success', 'Thông tin lịch hẹn đã được cập nhật thành công.');
@@ -162,7 +178,17 @@ class AppointmentController extends Controller
      */
     public function destroy(Appointment $appointment)
     {
-        $appointment->delete();
+        DB::beginTransaction();
+        try {
+            $appointment->delete();
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
+
+
 
         return redirect()->route('appointments.index')
             ->with('success', 'Lịch hẹn đã được xoá thành công.');
@@ -185,7 +211,7 @@ class AppointmentController extends Controller
             ];
         }
 
-        return view('admin.appointments.calendar', compact('events', 'doctors', 'patients','doctorDepartments'));
+        return view('admin.appointments.calendar', compact('events', 'doctors', 'patients', 'doctorDepartments'));
     }
 
     public function storeCalendar(Request $request)
@@ -200,8 +226,16 @@ class AppointmentController extends Controller
             'description' => 'nullable|string|max:1000',
         ]);
         $validateData['status'] = Appointment::STATUS_ACCEPTED;
+        DB::beginTransaction();
+        try {
+            $booking = Appointment::create($validateData);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
-        $booking = Appointment::create($validateData);
         return response()->json([
             'id' => $booking->id,
             'title' => $booking->title,
@@ -240,64 +274,27 @@ class AppointmentController extends Controller
         return $id;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  Appointment $appointment
-     * @return \Illuminate\Http\Response
-     */
-    public function acceptedAppointment(Appointment $appointment)
-    {
-        $appointment->update([
-            'status' => 2
-        ]);
-        $patient = $appointment->patient;
-        $doctor = $appointment->doctor;
-        $doctorDepartment = $appointment->doctorDepartment;
-        Mail::send(new MailBookAppoiment($appointment, $patient, $doctor, $doctorDepartment));
-        return redirect()->route('appointments.index')
-            ->with('success', 'Chấp nhận cuộc hẹn thành công !');
-    }
 
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  Appointment $appointment
-     * @return \Illuminate\Http\Response
-     */
-    public function deniedAppointment(Appointment $appointment)
-    {
-        $appointment->update([
-            'status' => 0
-        ]);
-        $patient = $appointment->patient;
-        $doctor = $appointment->doctor;
-        $doctorDepartment = $appointment->doctorDepartment;
-        Mail::send(new MailDeniedBookAppoiment($appointment, $patient, $doctor, $doctorDepartment));
-        return redirect()->route('appointments.index')
-            ->with('success', 'Từ chối cuộc hẹn thành công !');
-    }
 
     public function getAppointmentByDoctor(Request $request)
     {
         $doctor = Doctor::where('user_id', Auth::user()->id)->first();
         $appointments = Appointment::where('doctor_id', $doctor->id);
-        $count=1;
+        $count = 1;
 
         $patients = Patient::orderByDesc('created_at')->get();
         $doctorDepartments = DoctorDepartment::all();
 
-        if($request['patient_id'] != null) {
+        if ($request['patient_id'] != null) {
             $appointments->where('patient_id', $request['patient_id']);
         }
 
-        if($request['doctor_department_id'] != null) {
+        if ($request['doctor_department_id'] != null) {
             $appointments->where('doctor_department_id', $request['doctor_department_id']);
         }
-        
+
         $appointments = $appointments->orderByDesc('updated_at')->orderByDesc('id')->paginate(config('const.perPage'));
-        
+
         return view('admin.appointments.appointment_by_doctor', compact('appointments', 'count', 'patients', 'doctorDepartments'));
     }
 }

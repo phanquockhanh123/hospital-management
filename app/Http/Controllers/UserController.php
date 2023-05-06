@@ -6,6 +6,9 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Doctor;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
@@ -71,7 +74,16 @@ class UserController extends Controller
         }
         $validatedData['status'] = User::STATUS_ACTIVE;
         $validatedData['password'] = Hash::make($request->password);
-        User::create($validatedData);
+
+        DB::beginTransaction();
+        try {
+            User::create($validatedData);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
         return redirect()->route('users.index')
             ->with('success', 'Người dùng đã được tạo thành công.');
@@ -144,8 +156,15 @@ class UserController extends Controller
             $validatedData['filename'] = $filename;
         }
         $validatedData['status'] = User::STATUS_ACTIVE;
-
-        $user->update($validatedData);
+        DB::beginTransaction();
+        try {
+            $user->update($validatedData);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
         return redirect()->route('users.index')
             ->with('success', 'Thông tin người dùng đã được cập nhật thành công.');
@@ -159,7 +178,17 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $user->delete();
+        DB::beginTransaction();
+        try {    
+            $user->delete();
+            $user?->doctor->update(['user_id' => null]);
+            $user?->receptionist->update(['user_id' => null]);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
         return redirect()->route('users.index')
             ->with('success', 'Người dùng đã được xoá thành công.');
     }

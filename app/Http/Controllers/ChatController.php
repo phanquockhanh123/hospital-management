@@ -11,19 +11,25 @@ use Illuminate\Support\Facades\Auth;
 
 class ChatController extends Controller
 {
-    public function getChatUserUI() {
-        return view('chat-realtime.chat-user-ui'); 
-    }
-    public function index() {
-        
-        // count how many message are unread from the selected user
+    public function index()
+    {
         $users = DB::select("select users.id, users.role, users.name, users.email, count(is_read) as unread 
         from users LEFT  JOIN  messages ON users.id = messages.from and is_read = 0 and messages.to = " . Auth::id() . "
         where users.id != " . Auth::id() . "
         group by users.id, users.name, users.email, users.role");
+
+        // count how many message are unread from the selected user
+        if (Auth::user()->role == User::ROLE_ADMIN_ROOT || Auth::user()->role == User::ROLE_PATIENT) {
+            $users = DB::select("select users.id, users.role, users.name, users.email, count(is_read) as unread 
+            from users LEFT  JOIN  messages ON users.id = messages.from and is_read = 0 and messages.to = " . Auth::id() . "
+            where users.id != " . Auth::id() . " and users.role = 1  or users.role = 2
+            group by users.id, users.name, users.email, users.role");
+        }
+
         return view('chat-realtime.chat', compact('users'));
     }
-    public function getMessage($user_id) {
+    public function getMessage($user_id)
+    {
         $my_id = Auth::id();
 
         $users = DB::select("select users.id, users.name, users.email, count(is_read) as unread 
@@ -35,7 +41,7 @@ class ChatController extends Controller
         Message::where(['from' => $user_id, 'to' => $my_id])->update(['is_read' => 1]);
 
         // get all messsages for selected user
-        $messages = Message::where(function($query) use ($user_id, $my_id) {
+        $messages = Message::where(function ($query) use ($user_id, $my_id) {
             $query->where('from', $my_id)->where('to', $user_id);
         })->orWhere(function ($query)  use ($user_id, $my_id) {
             $query->where('from', $user_id)->where('to', $my_id);
@@ -44,7 +50,8 @@ class ChatController extends Controller
         return view('chat-realtime.message_component', compact('messages', 'users'));
     }
 
-    public function sendMessage(Request $request) {
+    public function sendMessage(Request $request)
+    {
         $from = Auth::id();
         $to = $request->receiver_id;
         $message = $request->message;

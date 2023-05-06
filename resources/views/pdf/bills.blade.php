@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Đơn thuốc</title>
+	<title>Hóa đơn</title>
 	<style>
 		body {
 			font-family: DejaVu Sans, sans-serif;
@@ -21,8 +21,8 @@
 		}
 		table {
 			border-collapse: collapse;
-			width: 90%;
-			margin: 20px auto;
+			width: 80%;
+			margin: 10px auto;
 		}
 		th, td {
 			padding: 10px;
@@ -89,26 +89,26 @@
 		<div class="title1">PHÒNG KHÁM ĐA KHOA AN KHANG</div>
 		<div class="title2">ĐC: QL45, Xuân Khang, Như Thanh, Thanh Hoá</div>
 		<div class="phone">Điện thoại: 0327018337</div>
-		<div class="title3">{{ $prescription->diagnosis->doctor->doctorDepartment->name }}</div>
+		<div class="title3">{{ $bill->diagnosis->doctor->doctorDepartment->name }}</div>
 	</div>
-	<h1>ĐƠN THUỐC</h1>
+	<h1>CHẨN ĐOÁN/XÉT NGHIỆM</h1>
 	<div class="patient-info">
         <div>
 			<label>Mã bệnh nhân:</label>
-			<span>{{ $prescription->diagnosis->patient->patient_code }}</span>
+			<span>{{ $bill->diagnosis->patient->patient_code }}</span>
 		</div>
 		<div>
 			<label>Họ tên:</label>
-			<span>{{ $prescription->diagnosis->patient->name }}</span>
+			<span>{{ $bill->diagnosis->patient->name }}</span>
 		</div>
 		<div>
 			<label>Ngày sinh:</label>
-			<span>{{ $prescription->diagnosis->patient->date_of_birth?->format(config('const.format.date')) }}</span>
+			<span>{{ $bill->diagnosis->patient->date_of_birth?->format(config('const.format.date')) }}</span>
 		</div>
 		<div>
 			<label>Giới tính:</label>
 			<span>
-                @if($prescription->diagnosis->patient->gender == 0)
+                @if($bill->diagnosis->patient->gender == 0)
                     Nam
                 @else 
                     Nữ
@@ -117,21 +117,53 @@
 		</div>
 		<div>
 			<label>Số điện thoại:</label>
-			<span>{{ $prescription->diagnosis->patient->phone }}</span>
+			<span>{{ $bill->diagnosis->patient->phone }}</span>
 		</div>
 		<div>
 			<label>Địa chỉ:</label>
-            <span>{{ $prescription->diagnosis->patient->address }}</span>
+            <span>{{ $bill->diagnosis->patient->address }}</span>
 		</div>
         <div>
-			<label>Bệnh chính:</label>
-            <span>{{ $prescription->diagnosis->main_disease }}</span>
+			<label>Chẩn đoán bệnh chính:</label>
+            <span>{{ $bill->diagnosis->main_diagnosis }}</span>
 		</div>
         <div>
-			<label>Bệnh phụ:</label>
-            <span>{{ $prescription->diagnosis->side_disease }}</span>
+			<label>Chẩn đoán bệnh phụ:</label>
+            <span>{{ $bill->diagnosis->side_diagnosis }}</span>
 		</div>
 	</div>
+	<table>
+		<thead>
+			<tr>
+                <th scope="col">TÊN XN</th>
+                <th scope="col">KẾT QUẢ</th>
+                <th scope="col">THAM CHIẾU</th>
+                <th scope="col">ĐƠN VỊ</th>
+                <th scope="col">PHƯƠNG THỨC</th>
+                <th scope="col">LƯU Ý</th>
+				<th>Giá dịch vụ</th>
+			</tr>
+		</thead>
+		<tbody>
+            @foreach($diaPre ?? [] as $val)
+			<tr>
+				<td>{{ $services->where('id', $val['service_id'])->first()->service_name }}</td>
+				<td>{{ $val['result'] }}</td>
+				<td>{{ $val['references_range'] }}</td>
+                <td>{{ $val['unit'] }}</td>
+                <td>{{ $val['method'] }}</td>
+                <td>{{ $val['diagnosis_note'] }}</td>
+				<td>{{ number_format($services->where('id', $val['service_id'])->first()->all_price, 0, '.', ',') }}</td>
+			</tr>
+            @endforeach
+		</tbody>
+	</table>
+	<div class="note">
+		Lời dặn: {{ $bill->diagnosis->note }}
+	</div>
+	@if(!empty($preItem))
+	<h1 >ĐƠN THUỐC</h1>
+
 	<table>
 		<thead>
 			<tr>
@@ -143,26 +175,36 @@
 			</tr>
 		</thead>
 		<tbody>
-            @foreach($preItem as $val)
+            @foreach($preItem ?? [] as $val)
 			<tr>
 				<td>{{ $medicals->where('id', $val['medical_id'])->first()->medical_name }}</td>
 				<td>{{ $val['dosage'] }}</td>
 				<td>{{ $val['dosage_note'] }}</td>
                 <td>{{ $val['unit'] }}</td>
                 <td>{{ $val['amount'] }}</td>
+				
 			</tr>
             @endforeach
 		</tbody>
 	</table>
-	<div class="note">
-		Lời dặn: {{ $prescription->note }}
+	@endif
+	{{-- <div class="note">
+		Lời dặn: {{ $bill->diagnosis->prescription->note ?? '' }}
+	</div> --}}
+
+	<div>
+		<label>Tổng thanh toán :</label>
+		<span>{{ number_format($bill->total_money, 0, '.', ',') ?? 0 }} đồng</span>
+	</div>
+	<div>
+		<label>Đã thanh toán :</label>
+		<span>{{ number_format($bill->paid_money, 0, '.', ',') ?? 0 }} đồng</span>
 	</div>
 	<div class="footer">
-		<div class="created_at">Ngày {{ $prescription->updated_at->day }} tháng {{ $prescription->updated_at->month }} năm {{ $prescription->updated_at->year }}</div>
+		<div class="created_at">Ngày {{ $bill->diagnosis->updated_at->day }} tháng {{ $bill->diagnosis->updated_at->month }} năm {{ $bill->diagnosis->updated_at->year }}</div>
 		<h3>BÁC SĨ KHÁM, CHỮA BệNH</h3>
 		<div class="sign">(Kỹ, ghi rõ họ tên)</div>
-		<h2>{{ $prescription->diagnosis->doctor->name }}</h2>
+		<h2>{{ $bill->diagnosis->doctor->name }}</h2>
 	</div>
-	<h4>Vui lòng mang theo toa khi tái khám</h4>
 </body>
 </html>

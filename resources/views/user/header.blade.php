@@ -7,9 +7,9 @@
 
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <meta name="copyright" content="MACode ID, https://macodeid.com/">
+    {{-- <meta name="copyright" content="MACode ID, https://macodeid.com/"> --}}
 
-    <title>Phòng Khám Đa Khoa Quốc Tế HÀ NỘI</title>
+    <title>PHÒNG KHÁM ĐA KHOA AN KHANG</title>
 
     <link rel="stylesheet" href="{{ asset('../assets/css/maicons.css') }}">
 
@@ -118,7 +118,11 @@
 
         <nav class="navbar navbar-expand-lg navbar-light shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ route('home.index') }}"><span class="text-primary">An</span>-Khang</a>
+                <a class="navbar-brand" href="{{ route('home.index') }}" style="font-size: 30px;">
+                    <img src="https://th.bing.com/th/id/R.7341cd8295fecb9385f968b1f56715a7?rik=mSAa%2bJFXDvBT7Q&pid=ImgRaw&r=0" height="200px" width="200px" 
+                    alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8; ">
+                    {{-- <span class="text-primary">An </span> Khang --}}
+                </a>
 
                 {{-- <form action="#">
                     <div class="input-group input-navbar">
@@ -136,9 +140,9 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupport">
-                    <ul class="navbar-nav ml-auto" name="navEle" id="navEle">
+                    <ul class="navbar-nav ml-auto" name="navEle" id="navEle" style="font-size: 26px;">
                         <li class="nav-item  @if (Request::route()->getName() == 'home.index') active @endif">
-                            <a class="nav-link" href="{{ route('home.index') }}">Trang chủ</a>
+                            <a class="nav-link" href="{{ route('home.index') }}" >Trang chủ</a>
                         </li>
                         <li class="nav-item @if (Request::route()->getName() == 'home.about') active @endif">
                             <a class="nav-link" href="{{ route('home.about') }}">Giới thiệu</a>
@@ -153,25 +157,14 @@
                         <li class="nav-item @if (Request::route()->getName() == 'home.contact') active @endif">
                             <a class="nav-link" href=" {{ route('home.contact') }}">Liên hệ</a>
                         </li>
-                        <li class="nav-item">
-                            <a href="{{ route('home.book-appointment-user') }}"><button class="btn btn-primary"
-                                    type="submit" style="padding: 10px 40px;font-size: 16px;">Đặt lịch</button></a>
+                        <li class="nav-item @if (Request::route()->getName() == 'home.book-appointment-user') active @endif">
+                            <a class="nav-link" href="{{ route('home.book-appointment-user') }}">Đặt lịch</a>
                         </li>
 
                         @if (isset(Auth::user()->id) && Auth::user()->role == 0)
-                        {{-- <li class="nav-item">
-                            <a href="#"><button class="btn btn-primary" type="submit"
-                                    style="margin-left: 10px;font-size: 16px;padding: 10px 40px;">{{
-                                    substr(Auth::user()->name, 0, 5) }}</button></a>
-                        </li> --}}
                         <div class="dropdown show">
                             <a class="btn btn-secondary dropdown-toggle" style="background-color: white; border: 0px "
-                                {{-- style="background-color: #00D9A5;
-                              display: inline-block;
-                              border-radius: 50%;
-                              width: 50px;
-                              height: 50px;
-                              text-align: center; margin-left:20px;color:black" --}} href="#" role="button"
+                                href="#" role="button"
                                 id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img src="@if (!empty($patient->filename)) ./imgPatient/{{ $patient->filename}}@else https://cdn.iconscout.com/icon/premium/png-256-thumb/patient-2460481-2128797.png @endif"
                                     style="background-color: #00D9A5;border-radius: 50%;vertical-align: middle;

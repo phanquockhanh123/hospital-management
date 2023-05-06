@@ -32,6 +32,9 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-12">
+                            <div class="card-header">
+                                <h1 style="font-size: 20px; font-weight:bold">Bảng lương tháng {{ now()->month }}/{{  now()->year  }}</h1>
+                            </div>
                             <div class="card">
                                 <h2>
                                     @if(session('success'))

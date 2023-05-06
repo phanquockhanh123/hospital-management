@@ -86,8 +86,8 @@
 </head>
 <body>
 	<div class="title">
-		<div class="title1">PHÒNG KHÁM ĐA KHOA AN KHÁNH</div>
-		<div class="title2">ĐC: 216 Đ. Trần Duy Hưng, Trung Hoà, Cầu Giấy, Hà Nội</div>
+		<div class="title1">PHÒNG KHÁM ĐA KHOA AN KHANG</div>
+		<div class="title2">ĐC: QL45, Xuân Khang, Như Thanh, Thanh Hoá</div>
 		<div class="phone">Điện thoại: 0327018337</div>
 		<div class="title3">{{ $diagnosis->doctor->doctorDepartment->name }}</div>
 	</div>
@@ -103,7 +103,7 @@
 		</div>
 		<div>
 			<label>Ngày sinh:</label>
-			<span>{{ $diagnosis->patient->date_of_birth->format(config('const.format.date')) }}</span>
+			<span>{{ $diagnosis->patient->date_of_birth?->format(config('const.format.date')) }}</span>
 		</div>
 		<div>
 			<label>Giới tính:</label>

@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Service;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Models\DoctorDepartment;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ServiceController extends Controller
 {
@@ -54,7 +57,15 @@ class ServiceController extends Controller
             'description' => 'required|string|max:255',
         ]);
         $validatedData['service_code'] = Service::generateNextCode();
-        Service::create($validatedData);
+        DB::beginTransaction();
+        try {
+            Service::create($validatedData);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
         return redirect()->route('services.index')
             ->with('success', 'Dịch vụ khám bệnh đã được tạo thành công.');
@@ -98,8 +109,15 @@ class ServiceController extends Controller
             'discount' => 'required|integer',
             'description' => 'required|string|max:255',
         ]);
-
-        $service->update($validatedData);
+        DB::beginTransaction();
+        try {
+            $service->update($validatedData);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
         return redirect()->route('services.index')
             ->with('success', 'Dịch vụ khám bệnh đã được cập nhật thành công.');
@@ -113,7 +131,15 @@ class ServiceController extends Controller
      */
     public function destroy(Service $service)
     {
-        $service->delete();
+        DB::beginTransaction();
+        try {
+            $service->delete();
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
         return redirect()->route('services.index')
             ->with('success', 'Dịch vụ khám bệnh đã được xoá thành công.');

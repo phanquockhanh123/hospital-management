@@ -37,7 +37,7 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            ZoomMtg.setZoomJSLib('https://dmogdx0jrul3u.cloudfront.net/1.7.9/lib', '/av');
+            ZoomMtg.setZoomJSLib('https://source.zoom.us/1.7.9/lib', '/av');
             ZoomMtg.preLoadWasm();
             ZoomMtg.prepareJssdk();
             const role = document.getElementById("role");

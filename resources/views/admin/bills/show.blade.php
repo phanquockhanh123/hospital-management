@@ -143,6 +143,7 @@
                                 </a>
 
                                 <div>
+                                    @if($bill->status == 0)
                                     <a href="{{ route('diagnosises.edit', $bill->diagnosis->id) }}" class="btn btn-warning">
                                         <i class="fas fa-edit"></i> Sửa chẩn đoán/xét nghiệm
                                     </a>
@@ -151,7 +152,7 @@
                                             <i class="fas fa-edit"></i> Sửa đơn thuốc
                                         </a>
                                     @endif
-                                    
+                                    @endif
                                     <form action="{{ route('bills.destroy', $bill->id) }}" method="POST"
                                         class="d-inline-block">
                                         @csrf

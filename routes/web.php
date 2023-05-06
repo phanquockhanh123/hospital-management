@@ -156,10 +156,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/schedules', [AppointmentController::class, 'getAppointmentByDoctor'])->name('appointments.get-appointment-by-doctor');
         });
 
-        Route::middleware([config('const.auth.mid')])->group(function () {
-            Route::get('/accepted_appointment/{appointment}', [AppointmentController::class, 'acceptedAppointment'])->name('appointments.accepted');
-            Route::get('/denied_appointment/{appointment}', [AppointmentController::class, 'deniedAppointment'])->name('appointments.denied');
-        });
+        // Route::middleware([config('const.auth.mid')])->group(function () {
+        //     Route::get('/accepted_appointment/{appointment}', [AppointmentController::class, 'acceptedAppointment'])->name('appointments.accepted');
+        //     Route::get('/denied_appointment/{appointment}', [AppointmentController::class, 'deniedAppointment'])->name('appointments.denied');
+        // });
     });
 
 
@@ -242,6 +242,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::delete('/bills/{bill}', 'destroy')->name('bills.destroy');
 
             Route::get('/bills/{bill}/payment', 'payment')->name('bills.payment');
+
+            Route::get('/bills/{bill}/pdf', 'renderPdf')->name('bills.pdf');
         });
     });
 
@@ -310,7 +312,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
             // Route::get('/bills', [NewsController::class, 'index2'])->name('admin.get-bill-list');
 
-            Route::post('/upload', [NewsController::class, 'upload'])->name('ckeditor.upload');
+            // Route::post('/upload', [NewsController::class, 'upload'])->name('ckeditor.upload');
         });
     });
 
@@ -318,7 +320,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::controller(ChatController::class)->group(function () {
         Route::middleware([config('const.auth.patient')])->group(function () {
             Route::get('/chats', 'index')->name('chats.index');
-            Route::get('/chats/user', 'getChatUserUI')->name('chats.chat-user-ui');
+            
             Route::get('/message/{id}', 'getMessage')->name('message');
             Route::get('/infor/{id}', 'getInfor')->name('getInfor');
             Route::post('/message', 'sendMessage')->name('sendMessage');
@@ -328,7 +330,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     //--------------------------------Report ------------------------------------------------------------------------------------------------
     Route::controller(ReportController::class)->group(function () {
         Route::middleware([config('const.auth.high')])->group(function () {
-            Route::get('/reports', 'index')->name('reports.index');
+            Route::get('/report-services', 'reportServices')->name('reports.report-services');
+            Route::get('/report-medicals', 'reportMedicals')->name('reports.report-medicals');
+            Route::get('/report-devices', 'reportDevices')->name('reports.report-devices');
         });
     });
 
@@ -338,9 +342,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('meetings', 'index')->name('meetings.index');
             Route::get('join-meeting/{meeting}', 'join_meeting')->name('meeting.join');
             Route::get('leave-meeting', 'leave_meeting')->name('meeting.leave');
+            Route::get('start-meeting/{meeting}', 'start_meeting')->name('meeting.start');
         });
         Route::middleware([config('const.auth.high')])->group(function () {
-            Route::get('start-meeting/{meeting}', 'start_meeting')->name('meeting.start');
             Route::get('create-new-meeting', 'create')->name('meeting.create');
             Route::post('create-new-meeting', 'store')->name('meeting.store');
             Route::delete('delete-meeting/{meeting}', 'destroy')->name('meeting.destroy');
@@ -352,7 +356,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::middleware([config('const.auth.low')])->group(function () {
             Route::get('/book_appointments', 'index')->name('book_appointments.index');
             Route::get('/accepted_book_appointment/{book_appointment}', 'acceptedBookAppointment')->name('book_appointments.accepted');
-            Route::get('/denied_book_appointment/{book_appointment}', 'deniedBookAppointment')->name('book_appointments.denied');
+            //Route::get('/denied_book_appointment/{book_appointment}', 'deniedBookAppointment')->name('book_appointments.denied');
         });
     });
 
@@ -366,6 +370,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/', 'index')->name('home.index');
     Route::get('/about', 'aboutUs')->name('home.about');
     Route::get('/blog', 'blog')->name('home.blog');
+    Route::get('/get_log_detail_for_user_site/{blog}', 'getBlogDetailForUserSite')->name('home.get-blog-detail-for-user-site');
     Route::get('/contact', 'contact')->name('home.contact');
     Route::get('/book_appointment_user', 'bookAppointmentUser')->name('home.book-appointment-user');
     Route::post('/user/appointments', 'storeAppointment')->name('user.appointments-store');

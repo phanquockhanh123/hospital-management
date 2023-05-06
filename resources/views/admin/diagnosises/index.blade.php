@@ -144,7 +144,8 @@
                                                                 <span style="color:red;">Chưa tạo đơn thuốc</span>
                                                             @endif
                                                         </td>
-                                                        <td><button class="btn btn-primary"><a href="{{ route('diagnosises.pdf', $diagnosis->id) }}">In</a></button></td>
+                                                        <td><a href="{{ route('diagnosises.pdf', $diagnosis->id) }}" style="font-size: 22px;color:black"><i class="fas fa-print"></i></a></td>
+
                                                         <td>
                                                             <a  href="{{ route('diagnosises.create-prescription', $diagnosis->id) }}"
                                                                 class="btn btn-warning @if ($diagnosis->status == 1) disabled @endif">
@@ -157,7 +158,7 @@
                                                                   <i class="fas fa-eye"></i>
                                                                 </a>
                                                                 <a href="{{ route('diagnosises.edit', $diagnosis->id) }}" style="margin-right: 10px;color:green;font-size:22px">
-                                                                  <i class="fas fa-edit"></i>
+                                                                  <i class="fas fa-edit" ></i>
                                                                 </a>
                                                                 <button type="button" data-toggle="modal"
                                                                   data-target="#deleteModal{{ $diagnosis->id }}" style="color: red;font-size:22px">

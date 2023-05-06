@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Medical;
 use Illuminate\Http\Request;
-use App\Models\MedicalDevice;
+use Illuminate\Http\Response;
 use App\Models\DoctorDepartment;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class MedicalController extends Controller
 {
@@ -64,7 +64,15 @@ class MedicalController extends Controller
             'description' => 'required|string|max:255',
         ]);
         $validatedData['medical_code'] = Medical::generateNextCode();
-        Medical::create($validatedData);
+        DB::beginTransaction();
+        try {
+            Medical::create($validatedData);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
         return redirect()->route('medicals.index')
             ->with('success', 'Thuốc đã được tạo thành công.');
@@ -114,8 +122,15 @@ class MedicalController extends Controller
             'amount_day' => 'required|integer',
             'description' => 'required|string|max:255',
         ]);
-
-        $medical->update($validatedData);
+        DB::beginTransaction();
+        try {
+            $medical->update($validatedData);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
         return redirect()->route('medicals.index')
             ->with('success', 'Thông tin thuốc đã được cập nhật thành công.');
@@ -129,7 +144,15 @@ class MedicalController extends Controller
      */
     public function destroy(Medical $medical)
     {
-        $medical->delete();
+        DB::beginTransaction();
+        try {
+            $medical->delete();
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
         return redirect()->route('medicals.index')
             ->with('success', 'Thuốc đã được xoá thành công.');

@@ -30,60 +30,74 @@
                 <div class="col-md-9">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Chi tiết cuộc hẹn của bệnh nhân: {{ $appointment->patient->name }}</h3>
+                            <h3 class="card-title">Yêu cầu thiết bị</h3>
                         </div>
                         <div class="card-body">
                             <table class="table">
                                 <tbody>
                                     <tr>
                                         <th>Bệnh nhân:</th>
-                                        <td>{{ $appointment->patient->name }}</td>
+                                        <td>{{ $request_device->patient->name }}</td>
                                     </tr>
                                     <tr>
                                         <th>Bác sĩ:</th>
-                                        <td>{{ $appointment->doctor->name }}</td>
+                                        <td>{{ $request_device->doctor->name }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Phòng ban:</th>
-                                        <td>{{ $appointment->doctorDepartment->name }}</td>
-                                    </tr>
-
-                                    <tr>
-                                        <th>Thời gian bắt đầu:</th>
-                                        <td>{{ $appointment->start_time }}</td>
-                                    </tr>
-
-                                    <tr>
-                                        <th>Thời gian kết thúc:</th>
-                                        <td>{{ $appointment->end_time }}</td>
+                                        <th>Thời gian mượn:</th>
+                                        <td>{{ $request_device->borrow_time->format('d-m-Y') }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Mô tả:</th>
-                                        <td>{{ $appointment->description }}</td>
+                                        <th>Thời gian trả:</th>
+                                        <td>{{ $request_device->return_time->format('d-m-Y')  }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Thiết bị:</th>
+                                        <td>
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th style="min-width: 300px;">Tên thiết bị</th>
+                                                        <th style="min-width: 200px;">Số lượng</th>
+                                                        <th style="min-width: 300px;">Lưu ý</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach($requestDeviceItem as $val)
+                                                    <tr>
+                                                        <td >{{
+                                                            $medicalDevices->where('id', $val['medical_device_id'])->first()->name
+                                                        }}</td>
+                                                        <td>{{ $val['quantity'] }}</td>
+                                                        <td>{{ $val['description'] }}</td>
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                        
                                     </tr>
                                 </tbody>
                             </table>
 
                             <div class="d-flex justify-content-between mt-4">
-                                <a href="{{ route('appointments.index') }}" class="btn btn-secondary">
+                                <a href="{{ route('request_devices.index') }}" class="btn btn-secondary">
                                     <i class="fas fa-arrow-left"></i> Quay lại
                                 </a>
 
                                 <div>
-                                    @if (Auth::user()->role == 1)
-                                    <a href="{{ route('appointments.edit', $appointment->id) }}" class="btn btn-primary">
+                                    <a href="{{ route('request_devices.edit', $request_device->id) }}" class="btn btn-primary">
                                         <i class="fas fa-edit"></i> Sửa
                                     </a>
-                                    <form action="{{ route('appointments.destroy', $appointment->id) }}" method="POST"
+                                    <form action="{{ route('request_devices.destroy', $request_device->id) }}" method="POST"
                                         class="d-inline-block">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger" style="color: red;"
-                                            onclick="return confirm('Bạn có chắc chắn muốn xoá lịch hẹn này?')">
+                                            onclick="return confirm('Bạn có chắc chắn muốn xoá yêu cầu này?')">
                                             <i class="fas fa-trash"></i> Xoá
                                         </button>
                                     </form>
-                                    @endif
                                 </div>
                             </div>
                         </div>

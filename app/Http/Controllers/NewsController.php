@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\News;
 use Illuminate\Http\Request;
-use Intervention\Image\Image;
-use App\Models\DoctorDepartment;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -63,13 +64,15 @@ class NewsController extends Controller
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'image' => 'required',
-            'content' => 'required|string|max:1000',
+            'content' => 'required',
             'source_news' => 'nullable|string|max:255',
             'author' => 'nullable|string|max:255',
             'key_words' => 'nullable|string|max:255',
             'priority_level' => 'required|in:' . implode(',', array_keys(News::$priorityLevels)),
         ]);
+        $validatedData['submitted_date'] = now()->format(config('const.format.date'));
         $validatedData['status'] = News::STATUS_SUBMITTED;
+
         // Lưu ảnh
         if ($request->hasFile('image')) {
             $image = $request->file('image');
@@ -80,15 +83,17 @@ class NewsController extends Controller
 
             $validatedData['image'] = $path;
             $validatedData['filename'] = $filename;
-
-            // resize image here
-            // $thumbnailpath = public_path('/uploads/thumbnail/'.$filename);
-            // $img = Image::make($thumbnailpath)->resize(500, 150, function ($constraint) {
-            //     $constraint->aspectRatio();
-            // });
-            // $img->save($thumbnailpath);
         }
-        News::create($validatedData);
+        DB::beginTransaction();
+        try {    
+            News::create($validatedData);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
+        
 
         return redirect()->route('news.index')
             ->with('success', 'Bài viết đã được tạo thành công.');
@@ -129,7 +134,7 @@ class NewsController extends Controller
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'image' => 'required',
-            'content' => 'required|string|max:1000',
+            'content' => 'required',
             'source_news' => 'nullable|string|max:255',
             'author' => 'nullable|string|max:255',
             'key_words' => 'nullable|string|max:255',
@@ -152,8 +157,18 @@ class NewsController extends Controller
             $validatedData['image'] = $imagePath;
             $validatedData['filename'] = $filename;
         }
+        $validatedData['submitted_date'] = now()->format(config('const.format.date'));
         $validatedData['status'] = News::STATUS_SUBMITTED;
-        $new->update($validatedData);
+        DB::beginTransaction();
+        try {    
+            $new->update($validatedData);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
+        
 
         return redirect()->route('news.index')
             ->with('success', 'Thông tin bài viết đã được cập nhật thành công.');
@@ -167,7 +182,16 @@ class NewsController extends Controller
      */
     public function destroy(News $new)
     {
-        $new->delete();
+        
+        DB::beginTransaction();
+        try {    
+            $new->delete();
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
         return redirect()->route('news.index')
             ->with('success', 'Bài viết đã được xoá thành công.');

@@ -333,20 +333,20 @@
                         <ul class="users" style="list-style:none">
                             @foreach ($users as $user)
                             @if (Auth::user()->role == 0 && $user->role ==1 )
-                            <li class="user" id="{{ $user->id }}" >
+                            <li class="user" id="{{ $user->id }}">
                                 @if ($user->unread)
-                                        <span class="pending" style="color:blue;">{{ $user->unread }}</span>
-                                    @endif
+                                <span class="pending" style="color:blue;">{{ $user->unread }}</span>
+                                @endif
                                 <div class="d-flex bd-highlight">
-                                    
-                                    <div class="img_cont">   
-                                        <img src="https://cdn0.iconfinder.com/data/icons/avatar-4/512/Receptionist-512.png" 
-                                         style="border-radius: 50%;vertical-align: middle;
+
+                                    <div class="img_cont">
+                                        <img src="https://cdn0.iconfinder.com/data/icons/avatar-4/512/Receptionist-512.png"
+                                            style="border-radius: 50%;vertical-align: middle;
                                             width: 50px;
                                             height: 50px;
                                             border-radius: 50%;" alt="" title="">
                                     </div>
-                                    
+
                                     <div class="user_info">
                                         <span style="font-size: 18px">{{ $user->name }} {{ $user->id == Auth::id()
                                             }}</span>
@@ -355,24 +355,23 @@
                                 </div>
                             </li>
                             @else
-                            <li class="user" id="{{ $user->id }}" >
+                            <li class="user" id="{{ $user->id }}">
                                 @if ($user->unread)
-                                        <span class="pending" style="color:blue;">{{ $user->unread }}</span>
-                                    @endif
+                                <span class="pending" style="color:blue;">{{ $user->unread }}</span>
+                                @endif
                                 <div class="d-flex bd-highlight">
-                                    
-                                    <div class="img_cont">   
+
+                                    <div class="img_cont">
                                         <img src="@if ($user->role == 2) https://as2.ftcdn.net/v2/jpg/01/34/29/31/1000_F_134293169_ymHT6Lufl0i94WzyE0NNMyDkiMCH9HWx.jpg
                                          @elseif ($user->role == 1) https://cdn0.iconfinder.com/data/icons/avatar-4/512/Receptionist-512.png
                                          @elseif ($user->role == 0) https://cdn.w600.comps.canstockphoto.com/flu-face-mask-icon-vector-with-patient-vector-clipart_csp83448308.jpg
                                          @else https://thumbs.dreamstime.com/z/admin-icon-vector-male-user-person-profile-avatar-gear-cogwheel-settings-configuration-flat-color-glyph-pictogram-150138136.jpg
-                                         @endif" 
-                                         style="border-radius: 50%;vertical-align: middle;
+                                         @endif" style="border-radius: 50%;vertical-align: middle;
                                             width: 50px;
                                             height: 50px;
                                             border-radius: 50%;" alt="" title="">
                                     </div>
-                                    
+
                                     <div class="user_info">
                                         <span style="font-size: 18px">{{ $user->name }} {{ $user->id == Auth::id()
                                             }}</span>
@@ -409,6 +408,7 @@
     <script>
         var receiver_id = '';
         var my_id = "{{ Auth::id() }}";
+
         $(document).ready(function() {
             $.ajaxSetup({
                 headers: {
@@ -477,6 +477,7 @@
                     })
                 }
             })
+            
         });
 
     </script>

@@ -52,35 +52,10 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="medical_device_id">Thiết bị y tế:</label>
-                                    <select name="medical_device_id" class="form-control input-sm m-bot15">
-                                        @foreach ($medicalDevices as $medicalDevice)
-                                        <option value="{{ $medicalDevice->id }}" {{ $request_device->medical_device_id ==
-                                            $medicalDevice->id ? 'selected' : '' }}>
-                                            {{ $medicalDevice->name }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('medical_device_id')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-
-                                <div class="form-group">
-                                    <label for="quantity">Số lượng:</label>
-                                    <input type="text" name="quantity" id="quantity"
-                                        class="form-control @error('quantity') is-invalid @enderror"
-                                        value="{{ old('quantity', $request_device->quantity) }}">
-                                    @error('quantity')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <div class="form-group">
                                     <label for="borrow_time">Thời gian mượn:</label>
-                                    <input type="date" name="borrow_time" id="borrow_time"
+                                    <input type="datetime-local" name="borrow_time" id="borrow_time"
                                         class="form-control @error('borrow_time') is-invalid @enderror"
-                                        value="{{ old('borrow_time', $request_device->borrow_time->format(config('const.format.date_form'))) }}">
+                                        value="{{ old('borrow_time', $request_device->borrow_time) }}">
                                     @error('borrow_time')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -88,22 +63,63 @@
 
                                 <div class="form-group">
                                     <label for="return_time">Thời gian trả:</label>
-                                    <input type="date" name="return_time" id="return_time"
+                                    <input type="datetime-local" name="return_time" id="return_time"
                                         class="form-control @error('return_time') is-invalid @enderror"
-                                        value="{{ old('return_time', $request_device->return_time->format(config('const.format.date_form'))) }}">
+                                        value="{{ old('return_time', $request_device->return_time) }}">
                                     @error('return_time')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-
-                                <div class="form-group">
-                                    <label for="description">Mô tả:</label>
-                                    <textarea class="form-control" id="description" name="description"
-                                        rows="5">{{ $request_device->description }}</textarea>
-                                    @error('description')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
+                                <div class="card-header" style="display: flex!important">
+                                    <label style="font-size: 20px;">Thiết bị y tế</label>
+                                    <button style="margin-left: 80%;" class="btn btn-primary" id="btAddRequestDevice">Thêm</button>
                                 </div>
+
+                                <table class="table" id="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" style="min-width: 400px;">TÊN THIẾT BỊ</th>
+                                            <th scope="col">SỐ LƯỢNG</th>
+                                            <th scope="col">LƯU Ý</th>
+                                            <th scope="col">THAO TÁC</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody" name="tbody">
+                                        @foreach ($requestDeviceItem as $item)
+                                        <tr id="sectionMain" name="sectionMain">
+                                            <td style="width:200px">
+                                                <select name="medical_device_id[]" class="form-control input-sm m-bot15">
+                                                    @foreach ($medicalDevices as $medicalDevice)
+                                                        <option value="{{ $medicalDevice->id }}" {{ $item['medical_device_id'] ==
+                                                            $medicalDevice->id ? 'selected' : '' }}>{{ $medicalDevice->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input type="text" name="quantity[]" id="quantity"
+                                                    class="form-control @error('quantity') is-invalid @enderror"
+                                                    value="{{ old('quantity', $item['quantity']) }}">
+                                            </td>
+                                            <td>
+                                                <input type="text" name="description[]" id="description"
+                                                    class="form-control @error('description') is-invalid @enderror"
+                                                    value="{{ old('description', $item['description']) }}">
+                                            </td>
+                                            <td>
+                                                <button id="btnDeleteRequestDevice">
+                                                    <svg id="deleteElement" style="color: red" xmlns="http://www.w3.org/2000/svg"
+                                                    width="26" height="26" fill="currentColor"
+                                                    class="bi bi-trash3" viewBox="0 0 16 16" >
+                                                    <path
+                                                        d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
+                                                    </svg>
+                                                </button>
+                                                
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
 
                                 <div class="d-flex justify-content-between mt-4">
                                     <a href="{{ route('request_devices.index') }}" class="btn btn-secondary">
@@ -136,7 +152,21 @@
         <!-- /.control-sidebar -->
     </div>
     <!-- ./wrapper -->
+    <script>
+        document.getElementById("btAddRequestDevice").onclick = function(e) {
+            e.preventDefault();
+            var body = document.getElementById("tbody");
+            var section = document.getElementById("sectionMain");
+            body.appendChild(section.cloneNode(true));
+        }
 
+        document.getElementById("btnDeleteRequestDevice").onclick = function(e) {
+            e.preventDefault();
+            var body = document.getElementById("tbody");
+            var section = document.getElementById("sectionMain");
+            body.removeChild(body.lastElementChild);
+        }
+    </script>
     @include('admin.script')
 </body>
 

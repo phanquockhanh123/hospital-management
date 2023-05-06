@@ -9,7 +9,7 @@
               {{-- <div class="post-category">
                 <a href="#">{{ $new->title }}</a>
               </div> --}}
-              <a href="blog-details.html" class="post-thumb">
+              <a href="{{ route('home.get-blog-detail-for-user-site', $new) }}" class="post-thumb">
                   <img src="{{ asset('./imgNews/'. $new->filename) }}" 
                               style="vertical-align: middle;
                                   width: 200px;
@@ -18,12 +18,12 @@
               </a>
             </div>
             <div class="body">
-              <h5 class="post-title"><a href="blog-details.html">{{ $new->title }}</a></h5>
+              <h5 class="post-title"><a href="{{ route('home.get-blog-detail-for-user-site', $new) }}">{{ $new->title }}</a></h5>
               <div class="site-info">
                 <div class="avatar mr-2">
-                  <div class="avatar-img">
+                  {{-- <div class="avatar-img">
                     <img src="../assets/img/person/person_1.jpg" alt="">
-                  </div>
+                  </div> --}}
                   <span>{{ $new->author }}</span>
                 </div>
                 <span class="mai-time">{{ $new->updated_at->diffForHumans() }}</span>
@@ -35,7 +35,7 @@
        
 
         <div class="col-12 text-center mt-4 wow zoomIn">
-          <a href="blog.html" class="btn btn-primary">Xem thêm</a>
+          <a href="{{ route('home.blog') }}" class="btn btn-primary">Xem thêm</a>
         </div>
 
       </div>

@@ -42,11 +42,13 @@
                                 </div>
                             </form>
                         </div>
+                        @if (Auth::user()->role == 3)
                         <div class="col-sm-3" style="float: right;">
                             <a href="{{ route('services.create') }}" class="btn btn-success">
                                 <i class="fas fa-plus"></i> Tạo mới
                             </a>
                         </div>
+                        @endif
                     </div>
                 </div><!-- /.container-fluid -->
             </section>
@@ -95,13 +97,16 @@
                                                                 <a href="{{ route('services.show', $service) }}" style="margin-right: 10px;color:blue;font-size:22px">
                                                                   <i class="fas fa-eye"></i>
                                                                 </a>
+                                                                @if (Auth::user()->role == 3)
                                                                 <a href="{{ route('services.edit', $service->id) }}" style="margin-right: 10px;color:green;font-size:22px">
                                                                   <i class="fas fa-edit"></i>
                                                                 </a>
+                                                                
                                                                 <button type="button" data-toggle="modal"
                                                                   data-target="#deleteModal{{ $service->id }}" style="color: red;font-size:22px">
                                                                   <i class="fas fa-trash-alt"></i>
                                                                 </button>
+                                                                @endif
                                                               </div>
                                                         </td>
 

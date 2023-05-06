@@ -8,7 +8,10 @@ use App\Models\User;
 use App\Models\Doctor;
 use App\Mail\MailLogin;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Models\DoctorDepartment;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -115,7 +118,16 @@ class DoctorController extends Controller
         }
 
         $validatedData['status'] = Doctor::STATUS_ACTIVE;
-        Doctor::create($validatedData);
+
+        DB::beginTransaction();
+        try {
+            Doctor::create($validatedData);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
         return redirect()->route('doctors.index')
             ->with('success', 'Thêm mới bác sĩ đã được tạo thành công.');
@@ -210,15 +222,24 @@ class DoctorController extends Controller
 
         $validatedData['status'] = Doctor::STATUS_ACTIVE;
 
-        $doctor->update($validatedData);
-        $user = $doctor?->user;
+        DB::beginTransaction();
+        try {
+            $doctor->update($validatedData);
+            $user = $doctor?->user;
 
-        if ($user) {
-            $user->update([
-                'email' => $doctor->email,
-                'name' => $doctor->name,
-            ]);
+            if ($user) {
+                $user->update([
+                    'email' => $doctor->email,
+                    'name' => $doctor->name,
+                ]);
+            }
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
         }
+
 
         return redirect()->route('doctors.index')
             ->with('success', 'Thông tin bác sĩ đã được cập nhật thành công.');
@@ -232,33 +253,46 @@ class DoctorController extends Controller
      */
     public function destroy(Doctor $doctor)
     {
-        $doctor->delete();
-        $doctor->user->delete();
+        DB::beginTransaction();
+        try {
+            $doctor->delete();
+            $doctor->user->delete();
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
+
         return redirect()->route('doctors.index')
             ->with('success', 'Bác sĩ đã được xoá thành công.');
     }
 
     public function addAccountDoctor(Request $request, Doctor $doctor)
     {
-
-        // $validatedData = $request->validate([
-        //     'name' => 'required|string|max:255',
-        //     'email' => 'required|string|max:255|unique:users,email|regex:'
-        //         . config('const.regex_email_admin'),
-        // ]);
         if (User::where('email', $doctor->email)->first()) {
             return redirect()->back()->with('alert', 'Email đã tồn tại, vui lòng chọn email khác!');
         }
-        $user = User::create([
-            'email' => $doctor->email,
-            'name' => $doctor->name,
-            'role' => User::ROLE_DOCTOR,
-            'status' => User::STATUS_ACTIVE,
-            'password' => Hash::make('Aa@123456')
-        ]);
-        $doctor->update([
-            'user_id' => $user->id
-        ]);
+
+        DB::beginTransaction();
+        try {
+            $user = User::create([
+                'email' => $doctor->email,
+                'name' => $doctor->name,
+                'role' => User::ROLE_DOCTOR,
+                'status' => User::STATUS_ACTIVE,
+                'password' => Hash::make('Aa@123456')
+            ]);
+            $doctor->update([
+                'user_id' => $user->id
+            ]);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
+
         Mail::send(new MailLogin($user));
         return redirect()->route('doctors.index')
             ->with('success', 'Thêm mới tài khoản cho bác sĩ thành công.');

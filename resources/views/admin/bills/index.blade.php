@@ -105,15 +105,15 @@
                                                 <th>Người lập</th>
                                                 <th>Ngày tạo</th>
                                                 <th>Tổng tiền</th>
-                                                <th>Đã thanh toán</th>
-                                                <th>Còn nợ</th>
                                                 <th>Trạng thái</th>
                                                 @if(Auth::user()->role == 2)
                                                 <th>Hành động</th>
                                                 @endif
                                                 @if(Auth::user()->role == 1)
+                                                
                                                 <th>Thanh toán</th>
                                                 @endif
+                                                <th>PDF</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -124,9 +124,7 @@
                                                 <td>{{ $bill->diagnosis?->patient?->name }}</td>
                                                 <td>{{ $bill->diagnosis?->doctor?->name }}</td>
                                                 <td>{{ $bill->created_at }}</td>
-                                                <td>{{ $bill->total_money }}</td>
-                                                <td>@if(empty($bill->paid_money)) 0 @else {{ $bill->total_money }} @endif</td>
-                                                <td>{{ $bill->total_money - $bill->paid_money }}</td>
+                                                <td>{{ number_format($bill->total_money, 0, '.', ',') }}</td>
                                                 <th>
                                                     @if ($bill->status == 0)
                                                     <span class="text-warning">Chưa thanh toán</span>
@@ -140,17 +138,11 @@
                                                         <a href="{{ route('bills.show', $bill) }}" style="margin-right: 10px;font-size:22px;color:blue @if($bill->status == 1) color:black; @endif"  >
                                                           <i class="fas fa-eye"></i>
                                                         </a>
-                                                        {{-- <a href="{{ route('bills.edit', $bill->id) }}" style="margin-right: 10px;color:green;font-size:22px">
-                                                          <i class="fas fa-edit"></i>
-                                                        </a> --}}
-                                                        {{-- <button type="button" data-toggle="modal"
-                                                          data-target="#deleteModal{{ $bill->id }}" style="color: red;font-size:22px">
-                                                          <i class="fas fa-trash-alt"></i>
-                                                        </button> --}}
                                                       </div>
                                                 </td>
 
                                                 @endif
+                                                
                                                 @if(Auth::user()->role == 1)
                                                 <td>
                                                     <div class="btn-group">
@@ -162,6 +154,7 @@
                                                 </td>
 
                                                 @endif
+                                                <td><a href="{{ route('bills.pdf', $bill->id) }}" style="font-size: 22px;color:black"><i class="fas fa-print"></i></a></td>
                                                 <!-- Modal -->
                                                 <div class="modal fade" id="deleteModal{{ $bill->id }}" tabindex="-1"
                                                     role="dialog" aria-labelledby="deleteModalLabel{{ $bill->id }}"

@@ -75,7 +75,6 @@
                                                 <tr>
                                                     <th>Tiêu đề</th>
                                                     <th>Từ khóa</th>
-                                                    <th>Nội dung</th>
                                                     <th style="min-width:100px;">Ngày đăng</th>
                                                     <th>Nguồn</th>
                                                     <th>Tác giả</th>
@@ -89,7 +88,6 @@
                                                                 href="{{ route('news.show', $new->id) }}">{{ $new->title }}</a>
                                                         </td>
                                                         <td>{{ $new->key_words }}</td>
-                                                        <td>{{ $new->content }}</td>
                                                         <td>{{ $new->created_at?->format(config('const.format.date')) }}</td>
                                                         <td>{{ $new->source_news }}</td>
                                                         <td>{{ $new->author }}</td>

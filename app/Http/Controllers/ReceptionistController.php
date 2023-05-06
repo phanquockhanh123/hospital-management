@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\User;
-use App\Mail\MailLogin;
 use App\Models\Receptionist;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use App\Mail\MailLoginReceptionist;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -97,7 +99,15 @@ class ReceptionistController extends Controller
         }
 
         $validatedData['status'] = Receptionist::STATUS_ACTIVE;
-        Receptionist::create($validatedData);
+        DB::beginTransaction();
+        try {
+            Receptionist::create($validatedData);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
         return redirect()->route('receptionists.index')
             ->with('success', 'Thêm mới lễ tân đã được tạo thành công.');
@@ -186,16 +196,24 @@ class ReceptionistController extends Controller
         }
 
         $validatedData['status'] = Receptionist::STATUS_ACTIVE;
+        DB::beginTransaction();
+        try {
+            $receptionist->update($validatedData);
 
-        $receptionist->update($validatedData);
-
-        $user = $receptionist?->user;
-        if ($user) {
-            $user->update([
-                'email' => $receptionist->email,
-                'name' => $receptionist->name,
-            ]);
+            $user = $receptionist?->user;
+            if ($user) {
+                $user->update([
+                    'email' => $receptionist->email,
+                    'name' => $receptionist->name,
+                ]);
+            }
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
         }
+
 
         return redirect()->route('receptionists.index')
             ->with('success', 'Thông tin lễ tân đã được cập nhật thành công.');
@@ -209,26 +227,45 @@ class ReceptionistController extends Controller
      */
     public function destroy(Receptionist $receptionist)
     {
-        $receptionist->delete();
-        $receptionist->user->delete();
+
+        DB::beginTransaction();
+        try {
+            $receptionist->delete();
+            $receptionist->user->delete();
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
         return redirect()->route('receptionists.index')
             ->with('success', 'Lễ tân đã được xoá thành công.');
     }
 
-    public function addAccountReceptionist(Request $request,Receptionist $receptionist) {
+    public function addAccountReceptionist(Request $request, Receptionist $receptionist)
+    {
         if (User::where('email', $receptionist->email)->first()) {
-            return redirect()->back() ->with('alert', 'Email đã tồn tại, vui lòng chọn email khác!');
+            return redirect()->back()->with('alert', 'Email đã tồn tại, vui lòng chọn email khác!');
         }
-        $user = User::create([
-            'email' => $receptionist->email,
-            'name' => $receptionist->name,
-            'role' => User::ROLE_RECEPTIONIST,
-            'status' => User::STATUS_ACTIVE,
-            'password' => Hash::make('Aa@123456')
-        ]);
-        $receptionist->update([
-            'user_id' => $user->id
-        ]);
+        DB::beginTransaction();
+        try {
+            $user = User::create([
+                'email' => $receptionist->email,
+                'name' => $receptionist->name,
+                'role' => User::ROLE_RECEPTIONIST,
+                'status' => User::STATUS_ACTIVE,
+                'password' => Hash::make('Aa@123456')
+            ]);
+            $receptionist->update([
+                'user_id' => $user->id
+            ]);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
+
         Mail::send(new MailLoginReceptionist($user));
         return redirect()->route('receptionists.index')
             ->with('success', 'Thêm mới tài khoản cho bác sĩ thành công.');

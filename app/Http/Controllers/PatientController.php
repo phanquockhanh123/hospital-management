@@ -6,9 +6,10 @@ use Carbon\Carbon;
 use App\Models\Doctor;
 use App\Models\Patient;
 use App\Models\Service;
-use App\Models\Diagnosis;
 use Illuminate\Http\Request;
-use App\Models\DiagnosisItem;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -54,20 +55,20 @@ class PatientController extends Controller
 
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'blood_group' => 'required|in:' . implode(',', array_keys(Patient::$bloodGroups)),
+            'blood_group' => 'nullable|in:' . implode(',', array_keys(Patient::$bloodGroups)),
             'email' => 'required|string|max:255|unique:doctors,email|regex:'
-            . config('const.regex_email_admin'),
+                . config('const.regex_email_admin'),
             'phone' => 'nullable|size:10|regex:' . config('const.regex_telephone'),
             'date_of_birth'  => [
                 'required',
                 'date_format:' . config('const.format.date_form'),
                 'before_or_equal:' . Carbon::now()->format(config('const.format.date_form'))
             ],
-            'gender' => 'required|in:' . implode(',', array_keys(Patient::$genders)),
-            'profile'  => 'required',
-            'address' => 'required|string|max:255',
+            'gender' => 'nullable|in:' . implode(',', array_keys(Patient::$genders)),
+            'profile'  => 'nullable',
+            'address' => 'nullable|string|max:255',
             'identity_number' => [
-                'required',
+                'nullable',
                 'regex:' . config('const.regex_identity_number'),
             ],
             'identity_card_date' => [
@@ -90,8 +91,15 @@ class PatientController extends Controller
             $validatedData['filename'] = $filename;
         }
         $validatedData['patient_code'] = Patient::generateNextCode();
-        $validatedData['profile'] = $path;
-        Patient::create($validatedData);
+        DB::beginTransaction();
+        try {
+            Patient::create($validatedData);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
         return redirect()->route('patients.index')
             ->with('success', 'Thêm mới bệnh nhân đã được tạo thành công.');
@@ -144,7 +152,7 @@ class PatientController extends Controller
             'name' => 'nullable|string|max:255',
             'blood_group' => 'nullable|in:' . implode(',', array_keys(Patient::$bloodGroups)),
             'email' => 'nullable|string|max:255|unique:doctors,email|regex:'
-            . config('const.regex_email_admin'),
+                . config('const.regex_email_admin'),
             'phone' => 'nullable|size:10|regex:' . config('const.regex_telephone'),
             'date_of_birth'  => [
                 'nullable',
@@ -182,8 +190,15 @@ class PatientController extends Controller
             $validatedData['profile'] = $profilePath;
             $validatedData['filename'] = $filename;
         }
-
-        $patient->update($validatedData);
+        DB::beginTransaction();
+        try {
+            $patient->update($validatedData);
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
         return redirect()->route('patients.index')
             ->with('success', 'Thông tin bệnh nhân đã được cập nhật thành công.');
@@ -197,7 +212,15 @@ class PatientController extends Controller
      */
     public function destroy(Patient $patient)
     {
-        $patient->delete();
+        DB::beginTransaction();
+        try {
+            $patient->delete();
+            DB::commit();
+        } catch (\Exception $error) {
+            DB::rollback();
+            Log::error($error);
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        }
 
         return redirect()->route('patients.index')
             ->with('success', 'Bệnh nhân đã được xoá thành công.');

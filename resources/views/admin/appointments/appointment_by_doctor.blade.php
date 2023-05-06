@@ -127,9 +127,9 @@
                                                 <th>Phòng ban</th>
                                                 <th>Bắt đầu</th>
                                                 <th>Kết thúc</th>
-                                                @if(Auth::user()->role == 2)
+                                                {{-- @if(Auth::user()->role == 2)
                                                 <th style="min-width:100px">Trạng thái</th>
-                                                @endif
+                                                @endif --}}
                                                 <th>Hành động</th>
                                             </tr>
                                         </thead>
@@ -144,7 +144,7 @@
                                                 <td>{{ $appointment->doctorDepartment->name }}</td>
                                                 <td>{{ $appointment->start_time }}</td>
                                                 <td>{{ $appointment->end_time }}</td>
-                                                @if(Auth::user()->role == 2)
+                                                {{-- @if(Auth::user()->role == 2)
                                                 <td>
                                                     @if($appointment->status == 2)
                                                     <i class="fa-solid fa-calendar-check" style="color:green;"></i>
@@ -162,17 +162,19 @@
                                                     @endif
 
                                                 </td>
-                                                @endif
+                                                @endif --}}
                                                 <td>
                                                     <div class="btn-group">
                                                         <a href="{{ route('appointments.show', $appointment) }}" title="Xem chi tiết"
                                                             style="margin-right: 10px;color:blue;font-size:22px">
                                                             <i class="fas fa-eye"></i>
                                                         </a>
+                                                        @if($appointment->status == 2)
                                                         <a href="{{ route('appointments.create-diagnosis', $appointment) }}"  title="Tạo chẩn đoán/xét nghiệm"
                                                             style="margin-right: 10px;color:blue;font-size:22px">
                                                             <i class="fas fa-add"></i>
                                                         </a>
+                                                        @endif
                                                         @if(Auth::user()->role == 1)
                                                         <a href="{{ route('appointments.edit', $appointment->id) }}"
                                                             style="margin-right: 10px;color:green;font-size:22px">
