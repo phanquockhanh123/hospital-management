@@ -43,7 +43,7 @@
           <!-- small box -->
           <div class="small-box bg-info">
             <div class="inner">
-              <h3>{{ $countBillMoney[0]->total_money ?? 0 }} đồng</h3>
+              <h3>{{ number_format($countBillMoney[0]->total_money , 0, '.', ',') ?? 0 }} đồng</h3>
 
               <p>Tổng hóa đơn</p>
             </div>
@@ -303,36 +303,7 @@
   <!-- Content Wrapper. Contains page content -->
 
   <!-- Content Header (Page header) -->
-@if(Auth::user()->role == 3)
-  <!-- Main content -->
-  <section class="content">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-4" style="height: 500px;">
-          <div id="column_chart" style="width: 500px; height: 500px;"></div>
-          <div style="text-align: center;">Thống kê tình trạng trang thiết bị</div>
 
-        </div>
-        <div class="col-sm-8">
-          <div id="piechart_3d" style="width: 900px; height: 500px;"></div>
-          <div style="text-align: center;">Thống kê số lượt khám bệnh theo phòng ban trong tháng {{
-            $now->month }} / {{ $now->year }} </div>
-        </div>
-      </div>
-      <div id="line_chart" style="width: 1400px; height: 500px; align-items: center;"></div>
-      <h1 style="text-align:center;margin-bottom: 120px;font-size:28px;font-weight:600">Biểu đồ thống kê số lượt khám
-        theo từng tháng</h1>
-
-      <div id="column_chart_bill" style="width: 1400px; height: 500px; align-items: center;"></div>
-      <h1 style="text-align:center;margin-bottom: 120px;font-size:28px;font-weight:600">Bảng thống kê thu nhập theo
-        phòng ban</h1>
-
-    </div>
-    <!-- /.container-fluid -->
-  </section>
-  <!-- /.content-wrapper -->
-  <!-- ./wrapper -->
-@endif
   <!-- /.row -->
   <div class="row">
     <div class="col-12">
@@ -470,18 +441,6 @@
       <div class="card">
         <div class="card-header">
           <h3 class="card-title">Thiết bị sẽ hết hạn trong 60 ngày tới</h3>
-
-          {{-- <div class="card-tools">
-            <div class="input-group input-group-sm" style="width: 150px;">
-              <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
-              <div class="input-group-append">
-                <button type="submit" class="btn btn-default">
-                  <i class="fas fa-search"></i>
-                </button>
-              </div>
-            </div>
-          </div> --}}
         </div>
         <!-- /.card-header -->
         <div class="card-body table-responsive p-0">
@@ -519,7 +478,7 @@
                   @endif
                 </td>
                 <td>{{ $medical_device->quantity }}</td>
-                <td>{{ $medical_device->expired_date->format(config('const.format.date')) }}</td>
+                <td>{{ $medical_device->expired_date?->format(config('const.format.date')) }}</td>
               </tr>
               @endforeach
 
@@ -532,6 +491,37 @@
       <!-- /.card -->
     </div>
   </div>
+  @endif
+
+  @if(Auth::user()->role == 3)
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-4" style="height: 500px;">
+          <div id="column_chart" style="width: 500px; height: 500px;"></div>
+          <div style="text-align: center;">Thống kê tình trạng trang thiết bị</div>
+
+        </div>
+        <div class="col-sm-8">
+          <div id="piechart_3d" style="width: 900px; height: 500px;"></div>
+          <div style="text-align: center;">Thống kê số lượt khám bệnh theo phòng ban trong tháng {{
+            $now->month }} / {{ $now->year }} </div>
+        </div>
+      </div>
+      <div id="line_chart" style="width: 1400px; height: 500px; align-items: center;"></div>
+      <h1 style="text-align:center;margin-bottom: 120px;font-size:28px;font-weight:600">Biểu đồ thống kê số lượt khám
+        theo từng tháng</h1>
+
+      <div id="column_chart_bill" style="width: 1400px; height: 500px; align-items: center;"></div>
+      <h1 style="text-align:center;margin-bottom: 120px;font-size:28px;font-weight:600">Bảng thống kê thu nhập theo
+        phòng ban</h1>
+
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+  <!-- /.content-wrapper -->
+  <!-- ./wrapper -->
   @endif
   <!-- /.row -->
 </div>

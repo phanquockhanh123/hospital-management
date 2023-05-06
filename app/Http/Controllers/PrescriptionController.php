@@ -190,7 +190,7 @@ class PrescriptionController extends Controller
                 'side_disease' => $request->side_disease,
                 'note' => $request->note,
             ]);
-
+            $preItemOld = $prescription->prescriptionItems;
             $data = [
                 "medical_id" => array_values($validatedData['medical_id']),
                 "dosage" => array_values($validatedData['dosage']),
@@ -218,15 +218,17 @@ class PrescriptionController extends Controller
             // Update Bills
             $prescriptionPrice = 0;
             $diagnosisPrice = 0;
+            
             foreach ($newArrays as $dataItem) {
                 $medicalUpdate = Medical::where('id', $dataItem['medical_id'])->first();
                 $prescriptionPrice += $medicalUpdate->export_price * $dataItem['amount'];
                 // check quantity input with database
                 if ($dataItem['amount'] > $medicalUpdate->quantity) {
+                return redirect()->back()->with('alert', 'Thuốc trong kho không đủ để cung cấp!');
                 }
-                $medicalUpdate->update(['quantity' => $medicalUpdate->quantity - $dataItem['amount']]);
+                $prescriptionAmountOld = $preItemOld->where('medical_id', $dataItem['medical_id'])->first()->amount;
+                $medicalUpdate->update(['quantity' => $medicalUpdate->quantity + $prescriptionAmountOld - $dataItem['amount']]);
             }
-
             foreach ($prescription->diagnosis->diagnosisItems as $diagPre) {
                 $diagnosisPrice += $diagPre->service->all_price;
             }

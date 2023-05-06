@@ -124,7 +124,7 @@
                                                 <td>{{ $bill->diagnosis?->patient?->name }}</td>
                                                 <td>{{ $bill->diagnosis?->doctor?->name }}</td>
                                                 <td>{{ $bill->created_at }}</td>
-                                                <td>{{ $bill->total_money }}</td>
+                                                <td>{{ number_format($bill->total_money, 0, '.', ',') }}</td>
                                                 <th>
                                                     @if ($bill->status == 0)
                                                     <span class="text-warning">Chưa thanh toán</span>
@@ -138,13 +138,6 @@
                                                         <a href="{{ route('bills.show', $bill) }}" style="margin-right: 10px;font-size:22px;color:blue @if($bill->status == 1) color:black; @endif"  >
                                                           <i class="fas fa-eye"></i>
                                                         </a>
-                                                        {{-- <a href="{{ route('bills.edit', $bill->id) }}" style="margin-right: 10px;color:green;font-size:22px">
-                                                          <i class="fas fa-edit"></i>
-                                                        </a> --}}
-                                                        {{-- <button type="button" data-toggle="modal"
-                                                          data-target="#deleteModal{{ $bill->id }}" style="color: red;font-size:22px">
-                                                          <i class="fas fa-trash-alt"></i>
-                                                        </button> --}}
                                                       </div>
                                                 </td>
 

@@ -133,7 +133,6 @@ class AuthController extends Controller
                 $dataTable[] = [$appointmentByMonth['month'], $appointmentByMonth['total']];
             }
 
-
             return view('admin.home', compact(
                 'countMedicals',
                 'countServices',
@@ -228,7 +227,6 @@ class AuthController extends Controller
                     $dataBill[] = [$department->name, 0];
                 }
             }
-
 
             // Thống kê số lượt khám đến khám theo từng tháng
             $appointments = DB::table('appointments')

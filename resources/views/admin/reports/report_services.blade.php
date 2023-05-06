@@ -77,7 +77,7 @@
                             <th>Tên dịch vụ</th>
                             <th>Đơn giá</th>
                             <th>Số hóa đơn</th>
-                            <th>Doanh thu : <b>{{ $countMoney }}</b> đồng</th>
+                            <th>Doanh thu : <b>{{ number_format($countMoney, 0, '.', ',') }}</b> đồng</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -87,9 +87,9 @@
                             <td>{{ $service->id }}</td>
                             <td>{{ $service->service_code }}</td>
                             <td>{{ $service->service_name }}</td>
-                            <td>{{ $service->all_price }}</td>
+                            <td>{{ number_format($service->all_price, 0, '.', ',') }}</td>
                             <td>{{ $diagnosisItems->where('service_id', $service->id)->count() }}</td>
-                            <td>{{ $service->all_price * $diagnosisItems->where('service_id', $service->id)->count() }}</td>    
+                            <td>{{ number_format($service->all_price * $diagnosisItems->where('service_id', $service->id)->count(), 0, '.', ',') }}</td>    
                         </tr>
                         @endforeach
 

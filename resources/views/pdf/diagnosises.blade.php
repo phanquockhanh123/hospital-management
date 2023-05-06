@@ -103,7 +103,7 @@
 		</div>
 		<div>
 			<label>Ngày sinh:</label>
-			<span>{{ $diagnosis->patient->date_of_birth->format(config('const.format.date')) }}</span>
+			<span>{{ $diagnosis->patient->date_of_birth?->format(config('const.format.date')) }}</span>
 		</div>
 		<div>
 			<label>Giới tính:</label>

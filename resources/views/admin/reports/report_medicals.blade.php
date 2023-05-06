@@ -78,7 +78,7 @@
                             <th>Đơn vị</th>
                             <th>Giá bán</th>
                             <th>Số lượng bán</th>
-                            <th>Doanh thu : <b>{{ $countMoney }}</b> đồng</th>
+                            <th>Doanh thu : <b>{{ number_format($countMoney, 0, '.', ',') }}</b> đồng</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -89,9 +89,9 @@
                             <td>{{ $medical->medical_code }}</td>
                             <td>{{ $medical->medical_name }}</td>
                             <td>{{ $medical->unit }}</td>
-                            <td>{{ $medical->export_price }}</td>
+                            <td>{{ number_format($medical->export_price, 0, '.', ',') }}</td>
                             <td>{{ $prescriptionItems->where('medical_id', $medical->id)->sum('amount') }} </td>
-                            <td>{{ $prescriptionItems->where('medical_id', $medical->id)->sum('amount') * $medical->export_price }}</td>
+                            <td>{{ number_format($prescriptionItems->where('medical_id', $medical->id)->sum('amount') * $medical->export_price, 0, '.', ',') }}</td>
                         </tr>
                         @endforeach
 

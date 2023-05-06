@@ -158,7 +158,7 @@
                                                                   <i class="fas fa-eye"></i>
                                                                 </a>
                                                                 <a href="{{ route('diagnosises.edit', $diagnosis->id) }}" style="margin-right: 10px;color:green;font-size:22px">
-                                                                  <i class="fas fa-edit"></i>
+                                                                  <i class="fas fa-edit" ></i>
                                                                 </a>
                                                                 <button type="button" data-toggle="modal"
                                                                   data-target="#deleteModal{{ $diagnosis->id }}" style="color: red;font-size:22px">

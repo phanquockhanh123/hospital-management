@@ -103,7 +103,7 @@
 		</div>
 		<div>
 			<label>Ngày sinh:</label>
-			<span>{{ $bill->diagnosis->patient->date_of_birth }}</span>
+			<span>{{ $bill->diagnosis->patient->date_of_birth?->format(config('const.format.date')) }}</span>
 		</div>
 		<div>
 			<label>Giới tính:</label>
@@ -153,7 +153,7 @@
                 <td>{{ $val['unit'] }}</td>
                 <td>{{ $val['method'] }}</td>
                 <td>{{ $val['diagnosis_note'] }}</td>
-				<td>{{ $services->where('id', $val['service_id'])->first()->all_price }}</td>
+				<td>{{ number_format($services->where('id', $val['service_id'])->first()->all_price, 0, '.', ',') }}</td>
 			</tr>
             @endforeach
 		</tbody>
@@ -194,11 +194,11 @@
 
 	<div>
 		<label>Tổng thanh toán :</label>
-		<span>{{ $bill->total_money ?? 0 }} đồng</span>
+		<span>{{ number_format($bill->total_money, 0, '.', ',') ?? 0 }} đồng</span>
 	</div>
 	<div>
 		<label>Đã thanh toán :</label>
-		<span>{{ $bill->paid_money ?? 0 }} đồng</span>
+		<span>{{ number_format($bill->paid_money, 0, '.', ',') ?? 0 }} đồng</span>
 	</div>
 	<div class="footer">
 		<div class="created_at">Ngày {{ $bill->diagnosis->updated_at->day }} tháng {{ $bill->diagnosis->updated_at->month }} năm {{ $bill->diagnosis->updated_at->year }}</div>

@@ -60,7 +60,7 @@ class BookAppointmentController extends Controller
             ]);
             if (!$patient) {
                 $patient = Patient::create($data);
-            }
+            }   
             DB::commit();
         } catch (\Exception $error) {
             DB::rollback();

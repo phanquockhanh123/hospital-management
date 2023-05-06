@@ -98,10 +98,10 @@
                                                         <td>
                                                             <div class="btn-group">
                                                                 <a href="{{ route('prescriptions.edit', $prescription->id) }}"
-                                                                    class="btn btn-primary">
+                                                                    class="btn btn-primary  @if ($prescription->bill?->status == 1) disabled @endif">
                                                                     <i class="fas fa-edit"></i> Sửa
                                                                 </a>
-                                                                <button type="button" class="btn btn-danger"
+                                                                <button type="button" class="btn btn-danger @if ($prescription->bill?->status == 1) disabled @endif"
                                                                     data-toggle="modal"
                                                                     data-target="#deleteModal{{ $prescription->id }}"
                                                                     style="color: red;">
