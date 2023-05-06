@@ -121,7 +121,14 @@ class RequestDeviceController extends Controller
                 return $requestItem;
             }, $newArrays);
             RequestDeviceItem::insert($requestDeviceItemData);
-
+            foreach ($newArrays as $dataItem) {
+                $deviceUpdate = MedicalDevice::where('id', $dataItem['medical_device_id'])->first();
+                // check quantity input with database
+                if ($dataItem['quantity'] > $deviceUpdate->quantity) {
+                return redirect()->back()->with('alert', 'Số lượng thiết bị trong kho không đủ để cung cấp!');
+                }
+                $deviceUpdate->update(['quantity' => $deviceUpdate->quantity - $dataItem['quantity']]);
+            }
             DB::commit();
         } catch (\Exception $error) {
             DB::rollback();
@@ -129,7 +136,7 @@ class RequestDeviceController extends Controller
             return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
         }
         return redirect()->route('request_devices.index')
-            ->with('success', 'Yêu câu mượn y tế đã được tạo thành công.');
+            ->with('success', 'Yêu cầu mượn y tế đã được tạo thành công.');
     }
 
     /**
@@ -188,13 +195,13 @@ class RequestDeviceController extends Controller
 
         DB::beginTransaction();
         try {
-
             $request_device->update([
                 'doctor_id' => $validatedData['doctor_id'],
                 'patient_id' => $validatedData['patient_id'],
                 'borrow_time' => $validatedData['borrow_time'],
                 'return_time' => $validatedData['return_time'],
             ]);
+            $oldDevice = $request_device->requestDeviceItems;
 
             $data = [
                 "medical_device_id" => array_values($validatedData['medical_device_id']),
@@ -220,6 +227,19 @@ class RequestDeviceController extends Controller
             }, $newArrays);
 
             RequestDeviceItem::insert($requestDeviceItemData);
+            
+            foreach ($newArrays as $dataItem) {
+                $deviceUpdate = MedicalDevice::where('id', $dataItem['medical_device_id'])->first();
+                // check quantity input with database
+                if ($dataItem['quantity'] > $deviceUpdate->quantity) {
+                    return redirect()->back()->with('alert', 'Số lượng thiết bị trong kho không đủ để cung cấp!');
+                }
+               
+                $deviceAmountOld = $oldDevice->where('medical_device_id', $dataItem['medical_device_id'])->first()->quantity;
+                $deviceUpdate->update(['quantity' => $deviceUpdate->quantity + $deviceAmountOld - $dataItem['quantity']]);
+
+            }
+            
             DB::commit();
         } catch (\Exception $error) {
             DB::rollback();

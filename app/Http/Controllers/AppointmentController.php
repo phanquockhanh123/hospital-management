@@ -81,6 +81,9 @@ class AppointmentController extends Controller
                 'after_or_equal:start_time',
             ],
             'description' => 'nullable|string|max:1000',
+        ],[
+            'start_time.before_or_equal' => 'Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc',
+            'end_time.after_or_equal' => 'Thời gian kết thúc phải lớn hơn thời gian bắt đầu',
         ]);
         $validatedData['doctor_department_id'] = Doctor::where('id', $validatedData['doctor_id'])->first()->doctor_department_id;
 

@@ -55,7 +55,7 @@
                                     <label for="borrow_time">Thời gian mượn:</label>
                                     <input type="datetime-local" name="borrow_time" id="borrow_time"
                                         class="form-control @error('borrow_time') is-invalid @enderror"
-                                        value="{{ old('borrow_time', $request_device->borrow_time->format(config('const.format.datetie-local_form'))) }}">
+                                        value="{{ old('borrow_time', $request_device->borrow_time) }}">
                                     @error('borrow_time')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -65,7 +65,7 @@
                                     <label for="return_time">Thời gian trả:</label>
                                     <input type="datetime-local" name="return_time" id="return_time"
                                         class="form-control @error('return_time') is-invalid @enderror"
-                                        value="{{ old('return_time', $request_device->return_time->format(config('const.format.date_form'))) }}">
+                                        value="{{ old('return_time', $request_device->return_time) }}">
                                     @error('return_time')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror

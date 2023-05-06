@@ -47,4 +47,12 @@ class RequestDevice extends BaseModel
         return $this->belongsTo(Doctor::class);
     }
 
+    /**
+     * Get the requestDeviceItems
+     */
+    public function requestDeviceItems()
+    {
+        return $this->hasMany(RequestDeviceItem::class);
+    }
+
 }

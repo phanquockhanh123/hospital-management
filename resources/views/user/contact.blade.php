@@ -43,14 +43,15 @@
                     <ul>
                         @foreach ($news as $new)
                             <li style="text-decoration: none; list-style:none;margin-bottom: 30px;">
-                                <a href="#" >
+                                <a href="{{ route('home.get-blog-detail-for-user-site', $new) }}" >
                                     <div class="row">
                                         <div class="col-sm" >
                                             <img src="./imgNews/{{ $new->filename}}" style="border-radius:10px;vertical-align: middle;
                                                         width: 120px;height: 80px;" alt="" title="">
                                         </div>
                                         <div class="col-sm">
-                                            {{ $new->title }}
+                                            <a href="{{ route('home.get-blog-detail-for-user-site', $new) }}">{{
+                                                $new->title }}</a>
                                         </div>
                                     </div>
                                 </a>

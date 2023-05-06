@@ -104,6 +104,12 @@ class HomeController extends Controller
         return view('user.getDoctorDetailForUserSite', compact('doctor', 'doctors'));
     }
 
+    public function getBlogDetailForUserSite(News $blog)
+    {
+        $blog = News::where('id', $blog->id)->first();
+        return view('user.getBlogDetailForUserSite', compact('blog'));
+    }
+
     public function getInfoPatient()
     {
         $patient = Patient::where('email', Auth::user()->email)->first();

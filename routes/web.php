@@ -370,6 +370,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/', 'index')->name('home.index');
     Route::get('/about', 'aboutUs')->name('home.about');
     Route::get('/blog', 'blog')->name('home.blog');
+    Route::get('/get_log_detail_for_user_site/{blog}', 'getBlogDetailForUserSite')->name('home.get-blog-detail-for-user-site');
     Route::get('/contact', 'contact')->name('home.contact');
     Route::get('/book_appointment_user', 'bookAppointmentUser')->name('home.book-appointment-user');
     Route::post('/user/appointments', 'storeAppointment')->name('user.appointments-store');

@@ -181,8 +181,8 @@ class PrescriptionController extends Controller
             'amount' => 'required|array',
             'note' => 'nullable|string|max:1000',
         ]);
-        DB::beginTransaction();
-        try {
+        // DB::beginTransaction();
+        // try {
             $prescription->update([
                 'doctor_id' => $request->doctor_id,
                 'patient_id' => $request->patient_id,
@@ -241,11 +241,11 @@ class PrescriptionController extends Controller
                 Bill::where('id', $prescription->bill->id)->update($billData);
             }
             DB::commit();
-        } catch (\Exception $error) {
-            DB::rollback();
-            Log::error($error);
-            return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
-        }
+        // } catch (\Exception $error) {
+        //     DB::rollback();
+        //     Log::error($error);
+        //     return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
+        // }
 
         return redirect()->route('prescriptions.index')
             ->with('success', 'Thông tin đơn thuốc đã được cập nhật thành công.');
