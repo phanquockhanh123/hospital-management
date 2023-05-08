@@ -152,7 +152,7 @@
                             <a class="nav-link" href="{{ route('home.get-doctor-list-for-user-site') }}">Bác sĩ</a>
                         </li>
                         <li class="nav-item @if (Request::route()->getName() == 'home.blog') active @endif">
-                            <a class="nav-link" href=" {{ route('home.blog') }}">Blog</a>
+                            <a class="nav-link" href=" {{ route('home.blog') }}">Tin tức</a>
                         </li>
                         <li class="nav-item @if (Request::route()->getName() == 'home.contact') active @endif">
                             <a class="nav-link" href=" {{ route('home.contact') }}">Liên hệ</a>
