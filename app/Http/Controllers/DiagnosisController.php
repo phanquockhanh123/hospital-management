@@ -16,6 +16,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use GuzzleHttp\Client;
 
 
 class DiagnosisController extends Controller
@@ -67,6 +68,31 @@ class DiagnosisController extends Controller
      */
     public function store(Request $request)
     {
+
+        $client = new Client();
+        $response = $client->request('GET', 'https://api.fda.gov/drug/label.json?search=interactions');
+        $data = json_decode($response->getBody()->getContents(), true);
+
+        // Extract drug interaction information from response
+        $interactions = [];
+        if (isset($data['results'][0]['drug_interactions'])) {
+
+            $interactions = explode('. ', $data['results'][0]['drug_interactions'][0]);
+
+        }
+        // Check if specific drugs have potential interactions
+        $drug1 = 'acetaminophen';
+        $drug2 = 'ibuprofen';
+        //$drug1 = 'aspirin';
+
+        foreach ($interactions as $interaction) {
+            dump($interaction);
+            if (strpos($interaction, $drug1) !== false && strpos($interaction, $drug2) !== false) {
+                echo "Combining $drug1 and $drug2 may be dangerous: $interaction";
+                break;
+            }
+        }
+        dd(1);
         $validatedData = $request->validate([
             'doctor_id' => 'required|integer|exists:doctors,id,deleted_at,NULL',
             'patient_id' => 'required|integer|exists:patients,id,deleted_at,NULL',
