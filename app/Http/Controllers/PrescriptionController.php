@@ -244,11 +244,6 @@ class PrescriptionController extends Controller
             Bill::where('id', $prescription->bill->id)->update($billData);
         }
         DB::commit();
-        // } catch (\Exception $error) {
-        //     DB::rollback();
-        //     Log::error($error);
-        //     return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
-        // }
 
         return redirect()->route('prescriptions.index')
             ->with('success', 'Thông tin đơn thuốc đã được cập nhật thành công.');
@@ -331,31 +326,27 @@ class PrescriptionController extends Controller
         }
         // Search OpenFDA for adverse events associated with each drug
         foreach ($medicals as $key => $drug) {
-            unset($medicals[$key]);
-            $url = 'https://api.fda.gov/drug/label.json?search=drug_interactions:"' . urlencode($drug) . '"';
             try {
-                $response = file_get_contents($url);
+                unset($medicals[$key]);
+                $url = 'https://api.fda.gov/drug/label.json?search=drug_interactions:"' . urlencode($drug) . '"';
+                $response = @file_get_contents($url);
                 $data = json_decode($response, true);
-
-                $interactions = $data['results'][0]['drug_interactions'][0];
-                foreach ($medicals as $medical) {
-                    if(stripos( $interactions, $medical) !== false) {
-                        return redirect()->back()->with('alert', 'Thuốc '.  $drug .' có tác dụng phụ với ' . $medical .' !' );
+                if (isset($data['results'][0]['drug_interactions'][0])) {
+                    $interactions = $data['results'][0]['drug_interactions'][0];
+                    foreach ($medicals as $medical) {
+                        if (stripos($interactions, $medical) !== false) {
+                            return redirect()->back()->with('alert', 'Thuốc ' .  $drug . ' có tác dụng phụ với ' . $medical . ' !');
+                        }
                     }
                 }
             } catch (\GuzzleHttp\Exception\ClientException $e) {
+                // Handle other exceptions
                 if ($e->getResponse()->getStatusCode() === 404) {
                     // Drug not found, continue with next drug
                     continue;
-                } else {
-                    // Handle other exceptions
-                    throw $e;
                 }
             }
-            dd(3);
         }
-
-
 
         // Create prescriptions
         $prescription = Prescription::create([
