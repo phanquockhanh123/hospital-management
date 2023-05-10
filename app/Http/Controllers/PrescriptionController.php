@@ -330,40 +330,21 @@ class PrescriptionController extends Controller
             $medicals[] = Medical::where('id', $dataId)->first()->medical_name;
         }
         // Search OpenFDA for adverse events associated with each drug
-        $adverse_events = [];
-        foreach ($medicals as $drug) {
-            $query_string = 'patient.drug.openfda.brand_name.exact:' . urlencode($drug);
-            $url = 'https://api.fda.gov/drug/event.json?search=' . urlencode($query_string) . '&count=patient.reaction.reactionmeddrapt.exact';
+        foreach ($medicals as $key => $drug) {
+            unset($medicals[$key]);
+            $url = 'https://api.fda.gov/drug/label.json?search=drug_interactions:"' . urlencode($drug) . '"';
             try {
-                $response = $client->request('GET', $url);
+                $response = file_get_contents($url);
+                $data = json_decode($response, true);
 
-                $data = json_decode($response->getBody()->getContents(), true);
-
-                // Extract the top 5 adverse events associated with the drug
-                $adverse_events[$drug] = [];
-                foreach ($data['results'] as $result) {
-                    if (count($adverse_events[$drug]) < 5) {
-                        $adverse_events[$drug][] = $result['term'];
+                $interactions = $data['results'][0]['drug_interactions'][0];
+                foreach ($medicals as $medical) {
+                    if(stripos( $interactions, $medical) !== false) {
+                        return redirect()->back()->with('alert', 'Thuốc '.  $drug .' có tác dụng phụ với ' . $medical .' !' );
                     }
                 }
-
-                // Check for potential interactions among the specified drugs
-                foreach ($medicals as $drug1) {
-                    foreach ($medicals as $drug2) {
-                        if ($drug1 !== $drug2) {
-                            $common_adverse_events = array_intersect($adverse_events[$drug1], $adverse_events[$drug2]);
-                            if (!empty($common_adverse_events)) {
-                                return redirect()->back()
-                                    ->with('alert', "Cảnh báo: Các tác dụng phụ có thể xảy ra khi sử dụng 
-                                $drug1 và $drug2 cùng nhau: " . implode(', ', $common_adverse_events) . "\n");
-                            }
-                        }
-                    }
-                }
-                dd(1);
             } catch (\GuzzleHttp\Exception\ClientException $e) {
                 if ($e->getResponse()->getStatusCode() === 404) {
-                    dd(2);
                     // Drug not found, continue with next drug
                     continue;
                 } else {
