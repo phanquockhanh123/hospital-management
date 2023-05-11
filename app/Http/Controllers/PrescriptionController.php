@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use PDF;
 use App\Models\Bill;
 use App\Models\Doctor;
+use GuzzleHttp\Client;
 use App\Models\Medical;
 use App\Models\Patient;
 use App\Models\Service;
@@ -14,8 +15,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\PrescriptionItem;
 use Illuminate\Support\Facades\DB;
-use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 
 class PrescriptionController extends Controller
@@ -296,10 +297,10 @@ class PrescriptionController extends Controller
      */
     public function createPrescription(Diagnosis $diagnosis)
     {
-        $doctors = Doctor::all();
+        $doctor = Doctor::where('user_id', Auth::user()->id)->first();
         $patients = Patient::all();
         $medicals = Medical::all();
-        return view('admin.prescriptions.create-prescription', compact('diagnosis', 'doctors', 'patients', 'medicals'));
+        return view('admin.prescriptions.create-prescription', compact('diagnosis', 'doctor', 'patients', 'medicals'));
     }
 
     /**

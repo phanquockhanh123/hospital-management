@@ -44,7 +44,7 @@ class AuthController extends Controller
             $countMedicals = Medical::count();
             $countServices = Service::count();
             $countReceptionists = Receptionist::where('status', Receptionist::STATUS_ACTIVE)->count();
-            $countBillMoney = Bill::select(DB::raw('sum(bills.total_money) as total_money'))->get();
+            $countBillMoney = Bill::select(DB::raw('sum(bills.total_money) as total_money'))->where('status', 1)->get();
 
             $medicalDevices = MedicalDevice::whereBetween('expired_date', [now(), now()->addDays(60)])->get();
 

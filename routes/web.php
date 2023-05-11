@@ -2,7 +2,6 @@
 
 use App\Models\User;
 use App\Models\Patient;
-use App\Models\Attendance;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -156,10 +155,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/schedules', [AppointmentController::class, 'getAppointmentByDoctor'])->name('appointments.get-appointment-by-doctor');
         });
 
-        // Route::middleware([config('const.auth.mid')])->group(function () {
-        //     Route::get('/accepted_appointment/{appointment}', [AppointmentController::class, 'acceptedAppointment'])->name('appointments.accepted');
-        //     Route::get('/denied_appointment/{appointment}', [AppointmentController::class, 'deniedAppointment'])->name('appointments.denied');
-        // });
     });
 
 
