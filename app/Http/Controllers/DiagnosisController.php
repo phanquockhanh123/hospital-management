@@ -67,6 +67,8 @@ class DiagnosisController extends Controller
      */
     public function store(Request $request)
     {
+
+        
         $validatedData = $request->validate([
             'doctor_id' => 'required|integer|exists:doctors,id,deleted_at,NULL',
             'patient_id' => 'required|integer|exists:patients,id,deleted_at,NULL',

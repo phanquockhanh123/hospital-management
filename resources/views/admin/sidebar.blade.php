@@ -233,7 +233,7 @@
                         class="nav-link @if (Request::route()->getName() == 'news.index') active @endif">
                         <i class="nav-icon far fa-newspaper"></i>
                         <p>
-                            Blog
+                            Tin tức
                         </p>
                     </a>
                 </li>

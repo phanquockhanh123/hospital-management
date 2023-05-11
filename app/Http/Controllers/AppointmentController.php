@@ -204,7 +204,7 @@ class AppointmentController extends Controller
         foreach ($bookings as $booking) {
             $events[] = [
                 'id'   => $booking->id,
-                'title' => $booking->title,
+                'title' => $booking->patient->name,
                 'start' => $booking->start_time,
                 'end' => $booking->end_time,
                 'description' => $booking->description

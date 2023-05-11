@@ -2,18 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\Models\Bill;
 use App\Models\Medical;
 use App\Models\Service;
-use App\Models\Appointment;
 use Illuminate\Http\Request;
 use App\Models\DiagnosisItem;
 use App\Models\MedicalDevice;
-use App\Models\DoctorDepartment;
 use App\Models\PrescriptionItem;
 use App\Models\RequestDeviceItem;
-use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {

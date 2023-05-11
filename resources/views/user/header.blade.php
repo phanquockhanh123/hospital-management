@@ -87,11 +87,11 @@
     <div class="back-to-top"></div>
 
     @if (Auth::user()?->id)
-    <a class="btnMessage" href="{{ route('chats.index') }}" style="text-decoration: none;">
-        <div class="circle-shape bg-secondary text-white">
-            <span class="mai-chatbubbles-outline"></span>
-        </div>
-    </a>
+        <a class="btnMessage" href="{{ route('chats.index') }}" style="text-decoration: none;">
+            <div class="circle-shape bg-secondary text-white">
+                <span class="mai-chatbubbles-outline"></span>
+            </div>
+        </a>
     @endif
     <header>
         <div class="topbar">
@@ -119,20 +119,11 @@
         <nav class="navbar navbar-expand-lg navbar-light shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ route('home.index') }}" style="font-size: 30px;">
-                    <img src="https://th.bing.com/th/id/R.7341cd8295fecb9385f968b1f56715a7?rik=mSAa%2bJFXDvBT7Q&pid=ImgRaw&r=0" height="200px" width="200px" 
-                    alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8; ">
+                    <img src="https://th.bing.com/th/id/R.7341cd8295fecb9385f968b1f56715a7?rik=mSAa%2bJFXDvBT7Q&pid=ImgRaw&r=0"
+                        height="150px" width="150px" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+                        style="opacity: .8; ">
                     {{-- <span class="text-primary">An </span> Khang --}}
                 </a>
-
-                {{-- <form action="#">
-                    <div class="input-group input-navbar">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="icon-addon1"><span class="mai-search"></span></span>
-                        </div>
-                        <input type="text" class="form-control" placeholder="Enter keyword.." aria-label="Username"
-                            aria-describedby="icon-addon1">
-                    </div>
-                </form> --}}
 
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupport"
                     aria-controls="navbarSupport" aria-expanded="false" aria-label="Toggle navigation">
@@ -140,19 +131,18 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupport">
-                    <ul class="navbar-nav ml-auto" name="navEle" id="navEle" style="font-size: 26px;">
+                    <ul class="navbar-nav ml-auto" name="navEle" id="navEle" style="font-size: 24px;">
                         <li class="nav-item  @if (Request::route()->getName() == 'home.index') active @endif">
-                            <a class="nav-link" href="{{ route('home.index') }}" >Trang chủ</a>
+                            <a class="nav-link" href="{{ route('home.index') }}">Trang chủ</a>
                         </li>
                         <li class="nav-item @if (Request::route()->getName() == 'home.about') active @endif">
                             <a class="nav-link" href="{{ route('home.about') }}">Giới thiệu</a>
                         </li>
-                        <li
-                            class="nav-item @if (Request::route()->getName() == 'home.get-doctor-list-for-user-site') active @endif">
+                        <li class="nav-item @if (Request::route()->getName() == 'home.get-doctor-list-for-user-site') active @endif">
                             <a class="nav-link" href="{{ route('home.get-doctor-list-for-user-site') }}">Bác sĩ</a>
                         </li>
                         <li class="nav-item @if (Request::route()->getName() == 'home.blog') active @endif">
-                            <a class="nav-link" href=" {{ route('home.blog') }}">Blog</a>
+                            <a class="nav-link" href=" {{ route('home.blog') }}">Tin tức</a>
                         </li>
                         <li class="nav-item @if (Request::route()->getName() == 'home.contact') active @endif">
                             <a class="nav-link" href=" {{ route('home.contact') }}">Liên hệ</a>
@@ -162,30 +152,34 @@
                         </li>
 
                         @if (isset(Auth::user()->id) && Auth::user()->role == 0)
-                        <div class="dropdown show">
-                            <a class="btn btn-secondary dropdown-toggle" style="background-color: white; border: 0px "
-                                href="#" role="button"
-                                id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="@if (!empty($patient->filename)) ./imgPatient/{{ $patient->filename}}@else https://cdn.iconscout.com/icon/premium/png-256-thumb/patient-2460481-2128797.png @endif"
-                                    style="background-color: #00D9A5;border-radius: 50%;vertical-align: middle;
+                            <div class="dropdown show">
+                                <a class="btn btn-secondary dropdown-toggle"
+                                    style="background-color: white; border: 0px " href="#" role="button"
+                                    id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">
+                                    <img src="@if (!empty($patient->filename)) ./imgPatient/{{ $patient->filename }}@else https://cdn.iconscout.com/icon/premium/png-256-thumb/patient-2460481-2128797.png @endif"
+                                        style="background-color: #00D9A5;border-radius: 50%;vertical-align: middle;
                                                                     width: 50px;
                                                                     height: 50px;
                                                                     border-radius: 50%;">
-                            </a>
+                                </a>
 
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <a class="dropdown-item">{{ Auth::user()->name }}</a>
-                                <a class="dropdown-item" href="{{ route('user.get-info-patient') }}">Thông tin bệnh
-                                    nhân</a>
-                                <a class="dropdown-item" href="{{ route('home.logout-with-google') }}">Đăng xuất</a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item">{{ Auth::user()->name }}</a>
+                                    <a class="dropdown-item" href="{{ route('user.get-info-patient') }}">Thông tin
+                                        bệnh
+                                        nhân</a>
+                                    <a class="dropdown-item" href="{{ route('home.logout-with-google') }}">Đăng
+                                        xuất</a>
+                                </div>
                             </div>
-                        </div>
                         @else
-                        <li class="nav-item">
-                            <a href="{{ route('home.login-with-google') }}"><button class="btn btn-primary"
-                                    type="submit" style="margin-left: 10px;font-size: 16px;padding: 10px 40px;">Đăng
-                                    nhập</button></a>
-                        </li>
+                            <li class="nav-item">
+                                <a href="{{ route('home.login-with-google') }}"><button class="btn btn-primary"
+                                        type="submit"
+                                        style="margin-left: 10px;font-size: 16px;padding: 10px 40px;">Đăng
+                                        nhập</button></a>
+                            </li>
                         @endif
 
 
@@ -196,35 +190,35 @@
     </header>
     <script>
         var chatBtn = document.getElementById('chatBtn');
-var chatModal = document.getElementById('chatModal');
-var chatForm = document.getElementById('chatForm');
-var chatInput = document.getElementById('chatInput');
-var chatBody = document.getElementById('chatBody');
+        var chatModal = document.getElementById('chatModal');
+        var chatForm = document.getElementById('chatForm');
+        var chatInput = document.getElementById('chatInput');
+        var chatBody = document.getElementById('chatBody');
 
-chatBtn.addEventListener('click', function() {
-  chatModal.style.display = 'block';
-  chatInput.focus();
-});
+        chatBtn.addEventListener('click', function() {
+            chatModal.style.display = 'block';
+            chatInput.focus();
+        });
 
-chatForm.addEventListener('submit', function(e) {
-  e.preventDefault();
-  var message = chatInput.value.trim();
-  if (message !== '') {
-    var messageElement = document.createElement('div');
-    messageElement.textContent = message;
-    chatBody.appendChild(messageElement);
-    chatInput.value = '';
-    chatInput.focus();
-  }
-});
+        chatForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var message = chatInput.value.trim();
+            if (message !== '') {
+                var messageElement = document.createElement('div');
+                messageElement.textContent = message;
+                chatBody.appendChild(messageElement);
+                chatInput.value = '';
+                chatInput.focus();
+            }
+        });
 
-window.addEventListener('click', function(e) {
-  if (e.target == chatModal) {
-    chatModal.style.display = 'none';
-  }
+        window.addEventListener('click', function(e) {
+            if (e.target == chatModal) {
+                chatModal.style.display = 'none';
+            }
 
-chatBtn.addEventListener('click', () => {
-  chatModal.style.display = 'none';
-});
-});
+            chatBtn.addEventListener('click', () => {
+                chatModal.style.display = 'none';
+            });
+        });
     </script>
