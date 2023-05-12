@@ -256,7 +256,9 @@ class DoctorController extends Controller
         DB::beginTransaction();
         try {
             $doctor->delete();
-            $doctor->user->delete();
+            if($doctor->user != null) {
+                $doctor->user->delete();
+            }
             DB::commit();
         } catch (\Exception $error) {
             DB::rollback();

@@ -231,7 +231,10 @@ class ReceptionistController extends Controller
         DB::beginTransaction();
         try {
             $receptionist->delete();
-            $receptionist->user->delete();
+            if ($receptionist->user != null) {
+                $receptionist->user->delete();
+            }
+            
             DB::commit();
         } catch (\Exception $error) {
             DB::rollback();

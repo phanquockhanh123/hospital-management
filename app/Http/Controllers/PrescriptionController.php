@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use PDF;
 use App\Models\Bill;
 use App\Models\Doctor;
+use GuzzleHttp\Client;
 use App\Models\Medical;
 use App\Models\Patient;
 use App\Models\Service;
@@ -15,6 +16,7 @@ use Illuminate\Http\Response;
 use App\Models\PrescriptionItem;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 
 class PrescriptionController extends Controller
@@ -69,6 +71,8 @@ class PrescriptionController extends Controller
             'amount' => 'required|array',
             'note' => 'nullable|string|max:1000',
         ]);
+
+
         DB::beginTransaction();
         try {
             // Create prescriptions
@@ -183,69 +187,64 @@ class PrescriptionController extends Controller
         ]);
         // DB::beginTransaction();
         // try {
-            $prescription->update([
-                'doctor_id' => $request->doctor_id,
-                'patient_id' => $request->patient_id,
-                'main_disease' => $request->main_disease,
-                'side_disease' => $request->side_disease,
-                'note' => $request->note,
-            ]);
-            $preItemOld = $prescription->prescriptionItems;
-            $data = [
-                "medical_id" => array_values($validatedData['medical_id']),
-                "dosage" => array_values($validatedData['dosage']),
-                "dosage_note" => array_values($validatedData['dosage_note']),
-                "unit" => array_values($validatedData['unit']),
-                "amount" => array_values($validatedData['amount']),
-            ];
-            $prescriptionItem = PrescriptionItem::where('prescription_id', $prescription->id)->delete();
+        $prescription->update([
+            'doctor_id' => $request->doctor_id,
+            'patient_id' => $request->patient_id,
+            'main_disease' => $request->main_disease,
+            'side_disease' => $request->side_disease,
+            'note' => $request->note,
+        ]);
+        $preItemOld = $prescription->prescriptionItems;
+        $data = [
+            "medical_id" => array_values($validatedData['medical_id']),
+            "dosage" => array_values($validatedData['dosage']),
+            "dosage_note" => array_values($validatedData['dosage_note']),
+            "unit" => array_values($validatedData['unit']),
+            "amount" => array_values($validatedData['amount']),
+        ];
+        $prescriptionItem = PrescriptionItem::where('prescription_id', $prescription->id)->delete();
 
-            $newArrays = array();
-            foreach ($data as $key => $values) {
-                $i = 0;
-                foreach ($values as $value) {
-                    $newArrays[$i][$key] = $value;
-                    $i++;
-                }
+        $newArrays = array();
+        foreach ($data as $key => $values) {
+            $i = 0;
+            foreach ($values as $value) {
+                $newArrays[$i][$key] = $value;
+                $i++;
             }
-            $prescriptionItemData = array_map(function ($preItem) use ($prescription) {
-                $preItem['prescription_id'] = $prescription->id;
-                return $preItem;
-            }, $newArrays);
+        }
+        $prescriptionItemData = array_map(function ($preItem) use ($prescription) {
+            $preItem['prescription_id'] = $prescription->id;
+            return $preItem;
+        }, $newArrays);
 
-            PrescriptionItem::insert($prescriptionItemData);
+        PrescriptionItem::insert($prescriptionItemData);
 
-            // Update Bills
-            $prescriptionPrice = 0;
-            $diagnosisPrice = 0;
-            
-            foreach ($newArrays as $dataItem) {
-                $medicalUpdate = Medical::where('id', $dataItem['medical_id'])->first();
-                $prescriptionPrice += $medicalUpdate->export_price * $dataItem['amount'];
-                // check quantity input with database
-                if ($dataItem['amount'] > $medicalUpdate->quantity) {
+        // Update Bills
+        $prescriptionPrice = 0;
+        $diagnosisPrice = 0;
+
+        foreach ($newArrays as $dataItem) {
+            $medicalUpdate = Medical::where('id', $dataItem['medical_id'])->first();
+            $prescriptionPrice += $medicalUpdate->export_price * $dataItem['amount'];
+            // check quantity input with database
+            if ($dataItem['amount'] > $medicalUpdate->quantity) {
                 return redirect()->back()->with('alert', 'Thuốc trong kho không đủ để cung cấp!');
-                }
-                $prescriptionAmountOld = $preItemOld->where('medical_id', $dataItem['medical_id'])->first()->amount;
-                $medicalUpdate->update(['quantity' => $medicalUpdate->quantity + $prescriptionAmountOld - $dataItem['amount']]);
             }
-            foreach ($prescription->diagnosis->diagnosisItems as $diagPre) {
-                $diagnosisPrice += $diagPre->service->all_price;
-            }
+            $prescriptionAmountOld = $preItemOld->where('medical_id', $dataItem['medical_id'])->first()->amount;
+            $medicalUpdate->update(['quantity' => $medicalUpdate->quantity + $prescriptionAmountOld - $dataItem['amount']]);
+        }
+        foreach ($prescription->diagnosis->diagnosisItems as $diagPre) {
+            $diagnosisPrice += $diagPre->service->all_price;
+        }
 
-            $billData = [
-                'prescription_id' => $prescription->id,
-                'total_money' => $prescriptionPrice + $diagnosisPrice,
-            ];
-            if ($prescription->bill) {
-                Bill::where('id', $prescription->bill->id)->update($billData);
-            }
-            DB::commit();
-        // } catch (\Exception $error) {
-        //     DB::rollback();
-        //     Log::error($error);
-        //     return [Response::HTTP_INTERNAL_SERVER_ERROR, ['message' => [trans('messages.MsgErr006')]]];
-        // }
+        $billData = [
+            'prescription_id' => $prescription->id,
+            'total_money' => $prescriptionPrice + $diagnosisPrice,
+        ];
+        if ($prescription->bill) {
+            Bill::where('id', $prescription->bill->id)->update($billData);
+        }
+        DB::commit();
 
         return redirect()->route('prescriptions.index')
             ->with('success', 'Thông tin đơn thuốc đã được cập nhật thành công.');
@@ -298,10 +297,10 @@ class PrescriptionController extends Controller
      */
     public function createPrescription(Diagnosis $diagnosis)
     {
-        $doctors = Doctor::all();
+        $doctor = Doctor::where('user_id', Auth::user()->id)->first();
         $patients = Patient::all();
         $medicals = Medical::all();
-        return view('admin.prescriptions.create-prescription', compact('diagnosis', 'doctors', 'patients', 'medicals'));
+        return view('admin.prescriptions.create-prescription', compact('diagnosis', 'doctor', 'patients', 'medicals'));
     }
 
     /**
@@ -321,6 +320,35 @@ class PrescriptionController extends Controller
             'amount' => 'required|array',
             'note' => 'nullable|string|max:1000',
         ]);
+        $client = new Client();
+        $medicals = [];
+        foreach ($validatedData['medical_id'] as $dataId) {
+            $medicals[] = Medical::where('id', $dataId)->first()->medical_name;
+        }
+        // Search OpenFDA for adverse events associated with each drug
+        foreach ($medicals as $key => $drug) {
+            try {
+                unset($medicals[$key]);
+                $url = 'https://api.fda.gov/drug/label.json?search=drug_interactions:"' . urlencode($drug) . '"';
+                $response = @file_get_contents($url);
+                $data = json_decode($response, true);
+                if (isset($data['results'][0]['drug_interactions'][0])) {
+                    $interactions = $data['results'][0]['drug_interactions'][0];
+                    foreach ($medicals as $medical) {
+                        if (stripos($interactions, $medical) !== false) {
+                            return redirect()->back()->with('alert', 'Thuốc ' .  $drug . ' có tác dụng phụ với ' . $medical . ' !');
+                        }
+                    }
+                }
+            } catch (\GuzzleHttp\Exception\ClientException $e) {
+                // Handle other exceptions
+                if ($e->getResponse()->getStatusCode() === 404) {
+                    // Drug not found, continue with next drug
+                    continue;
+                }
+            }
+        }
+
         // Create prescriptions
         $prescription = Prescription::create([
             'diagnosis_id' => $diagnosis->id,

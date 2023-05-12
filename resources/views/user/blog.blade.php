@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-8">
-                <h2 tyle="text-align: center;">Giới thiệu</h2>
+                <h2 tyle="text-align: center;">Tin tức</h2>
                 <div class="title">
                     <ul>
                         @foreach ($news as $new)

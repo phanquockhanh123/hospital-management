@@ -400,7 +400,7 @@
 
                                         <div class="form-group">
                                             <label for="profile">Ảnh đại diện:</label>
-                                            <img src="{{ asset('./imgPatient/'. $patient->filename) }}" style="vertical-align: middle;
+                                            <img src="@if (!empty($patient->filename)) ./imgPatient/{{ $patient->filename}} @else https://cdn.iconscout.com/icon/premium/png-256-thumb/patient-2460481-2128797.png @endif" style="vertical-align: middle;
                                                                 width: 200px;
                                                                 height: 300px;
                                                                 margin-bottom:20px;">

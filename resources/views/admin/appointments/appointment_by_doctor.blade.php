@@ -123,7 +123,6 @@
                                             <tr>
                                                 <th>STT</th>
                                                 <th>Bệnh nhân</th>
-                                                <th>Bác sĩ</th>
                                                 <th>Phòng ban</th>
                                                 <th>Bắt đầu</th>
                                                 <th>Kết thúc</th>
@@ -140,29 +139,9 @@
                                                         $count++ }}</a>
                                                 </td>
                                                 <td>{{ $appointment->patient->name }}</td>
-                                                <td>{{ $appointment->doctor->name }}</td>
                                                 <td>{{ $appointment->doctorDepartment->name }}</td>
                                                 <td>{{ $appointment->start_time }}</td>
                                                 <td>{{ $appointment->end_time }}</td>
-                                                {{-- @if(Auth::user()->role == 2)
-                                                <td>
-                                                    @if($appointment->status == 2)
-                                                    <i class="fa-solid fa-calendar-check" style="color:green;"></i>
-
-                                                    @elseif ($appointment->status == 1)
-                                                    <a href="{{ route('appointments.denied', $appointment->id) }}" title="Từ chối"><i
-                                                            class="fa-solid fa-calendar-xmark"
-                                                            style="color:red;"></i></a>
-                                                    <a href="{{ route('appointments.accepted', $appointment->id) }}" title="Chấp nhận"><i
-                                                            class="fa-solid fa-calendar-check"
-                                                            style="color:blue;"></i></a>
-
-                                                    @else
-                                                    <i class="fa-solid fa-calendar-xmark" style="color:red;"></i>
-                                                    @endif
-
-                                                </td>
-                                                @endif --}}
                                                 <td>
                                                     <div class="btn-group">
                                                         <a href="{{ route('appointments.show', $appointment) }}" title="Xem chi tiết"
