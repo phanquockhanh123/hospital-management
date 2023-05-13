@@ -40,12 +40,12 @@ class ZoomController extends Controller
         $search = $request->input('search');
 
         if ($search) {
-            $meetings = Meeting::where('meeting_name', 'LIKE', '%' . $search . '%')
-                ->orderByDesc('created_at')->paginate(config('const.perPage'));
+            $meeting = Meeting::where('meeting_name', 'LIKE', '%' . $search . '%')
+                ->orderByDesc('updated_at')->first();
         } else {
-            $meetings = Meeting::orderByDesc('created_at')->paginate(config('const.perPage'));
+            $meeting = Meeting::orderByDesc('updated_at')->first();
         }
-        return view('zoom.index', compact('meetings'));
+        return view('zoom.index', compact('meeting'));
     }
 
     public function create()

@@ -57,6 +57,18 @@
                                             @enderror
                                         </div>
                                     </div>
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label for="status">Trạng thái:</label>
+                                            <select name="status" class="form-control input-sm m-bot15">
+                                                <option value="0">Chưa thanh toán</option>
+                                                <option value="1">Đã thanh toán</option>
+                                            </select>
+                                            @error('status')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
                                     <div class="col-3" style="margin-top: 32px;">
                                             <button class="btn btn-outline-secondary" type="submit">Tìm
                                                 kiếm</button>

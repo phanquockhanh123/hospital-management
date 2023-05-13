@@ -30,19 +30,6 @@
             <section class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
-                        {{-- <div class="col-sm-6">
-                            <form action="{{ route('meetings.index') }}" method="GET">
-                                <div class="input-group mb-2">
-                                    <div class="input-group mb-3">
-                                        <input type="text" class="form-control" placeholder="Tìm kiếm cuộc họp"
-                                            name="search">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div> --}}
                         @if (Auth::user()->role == 3)
                         <div class="col-sm-3" style="float: right;">
                             <a href="{{ route('meeting.create') }}" class="btn btn-success">
@@ -63,11 +50,11 @@
             @endif
             <div class="card">
                 <div class="card-header">
-                    Tất cả các cuộc họp
+                    Cuộc họp
                 </div>
                 <div class="card-body">
                     <ul class="list-group">
-                        @if ($meetings->count() > 0)
+                        @if ($meeting->count() > 0)
 
                         <table id="example2" class="table table-bordered table-hover">
                             <thead>
@@ -81,7 +68,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($meetings as $meeting)
                                 <tr>
                                     <td>{{ $meeting->meeting_id }}</td>
                                     <td>{{ $meeting->meeting_name}}</td>
@@ -137,7 +123,6 @@
                                         </div>
                                     </div>
                                 </tr>
-                                @endforeach
 
                             </tbody>
                         </table>

@@ -36,6 +36,10 @@ class BillController extends Controller
             $bills->whereDate('created_at', $request['created_at']);
         }
 
+        if ($request['status'] != null) {
+            $bills->where('status', $request['status']);
+        }
+
         $bills = $bills->orderByDesc('updated_at')->orderByDesc('id')->paginate(config('const.perPage'));
         $count = 1;
         return view('admin.bills.index', compact('bills', 'count', 'patients'));
